@@ -1,4 +1,4 @@
-//===========================================================================================
+//====================================================================================================================================
 // Project:     Simple Arduino Geiger
 // Description: With minimal exteral Components you are able to build a Geiger Counter that:
 //   - is precice
@@ -22,10 +22,32 @@
 //
 //
 // Revision History:
-//const char* revString = "2019_03_25";   // Juergen Boehringer      Version 1 for ESP32-Board
-const char* revString = "2019_04_26";   // Juergen Boehringer      added 1 Minute RS232-Logging-Mode
+//const char* revString = "2019_03_25";   // Juergen Boehringer      - Version 1 for ESP32-Board
+//const char* revString = "2019_04_26";   // Juergen Boehringer      - added 1 Minute RS232-Logging-Mode
+const char* revString = "2019_05_12";   // Juergen Boehringer      - Added Bugfix for the "Double-Trigger-Problem". This was caused
+//                                                                   by the rising edge falsly triggering an other pulse recording. 
+//                                                                   The Problem is that there is no Schmitt-Trigger available in the 
+//                                                                   Controller
+//                                                                 - simplified serial printing modes
+//                                                                 - made seconds in Display as inverse to be able to seperate it from
+//                                                                   minutes
+//                                                                 - cleaned up the code
+//                                                                 - Fixed Overflow-Bug in Minute-Count
 //
-//===========================================================================================
+//====================================================================================================================================
+//====================================================================================================================================
+// Parameters
+// Possible Values for Serial_Print_Mode
+#define   Serial_None            0  // No Serial Printout
+#define   Serial_Debug           1  // Debug output will be printed via RS232(USB)
+#define   Serial_One_Minute_Log  2  // One Minute logging will be printed via RS232(USB)
+#define   Serial_Statistics_Log  3  // Lists time between two events in us via RS232(USB)
+int  Serial_Print_Mode      = Serial_None;
+
+bool speaker_tick           = false;// false: no GMZ-Tick, no flickering LED
+                                    // true : GMZ-Tick will be sounded, LED flickers every GMZ-Tick
+//====================================================================================================================================
+//====================================================================================================================================
 
 // Includes
 //   #include "WiFi.h"
@@ -39,9 +61,8 @@ const char* revString = "2019_04_26";   // Juergen Boehringer      added 1 Minut
 #include <Wire.h>
 #endif
 
-
+//====================================================================================================================================
 // IOs
-// ==========================================================
 //  used for OLED:              4
 //  used for OLED:             15
 //  used for OLED:             16
@@ -62,23 +83,21 @@ int PIN_GMZ_count_INPUT     =  17;  // !! has to be capable of "interrupt on cha
 int PIN_SPEAKER_OUTPUT_P    =   2;
 int PIN_SPEAKER_OUTPUT_N    =   0;
 
-// Parameters
-bool debug                  = false;// false: no debug output
-                                    // true : debug output will be printed via RS232(USB)
-bool OneMinuteLogging       = true; // false: no One Minute logging
-                                    // true:  One Minute logging will be printed via RS232(USB)
-bool speaker_tick           = true; // false: no GMZ-Tick, no flickering LED
-                                    // true : GMZ-Tick will be sounded, LED flickers every GMZ-Tick
-
+//====================================================================================================================================
 // Constants
 const            float GMZ_factor_uSvph     = 1/2.47   ; // for SBM20
 //const            float GMZ_factor_uSvph     = 1/9.81888   ; // for SBM19
 
+const    unsigned long GMZ_dead_time        = 190;   // Dead Time of the Geiger-Counter. Has to be longer than the complete
+                                                     // Pulse generated on the Pin PIN_GMZ_count_INPUT
 									
+//====================================================================================================================================
 // Variables
 volatile bool          GMZ_cap_full           = 0;
 volatile unsigned char isr_GMZ_counts         = 0;
+         unsigned char counts_before          = 0;
 volatile unsigned long isr_count_timestamp    = millis(); 
+volatile unsigned long isr_count_time_between = micros();
          unsigned char GMZ_counts             = 0;
          unsigned int  accumulated_GMZ_counts = 0;
          unsigned long count_timestamp        = millis(); 
@@ -93,20 +112,35 @@ volatile unsigned long isr_count_timestamp    = millis();
          float         accumulated_Count_Rate = 0.0;
          float         accumulated_Dose_Rate  = 0.0;
          unsigned long lastMinuteLog          = millis();		 
-         unsigned char lastMinuteLogCounts    = 0;
+         unsigned int  lastMinuteLogCounts    = 0;
+         unsigned int  lastMinuteLogCountRate = 0;
  
          
+//====================================================================================================================================
 // ISRs
 void isr_GMZ_capacitor_full() {
   GMZ_cap_full = 1;
 }
 
 void isr_GMZ_count() {
-  isr_GMZ_counts++;                                     // Count
-  isr_count_timestamp = millis();                       // notice (System)-Time of the Count
+  static unsigned long isr_count_timestamp_us     ;
+  static unsigned long isr_count_timestamp_us_prev;
+  static unsigned long isr_count_timestamp_us_prev_used;
+  noInterrupts();                                       // Disable interrupts (to read variables of the ISR correctly)
+  isr_count_timestamp_us_prev = isr_count_timestamp_us;
+  isr_count_timestamp_us      = micros();
+  if ((isr_count_timestamp_us-isr_count_timestamp_us_prev) > GMZ_dead_time){ // the rest ist only executed if GMZ_dead_time is exeded. Reason: Pulses occuring short after an other pulse are false pulses generated by the rising edge on PIN_GMZ_count_INPUT. This happens because we don't have an Schmitt-Trigger in this controller pin
+    isr_GMZ_counts++;                                     // Count
+    isr_count_timestamp       = millis();                 // notice (System)-Time of the Count
+	
+    isr_count_time_between           = isr_count_timestamp_us-isr_count_timestamp_us_prev_used;	// Save for Statistic Debuging
+	isr_count_timestamp_us_prev_used = isr_count_timestamp_us;
+  } 
+  interrupts();                                        // Re-enable interrupts  
 }
 
 
+//====================================================================================================================================
 // Function Prototypes
 int jb_HV_gen_charge__chargepules();
 void DisplayGMZ(int TimeSec, int RadNSvph, int CPS);
@@ -114,13 +148,11 @@ void SoundStartsound();
 void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume);
 
 
-
-
-
-
 // Type of OLED-Display
 U8X8_SSD1306_128X64_NONAME_SW_I2C u8x8(/* clock=*/ 15, /* data=*/ 4, /* reset=*/ 16);
 
+//====================================================================================================================================
+//====================================================================================================================================
 void setup()
 {
 	// OLED-Display
@@ -141,28 +173,13 @@ void setup()
     attachInterrupt (digitalPinToInterrupt (PIN_GMZ_count_INPUT), isr_GMZ_count, FALLING);          // GMZ pulse detected
 	
     // set and init Serial Communication (if required)
-    if (debug == true) {
+    if (Serial_Print_Mode != Serial_None) {
       noInterrupts();
       Serial.begin(115200);
       while (!Serial) {};
-  	                              // while(1){
-                                  //   digitalWrite(PIN_HV_FET_OUTPUT, HIGH);
-	                              //   delayMicroseconds(1500);              									
-                                  //   digitalWrite(PIN_HV_FET_OUTPUT, LOW); 
-	                              //   delayMicroseconds(1500);              									
-                                  // };
-                                 // pinMode      (0,         OUTPUT);  
-                                 // pinMode      (2,         OUTPUT);  
-								 // while(1){
-                                 //   digitalWrite(0, LOW);  
-                                 //   digitalWrite(2, HIGH);  
-                                 //   delayMicroseconds(1000);
-                                 //   digitalWrite(0, HIGH);   
-                                 //   digitalWrite(2, LOW);   
-                                 //   delayMicroseconds(1000);	                        
-                                 // }
-
+	}
 	
+    if (Serial_Print_Mode == Serial_Debug) {
       // Write Header of Table	
       Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
       Serial.print  ("Simple Arduino Geiger, Version ");
@@ -173,13 +190,8 @@ void setup()
       Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
       interrupts();	  
     }
-	
-    // set and init Serial Communication (if required)
-    if (OneMinuteLogging == true) {
-      noInterrupts();
-      Serial.begin(115200);
-      while (!Serial) {};
 
+    if (Serial_Print_Mode == Serial_One_Minute_Log) {
       // Write Header of Table	
       Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
       Serial.print  ("Simple Arduino Geiger, Version ");
@@ -190,53 +202,26 @@ void setup()
       Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
       interrupts();	  
     }
+
+    if (Serial_Print_Mode == Serial_Statistics_Log) {
+      // Write Header of Table	
+      Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
+      Serial.print  ("Simple Arduino Geiger, Version ");
+      Serial.println(revString);
+      Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
+      Serial.println("Time between two impacts");
+	  Serial.println("[usec]");
+      Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
+      interrupts();	  
+    }
 	
     DisplayStartscreen();
 	jb_HV_gen_charge__chargepules();
     SoundStartsound();	
 }
 
-// =================================================================
-// OLED-Functions
-void pre(void)
-{
-  u8x8.setFont(u8x8_font_amstrad_cpc_extended_f);    
-  u8x8.clear();
-
-  u8x8.inverse();
-  u8x8.print(" U8x8 Library ");
-  u8x8.setFont(u8x8_font_chroma48medium8_r);  
-  u8x8.noInverse();
-  u8x8.setCursor(0,1);
-}
-
-void draw_bar(uint8_t c, uint8_t is_inverse)
-{	
-  uint8_t r;
-  u8x8.setInverseFont(is_inverse);
-  for( r = 0; r < u8x8.getRows(); r++ )
-  {
-    u8x8.setCursor(c, r);
-    u8x8.print(" ");
-  }
-}
-
-void draw_ascii_row(uint8_t r, int start)
-{
-  int a;
-  uint8_t c;
-  for( c = 0; c < u8x8.getCols(); c++ )
-  {
-    u8x8.setCursor(c,r);
-    a = start + c;
-    if ( a <= 255 )
-      u8x8.write(a);
-  }
-}
-// =================================================================
-
-
-
+// ===================================================================================================================================
+// ===================================================================================================================================
 void loop()
 {
   // read out values from ISR
@@ -260,9 +245,6 @@ void loop()
     last_GMZ_counts = GMZ_counts;                              // notice old value
   }
 
-
-
-
   // Check if there are enough pules detected or if enough time has elapsed. If yes than its 
   // time to charge the HV-capacitor and calculate the pulse rate  
   if ((GMZ_counts>=100) || ((count_timestamp - last_count_timestamp)>=10000)) {  
@@ -285,34 +267,38 @@ void loop()
 	// Write it to the display
     DisplayGMZ(((int)accumulated_time/1000), (int)(accumulated_Dose_Rate*1000), (int)(Count_Rate*60));
 	
-    if (debug == true) {                                           // Report all 
+    if (Serial_Print_Mode == Serial_Debug) {                       // Report all 
       noInterrupts();
       Serial.print(GMZ_counts, DEC); 
-      Serial.print("\t\t");    
+      Serial.print("\t");    
       Serial.print(time_difference, DEC); 
-      Serial.print("\t\t");    
+      Serial.print("\t");    
       Serial.print(Count_Rate, 2); 
-      Serial.print("\t\t");    
+      Serial.print("\t");    
       Serial.print(Dose_Rate, 2); 
-      Serial.print("\t\t");    
+      Serial.print("\t");    
       Serial.print(HV_pulse_count, DEC); 
-      Serial.print("\t\t");    
+      Serial.print("\t");    
       Serial.print(accumulated_GMZ_counts, DEC); 
-      Serial.print("\t\t");    
+      Serial.print("\t");    
       Serial.print(accumulated_time, DEC); 
-      Serial.print("\t\t");    
+      Serial.print("\t");    
       Serial.print(accumulated_Count_Rate, DEC); 
-      Serial.print("\t\t");    
+      Serial.print("\t");    
       Serial.println(accumulated_Dose_Rate, DEC); 
       interrupts();
     }
-    if (OneMinuteLogging == true) {                                // 1 Minute Log active?  
+    if (Serial_Print_Mode == Serial_One_Minute_Log) {              // 1 Minute Log active?  
       if (millis() > (lastMinuteLog + 60000)){                     // Time for a 1-Minute-Log?
         noInterrupts();	  
+		lastMinuteLogCountRate = ( (lastMinuteLogCounts*60000) / (millis()-lastMinuteLog) );    // = *60 /1000
+		if( ( ( ( (lastMinuteLogCounts*60000) % (millis()-lastMinuteLog) ) * 2 ) / (millis()-lastMinuteLog) ) >= 1 ) {
+		  lastMinuteLogCountRate++;                                // Rounding
+		}
         Serial.print((millis()/1000), DEC); 
-        Serial.print("\t");    
-        Serial.print( ( (lastMinuteLogCounts*60000) / (millis()-lastMinuteLog) ), DEC);    // = *60 /1000
-        Serial.print("\t");    
+        Serial.print("\t");
+        Serial.print(lastMinuteLogCountRate, DEC);    // = *60 /1000        +0.5: to reduce rounding-errors
+        Serial.print("\t");
         Serial.println(lastMinuteLogCounts, DEC); 		
 	    lastMinuteLogCounts = 0;
         lastMinuteLog       = millis();
@@ -320,13 +306,17 @@ void loop()
 	  }
     }
   }
+  if ((Serial_Print_Mode == Serial_Statistics_Log) && (counts_before != isr_GMZ_counts)) {              // Statistics Log active?  
+    noInterrupts();	  
+    Serial.println(isr_count_time_between, DEC);
+    counts_before = isr_GMZ_counts;	
+    interrupts();	  
+  }	
 }
 
-
-
-
-
-
+// ===================================================================================================================================
+// ===================================================================================================================================
+// Subfunctions
 
 // GMZ-Sub-Functions
 int jb_HV_gen_charge__chargepules() {
@@ -343,7 +333,7 @@ int jb_HV_gen_charge__chargepules() {
   return chargepules;
 }
 
-
+// ===================================================================================================================================
 // OLED-Subfunctions
 void DisplayStartscreen(void){
   u8x8.clear();
@@ -359,7 +349,7 @@ void DisplayStartscreen(void){
   return;
 };
 
-
+// ===================================================================================================================================
 void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
   int TimeMin=0;
 
@@ -376,9 +366,11 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
     if(TimeMin <    10) u8x8.print(" ");
     u8x8.print(TimeMin);                  // Arduino Print function	
   } else {                                // Display in Seconds
+    u8x8.inverse();
     if(TimeSec <   100) u8x8.print(" ");
     if(TimeSec <    10) u8x8.print(" ");
     u8x8.print(TimeSec);                 
+	u8x8.noInverse();
   }
   if(RadNSvph < 1000000) u8x8.print(" ");
   if(RadNSvph <  100000) u8x8.print(" ");
@@ -402,7 +394,7 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
   return;
 };
 
-
+// ===================================================================================================================================
 // Sound Subfunctions
 void SoundStartsound(){
   float freq_factor = 0.75;    // Adaption-Factors
