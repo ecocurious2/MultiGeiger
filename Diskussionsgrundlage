@@ -1,0 +1,54 @@
+================================================================
+Diskussionsgrundlage GeigerProjekt, Jürgen Böhringer, 2019_05_17
+================================================================
+... siehe hierzu Bild: 
+    www.boehri.de/elektronik/MultiGeiger/Diskussionsgrundlage.jpg
+
+Ich habe mal meine Ideen zu dem GeigerProjekt hier festgehalten. Das ganze ist lediglich als Diskussionsgrundlage zu sehen.
+
+Die Idee des GeigerProjekts ist es fest installierte, lichtempfindliche Geigerzähler (im Freien / über Gras) zu betreiben und die Daten im Internet zu
+- sammeln
+- visualisieren zu können (Karte, ähnlich wie Luftdaten.info)
+- herunterladen zu können (*.csv)
+- Warn-Mails bei ungewöhnlichen Werten zu schicken (evtl.. später)
+- die Daten mit Wetterdienst-Daten abzugleichen (evtl.. später)
+  (Hintergrund ist dass bei einem Radon-Fallout z. B. interessant ist ob es geregnet hat oder aber
+  bei einem echten Störfall die Windrichtung wichtig ist)
+ 
+Das System besteht aus drei Sektionen:
+
+
+
+Unsere Sensoren
+===============
+- Unsere Sensoren bestehen aus einem Multi-Geiger. Am besten in einem dünnen Gehäuse und einem empfindlichen Zählrohr (z. B. SBM19).
+- Jeder Sensor hat folgenden Namen: "esp32-" + die letzten 3 Bytes der Sensor-MAC-Adresse in dezimaler Darstellung.
+- Alle 5 Minuten (10 Minuten wären auch ausreichend) sendet jeder MultiGeiger folgende Daten an die Datenbank:
+  - Anzahl der Counts pro Zeiteinheit (5 Min/10 Min)
+  - Batteriespannung
+  - Temperatur https://www.youtube.com/watch?v=XgK1Gg2JaWI
+  - Signalstärke  (wie bei Luftdaten.info)
+
+Schön wäre wenn die Anlieferung der Daten über einen Standard "HTTP-GET" laufen würde. Denn es wäre es auch möglich in entlegenen Regionen z. B. den Funkdienst "Sigfox" zu nutzen.
+
+
+ 
+Datenbank
+=========
+Rajko hat uns angeboten dass wir die Daten auf seinen Server laden können. Das ist natürlich klasse. Erstmal vielen Dank dafür!!! Ich denke dass wir so viel wie möglich so machen sollten wie es schon bei Luftdaten.info funktioniert.
+
+- Man kann über eine Seite seinen Sensor registrieren:
+- Zum Login gehoeren Daten wie:
+  - Geokoordinaten WGS84
+  - Zählrohrtyp: SBM19, SBM20, SI22G    (Vielleicht ist das vergleichbar mit dem Sensorname bei Luftdaten.info (z. B. SDS011, DHT21, ...)
+    (Hintergrund ist dass jeder Zählrohr-Typ eine andere Übertragungskoeffizienten von CPM => uSv/h hat.
+
+
+
+Unsere GeigerProjekt-Seite
+==========================
+- Unsere GeigerProjekt-Seite kann auf die Daten von Rajkos Datenbank zugreifen und macht aus
+  - Counts pro Zeiteinheit      und dem Zählrohrtyp (Übertragungskoeffizient)  die Ortsdosisleistung.
+  - Anzeige-Einheit: uSv/h   (Mikrosievert pro Stunde)
+Die weitere Verarbeitung und Anzeige erfolgt dann auf unserer Seite.
+Die Wetterdienst-Daten kann unsere Seite direkt vom Wetterdienst-Server holen. Das ist unabhängig von Rajkos Datenbank. 
