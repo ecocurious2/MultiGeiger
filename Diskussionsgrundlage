@@ -28,6 +28,7 @@ Unsere Sensoren
   - Batteriespannung
   - Temperatur https://www.youtube.com/watch?v=XgK1Gg2JaWI
   - Signalstärke  (wie bei Luftdaten.info)
+- Der "Upload-Interval" von 5 bzw. 10 Minuten wäre auch schön da man dann vermutlich das Gerät extrem Energiesparend machen könnte und vielleicht wieder auf mein GeigerFox-Gehäuse gehen könnte (Rohr im Garten mit allem Drin was man braucht - incl. Batterie).
 
 Schön wäre wenn die Anlieferung der Daten über einen Standard "HTTP-GET" laufen würde. Denn es wäre es auch möglich in entlegenen Regionen z. B. den Funkdienst "Sigfox" zu nutzen.
 
