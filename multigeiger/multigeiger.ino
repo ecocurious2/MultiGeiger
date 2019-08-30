@@ -33,9 +33,12 @@
 //                                                                   minutes
 //                                                                 - cleaned up the code
 //                                                                 - Fixed Overflow-Bug in Minute-Count
-const char* revString = "V1.0_2019_08_19";   // rxf               - added detection of LoRa-Device
+//const char* revString = "V1.0_2019_08_19";   // rxf               - added detection of LoRa-Device
 //                                                                - WiFiManager to enter WLAN data and other configs
 //                                                                - send to luftdaten.info every 2.5 min
+const char* revString = "V1.1_2019_08_27";   // rxf               - Sending to luftdaten and madavi works
+//                                                                - WiFiManager replaced bx iotwebconf
+//                                                               
 // Fix Parameters
 // Possible Values for Serial_Print_Mode  ! DONT TOUCH !
 #define   Serial_None            0  // No Serial Printout
@@ -525,7 +528,7 @@ void DisplayStartscreen(void){
                                           
   u8x8.println("Geiger-Counter"); 
   u8x8.println("==============");
-  u8x8.print  ("Ver :"); 
+  // u8x8.print  ("Ver :"); 
   u8x8.println(revString);
   u8x8.println("Info:boehri.de");
   return;
