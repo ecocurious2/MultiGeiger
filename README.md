@@ -36,7 +36,7 @@ Wenn das Gerät den eigene AP aufgebaut hat, verbindet man sich mit diesem. Entw
 Die Verbindung fragt nach einem Passwort, es lautete **ESP32Geiger**.  
 Ist die Verbindung mit dem Accesspointe hergestellt, so bleibt das Timeout von 30sec stehen, d.h. man hat beliebig Zeitm die  Daten einzugeben. Es öffnet sich **automatisch** die Startseite des Gerätes. Es braucht also - in der Regel - nicht extra der Browser aufgerufen werden. Falls die Startseite ausnahmsweise doch nicht erscheint, 
 so muss mit dem Browser die Adresse **192.168.4.1** aufgerufen werden und nun erscheint die Startseite. Diese besteht nur aus einer Zeile *Go to __configure page__ to change settings*. Hier auf den blauen Teil klicken und man kommt zur Einstellungsseite:  
-![config](/images/config.png)  
+![config](/images/config1.png)  
 Diese hat die folgenden 4 Zeilen:  
  * Thing Name  
  Die ist die SSID des Gerätes und kann zwar geändert werden, sollte aber nicht !!
@@ -59,6 +59,28 @@ Bei *madavi* werden die Daten in einer RRD-Datenbank abgelegt und können direkt
 https://www.madavi.de/sensor/graph.php?sensor=esp32-CHIPID-sbm20  
 Hier ist dann CHIPID die ChipId (also die Ziffern der SSID des internen Accesspoints).  
 Während der Übertragung der Daten zu den Servern wird in der Statuszeile (unterste Zeile) des Displays kurz der Name des servers eingeblendet.
+
+## Anmeldung bei luftdaten.info
+Damit die Daten, die der Sensor nach luftdaten.info schickt, von dem Server auch angenommen werden, muss man sich dort anmelden. Das geschieht über die Seite https://meine.luftdaten.info.  
+Zuerst über den *Registrieren*-Knopf einen Account anlegen. Dann damit über *Login* einloggen und *Neuen Sensor registrieren* anklicken.  
+Dann das Formular ausfüllen:
+ * Erste Zeile, Sensor ID:  
+ Hier die Nummer (nur die Zahlen) der SSID des Sensors eingeben (z.B. bei dem Sensor ESP-51564452 also dann nur 51564452 eingeben) 
+ * Zweite Zeile, Sensor Board:  
+ Hier *esp32* auswählen (über die kleinen Pfeile rechts)
+ * Basisinformation:  
+ Hier die Adresse eingeben (mit dem Land!). Der interne Name des Sensors kann beliebig vergeben werden, muss aber eingegeben werden. Bitte den Haken bei **Indoor-Sensor** setzen, so lange der Sensor wirklich innen ist.
+ * Zusätzliche Informationen:  
+ Kann freigelassen werden, darf aber auch ausgefüllt werden.
+ * Hardware-Konfiguration:  
+ Hier als Sensor-Typ den Eintrag **Radiation SBM-20** (oder ggf. entsprechend) auswählen. Für den zweiten Sensor kann DHT22 stehen bleiben, das ist für uns irrelevant.
+ * Position  
+ Hier bitte die Koordinaten eingeben, so genau wie möglich (oder über den rechten Knopf die Koordinaten rechnen lassen). Dies wird benötigt, um den Sensor später auf der Karte anzeigen zu können.
+
+ Nun mit *Einstellungen speichern* das Ganze beenden. Dann auf der Übersichts-Seite  bei diesem Sensor auf *Daten* klicken. Nun steht hinter *Sensor ID* die ID des Sensors. Diese bitte merken: sie wird für die Abfrage bei luftdaten.info bzw. bei der Anzeige auf geiger.rexfue.de benötigt (zur Zeit heist das noch test1.rexfue.de und ist laufend in Arbeit - kann also ab und zu ausfallen :-) )
+
+
+
 
 
  
