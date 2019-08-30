@@ -77,7 +77,7 @@ Dann das Formular ausfüllen:
  * Position  
  Hier bitte die Koordinaten eingeben, so genau wie möglich (oder über den rechten Knopf die Koordinaten rechnen lassen). Dies wird benötigt, um den Sensor später auf der Karte anzeigen zu können.
 
- Nun mit *Einstellungen speichern* das Ganze beenden. Dann auf der Übersichts-Seite  bei diesem Sensor auf *Daten* klicken. Nun steht hinter *Sensor ID* die ID des Sensors. Diese bitte merken: sie wird für die Abfrage bei luftdaten.info bzw. bei der Anzeige auf geiger.rexfue.de benötigt (zur Zeit heist das noch test1.rexfue.de und ist laufend in Arbeit - kann also ab und zu ausfallen :-) )
+ Nun mit *Einstellungen speichern* das Ganze beenden. Dann auf der Übersichts-Seite  bei diesem Sensor auf *Daten* klicken. Nun steht hinter *Sensor ID* die ID des Sensors. Diese bitte merken: sie wird für die Abfrage bei luftdaten.info bzw. bei der Anzeige auf geiger.rexfue.de benötigt (zur Zeit heist das noch test1.rexfue.de und ist laufend in Arbeit - kann also ab und zu ausfallen :wink: )
 
 
 
