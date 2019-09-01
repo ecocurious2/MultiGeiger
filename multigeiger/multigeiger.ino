@@ -542,7 +542,6 @@ void DisplayStartscreen(void){
                                           
   u8x8.println("Geiger-Counter"); 
   u8x8.println("==============");
-  u8x8.print  ("Ver :"); 
   u8x8.println(revString);
   u8x8.println("Info:boehri.de");
   return;
