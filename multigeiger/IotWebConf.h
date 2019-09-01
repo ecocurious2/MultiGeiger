@@ -12,7 +12,7 @@
 #ifndef IotWebConf_h
 #define IotWebConf_h
 
-#include <IotWebConfCompatibility.h>
+#include "IotWebConfCompatibility.h"
 
 #ifdef ESP8266
 # include <ESP8266WiFi.h>
@@ -352,6 +352,8 @@ public:
    */
   char* getThingName();
 
+  void setThingName(char *name);
+  
   /**
    * Use this delay, to prevent blocking IotWebConf.
    */

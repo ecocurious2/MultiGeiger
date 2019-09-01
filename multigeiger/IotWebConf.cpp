@@ -95,6 +95,11 @@ char* IotWebConf::getThingName()
   return this->_thingName;
 }
 
+void IotWebConf::setThingName(char * name)
+{
+  strncpy(this->_thingName, name, IOTWEBCONF_WORD_LEN);
+}
+
 void IotWebConf::setConfigPin(int configPin)
 {
   this->_configPin = configPin;

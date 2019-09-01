@@ -33,12 +33,13 @@
 //                                                                   minutes
 //                                                                 - cleaned up the code
 //                                                                 - Fixed Overflow-Bug in Minute-Count
-//const char* revString = "V1.0_2019_08_19";   // rxf               - added detection of LoRa-Device
-//                                                                - WiFiManager to enter WLAN data and other configs
-//                                                                - send to luftdaten.info every 2.5 min
-const char* revString = "V1.1_2019_08_27";   // rxf               - Sending to luftdaten and madavi works
-//                                                                - WiFiManager replaced bx iotwebconf
-//                                                               
+// const char* revString = "V1.0_2019_08_19";   // rxf             - added detection of LoRa-Device
+//                                                                 - WiFiManager to enter WLAN data and other configs
+//                                                                 - send to luftdaten.info every 2.5 min
+const char* revString = "V1.1_2019_09_01";   // rxf                - build SSID out of MAC corrected: first 3 Byte of MAC build SSID
+//                                                                 - IoTWebConfig: setter for thingName added; lib moved into local source path          
+//                                                                 - LoRa autodetection removed
+
 // Fix Parameters
 // Possible Values for Serial_Print_Mode  ! DONT TOUCH !
 #define   Serial_None            0  // No Serial Printout
@@ -46,7 +47,11 @@ const char* revString = "V1.1_2019_08_27";   // rxf               - Sending to l
 #define   Serial_Logging         2  // Log measurement as table via RS232(USB)
 #define   Serial_One_Minute_Log  3  // One Minute logging will be printed via RS232(USB)
 #define   Serial_Statistics_Log  4  // Lists time between two events in us via RS232(USB)
-//                                                                
+//       
+// At luftdaten.info predefined counter tubes:
+#define SBM20 "Radiation SBM-20"
+#define SBM19 "Radiation SBM-19"
+#define Si22G "Radiation Si22G"                                                     
 //
 //====================================================================================================================================
 
@@ -76,8 +81,17 @@ const char* revString = "V1.1_2019_08_27";   // rxf               - Sending to l
 // Start-Sound
 #define PLAY_SOUND 0
 
+// Send to servers:
+// Madavi to see values in real time
+#define SEND2MADAVI 1
+// Luftdaten should always be 1 -> standard server
+#define SEND2LUFTDATEN 0
+
 // Print debug-Info while sending to servers
-#define DEBUG_SERVER_SEND 0
+#define DEBUG_SERVER_SEND 1
+
+// kind of used counter tube
+#define ROHRNAME SBM20
 
 // *********************************************************************************
 // ENDE der durch den User einstellbaren Parameter. Ab hier nichts mehr ändern!
@@ -99,10 +113,9 @@ const char* revString = "V1.1_2019_08_27";   // rxf               - Sending to l
 #ifdef U8X8_HAVE_HW_I2C
 #include <Wire.h>
 #endif
-#include <IotWebConf.h>
 
+#include "IotWebConf.h"
 #include <HTTPClient.h>
-#include <IotWebConf.h>
 
 //====================================================================================================================================
 // IOs
@@ -130,11 +143,15 @@ int PIN_SPEAKER_OUTPUT_N    =   0;
 
 // Messinteravll (default 10min) [sec]
 #define MESSINTERVAL 150
-// MAX time to wait until connected. After then, meaurement starts but ther is no sending to servers
+
+// MAX time to wait until connected. After then, meaurement starts but there is no sending to servers
 #define MAX_WAIT_TIME 300000          // 5min
 
+// Dummy server for debugging
+#define SEND2DUMMY 0
+
 // Config-Version for IoTWebConfig
-#define CONFIG_VERSION "ge01"
+#define CONFIG_VERSION "001"
 
 //====================================================================================================================================
 // Constants
@@ -148,8 +165,6 @@ const    unsigned long GMZ_dead_time        = 190;   // Dead Time of the Geiger-
 #define MADAVI "http://api-rrd.madavi.de/data.php"
 #define LUFTDATEN "http://api.luftdaten.info/v1/push-sensor-data/"
 #define TOILET "http://ptsv2.com/t/enbwck3/post"
-// Name bei Luftdaten.info:
-#define ROHRNAME "Radiation SBM-20"
 
 //====================================================================================================================================
 // Variables
@@ -176,15 +191,14 @@ volatile unsigned long isr_count_time_between = micros();
          unsigned int  lastMinuteLogCountRate = 0;
 
          unsigned long toSendTime             = 0;
-         unsigned long esp_chipid             = 0;
          unsigned int  counts_p_interval      = 0;
-         boolean       binLoRa                = false;
 
-         boolean       showDisplay            = SHOW_DISPLAY;
-         boolean       speakerTick            = SPEAKER_TICK;
-         boolean       ledTick                = LED_TICK;
-         boolean       playSound              = PLAY_SOUND;
-         boolean       displayIsClear         = false;
+         bool          showDisplay            = SHOW_DISPLAY;
+         bool          speakerTick            = SPEAKER_TICK;
+         bool          ledTick                = LED_TICK;
+         bool          playSound              = PLAY_SOUND;
+         bool          displayIsClear         = false;
+         char          ssid[30];
 
 int  Serial_Print_Mode      = SERIAL_DEBUG;
          
@@ -225,12 +239,11 @@ void DisplayStartscreen(void);
 void sendData2luftdaten(int wert);
 void sendData2madavi(int wert);
 void sendData2toilet(int wert);
-void buildhttpHeader(HTTPClient *head);
+String buildhttpHeaderandBody(HTTPClient *, int, bool);
 void displayStatusLine(String txt);
 
 void handleRoot(void);
 void configSaved(void);
-char *getOwnSSID(void);
 
 
 // Type of OLED-Display
@@ -239,29 +252,18 @@ U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(/* reset=*/ 16, /* clock=*/ 15, /* data=*
 
 // -- Initial password to connect to the Thing, when it creates an own Access Point.
 const char wifiInitialApPassword[] = "ESP32Geiger";
+const char* theName = "Defaultname fuer die SSID     ";       // 30 chars log !      
 
 DNSServer dnsServer;
 WebServer server(80);
 
-
-char ecid[20];
-char *getOwnSSID(void) {
-  esp_chipid = ESP.getEfuseMac(); 
-  sprintf(ecid,"%s%08ld","ESP-",esp_chipid);
-  return ecid;   
-}
-
-IotWebConf iotWebConf(getOwnSSID(), &dnsServer, &server, wifiInitialApPassword, CONFIG_VERSION);
+IotWebConf iotWebConf(theName, &dnsServer, &server, wifiInitialApPassword, CONFIG_VERSION);
 
 //====================================================================================================================================
 //====================================================================================================================================
 void setup()
 {
-  esp_chipid = ESP.getEfuseMac();                         // ESP-Chip-ID as identification for luftdaten.info
-  // String tname = setTheName(esp_chipid);
-  
-
-	// OLED-Display
+  // OLED-Display
     u8x8.begin();
 
 
@@ -289,12 +291,18 @@ void setup()
     while (!Serial) {};
   }
   
+  uint64_t esp_chipid = ESP.getEfuseMac();
   Serial.printf("Los Gehts! \n");
-  // Serial.printf("%s%s","TheName=",tname.c_str());
-
+  Serial.printf("MAC: %04X%08X\n",(uint16_t)(esp_chipid>>32),(uint32_t)esp_chipid);
+  
+  // build SSID
+  sprintf(ssid,"ESP32-%d",(uint32_t)(esp_chipid >> 24));
+  
   // Setup IoTWebConf
   iotWebConf.setConfigSavedCallback(&configSaved);
+  iotWebConf.setThingName(ssid);
   iotWebConf.init();
+
 
   // -- Set up required URL handlers on the web server.
   server.on("/", handleRoot);
@@ -481,17 +489,23 @@ void loop()
   if(tdiff >= (MESSINTERVAL*1000) ) {
     toSendTime = millis();
     int cpm = (int)(counts_p_interval*60000/tdiff);
-//    Serial.printf("tdiff %ld, count: %d, cpm: %d\n",tdiff,counts_p_interval,cpm);
-//    Serial.println("SENDING TO TOILET");
-//    sendData2toilet(cpm);
+    #if SEND2DUMMY
+    Serial.printf("tdiff %ld, count: %d, cpm: %d\n",tdiff,counts_p_interval,cpm);
+    Serial.println("SENDING TO TOILET");
+    sendData2toilet(cpm);
+    #endif
+    #if SEND2MADAVI
     Serial.println("sending to madavi ...");
     displayStatusLine(F("Madavi"));
     sendData2madavi(cpm);
     delay(300);
+    #endif
+    #if SEND2LUFTDATEN
     Serial.println("sending to luftdaten ...");
     displayStatusLine(F("Luftdaten"));
     sendData2luftdaten(cpm);
     delay(300);
+    #endif
     displayStatusLine(" ");
     counts_p_interval = 0;
 
@@ -528,7 +542,7 @@ void DisplayStartscreen(void){
                                           
   u8x8.println("Geiger-Counter"); 
   u8x8.println("==============");
-  // u8x8.print  ("Ver :"); 
+  u8x8.print  ("Ver :"); 
   u8x8.println(revString);
   u8x8.println("Info:boehri.de");
   return;
@@ -645,10 +659,12 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
 String buildhttpHeaderandBody(HTTPClient *head, int wert, boolean addname) {
   head->addHeader("Content-Type", "application/json; charset=UTF-8");
   head->addHeader("X-PIN","19");
-  String chpID = "esp32-"+String(esp_chipid);
-  head->addHeader("X-Sensor",chpID);
+  String chipID = String(ssid);
+  chipID.replace("ESP32","esp32");
+  head->addHeader("X-Sensor",chipID);
   head->addHeader("Connection","close");
-  String valuetype = (addname ? "SBM-20_" : "");
+  String rohr = ROHRNAME;
+  String valuetype = (addname ? rohr.substring(11) : "");
   valuetype += "counts_per_minute";
   String body = "{\"software_version\":\""+String(revString)+"\",\
   \"sensordatavalues\":[{\"value_type\":\""+valuetype+"\",\
