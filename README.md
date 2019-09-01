@@ -8,7 +8,7 @@ Das Verzeichnis clonen oder als .zip runterladen und entpacken. Mit der Arduino-
 
 Als externe Libraries werden benötigt:
  * U8g2 von Oliver, aktuelle Version 2.16.4
- * IoTWebConf von Balazs Kelemen, akt. Version 2.3.0
+
  
 In dem Sourcecode können vor dem Übersetzen noch folgende Grundeinstellungen (ab Zeile 58) gemacht werden:
  * #define SERIAL_DEBUG  

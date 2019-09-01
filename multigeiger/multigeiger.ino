@@ -73,7 +73,7 @@ const char* revString = "V1.1_2019_09_01";   // rxf                - build SSID 
 // die nächsten 3 Parameter können auch beim Konfigurieren über
 // das WLAN eingestellt werden (die WLAN-Einstellungen haben Priorität)
 // Speaker ticks  1-> ein,  0-> aus
-#define SPEAKER_TICK 0
+#define SPEAKER_TICK 1
 // weiße LED, die mit den Ticks blinkt
 #define LED_TICK  1
 // Display
@@ -85,10 +85,10 @@ const char* revString = "V1.1_2019_09_01";   // rxf                - build SSID 
 // Madavi to see values in real time
 #define SEND2MADAVI 1
 // Luftdaten should always be 1 -> standard server
-#define SEND2LUFTDATEN 0
+#define SEND2LUFTDATEN 1
 
 // Print debug-Info while sending to servers
-#define DEBUG_SERVER_SEND 1
+#define DEBUG_SERVER_SEND 0
 
 // kind of used counter tube
 #define ROHRNAME SBM20
