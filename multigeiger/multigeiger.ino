@@ -36,9 +36,10 @@
 // const char* revString = "V1.0_2019_08_19";   // rxf             - added detection of LoRa-Device
 //                                                                 - WiFiManager to enter WLAN data and other configs
 //                                                                 - send to luftdaten.info every 2.5 min
-const char* revString = "V1.1_2019_09_01";   // rxf                - build SSID out of MAC corrected: first 3 Byte of MAC build SSID
+// const char* revString = "V1.1_2019_09_01";   // rxf              - build SSID out of MAC corrected: first 3 Byte of MAC build SSID
 //                                                                 - IoTWebConfig: setter for thingName added; lib moved into local source path          
 //                                                                 - LoRa autodetection removed
+const char* revString = "V1.2_2019_09_02";   // rxf                - sending to madavi corrected
 
 // Fix Parameters
 // Possible Values for Serial_Print_Mode  ! DONT TOUCH !
@@ -663,7 +664,7 @@ String buildhttpHeaderandBody(HTTPClient *head, int wert, boolean addname) {
   head->addHeader("X-Sensor",chipID);
   head->addHeader("Connection","close");
   String rohr = ROHRNAME;
-  String valuetype = (addname ? rohr.substring(11) : "");
+  String valuetype = (addname ? rohr.substring(10)+"_" : "");
   valuetype += "counts_per_minute";
   String body = "{\"software_version\":\""+String(revString)+"\",\
   \"sensordatavalues\":[{\"value_type\":\""+valuetype+"\",\
