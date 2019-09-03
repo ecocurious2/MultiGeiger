@@ -39,7 +39,8 @@
 // const char* revString = "V1.1_2019_09_01";   // rxf              - build SSID out of MAC corrected: first 3 Byte of MAC build SSID
 //                                                                 - IoTWebConfig: setter for thingName added; lib moved into local source path          
 //                                                                 - LoRa autodetection removed
-const char* revString = "V1.2_2019_09_02";   // rxf                - sending to madavi corrected
+// const char* revString = "V1.2_2019_09_02";   // rxf             - sending to madavi corrected
+const char* revString = "V1.3_2019_09_03";   // rxf                - Building MAC changed again. Now its identical to 'Feinstaubsensor'
 
 // Fix Parameters
 // Possible Values for Serial_Print_Mode  ! DONT TOUCH !
@@ -84,9 +85,9 @@ const char* revString = "V1.2_2019_09_02";   // rxf                - sending to 
 
 // Send to servers:
 // Madavi to see values in real time
-#define SEND2MADAVI 1
+#define SEND2MADAVI 0
 // Luftdaten should always be 1 -> standard server
-#define SEND2LUFTDATEN 1
+#define SEND2LUFTDATEN 0
 
 // Print debug-Info while sending to servers
 #define DEBUG_SERVER_SEND 0
@@ -152,7 +153,7 @@ int PIN_SPEAKER_OUTPUT_N    =   0;
 #define SEND2DUMMY 0
 
 // Config-Version for IoTWebConfig
-#define CONFIG_VERSION "001"
+#define CONFIG_VERSION "007"
 
 //====================================================================================================================================
 // Constants
@@ -260,6 +261,19 @@ WebServer server(80);
 
 IotWebConf iotWebConf(theName, &dnsServer, &server, wifiInitialApPassword, CONFIG_VERSION);
 
+unsigned long getESPchipID() {
+  uint64_t espid = ESP.getEfuseMac();
+  uint8_t *pespid = (uint8_t*)&espid;
+  uint32_t id = 0;
+  uint8_t *pid = (uint8_t *)&id;
+  pid[0] = (uint8_t)pespid[5];
+  pid[1] = (uint8_t)pespid[4];
+  pid[2] = (uint8_t)pespid[3];
+  Serial.printf("ID: %08X\n", id);
+  Serial.printf("MAC: %04X%08X\n",(uint16_t)(espid>>32),(uint32_t)espid);
+  return id;
+}
+
 //====================================================================================================================================
 //====================================================================================================================================
 void setup()
@@ -292,12 +306,11 @@ void setup()
     while (!Serial) {};
   }
   
-  uint64_t esp_chipid = ESP.getEfuseMac();
   Serial.printf("Los Gehts! \n");
-  Serial.printf("MAC: %04X%08X\n",(uint16_t)(esp_chipid>>32),(uint32_t)esp_chipid);
-  
+  uint32_t xx = getESPchipID();
+
   // build SSID
-  sprintf(ssid,"ESP32-%d",(uint32_t)(esp_chipid >> 24));
+  sprintf(ssid,"ESP32-%d",xx);
   
   // Setup IoTWebConf
   iotWebConf.setConfigSavedCallback(&configSaved);
