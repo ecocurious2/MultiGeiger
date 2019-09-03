@@ -60,43 +60,42 @@ const char* revString = "V1.3_2019_09_03";   // rxf                - Building MA
 
 //====================================================================================================================================
 // ***************************************
-// Durch den User einstellbare Parameter:
+// User changable parameters:
 // ***************************************
 //====================================================================================================================================
 
-// Ausgabe auf der seriellen Schnittstelle (USB)
+// Kind of counter tube
+#define ROHRNAME SBM20
+
+//Output to serial io (USB)
 #define SERIAL_DEBUG Serial_Logging
 
-// Wartezeit, bis Verbindungversuchmit dem gespeicherten WLAN beendet wird [sec]
+// Time to try to connect to  saved WLAN [sec]
 #define CONNECT_TIMEOUT 30
-// So lange in Sekunden wird der lokale Accesspoint aktivitert, um das WLAN zu konfigurieren [sec] (Siehe Docs)
+// Time for configuration via local access point [sec]
 #define WAIT_4_CONFIG 180
 
-// die nächsten 3 Parameter können auch beim Konfigurieren über
-// das WLAN eingestellt werden (die WLAN-Einstellungen haben Priorität)
-// Speaker ticks  1-> ein,  0-> aus
+// Speaker Ticks  1-> on,  0-> off
 #define SPEAKER_TICK 1
-// weiße LED, die mit den Ticks blinkt
+// white led on board blinks with ervery tick
 #define LED_TICK  1
 // Display
 #define SHOW_DISPLAY 1
-// Start-Sound
+// Start sound
 #define PLAY_SOUND 0
 
 // Send to servers:
 // Madavi to see values in real time
-#define SEND2MADAVI 0
+#define SEND2MADAVI 1
 // Luftdaten should always be 1 -> standard server
-#define SEND2LUFTDATEN 0
+#define SEND2LUFTDATEN 1
 
 // Print debug-Info while sending to servers
 #define DEBUG_SERVER_SEND 0
 
-// kind of used counter tube
-#define ROHRNAME SBM20
 
 // *********************************************************************************
-// ENDE der durch den User einstellbaren Parameter. Ab hier nichts mehr ändern!
+// END of user changable parameters.  Do not edit beyond this point! 
 // *********************************************************************************
 //====================================================================================================================================
 //====================================================================================================================================
@@ -144,7 +143,7 @@ int PIN_SPEAKER_OUTPUT_N    =   0;
 #define  TESTPIN 12
 
 // Messinteravll (default 10min) [sec]
-#define MESSINTERVAL 150
+#define MESSINTERVAL 600
 
 // MAX time to wait until connected. After then, meaurement starts but there is no sending to servers
 #define MAX_WAIT_TIME 300000          // 5min
@@ -153,7 +152,7 @@ int PIN_SPEAKER_OUTPUT_N    =   0;
 #define SEND2DUMMY 0
 
 // Config-Version for IoTWebConfig
-#define CONFIG_VERSION "007"
+#define CONFIG_VERSION "012"
 
 //====================================================================================================================================
 // Constants
