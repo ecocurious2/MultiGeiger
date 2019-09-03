@@ -40,7 +40,8 @@
 //                                                                 - IoTWebConfig: setter for thingName added; lib moved into local source path          
 //                                                                 - LoRa autodetection removed
 // const char* revString = "V1.2_2019_09_02";   // rxf             - sending to madavi corrected
-const char* revString = "V1.3_2019_09_03";   // rxf                - Building MAC changed again. Now its identical to 'Feinstaubsensor'
+// const char* revString = "V1.3_2019_09_03";   // rxf             - Building MAC changed again. Now its identical to 'Feinstaubsensor'
+const char* revString = "V1.4_2019_09_03";   // rxf                - default config, measurment interval 10min
 
 // Fix Parameters
 // Possible Values for Serial_Print_Mode  ! DONT TOUCH !
