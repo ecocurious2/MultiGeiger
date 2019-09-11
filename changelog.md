@@ -1,6 +1,11 @@
 # Change log  
 This is the change log for the multigeiger project.
 
+### Version 1.5 2019-09-11 
+* added BME280 ( uses I2C of display )
+* Support for display on Wireless Stick
+* For LoRa-Devices added LoRa functionality      
+
 ### Version 1.4 2019-09-03
  * default configuration with measurement interval of 10min
 
@@ -12,4 +17,4 @@ This is the change log for the multigeiger project.
 
 ### Version 1.1 2019-09-01
  * Library IoTWebConfig changed -> function 'setThingName' added
- * Move this library to source path
+ * Move this (IoTWebConfig) library to source path

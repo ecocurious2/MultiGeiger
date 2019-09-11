@@ -41,7 +41,10 @@
 //                                                                 - LoRa autodetection removed
 // const char* revString = "V1.2_2019_09_02";   // rxf             - sending to madavi corrected
 // const char* revString = "V1.3_2019_09_03";   // rxf             - Building MAC changed again. Now its identical to 'Feinstaubsensor'
-const char* revString = "V1.4_2019_09_03";   // rxf                - default config, measurment interval 10min
+// const char* revString = "V1.4_2019-09-03";   // rxf              - default config, measurment interval 10min
+const char* revString = "V1.5_2019-09-11";     // rxf               - added BME280 via I2C
+//                                                                  - Display adapted for Wireless Stick
+//                                                                  - added Lora 
 
 // Fix Parameters
 // Possible Values for Serial_Print_Mode  ! DONT TOUCH !
@@ -54,7 +57,15 @@ const char* revString = "V1.4_2019_09_03";   // rxf                - default con
 // At luftdaten.info predefined counter tubes:
 #define SBM20 "Radiation SBM-20"
 #define SBM19 "Radiation SBM-19"
-#define Si22G "Radiation Si22G"                                                     
+#define Si22G "Radiation Si22G"      
+
+// Usable CPU-Types
+// WIFI -> Heltev Wifi Kit 32
+#define WIFI 0
+// LORA  ->  Heltec Wifi Lora 32 (V2)
+#define LORA 1
+// STICK ->  Heltec Wireless Stick  (has LoRa on board)
+#define STICK 2
 //
 //====================================================================================================================================
 
@@ -64,6 +75,11 @@ const char* revString = "V1.4_2019_09_03";   // rxf                - default con
 // User changable parameters:
 // ***************************************
 //====================================================================================================================================
+
+// Please uncomment one and only one of following CPU-Defines
+#define CPU WIFI
+//#define CPU LORA
+//#define CPU STICK
 
 // Kind of counter tube
 #define ROHRNAME SBM20
@@ -88,8 +104,11 @@ const char* revString = "V1.4_2019_09_03";   // rxf                - default con
 // Send to servers:
 // Madavi to see values in real time
 #define SEND2MADAVI 1
-// Luftdaten should always be 1 -> standard server
+// Luftdaten should always be 1 -> standard server (for not LoRa devices)
 #define SEND2LUFTDATEN 1
+// For LoRa-Devices, send to TTN (if this is set to 1, sending to
+// Madavi and Luftdaten should be deactivated !!)
+#define SEND2LORA 0
 
 // Print debug-Info while sending to servers
 #define DEBUG_SERVER_SEND 0
@@ -99,8 +118,6 @@ const char* revString = "V1.4_2019_09_03";   // rxf                - default con
 // END of user changable parameters.  Do not edit beyond this point! 
 // *********************************************************************************
 //====================================================================================================================================
-//====================================================================================================================================
-
 
 
 //====================================================================================================================================
@@ -119,11 +136,26 @@ const char* revString = "V1.4_2019_09_03";   // rxf                - default con
 #include "IotWebConf.h"
 #include <HTTPClient.h>
 
+// for use with BME280:
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
+
+// Check if LoRa-CPU is selected. If not, deactivate SEND2LORA
+#if !((CPU==LORA) || (CPU==STICK))
+#undef SEND2LORA
+#define SEND2LORA 0
+#endif
+
+// for LoRa
+#if SEND2LORA
+#include "lorawan.h"
+#endif
+
 //====================================================================================================================================
 // IOs
-//  used for OLED:              4
-//  used for OLED:             15
-//  used for OLED:             16
+//  used for OLED_SDA            4
+//  used for OLED_SCL           15
+//  used for OLED_RST           16
 //
 //  used for optional LoRa    SX1276 (pin) => ESP32 (pin)
 //  used for optional LoRa    ==========================
@@ -141,13 +173,16 @@ int PIN_GMZ_count_INPUT     =  17;  // !! has to be capable of "interrupt on cha
 int PIN_SPEAKER_OUTPUT_P    =   2;
 int PIN_SPEAKER_OUTPUT_N    =   0;
 
-#define  TESTPIN 12
+#define  DISPLAY_ON 25
 
 // Messinteravll (default 10min) [sec]
 #define MESSINTERVAL 600
 
-// MAX time to wait until connected. After then, meaurement starts but there is no sending to servers
-#define MAX_WAIT_TIME 300000          // 5min
+// MAX time to wait until connected. After then, meaurement starts but there is no sending to servers  [msec]
+#define MAX_WAIT_TIME 300000
+
+// Max this time the greeting display will be on. [msec]
+#define AFTERSTART 5000
 
 // Dummy server for debugging
 #define SEND2DUMMY 0
@@ -193,6 +228,7 @@ volatile unsigned long isr_count_time_between = micros();
          unsigned int  lastMinuteLogCountRate = 0;
 
          unsigned long toSendTime             = 0;
+         unsigned long afterStartTime         = 0;
          unsigned int  counts_p_interval      = 0;
 
          bool          showDisplay            = SHOW_DISPLAY;
@@ -201,6 +237,11 @@ volatile unsigned long isr_count_time_between = micros();
          bool          playSound              = PLAY_SOUND;
          bool          displayIsClear         = false;
          char          ssid[30];
+         int           haveBME280             = 0;
+         float         t                      = 0.0;
+         float         h                      = 0.0;
+         float         p                      = 0.0;
+         
 
 int  Serial_Print_Mode      = SERIAL_DEBUG;
          
@@ -238,19 +279,25 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS);
 void SoundStartsound();	
 void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume);
 void DisplayStartscreen(void);
-void sendData2luftdaten(int wert);
-void sendData2madavi(int wert);
-void sendData2toilet(int wert);
-String buildhttpHeaderandBody(HTTPClient *, int, bool);
+void sendData2luftdaten(bool sendwhat, int wert, float t=0.0, float h=0.0, float p=0.0);
+void sendData2madavi(bool sendwhat, int wert, float t=0.0, float h=0.0, float p=0.0);
+void sendData2toilet(bool sendwhat, int wert, float t=0.0, float h=0.0, float p=0.0);
+void sendData2TTN(int wert, float t=0.0, float h=0.0, float p=0.0);
+String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bool addname);
+String buildhttpHeaderandBodySBM(HTTPClient *head, int wert, bool addname);
 void displayStatusLine(String txt);
-
 void handleRoot(void);
 void configSaved(void);
+char * nullFill(int n, int digits);
+
 
 
 // Type of OLED-Display
+#if CPU != STICK
 U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(/* reset=*/ 16, /* clock=*/ 15, /* data=*/ 4);
-// U8X8_SSD1306_128X64_NONAME_SW_I2C u8x8(/* clock=*/ 15, /* data=*/ 4, /* reset=*/ 16);
+#else
+U8X8_SSD1306_64X32_NONAME_HW_I2C u8x8(/* reset=*/ 16, /* clock=*/ 15, /* data=*/ 4);
+#endif
 
 // -- Initial password to connect to the Thing, when it creates an own Access Point.
 const char wifiInitialApPassword[] = "ESP32Geiger";
@@ -260,6 +307,8 @@ DNSServer dnsServer;
 WebServer server(80);
 
 IotWebConf iotWebConf(theName, &dnsServer, &server, wifiInitialApPassword, CONFIG_VERSION);
+
+Adafruit_BME280 bme;
 
 unsigned long getESPchipID() {
   uint64_t espid = ESP.getEfuseMac();
@@ -281,19 +330,20 @@ void setup()
   // OLED-Display
     u8x8.begin();
 
-
   // set IO-Pins
   pinMode      (LED_BUILTIN,         OUTPUT);  
   pinMode      (PIN_HV_FET_OUTPUT  , OUTPUT);    
   pinMode      (PIN_SPEAKER_OUTPUT_P,OUTPUT); 
   pinMode      (PIN_SPEAKER_OUTPUT_N,OUTPUT);
-  pinMode      (TESTPIN,             OUTPUT);    
 
 
+#if CPU == STICK
+  pinMode      (DISPLAY_ON, OUTPUT);
+  digitalWrite(DISPLAY_ON,HIGH);
+#endif
   // Initialize Pins
   digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW);
   digitalWrite (PIN_SPEAKER_OUTPUT_N, HIGH); 
-
 
   // set Interrupts (on pin change), attach interrupt handler
   attachInterrupt (digitalPinToInterrupt (PIN_HV_CAP_FULL_INPUT), isr_GMZ_capacitor_full, RISING);// Capacitor full
@@ -312,6 +362,10 @@ void setup()
   // build SSID
   sprintf(ssid,"ESP32-%d",xx);
   
+  // Check, if we have an BME280 connected:
+  haveBME280 = bme.begin();
+  Serial.printf("BME_Status: %d  ID:%0X\n", haveBME280, bme.sensorID());
+
   // Setup IoTWebConf
   iotWebConf.setConfigSavedCallback(&configSaved);
   iotWebConf.setThingName(ssid);
@@ -360,6 +414,11 @@ void setup()
     interrupts();	  
   }
 
+#if SEND2LORA
+  // init LoRa
+  lorawan_setup();
+#endif
+
   // StartScreen 
   DisplayStartscreen();
   displayIsClear = false;
@@ -368,7 +427,7 @@ void setup()
   if(playSound) {
     SoundStartsound();
   }	
-
+  afterStartTime = AFTERSTART;
   toSendTime = millis();
 } // end of setup
 
@@ -389,7 +448,6 @@ void loop()
 
   // make LED-Flicker and speaker tick
   if (GMZ_counts != last_GMZ_counts) {  
-    digitalWrite(TESTPIN,HIGH);
     if(ledTick) {
       digitalWrite(LED_BUILTIN, HIGH);    // switch on LED
     }
@@ -409,7 +467,6 @@ void loop()
     if(ledTick) {
       digitalWrite(LED_BUILTIN, LOW);                                // switch off LED
     }
-    digitalWrite(TESTPIN,LOW);
     last_GMZ_counts = GMZ_counts;                              // notice old value
   }
 
@@ -495,31 +552,71 @@ void loop()
     interrupts();	  
   }	
 
+  unsigned long tdiff;
+  // If there were no Pulses after 3 sec after start,
+  // clear display anyway and show 0 counts
+  if(afterStartTime && ((millis()-toSendTime) >= afterStartTime)) {
+    afterStartTime = 0;
+    if(showDisplay) {
+      DisplayGMZ(((int)accumulated_time/1000), (int)(accumulated_Dose_Rate*1000), (int)(Count_Rate*60));
+      displayIsClear = false;
+    }
+  }
 
 
   // Check, if we have to send to luftdaten.info
-  unsigned long tdiff;
   tdiff = millis() - toSendTime;
   if(tdiff >= (MESSINTERVAL*1000) ) {
     toSendTime = millis();
     int cpm = (int)(counts_p_interval*60000/tdiff);
+    if (haveBME280) {
+      t = bme.readTemperature();
+      h = bme.readHumidity();
+      p = bme.readPressure();
+      Serial.printf("Gemessen: T=%.2f H=%.f P=%.f\n",t,h,p);
+    }
     #if SEND2DUMMY
+    displayStatusLine(F("Toilet"));
     Serial.printf("tdiff %ld, count: %d, cpm: %d\n",tdiff,counts_p_interval,cpm);
     Serial.println("SENDING TO TOILET");
-    sendData2toilet(cpm);
+    sendData2toilet(true,cpm);
+    if (haveBME280) {
+      sendData2toilet(false,0,t,h,p);
+    }
+    delay(300);
     #endif
+
     #if SEND2MADAVI
     Serial.println("sending to madavi ...");
     displayStatusLine(F("Madavi"));
-    sendData2madavi(cpm);
+    sendData2madavi(true,cpm);
+    if (haveBME280) {
+    sendData2madavi(false,0,t,h,p);
+    }
     delay(300);
     #endif
+
     #if SEND2LUFTDATEN
     Serial.println("sending to luftdaten ...");
     displayStatusLine(F("Luftdaten"));
-    sendData2luftdaten(cpm);
+    sendData2luftdaten(true,cpm);
+    if (haveBME280) {
+    sendData2luftdaten(false,0,t,h,p);
+    }
     delay(300);
     #endif
+
+    // if we are LoRa, then send datas to TTN
+    #if SEND2LORA
+    Serial.println("sending to TTN ...");
+    displayStatusLine(F("TTN"));
+    if(haveBME280) {
+      sendData2TTN(0,t,h,p);
+    } else {
+      sendData2TTN(cpm);
+    }
+    #endif
+
     displayStatusLine(" ");
     counts_p_interval = 0;
 
@@ -550,23 +647,41 @@ int jb_HV_gen_charge__chargepules() {
 // OLED-Subfunctions
 void DisplayStartscreen(void){
   u8x8.clear();
-  
+
+#if CPU == STICK
+  // Print the upper Line including Time and measured radation
+  u8x8.setFont(u8x8_font_5x8_f);     // small size
+  for (int i=2; i<6; i++) {
+      u8x8.drawString(0,i,"        ");
+  }
+  u8x8.drawString(0,2,"Geiger-"); 
+  u8x8.drawString(0,3," Counter");
+  char rv[9];
+  strncpy(rv,revString,4);
+  rv[4] = '\0';
+  u8x8.drawString(2,4,rv);
+  strncpy(rv,&revString[5],4);
+  strncpy(&rv[4],&revString[10],2);
+  strncpy(&rv[6],&revString[13],2);
+  rv[8] = '\0';
+  u8x8.drawString(0,5,rv);
+#else  
   // Print the upper Line including Time and measured radation
   u8x8.setFont(u8x8_font_7x14_1x2_f);     // middle size
+//  u8x8.setFont(u8x8_font_5x8_f);     // middle size
                                           
   u8x8.println("Geiger-Counter"); 
   u8x8.println("==============");
   u8x8.println(revString);
   u8x8.println("Info:boehri.de");
-  return;
+#endif
 };
 
 // ===================================================================================================================================
 void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
-  int TimeMin=0;
-
   u8x8.clear();
-  
+#if CPU != STICK
+  int TimeMin=0;
   // Print the upper Line including Time and measured radation
   u8x8.setFont(u8x8_font_7x14_1x2_f);     // middle size
                                           
@@ -592,26 +707,30 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
   if(RadNSvph <      10) u8x8.print(" ");
   u8x8.print(RadNSvph);                  // Arduino Print function	
   u8x8.print(" nSv/h");
-  
+#endif  
  
   // Print the lower Line including Time CPM
+#if CPU != STICK
   u8x8.setFont(u8x8_font_inb33_3x6_n);  // Big in Size
-  u8x8.setCursor(0, 2);
-  if(CPS< 10000) u8x8.print(" ");  // to always have the 1-digit on the same place
-  if(CPS<  1000) u8x8.print(" ");
-  if(CPS<   100) u8x8.print(" ");
-  if(CPS<    10) u8x8.print(" ");
-  u8x8.print(CPS);			// Arduino Print function
+  u8x8.drawString(0,2,nullFill(CPS,5));
+#else
+  u8x8.setFont(u8x8_font_5x8_f);     // small size
+  u8x8.drawString(0,2,nullFill(RadNSvph,8));
+  u8x8.draw2x2String(0,3,nullFill(CPS,4));
+  u8x8.drawString(0,5,"     cpm");
+#endif
   
+#if CPU != STICK
   // Print 'connecting...' as long as we aren't connected
   if (iotWebConf.getState() != IOTWEBCONF_STATE_ONLINE) {
     displayStatusLine(F("connecting..."));
   } else {
     displayStatusLine(" ");
   }
-  return;
+#endif
 };
 
+#if CPU != STICK
 void displayStatusLine(String txt) {
     u8x8.setFont(u8x8_font_5x8_f);      // small size
     u8x8.setCursor(0, 7);               // goto last line
@@ -619,6 +738,14 @@ void displayStatusLine(String txt) {
     u8x8.setCursor(0, 7);               // goto last line
     u8x8.print(txt);			              // print it
 }
+#else
+void displayStatusLine(String txt) {
+  String blank = F("        ");
+  u8x8.setFont(u8x8_font_5x8_f);          // small size
+  u8x8.drawString(0,5,blank.c_str());	    // clear line
+  u8x8.drawString(0,5,txt.c_str());			  // print it
+}
+#endif
 // ===================================================================================================================================
 // Sound Subfunctions
 void SoundStartsound(){
@@ -669,7 +796,7 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
 // ===================================================================================================================================
 // Send to Server Subfunctions
 
-String buildhttpHeaderandBody(HTTPClient *head, int wert, boolean addname) {
+String buildhttpHeaderandBodySBM(HTTPClient *head, int wert, boolean addname) {
   head->addHeader("Content-Type", "application/json; charset=UTF-8");
   head->addHeader("X-PIN","19");
   String chipID = String(ssid);
@@ -688,10 +815,40 @@ String buildhttpHeaderandBody(HTTPClient *head, int wert, boolean addname) {
   return body;
 }
 
-void sendData2luftdaten(int wert) {
+String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, boolean addname) {
+  head->addHeader("Content-Type", "application/json; charset=UTF-8");
+  head->addHeader("X-PIN","11");
+  String chipID = String(ssid);
+  chipID.replace("ESP32","esp32");
+  head->addHeader("X-Sensor",chipID);
+  head->addHeader("Connection","close");
+  String temp = (addname ? "BME280_" : "");
+  temp += "temperature";
+  String humi = (addname ? "BME280_" : "");
+  humi += "humidity";
+  String press = (addname ? "BME280_" : "");
+  press += "pressure";
+  String body = "{\"software_version\":\""+String(revString)+"\",\
+  \"sensordatavalues\":[\
+{\"value_type\":\""+temp+"\",\"value\":\""+String(t,2)+"\"},\
+{\"value_type\":\""+humi+"\",\"value\":\""+String(h,2)+"\"},\
+{\"value_type\":\""+press+"\",\"value\":\""+String(p,2)+"\"}\
+]}";                     
+  if (DEBUG_SERVER_SEND == 1) {
+    Serial.println(body);
+  }
+  return body;
+}
+
+void sendData2luftdaten(bool sendwhat, int wert, float t, float h, float p) {
   HTTPClient http;   
+  String body;
   http.begin(LUFTDATEN);
-  String body = buildhttpHeaderandBody(&http,wert,false);
+  if (sendwhat) {                                 // send SBM data 
+    body = buildhttpHeaderandBodySBM(&http,wert,false);
+  } else {                                        // send BME data
+    body = buildhttpHeaderandBodyBME(&http,t,h,p,false);
+  }  
   int httpResponseCode = http.POST(body);                   //Send the actual POST request
   if(httpResponseCode>0){
     String response = http.getString();                       //Get the response to the request
@@ -706,10 +863,17 @@ void sendData2luftdaten(int wert) {
    http.end(); 
 }
 
-void sendData2madavi(int wert) {
+void sendData2madavi(bool sendwhat, int wert, float t, float h, float p) {
   HTTPClient http;   
+  String body;
   http.begin(MADAVI);
-  String body = buildhttpHeaderandBody(&http,wert,true);
+  if (sendwhat) {                                 // send SBM data 
+    body = buildhttpHeaderandBodySBM(&http,wert,true);
+  } else {                                           // send BME data
+if (haveBME280) { 
+    body = buildhttpHeaderandBodyBME(&http,t,h,p,true);
+}    
+  }  
   int httpResponseCode = http.POST(body);                   //Send the actual POST request
   if(httpResponseCode>0){
     String response = http.getString();                       //Get the response to the request
@@ -724,13 +888,20 @@ void sendData2madavi(int wert) {
    http.end(); 
 }
 
-void sendData2toilet(int wert) {
+void sendData2toilet(bool sendwhat, int wert, float t, float h, float p) {
   HTTPClient http;   
+  String body;
   http.begin(TOILET);
-  String body = buildhttpHeaderandBody(&http,wert,false);
+  if (sendwhat) {                                 // send SBM data 
+    body = buildhttpHeaderandBodySBM(&http,wert,false);
+  } else {                                           // send BME data
+if (haveBME280) { 
+    body = buildhttpHeaderandBodyBME(&http,t,h,p,true);
+}    
+  }  
   int httpResponseCode = http.POST(body);                   //Send the actual POST request
   if(httpResponseCode>0){
-    String response = http.getString();                       //Get the response to the request
+    String response = http.getString();                      //Get the response to the request
     if (DEBUG_SERVER_SEND == 1) {
       Serial.println(httpResponseCode);   //Print return code
       Serial.println(response);           //Print request answer
@@ -741,6 +912,35 @@ void sendData2toilet(int wert) {
   }
    http.end(); 
 }
+
+#if SEND2LORA
+void sendData2TTN(int wert, float t, float h, float p) {
+  unsigned char ttnData[20];
+  int cnt;
+  // put data for Cayenne
+  ttnData[0] = 1;
+  ttnData[1] = 0x65;
+  ttnData[2] = wert >> 8;
+  ttnData[3] = wert & 0xFF;
+  cnt = 4;
+  if (haveBME280) {
+    ttnData[4] = 2;
+    ttnData[5] = 0x67;
+    ttnData[6] = ((int)(t*10)) >> 8;
+    ttnData[7] = ((int)(t*10)) & 0xFF;
+    ttnData[8] = 3;
+    ttnData[9] = 0x68;
+    ttnData[10] = (int)(h*2);
+    ttnData[11] = 4;
+    ttnData[12] = 0x73;
+    ttnData[13] = ((int)(p/10)) >> 8;
+    ttnData[14] = ((int)(p/10)) & 0xFF;
+    cnt = 15;
+  }
+  lorawan_send(1,ttnData,cnt,false,NULL,NULL,NULL);
+}
+#endif
+
 
 /**
  * Handle web requests to "/" path.
@@ -763,4 +963,15 @@ void handleRoot(void)
 
 void configSaved(void) {
     Serial.println("Config saved");
+}
+
+char * nullFill(int n, int digits) {
+  static char erg[9];                          // max. 8 Digits possible !
+  if (digits > 8) {
+    digits = 8;
+  }
+  char format[5];
+  sprintf(format,"%%%dd",digits);
+  sprintf(erg,format,n);
+  return erg;
 }
