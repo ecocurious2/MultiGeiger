@@ -1,3 +1,8 @@
+#ifndef LORAWAN_H
+#define LORAWAN_H
+#include "userdefines.h"
+
+#if SEND2LORA
 /*******************************************************************************
  * Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
  * Copyright (c) 2018 Terry Moore, MCCI
@@ -39,7 +44,7 @@
 #include <Arduino.h>
 #include <lmic.h>
 #include <hal/hal.h>
-#include <hal/heltecv2.h>
+#include "hal/heltecv2.h"
 #include <SPI.h>
 #include "loraWan.h"
 
@@ -297,3 +302,5 @@ transmitionStatus_t lorawan_send(uint8_t txPort, uint8_t * txBuffer, uint8_t txS
         }        
     }
 }
+#endif
+#endif

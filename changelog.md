@@ -1,6 +1,11 @@
 # Change log  
 This is the change log for the multigeiger project.
 
+### Version 1.6 2019-09-13 
+ * some rearrangement of files
+ * userdefine.h for user changable #defines
+ * test with dip-switch (needs pullups !)
+ 
 ### Version 1.5 2019-09-11 
 * added BME280 ( uses I2C of display )
 * Support for display on Wireless Stick

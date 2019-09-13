@@ -42,9 +42,11 @@
 // const char* revString = "V1.2_2019_09_02";   // rxf             - sending to madavi corrected
 // const char* revString = "V1.3_2019_09_03";   // rxf             - Building MAC changed again. Now its identical to 'Feinstaubsensor'
 // const char* revString = "V1.4_2019-09-03";   // rxf              - default config, measurment interval 10min
-const char* revString = "V1.5_2019-09-11";     // rxf               - added BME280 via I2C
+// const char* revString = "V1.5_2019-09-11";     // rxf               - added BME280 via I2C
 //                                                                  - Display adapted for Wireless Stick
 //                                                                  - added Lora 
+const char* revString = "V1.6_2019-09-13";     // rxf               - rearrangement of files
+//                                                                  - test dip-switch
 
 // Fix Parameters
 // Possible Values for Serial_Print_Mode  ! DONT TOUCH !
@@ -70,59 +72,10 @@ const char* revString = "V1.5_2019-09-11";     // rxf               - added BME2
 //====================================================================================================================================
 
 
-//====================================================================================================================================
-// ***************************************
-// User changable parameters:
-// ***************************************
-//====================================================================================================================================
-
-// Please uncomment one and only one of following CPU-Defines
-#define CPU WIFI
-//#define CPU LORA
-//#define CPU STICK
-
-// Kind of counter tube
-#define ROHRNAME SBM20
-
-//Output to serial io (USB)
-#define SERIAL_DEBUG Serial_Logging
-
-// Time to try to connect to  saved WLAN [sec]
-#define CONNECT_TIMEOUT 30
-// Time for configuration via local access point [sec]
-#define WAIT_4_CONFIG 180
-
-// Speaker Ticks  1-> on,  0-> off
-#define SPEAKER_TICK 1
-// white led on board blinks with ervery tick
-#define LED_TICK  1
-// Display
-#define SHOW_DISPLAY 1
-// Start sound
-#define PLAY_SOUND 0
-
-// Send to servers:
-// Madavi to see values in real time
-#define SEND2MADAVI 1
-// Luftdaten should always be 1 -> standard server (for not LoRa devices)
-#define SEND2LUFTDATEN 1
-// For LoRa-Devices, send to TTN (if this is set to 1, sending to
-// Madavi and Luftdaten should be deactivated !!)
-#define SEND2LORA 0
-
-// Print debug-Info while sending to servers
-#define DEBUG_SERVER_SEND 0
-
-
-// *********************************************************************************
-// END of user changable parameters.  Do not edit beyond this point! 
-// *********************************************************************************
-//====================================================================================================================================
-
+#include "userdefines.h"
 
 //====================================================================================================================================
 // Includes
-//   #include "WiFi.h"
 #include <Arduino.h>
 #include <U8x8lib.h>
 
@@ -140,14 +93,16 @@ const char* revString = "V1.5_2019-09-11";     // rxf               - added BME2
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 
+
 // Check if LoRa-CPU is selected. If not, deactivate SEND2LORA
 #if !((CPU==LORA) || (CPU==STICK))
 #undef SEND2LORA
 #define SEND2LORA 0
 #endif
 
+
 // for LoRa
-#if SEND2LORA
+#if SEND2LORA==1
 #include "lorawan.h"
 #endif
 
@@ -172,6 +127,13 @@ int PIN_HV_CAP_FULL_INPUT   =  22;  // !! has to be capable of "interrupt on cha
 int PIN_GMZ_count_INPUT     =  17;  // !! has to be capable of "interrupt on change"
 int PIN_SPEAKER_OUTPUT_P    =   2;
 int PIN_SPEAKER_OUTPUT_N    =   0;
+
+// Inputs for the sitches
+#define PIN_SWI_0 36
+#define PIN_SWI_1 37
+#define PIN_SWI_2 38
+#define PIN_SWI_3 39
+
 
 #define  DISPLAY_ON 25
 
@@ -336,6 +298,10 @@ void setup()
   pinMode      (PIN_SPEAKER_OUTPUT_P,OUTPUT); 
   pinMode      (PIN_SPEAKER_OUTPUT_N,OUTPUT);
 
+  pinMode (PIN_SWI_0,INPUT_PULLUP);
+  pinMode (PIN_SWI_1,INPUT_PULLUP);
+  pinMode (PIN_SWI_2,INPUT_PULLUP);
+  pinMode (PIN_SWI_3,INPUT_PULLUP);
 
 #if CPU == STICK
   pinMode      (DISPLAY_ON, OUTPUT);
@@ -364,7 +330,7 @@ void setup()
   
   // Check, if we have an BME280 connected:
   haveBME280 = bme.begin();
-  Serial.printf("BME_Status: %d  ID:%0X\n", haveBME280, bme.sensorID());
+//  Serial.printf("BME_Status: %d  ID:%0X\n", haveBME280, bme.sensorID());
 
   // Setup IoTWebConf
   iotWebConf.setConfigSavedCallback(&configSaved);
@@ -611,7 +577,7 @@ void loop()
     Serial.println("sending to TTN ...");
     displayStatusLine(F("TTN"));
     if(haveBME280) {
-      sendData2TTN(0,t,h,p);
+      sendData2TTN(cpm,t,h,p);
     } else {
       sendData2TTN(cpm);
     }
@@ -620,7 +586,11 @@ void loop()
     displayStatusLine(" ");
     counts_p_interval = 0;
 
+    // Read the switch
+    Serial.printf("SW0: %d  SW1: %d  SW2: %d  SW3: %d\n",digitalRead(PIN_SWI_0),digitalRead(PIN_SWI_1),digitalRead(PIN_SWI_2),digitalRead(PIN_SWI_3));
   }
+
+  // Read switch
 
 }
 

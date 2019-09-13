@@ -10,23 +10,31 @@ Als externe Libraries werden benötigt:
  * U8g2 von Oliver, aktuelle Version 2.16.4
 
  
-In dem Sourcecode können vor dem Übersetzen noch folgende Grundeinstellungen (ab Zeile 58) gemacht werden:
- * #define SERIAL_DEBUG  
-hier kann eine der weiter oben definierten Einstellungen gemacht werden. Die Bedeutng ist im Source erklärt.
- * #define SPEAKER_TICKS 0/1  
+In dem Sourcecode ( in der Datei **userdefines.h**) können vor dem Übersetzen noch folgende Grundeinstellungen gemacht werden:
+ * **#define CPU**  
+Eine der drei mögliche CPUs durch auskommentieren auswählen.
+ * **#define ROHRNAHME**  
+Einen der möglichen Zählrohr-Namen durch auskommentieren auswählen.
+ * **#define SERIAL_DEBUG**  
+Einen der möglichen Debug Levels zur Ausgabe auf der seriellen Schnittstelle (USB) durch auskommentieren auswählen
+ * **#define CONNECT_TIMEOUT**  
+ Zeit in Sekunden, die das Programm versucht, sich mit den eingestellten WLAN zu verbinden (Standardwert ist 30 sec)
+  * **#define WAIT_4_CONFIG**  
+ Zeit in Skeunden, die das Programm wartet, bis sich ein Client auf den internen Access-Point verbindet (Standard 180sec) 
+ * **#define SPEAKER_TICKS 0/1**  
 Einschalten (1) oder Aussschalten (0) der Knackgeräusche.
- * #define LED_TICK 0/1  
+ * **#define LED_TICK 0/1**  
 Ein- oder Ausschalten des Blitzens der LED bei einem Zählpuls.
- * #define PLAY_SOUND 0/1  
+ * **#define PLAY_SOUND 0/1**  
  Wenn eingeschaltet, wird beim Restart ein Sound abgespielt 
- * #define DEBUG_SERVER_SEND 0/1  
- wenn auf 1, dann wird jedesmal beim Senden der Daten zum Server auf der seriele Schnittstelle (USB) Debug-Info mit ausgegeben.
- * #define ROHRNAME  
- hier wird eines der weiter oben definierten Zählrohre eingestellt. 
- * #define SEND2MADAVI 0/1   
+ * **#define SEND2MADAVI 0/1**   
  Wenn der Wert auf 1 steht, werden die Daten zum Madavi-Server gesendet
- * #define SEBD2LUFTDATEN 0/1  
+ * **#define SEBD2LUFTDATEN 0/1**  
  Auch hier, wenn der Wert auf 1 steht, werden die Daten zum Luftdaten-Server gesendet. Dieser sollte immer auf 1 stehen, damit die Daten dort immer gespeichert werden.
+ * **#define SEND2LORA 0/1**  
+Steht der Wert auf 1, so wird via LoRa-WAN an TTN gesendet (die TTN-Konfiguartion muss in der Date **lorawan.cpp** erfolgen). Wird oben bei der CPU-Auswahl **WIFI** gewählt, so wird das Senden zu TTN automatisch abgeschaltet, da die Hardware ja dann kein LoRa an Board hat.
+ * **#define DEBUG_SERVER_SEND 0/1**  
+ wenn auf 1, dann wird jedesmal beim Senden der Daten zum Server (madavi oder luftdaten) auf der seriele Schnittstelle (USB) Debug-Info mit ausgegeben.
 
 ## Ablauf nach dem Start
 Das Gerät baut einen eigene WLAN-Accesspoint (AP) auf. Die SSID des AP lautet **ESP32-xxxxxxxx**, wobei die xxx 
