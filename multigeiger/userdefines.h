@@ -27,11 +27,11 @@
 #define WAIT_4_CONFIG 180
 
 // Speaker Ticks  1-> on,  0-> off
-#define SPEAKER_TICK 1
+#define SPEAKER_TICK 0
 // white led on board blinks with ervery tick
 #define LED_TICK  1
 // Display
-#define SHOW_DISPLAY 1
+#define SHOW_DISPLAY 0
 // Start sound
 #define PLAY_SOUND 0
 
@@ -39,7 +39,7 @@
 // Madavi to see values in real time
 #define SEND2MADAVI 1
 // Luftdaten should always be 1 -> standard server (for not LoRa devices)
-#define SEND2LUFTDATEN 1
+#define SEND2LUFTDATEN 0
 // For LoRa-Devices, send to TTN (if this is set to 1, sending to
 // Madavi and Luftdaten should be deactivated !!)
 #define SEND2LORA 0

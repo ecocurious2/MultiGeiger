@@ -45,8 +45,11 @@
 // const char* revString = "V1.5_2019-09-11";     // rxf               - added BME280 via I2C
 //                                                                  - Display adapted for Wireless Stick
 //                                                                  - added Lora 
-const char* revString = "V1.6_2019-09-13";     // rxf               - rearrangement of files
+// const char* revString = "V1.6_2019-09-13";     // rxf               - rearrangement of files
 //                                                                  - test dip-switch
+//                                                                  - Hardware-Layout V1.3 and lower - OLD Wifi-Kit-32 !
+const char* revString = "V1.7_2019-09-22";     // rxf               - PINs rearranged, so we can use WiFi Stick Light
+//                                                                  - Hardware-Layout V1.4 and up
 
 // Fix Parameters
 // Possible Values for Serial_Print_Mode  ! DONT TOUCH !
@@ -69,22 +72,12 @@ const char* revString = "V1.6_2019-09-13";     // rxf               - rearrangem
 // STICK ->  Heltec Wireless Stick  (has LoRa on board)
 #define STICK 2
 //
-//====================================================================================================================================
-
-
-#include "userdefines.h"
-
-//====================================================================================================================================
 // Includes
+//====================================================================================================================================
+#include "userdefines.h"
+//====================================================================================================================================
 #include <Arduino.h>
 #include <U8x8lib.h>
-
-#ifdef U8X8_HAVE_HW_SPI
-#include <SPI.h>
-#endif
-#ifdef U8X8_HAVE_HW_I2C
-#include <Wire.h>
-#endif
 
 #include "IotWebConf.h"
 #include <HTTPClient.h>
@@ -93,13 +86,11 @@ const char* revString = "V1.6_2019-09-13";     // rxf               - rearrangem
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 
-
 // Check if LoRa-CPU is selected. If not, deactivate SEND2LORA
 #if !((CPU==LORA) || (CPU==STICK))
 #undef SEND2LORA
 #define SEND2LORA 0
 #endif
-
 
 // for LoRa
 #if SEND2LORA==1
@@ -124,21 +115,24 @@ const char* revString = "V1.6_2019-09-13";     // rxf               - rearrangem
 //  used for optional LoRa    DIO2 (10) = GPIO32 (12)
 int PIN_HV_FET_OUTPUT       =  23;  //
 int PIN_HV_CAP_FULL_INPUT   =  22;  // !! has to be capable of "interrupt on change"
-int PIN_GMZ_count_INPUT     =  17;  // !! has to be capable of "interrupt on change"
-int PIN_SPEAKER_OUTPUT_P    =   2;
+int PIN_GMZ_count_INPUT     =   2;  // !! has to be capable of "interrupt on change"
+int PIN_SPEAKER_OUTPUT_P    =  12;
 int PIN_SPEAKER_OUTPUT_N    =   0;
 
-// Inputs for the sitches
+// Inputs for the switches
 #define PIN_SWI_0 36
 #define PIN_SWI_1 37
 #define PIN_SWI_2 38
 #define PIN_SWI_3 39
 
+#define TESTPIN 13
 
+#if CPU == STICK
 #define  DISPLAY_ON 25
+#endif
 
 // Messinteravll (default 10min) [sec]
-#define MESSINTERVAL 600
+#define MESSINTERVAL 60
 
 // MAX time to wait until connected. After then, meaurement starts but there is no sending to servers  [msec]
 #define MAX_WAIT_TIME 300000
@@ -206,7 +200,11 @@ volatile unsigned long isr_count_time_between = micros();
          
 
 int  Serial_Print_Mode      = SERIAL_DEBUG;
-         
+
+extern "C" {
+uint8_t temprature_sens_read();
+}       
+
 //====================================================================================================================================
 // ISRs
 void isr_GMZ_capacitor_full() {
@@ -217,7 +215,9 @@ void isr_GMZ_count() {
   static unsigned long isr_count_timestamp_us     ;
   static unsigned long isr_count_timestamp_us_prev;
   static unsigned long isr_count_timestamp_us_prev_used;
+  digitalWrite(TESTPIN,HIGH);
   noInterrupts();                                       // Disable interrupts (to read variables of the ISR correctly)
+
   isr_count_timestamp_us_prev = isr_count_timestamp_us;
   isr_count_timestamp_us      = micros();
   if ((isr_count_timestamp_us-isr_count_timestamp_us_prev) > GMZ_dead_time){ 
@@ -231,6 +231,7 @@ void isr_GMZ_count() {
 	  isr_count_timestamp_us_prev_used = isr_count_timestamp_us;
   } 
   interrupts();                                        // Re-enable interrupts  
+  digitalWrite(TESTPIN,LOW);
 }
 
 
@@ -286,6 +287,7 @@ unsigned long getESPchipID() {
 }
 
 //====================================================================================================================================
+// *******  SETUP *******
 //====================================================================================================================================
 void setup()
 {
@@ -297,11 +299,15 @@ void setup()
   pinMode      (PIN_HV_FET_OUTPUT  , OUTPUT);    
   pinMode      (PIN_SPEAKER_OUTPUT_P,OUTPUT); 
   pinMode      (PIN_SPEAKER_OUTPUT_N,OUTPUT);
+  pinMode      (PIN_GMZ_count_INPUT,INPUT);
 
-  pinMode (PIN_SWI_0,INPUT_PULLUP);
-  pinMode (PIN_SWI_1,INPUT_PULLUP);
-  pinMode (PIN_SWI_2,INPUT_PULLUP);
-  pinMode (PIN_SWI_3,INPUT_PULLUP);
+  pinMode (PIN_SWI_0,INPUT);                         // !!! These pins DON'T HAVE PULLUPS !!
+  pinMode (PIN_SWI_1,INPUT);
+  pinMode (PIN_SWI_2,INPUT);
+  pinMode (PIN_SWI_3,INPUT);
+
+  pinMode(TESTPIN,OUTPUT);
+  digitalWrite(TESTPIN,LOW);
 
 #if CPU == STICK
   pinMode      (DISPLAY_ON, OUTPUT);
@@ -407,6 +413,15 @@ void loop()
   count_timestamp	     = isr_count_timestamp;      
   interrupts();                                                    // re-enable Interrupts	
 
+/*
+// DEBUG DEBUG DEBUG
+ uint8_t temp_farenheit= temprature_sens_read();
+  //convert farenheit to celcius
+  double temp = ( temp_farenheit - 32 ) / 1.8;
+  
+  Serial.printf("internal temp [°C]: %.0f\n", temp);
+  delay(1000);
+*/
 
   // Loop for IoTWebConf
   iotWebConf.doLoop();
