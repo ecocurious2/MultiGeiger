@@ -33,7 +33,7 @@
 // Display
 #define SHOW_DISPLAY 1
 // Start sound
-#define PLAY_SOUND 0
+#define PLAY_SOUND 1
 
 // Send to servers:
 // Madavi to see values in real time
@@ -45,7 +45,7 @@
 #define SEND2LORA 0
 
 // Print debug-Info while sending to servers
-#define DEBUG_SERVER_SEND 0
+#define DEBUG_SERVER_SEND 1
 
 
 // *********************************************************************************
