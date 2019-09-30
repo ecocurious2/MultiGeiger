@@ -45,8 +45,9 @@
 // const char* revString = "V1.5_2019-09-11";     // rxf               - added BME280 via I2C
 //                                                                  - Display adapted for Wireless Stick
 //                                                                  - added Lora 
-const char* revString = "V1.6_2019-09-13";     // rxf               - rearrangement of files
+//const char* revString = "V1.6_2019-09-13";     // rxf               - rearrangement of files
 //                                                                  - test dip-switch
+const char* revString = "V1.61_2019-09-30";     // rxf              - default measure interval now 2.5min
 
 // Fix Parameters
 // Possible Values for Serial_Print_Mode  ! DONT TOUCH !
