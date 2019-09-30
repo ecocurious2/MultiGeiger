@@ -137,8 +137,8 @@ int PIN_SPEAKER_OUTPUT_N    =   0;
 
 #define  DISPLAY_ON 25
 
-// Messinteravll (default 10min) [sec]
-#define MESSINTERVAL 600
+// Messinteravll (default 2.5min) [sec]
+#define MESSINTERVAL 150
 
 // MAX time to wait until connected. After then, meaurement starts but there is no sending to servers  [msec]
 #define MAX_WAIT_TIME 300000
