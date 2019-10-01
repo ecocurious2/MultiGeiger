@@ -48,8 +48,10 @@
 // const char* revString = "V1.6_2019-09-13";     // rxf               - rearrangement of files
 //                                                                  - test dip-switch
 //                                                                  - Hardware-Layout V1.3 and lower - OLD Wifi-Kit-32 !
-const char* revString = "V1.7_2019-09-22";     // rxf               - PINs rearranged, so we can use WiFi Stick Light
+const char* revString = "V1.7_2019-10-01";     // rxf               - PINs rearranged, so we can use new Wifi-Kit-32 and
+//                                                                    WiFi Stick Light
 //                                                                  - Hardware-Layout V1.4 and up
+//                                                                  - use switch for speaker tick and display off
 
 // Fix Parameters
 // Possible Values for Serial_Print_Mode  ! DONT TOUCH !
@@ -120,10 +122,20 @@ int PIN_SPEAKER_OUTPUT_P    =  12;
 int PIN_SPEAKER_OUTPUT_N    =   0;
 
 // Inputs for the switches
+#if CPU == STICK
 #define PIN_SWI_0 36
 #define PIN_SWI_1 37
 #define PIN_SWI_2 38
 #define PIN_SWI_3 39
+#else
+#define PIN_SWI_0 39
+#define PIN_SWI_1 38
+#define PIN_SWI_2 37
+#define PIN_SWI_3 36
+#endif
+
+// What are the switches good for?
+enum {SPEAKER_ON, ANZEIGE_ON, LED_ON, UNUSED};
 
 #define TESTPIN 13
 
@@ -148,8 +160,9 @@ int PIN_SPEAKER_OUTPUT_N    =   0;
 
 //====================================================================================================================================
 // Constants
-const            float GMZ_factor_uSvph     = 1/2.47   ; // for SBM20
-//const            float GMZ_factor_uSvph     = 1/9.81888   ; // for SBM19
+// Factor to calculate µSievert per hour out of counts per minute, depending on the tube used
+const float GMZ_factor_uSvph_SBM20 = 1/2.47;                //   for SBM-20
+const float GMZ_factor_uSvph_SBM19 = 1/9.81888;             //   for SBM19
 
 const    unsigned long GMZ_dead_time        = 190;   // Dead Time of the Geiger-Counter. Has to be longer than the complete
                                                      // Pulse generated on the Pin PIN_GMZ_count_INPUT [µsec]
@@ -197,7 +210,10 @@ volatile unsigned long isr_count_time_between = micros();
          float         t                      = 0.0;
          float         h                      = 0.0;
          float         p                      = 0.0;
-         
+         float        GMZ_factor_uSvph        = GMZ_factor_uSvph_SBM20;
+         String       rohr                    = "";
+         char         sw[4]                   = {0,0,0,0};
+
 
 int  Serial_Print_Mode      = SERIAL_DEBUG;
 
@@ -249,6 +265,7 @@ void sendData2TTN(int wert, float t=0.0, float h=0.0, float p=0.0);
 String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bool addname);
 String buildhttpHeaderandBodySBM(HTTPClient *head, int wert, bool addname);
 void displayStatusLine(String txt);
+void clearDisplayLine(int line);
 void handleRoot(void);
 void configSaved(void);
 char * nullFill(int n, int digits);
@@ -314,8 +331,8 @@ void setup()
   digitalWrite(DISPLAY_ON,HIGH);
 #endif
   // Initialize Pins
-  digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW);
-  digitalWrite (PIN_SPEAKER_OUTPUT_N, HIGH); 
+  digitalWrite (PIN_SPEAKER_OUTPUT_P, HIGH);
+  digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW); 
 
   // set Interrupts (on pin change), attach interrupt handler
   attachInterrupt (digitalPinToInterrupt (PIN_HV_CAP_FULL_INPUT), isr_GMZ_capacitor_full, RISING);// Capacitor full
@@ -343,7 +360,13 @@ void setup()
   iotWebConf.setThingName(ssid);
   iotWebConf.init();
 
-
+  // Setup GMZ-Conversion factor due to tube
+  rohr = ROHRNAME;
+  if (rohr == SBM19) {
+    GMZ_factor_uSvph = GMZ_factor_uSvph_SBM19;
+  } else {
+    GMZ_factor_uSvph = GMZ_factor_uSvph_SBM19;
+  }
   // -- Set up required URL handlers on the web server.
   server.on("/", handleRoot);
   server.on("/config", []{ iotWebConf.handleConfig(); });
@@ -426,26 +449,31 @@ void loop()
   // Loop for IoTWebConf
   iotWebConf.doLoop();
 
-
+  // Read Switches (active LOW !!)
+  sw[0] = !digitalRead(PIN_SWI_0);
+  sw[1] = !digitalRead(PIN_SWI_1);
+  sw[2] = !digitalRead(PIN_SWI_2);
+  sw[3] = !digitalRead(PIN_SWI_3);
+  
   // make LED-Flicker and speaker tick
   if (GMZ_counts != last_GMZ_counts) {  
-    if(ledTick) {
+//    if(ledTick && sw[LED_ON]) {
       digitalWrite(LED_BUILTIN, HIGH);    // switch on LED
-    }
-    if(speakerTick) {                              
+//    }
+    if(speakerTick && sw[SPEAKER_ON]) {                              
       for (speaker_count = 0; speaker_count <= 3; speaker_count++){ // make "Tick"-Sound
-        digitalWrite (PIN_SPEAKER_OUTPUT_P, HIGH); 
-        digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW); 
-        delayMicroseconds(500); 
         digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW); 
         digitalWrite (PIN_SPEAKER_OUTPUT_N, HIGH); 
+        delayMicroseconds(500); 
+        digitalWrite (PIN_SPEAKER_OUTPUT_P, HIGH); 
+        digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW); 
         delayMicroseconds(500);	
       }
     } 
     if(ledTick & !speakerTick) {
       delay(4);
     }
-    if(ledTick) {
+    if(ledTick && sw[LED_ON]) {
       digitalWrite(LED_BUILTIN, LOW);                                // switch off LED
     }
     last_GMZ_counts = GMZ_counts;                              // notice old value
@@ -474,17 +502,18 @@ void loop()
     accumulated_Dose_Rate    = accumulated_Count_Rate *GMZ_factor_uSvph;
  
 	  // Write it to the display
-    if(showDisplay) {
+    if(showDisplay && sw[ANZEIGE_ON]) {
       DisplayGMZ(((int)accumulated_time/1000), (int)(accumulated_Dose_Rate*1000), (int)(Count_Rate*60));
       displayIsClear = false;
     } else {
       if (!displayIsClear) {
         u8x8.clear();
+        clearDisplayLine(4);
+        clearDisplayLine(5);
         displayIsClear = true;
       }
     }
 	
-
 
     if (Serial_Print_Mode == Serial_Logging) {                       // Report all 
       noInterrupts();
@@ -601,11 +630,9 @@ void loop()
     displayStatusLine(" ");
     counts_p_interval = 0;
 
-    // Read the switch
-    Serial.printf("SW0: %d  SW1: %d  SW2: %d  SW3: %d\n",digitalRead(PIN_SWI_0),digitalRead(PIN_SWI_1),digitalRead(PIN_SWI_2),digitalRead(PIN_SWI_3));
+    // print state of switch
+    Serial.printf("SW0: %d  SW1: %d  SW2: %d  SW3: %d\n",sw[0],sw[1],sw[2],sw[3]);
   }
-
-  // Read switch
 
 }
 
@@ -716,21 +743,29 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
 };
 
 #if CPU != STICK
+void clearDisplayLine(int line) {
+  String blank = F("                ");
+  u8x8.drawString(0,line,blank.c_str());	    // clear line
+}
+
 void displayStatusLine(String txt) {
-    u8x8.setFont(u8x8_font_5x8_f);      // small size
-    u8x8.setCursor(0, 7);               // goto last line
-    u8x8.print(F("                "));	// clear line
-    u8x8.setCursor(0, 7);               // goto last line
-    u8x8.print(txt);			              // print it
+    u8x8.setFont(u8x8_font_5x8_f);          // small size
+    clearDisplayLine(7);                    // clear line
+    u8x8.drawString(0,7,txt.c_str());			  // print it
 }
 #else
-void displayStatusLine(String txt) {
+void clearDisplayLine(int line) {
   String blank = F("        ");
+  u8x8.drawString(0,line,blank.c_str());	    // clear line
+}
+
+void displayStatusLine(String txt) {
   u8x8.setFont(u8x8_font_5x8_f);          // small size
-  u8x8.drawString(0,5,blank.c_str());	    // clear line
+  clearDisplayLine(5);                    // clear line
   u8x8.drawString(0,5,txt.c_str());			  // print it
 }
 #endif
+
 // ===================================================================================================================================
 // Sound Subfunctions
 void SoundStartsound(){
@@ -788,7 +823,6 @@ String buildhttpHeaderandBodySBM(HTTPClient *head, int wert, boolean addname) {
   chipID.replace("ESP32","esp32");
   head->addHeader("X-Sensor",chipID);
   head->addHeader("Connection","close");
-  String rohr = ROHRNAME;
   String valuetype = (addname ? rohr.substring(10)+"_" : "");
   valuetype += "counts_per_minute";
   String body = "{\"software_version\":\""+String(revString)+"\",\
