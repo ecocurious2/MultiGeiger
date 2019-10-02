@@ -6,12 +6,11 @@
 
 // ** Please uncomment one and only one of following CPU-Defines
 #define CPU WIFI
-//#define CPU LORA
 //#define CPU STICK
 
 // ** select (uncomment) one counter tube
-#define ROHRNAME SBM20
-//#define ROHRNAME SBM19
+//#define ROHRNAME SBM20
+#define ROHRNAME SBM19
 //#define ROHRNAME Si22G
 
 // ** select (uncomment) debug level output to serial io (USB)
@@ -27,11 +26,11 @@
 #define WAIT_4_CONFIG 180
 
 // Speaker Ticks  1-> on,  0-> off
-#define SPEAKER_TICK 0
+#define SPEAKER_TICK 1
 // white led on board blinks with ervery tick
 #define LED_TICK  1
 // Display
-#define SHOW_DISPLAY 0
+#define SHOW_DISPLAY 1
 // Start sound
 #define PLAY_SOUND 0
 
@@ -45,7 +44,7 @@
 #define SEND2LORA 0
 
 // Print debug-Info while sending to servers
-#define DEBUG_SERVER_SEND 0
+#define DEBUG_SERVER_SEND 1
 
 
 // *********************************************************************************

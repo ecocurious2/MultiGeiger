@@ -4,10 +4,15 @@ Das Projekt "Multigeiger" wurde von Jürgen Böhringer entwickelt und ist auf se
 Die Dokumentation dazu ist im Verzeichnis 'doc' zu finden (incl. Bauanleitung) und der Sourcecode liegt im Verzeichnis 'multigeiger' als .ino-Datei und kann mit der *Arduino-IDE* oder mit *Platformio  und Visual Code* übersetzt werden.
 
 ## Installation
-Das Verzeichnis clonen oder als .zip runterladen und entpacken. Mit der Arduino-IDE in dem neuen Verzeichnis die Datei *multigeiger.ino* öffnen. Gleiches gilt für Platformio.
+Das Verzeichnis clonen oder als .zip runterladen und entpacken. Mit der Arduino-IDE in dem neuen Verzeichnis die Datei *multigeiger.ino* im Verzeichnis *multigeiger* öffnen. Als Board in der IDE das **Heltec Wifi 32 Kit** einstellen (für die Version **ohne** LoRa).  
+Für Platformio muss in **platformio.ini** in dem Abschnitt **[platformio]** der Eintrag für *default_envs* so aussehen: **default_envs = wifi**. Dann wird für das *Heltec Wifo Kit 32* übersetzt.
+
+#### ACHTUNG
+Für die Platine Version V1.3 **unbedingt** den Branch V1.61 verwenden, **nicht** den Master-Branch. Es gibt für die neueren Platinen Änderungen am Pinning !
 
 Als externe Libraries werden benötigt:
- * U8g2 von Oliver, aktuelle Version 2.16.4
+ * U8g2 von Oliver, aktuelle Version 2.16.4  
+Falls der Compiler andere Libraries anmahnt, diese bitte in der Arduino IDE per *Sketch -> Include Library -> Manage Libraries ..* installieren. 
 
  
 In dem Sourcecode ( in der Datei **userdefines.h**) können vor dem Übersetzen noch folgende Grundeinstellungen gemacht werden:

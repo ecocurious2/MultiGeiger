@@ -423,7 +423,7 @@ void setup()
     SoundStartsound();
   }	
   afterStartTime = AFTERSTART;
-  toSendTime = millis();
+  toSendTime = 0;
 } // end of setup
 
 // ===================================================================================================================================
@@ -431,9 +431,10 @@ void setup()
 void loop()
 {
   // read out values from ISR
-  noInterrupts();                                                  // disable Interrupts to be able to read the variables of the ISR correctly
-  GMZ_counts     	     = isr_GMZ_counts     ;                    // copy values from ISR
+  noInterrupts();   
+  GMZ_counts     	     += isr_GMZ_counts     ;                    // copy values from ISR
   count_timestamp	     = isr_count_timestamp;      
+  isr_GMZ_counts           = 0;                                      // initialize ISR values
   interrupts();                                                    // re-enable Interrupts	
 
 /*
@@ -484,7 +485,7 @@ void loop()
   // Check if there are enough pules detected or if enough time has elapsed. If yes than its 
   // time to charge the HV-capacitor and calculate the pulse rate  
   if ((GMZ_counts>=100) || ((count_timestamp - last_count_timestamp)>=10000)) {  
-    isr_GMZ_counts           = 0;                                      // initialize ISR values
+//    isr_GMZ_counts           = 0;                                      // initialize ISR values
     time_difference = count_timestamp - last_count_timestamp;          // Calculate all derived values
     last_count_timestamp     = count_timestamp;                        // notice the old timestamp
     HV_pulse_count           = jb_HV_gen_charge__chargepules();        // Charge HV Capacitor    
@@ -519,6 +520,8 @@ void loop()
       noInterrupts();
       Serial.print(GMZ_counts, DEC); 
       Serial.print("\t");    
+      Serial.print(count_timestamp, DEC); 
+      Serial.print("\t");    
       Serial.print(time_difference, DEC); 
       Serial.print("\t");    
       Serial.print(Count_Rate, 2); 
@@ -533,7 +536,9 @@ void loop()
       Serial.print("\t");    
       Serial.print(accumulated_Count_Rate, DEC); 
       Serial.print("\t");    
-      Serial.println(accumulated_Dose_Rate, DEC); 
+      Serial.print(accumulated_Dose_Rate, DEC); 
+      Serial.print("\t");    
+      Serial.println(counts_p_interval, DEC); 
       interrupts();
     }
     if (Serial_Print_Mode == Serial_One_Minute_Log) {              // 1 Minute Log active?  
@@ -553,6 +558,7 @@ void loop()
         interrupts();
 	    }
     }
+        GMZ_counts           = 0;                                      // initialize ISR values
   }
  
   if ((Serial_Print_Mode == Serial_Statistics_Log) && (counts_before != isr_GMZ_counts)) {              // Statistics Log active?  
@@ -575,10 +581,12 @@ void loop()
 
 
   // Check, if we have to send to luftdaten.info
-  tdiff = millis() - toSendTime;
+  tdiff = count_timestamp - toSendTime;
   if(tdiff >= (MESSINTERVAL*1000) ) {
-    toSendTime = millis();
+    Serial.printf("To send NOW: cpi: %d  tdiff %ld  cntTimestamp %ld\n",counts_p_interval,tdiff,count_timestamp);
+    toSendTime = count_timestamp;
     int cpm = (int)(counts_p_interval*60000/tdiff);
+    counts_p_interval = 0;
     if (haveBME280) {
       t = bme.readTemperature();
       h = bme.readHumidity();
@@ -628,7 +636,6 @@ void loop()
     #endif
 
     displayStatusLine(" ");
-    counts_p_interval = 0;
 
     // print state of switch
     Serial.printf("SW0: %d  SW1: %d  SW2: %d  SW3: %d\n",sw[0],sw[1],sw[2],sw[3]);
