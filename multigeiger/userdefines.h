@@ -5,8 +5,8 @@
 //====================================================================================================================================
 
 // ** Please uncomment one and only one of following CPU-Defines
-#define CPU WIFI
-//#define CPU STICK
+//#define CPU WIFI
+#define CPU STICK
 
 // ** select (uncomment) one counter tube
 //#define ROHRNAME SBM20
@@ -36,12 +36,12 @@
 
 // Send to servers:
 // Madavi to see values in real time
-#define SEND2MADAVI 1
+#define SEND2MADAVI 0
 // Luftdaten should always be 1 -> standard server (for not LoRa devices)
 #define SEND2LUFTDATEN 0
 // For LoRa-Devices, send to TTN (if this is set to 1, sending to
 // Madavi and Luftdaten should be deactivated !!)
-#define SEND2LORA 0
+#define SEND2LORA 1
 
 // Print debug-Info while sending to servers
 #define DEBUG_SERVER_SEND 1

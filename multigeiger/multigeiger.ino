@@ -48,7 +48,7 @@
 // const char* revString = "V1.6_2019-09-13";     // rxf               - rearrangement of files
 //                                                                  - test dip-switch
 //                                                                  - Hardware-Layout V1.3 and lower - OLD Wifi-Kit-32 !
-const char* revString = "V1.7_2019-10-01";     // rxf               - PINs rearranged, so we can use new Wifi-Kit-32 and
+const char* revString = "V1.7_2019-10-03";     // rxf               - PINs rearranged, so we can use new Wifi-Kit-32 and
 //                                                                    WiFi Stick Light
 //                                                                  - Hardware-Layout V1.4 and up
 //                                                                  - use switch for speaker tick and display off
@@ -179,10 +179,15 @@ volatile unsigned char isr_GMZ_counts         = 0;
          unsigned char counts_before          = 0;
 volatile unsigned long isr_count_timestamp    = millis(); 
 volatile unsigned long isr_count_time_between = micros();
+volatile unsigned int  isr_GMZ_counts_2send   = 0; 
+volatile unsigned long isr_count_timestamp_2send= micros();
          unsigned char GMZ_counts             = 0;
+         unsigned int  GMZ_counts_2send       = 0;
          unsigned int  accumulated_GMZ_counts = 0;
          unsigned long count_timestamp        = millis(); 
+         unsigned long count_timestamp_2send  = millis(); 
          unsigned long last_count_timestamp   = millis(); 
+         unsigned long last_count_timestamp_2send = millis();
          unsigned long time_difference        = 1000; 
          unsigned long accumulated_time       = 0; 		 
          unsigned char last_GMZ_counts        = 0;
@@ -195,10 +200,10 @@ volatile unsigned long isr_count_time_between = micros();
          unsigned long lastMinuteLog          = millis();		 
          unsigned int  lastMinuteLogCounts    = 0;
          unsigned int  lastMinuteLogCountRate = 0;
+         unsigned int  current_cpm            = 0;
 
-         unsigned long toSendTime             = 0;
+         unsigned long toSendTime             = millis();
          unsigned long afterStartTime         = 0;
-         unsigned int  counts_p_interval      = 0;
 
          bool          showDisplay            = SHOW_DISPLAY;
          bool          speakerTick            = SPEAKER_TICK;
@@ -242,7 +247,9 @@ void isr_GMZ_count() {
     // happens because we don't have an Schmitt-Trigger in this controller pin
     isr_GMZ_counts++;                                     // Count
     isr_count_timestamp       = millis();                 // notice (System)-Time of the Count
-	
+    isr_GMZ_counts_2send++;
+    isr_count_timestamp_2send = millis();
+
     isr_count_time_between           = isr_count_timestamp_us-isr_count_timestamp_us_prev_used;	// Save for Statistic Debuging
 	  isr_count_timestamp_us_prev_used = isr_count_timestamp_us;
   } 
@@ -423,7 +430,6 @@ void setup()
     SoundStartsound();
   }	
   afterStartTime = AFTERSTART;
-  toSendTime = 0;
 } // end of setup
 
 // ===================================================================================================================================
@@ -432,9 +438,10 @@ void loop()
 {
   // read out values from ISR
   noInterrupts();   
-  GMZ_counts     	     += isr_GMZ_counts     ;                    // copy values from ISR
+  GMZ_counts     	     = isr_GMZ_counts     ;                    // copy values from ISR
   count_timestamp	     = isr_count_timestamp;      
-  isr_GMZ_counts           = 0;                                      // initialize ISR values
+  GMZ_counts_2send     = isr_GMZ_counts_2send;                    // copy values from ISR
+  count_timestamp_2send = isr_count_timestamp_2send;      
   interrupts();                                                    // re-enable Interrupts	
 
 /*
@@ -485,14 +492,15 @@ void loop()
   // Check if there are enough pules detected or if enough time has elapsed. If yes than its 
   // time to charge the HV-capacitor and calculate the pulse rate  
   if ((GMZ_counts>=100) || ((count_timestamp - last_count_timestamp)>=10000)) {  
-//    isr_GMZ_counts           = 0;                                      // initialize ISR values
+    noInterrupts();
+    isr_GMZ_counts           = 0;   
+    interrupts();                                   // initialize ISR values
     time_difference = count_timestamp - last_count_timestamp;          // Calculate all derived values
     last_count_timestamp     = count_timestamp;                        // notice the old timestamp
     HV_pulse_count           = jb_HV_gen_charge__chargepules();        // Charge HV Capacitor    
     accumulated_time         += time_difference;                       // accumulate all the time
     accumulated_GMZ_counts   += GMZ_counts;                            // accumulate all the pulses
     lastMinuteLogCounts      += GMZ_counts;  
-    counts_p_interval        += GMZ_counts;                            // counts to be sent to luftdaten.info
 
 	  Count_Rate   = (float)GMZ_counts*1000.0/(float)time_difference;    // calculate the current coutrate
     Dose_Rate = Count_Rate *GMZ_factor_uSvph;                          // ... and dose rate
@@ -517,7 +525,7 @@ void loop()
 	
 
     if (Serial_Print_Mode == Serial_Logging) {                       // Report all 
-      noInterrupts();
+//      noInterrupts();
       Serial.print(GMZ_counts, DEC); 
       Serial.print("\t");    
       Serial.print(count_timestamp, DEC); 
@@ -537,9 +545,8 @@ void loop()
       Serial.print(accumulated_Count_Rate, DEC); 
       Serial.print("\t");    
       Serial.print(accumulated_Dose_Rate, DEC); 
-      Serial.print("\t");    
-      Serial.println(counts_p_interval, DEC); 
-      interrupts();
+      Serial.println();
+//      interrupts();
     }
     if (Serial_Print_Mode == Serial_One_Minute_Log) {              // 1 Minute Log active?  
       if (millis() > (lastMinuteLog + 60000)){                     // Time for a 1-Minute-Log?
@@ -568,7 +575,6 @@ void loop()
     interrupts();	  
   }	
 
-  unsigned long tdiff;
   // If there were no Pulses after 3 sec after start,
   // clear display anyway and show 0 counts
   if(afterStartTime && ((millis()-toSendTime) >= afterStartTime)) {
@@ -581,21 +587,28 @@ void loop()
 
 
   // Check, if we have to send to luftdaten.info
-  tdiff = count_timestamp - toSendTime;
-  if(tdiff >= (MESSINTERVAL*1000) ) {
-    Serial.printf("To send NOW: cpi: %d  tdiff %ld  cntTimestamp %ld\n",counts_p_interval,tdiff,count_timestamp);
-    toSendTime = count_timestamp;
-    int cpm = (int)(counts_p_interval*60000/tdiff);
-    counts_p_interval = 0;
+  if((millis() - toSendTime) >= (MESSINTERVAL*1000) ) {
+    toSendTime = millis();
+    noInterrupts();
+    GMZ_counts_2send     = isr_GMZ_counts_2send;                    // copy values from ISR
+    count_timestamp_2send = isr_count_timestamp_2send;      
+    isr_GMZ_counts_2send = 0;
+    interrupts();                                                    // re-enable Interrupts	
+
+    time_difference = count_timestamp_2send - last_count_timestamp_2send;
+    last_count_timestamp_2send = count_timestamp_2send;
+    current_cpm = (int)(GMZ_counts_2send*60000/time_difference);
     if (haveBME280) {
       t = bme.readTemperature();
       h = bme.readHumidity();
       p = bme.readPressure();
-      Serial.printf("Gemessen: T=%.2f H=%.f P=%.f\n",t,h,p);
+      Serial.printf("Gemessen: cpm= %d T=%.2f H=%.f P=%.f\n",current_cpm,t,h,p);
+    } else {
+      Serial.printf("Gemessen: cpm= %d\n",current_cpm);
     }
+
     #if SEND2DUMMY
     displayStatusLine(F("Toilet"));
-    Serial.printf("tdiff %ld, count: %d, cpm: %d\n",tdiff,counts_p_interval,cpm);
     Serial.println("SENDING TO TOILET");
     sendData2toilet(true,cpm);
     if (haveBME280) {
@@ -607,7 +620,7 @@ void loop()
     #if SEND2MADAVI
     Serial.println("sending to madavi ...");
     displayStatusLine(F("Madavi"));
-    sendData2madavi(true,cpm);
+    sendData2madavi(true,current_cpm);
     if (haveBME280) {
     sendData2madavi(false,0,t,h,p);
     }
@@ -617,7 +630,7 @@ void loop()
     #if SEND2LUFTDATEN
     Serial.println("sending to luftdaten ...");
     displayStatusLine(F("Luftdaten"));
-    sendData2luftdaten(true,cpm);
+    sendData2luftdaten(true,current_cpm);
     if (haveBME280) {
     sendData2luftdaten(false,0,t,h,p);
     }
@@ -629,9 +642,9 @@ void loop()
     Serial.println("sending to TTN ...");
     displayStatusLine(F("TTN"));
     if(haveBME280) {
-      sendData2TTN(cpm,t,h,p);
+      sendData2TTN(current_cpm,t,h,p);
     } else {
-      sendData2TTN(cpm);
+      sendData2TTN(current_cpm);
     }
     #endif
 
