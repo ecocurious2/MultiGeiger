@@ -1,6 +1,9 @@
 # Change log  
 This is the change log for the multigeiger project.
 
+### Version 1.61 2019-09-30
+ * default measuring interval is now 2.5min 
+  
 ### Version 1.6 2019-09-13 
  * some rearrangement of files
  * userdefine.h for user changable #defines
