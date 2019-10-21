@@ -4,14 +4,25 @@ Das Projekt "Multigeiger" wurde von Jürgen Böhringer entwickelt und ist auf se
 Die Dokumentation dazu ist im Verzeichnis 'doc' zu finden (incl. Bauanleitung) und der Sourcecode liegt im Verzeichnis 'multigeiger' als .ino-Datei und kann mit der *Arduino-IDE* oder mit *Platformio  und Visual Code* übersetzt werden.
 
 ## Installation
-Das Verzeichnis clonen oder als .zip runterladen und entpacken. Mit der Arduino-IDE in dem neuen Verzeichnis die Datei *multigeiger.ino* im Verzeichnis *multigeiger* öffnen. Als Board in der IDE das **Heltec Wifi 32 Kit** einstellen (für die Version **ohne** LoRa).  
-Für Platformio muss in **platformio.ini** in dem Abschnitt **[platformio]** der Eintrag für *default_envs* so aussehen: **default_envs = wifi**. Dann wird für das *Heltec Wifo Kit 32* übersetzt.
+Das Verzeichnis clonen oder als .zip runterladen und entpacken. Mit der Arduino-IDE in dem neuen Verzeichnis die Datei *multigeiger.ino* im Verzeichnis *multigeiger* öffnen.   
+Der aktuelle **master**-Branch (Version 1.7) ist für die Hardware-Version 1.4 (steht unten auf der Platine).  
+Die Platine ist für zwei verschiedene Heltec-Bausteine vorgesehen, die Software passt für beide und muss entsprechend eingestellt werden:  
 
-#### ACHTUNG
-Für die Platine Version V1.3 **unbedingt** den Branch V1.61 verwenden, **nicht** den Master-Branch. Es gibt für die neueren Platinen Änderungen am Pinning !
+ * **Heltec WiFi Kit 32**  
+Diese MCU hat ein großes Display und WiFi. Auf dem Board wird dieser Baustein in die längeren Buchsenleisten gesteckt. Für die Arduino-IDE ist als Board der **Heltec WiFi Kit 32** einzustellen, in der Datei *userdefs.h* muss **#define CPU WIFI** entkommentiert werden (die anderen CPU-defines werden auskommentiert).   
+Für Platfomio ist in *platformio.ini* ganz oben **default_envs = stick** einzustellen. In *userdefs.h* ist (wie bei Arduino-IDE) das **#define CPU WIFI** zu entkommentieren.
+ * **Heltec Wireless Stick**  
+Diese Board hat ein sehr kleines Display, dafür aber zusätzlich zu WiFi noch LoRa. Es wird in die kürzeren Buchsenleisten gesteckt. Für die Arduino-IDE muss als Board **Heltec Wireless Stick** eingestellt werden. In *userdefs.h* wird nun das **#define CPU STICK** entkommentiert, die anderen mit Kommentarzeichen versehen).  
+Für Platfomio ist in *platformio.ini* ganz oben **default_envs = wifi** einzustellen. In *userdefs.h* gleich wie bei der Arduino-IDE.  
+Zusätzlich muss in *userdefs.h* eingestellt werden, dass zu **TTN** gesendet werden soll. Dazu **#define SENDT2ORA 1** anstelle von 0 einstellen. Die anderen beiden können (SEND2MADAVI und SEND2LUFTDATEN) können entweder auf 1 bleiben (dann wird auch dahin gesendet) oder auf 0 gesetzt werden.  
+Die **LoRa**-Credentials werden in der Datei *lorawan.cpp* ab Zeile 65 eingetragen.
 
-Als externe Libraries werden benötigt:
+
+Als externe Libraries werden benötigt:   
+
  * U8g2 von Oliver, aktuelle Version 2.16.4  
+ * Adafruit BME280 Library Version 1.0.7  
+ * Adafruit Unified Sensor Version 1.02  
 Falls der Compiler andere Libraries anmahnt, diese bitte in der Arduino IDE per *Sketch -> Include Library -> Manage Libraries ..* installieren. 
 
  

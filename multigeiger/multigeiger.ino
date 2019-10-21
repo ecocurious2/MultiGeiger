@@ -96,7 +96,7 @@ const char* revString = "V1.7_2019-10-03";     // rxf               - PINs rearr
 
 // for LoRa
 #if SEND2LORA==1
-#include "lorawan.h"
+#include "loraWan.h"
 #endif
 
 //====================================================================================================================================
