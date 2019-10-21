@@ -14,7 +14,7 @@ Für Platfomio ist in *platformio.ini* ganz oben **default_envs = stick** einzus
  * **Heltec Wireless Stick**  
 Diese Board hat ein sehr kleines Display, dafür aber zusätzlich zu WiFi noch LoRa. Es wird in die kürzeren Buchsenleisten gesteckt. Für die Arduino-IDE muss als Board **Heltec Wireless Stick** eingestellt werden. In *userdefs.h* wird nun das **#define CPU STICK** entkommentiert, die anderen mit Kommentarzeichen versehen).  
 Für Platfomio ist in *platformio.ini* ganz oben **default_envs = wifi** einzustellen. In *userdefs.h* gleich wie bei der Arduino-IDE.  
-Zusätzlich muss in *userdefs.h* eingestellt werden, dass zu **TTN** gesendet werden soll. Dazu **#define SENDT2ORA 1** anstelle von 0 einstellen. Die anderen beiden können (SEND2MADAVI und SEND2LUFTDATEN) können entweder auf 1 bleiben (dann wird auch dahin gesendet) oder auf 0 gesetzt werden.  
+Zusätzlich muss in *userdefs.h* eingestellt werden, dass zu **TTN** gesendet werden soll. Dazu **#define SENDT2ORA 1** anstelle von 0 einstellen. Die anderen beiden können (SEND2MADAVI und SEND2LUFTDATEN) können entweder auf 1 bleiben (dann wird auch dahin gesendet) oder auf 0 gesetzt werden (siehe weiter unten).  
 Die **LoRa**-Credentials werden in der Datei *lorawan.cpp* ab Zeile 65 eingetragen.
 
 
