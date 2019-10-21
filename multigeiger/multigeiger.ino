@@ -48,7 +48,7 @@
 // const char* revString = "V1.6_2019-09-13";     // rxf               - rearrangement of files
 //                                                                  - test dip-switch
 //                                                                  - Hardware-Layout V1.3 and lower - OLD Wifi-Kit-32 !
-const char* revString = "V1.7_2019-10-03";     // rxf               - PINs rearranged, so we can use new Wifi-Kit-32 and
+const char* revString = "V1.7_2019-10-21";     // rxf               - PINs rearranged, so we can use new Wifi-Kit-32 and
 //                                                                    WiFi Stick Light
 //                                                                  - Hardware-Layout V1.4 and up
 //                                                                  - use switch for speaker tick and display off
