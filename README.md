@@ -2,6 +2,7 @@
 # MultiGeiger
 Wir sind Ecocurious, Deine Umwelt-, Natur-  und Technik-Community. 
 Aktuell bauen wir einen Multigeiger, um Radioaktivität zu messen.  https://ecocurious.de/projekte/multigeiger/
+
 Ziel ist es, einen Low-Cost-Geigerzähler (für Gamma-Strahlung ) zu entwickeln und ein Bürger-Messnetz in Deutchland aufzubauen. 
 
 Unsere Hard- und Software hat Jürgen Böhringer entwickelt (http://www.boehri.de) 
