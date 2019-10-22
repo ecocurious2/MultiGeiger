@@ -7,9 +7,9 @@ Ziel ist es, einen Low-Cost-Geigerzähler (für Gamma-Strahlung) zu entwickeln u
 
 Unsere Hard- und Software hat Jürgen Böhringer konzipiert (http://www.boehri.de). Reinhard/rexfue hat die Software und Platine weitergedacht und kümmert sich um die Einbindung der Sensoren in unsere Map https://ecocurious.de/projekte/multigeiger/.
 
-Das Besondere an unserem Multigeiger ist: 
-- Er kann wahlweise mit einem LoRa- oder Wifi-Modul betrieben werden. 
-- Die Hardware wird von uns als Bausatz herausgegeben uns kann in gemeinsamen Workshops zusammengebaut werden
+Das Besondere an unserem Multigeiger ist, das er wahlweise mit einem LoRa- oder Wifi-Modul betrieben werden kann. Noch in diesem Jahr starten wir die ersten Workshops, wo Du die Hardware zusammengebauen kannst. 
+
+Klingt das interessant für Dich? Dann mach mit, herzliche Einladung! 
 
 ## Installation
 Das Verzeichnis clonen oder als .zip runterladen und entpacken. Mit der Arduino-IDE in dem neuen Verzeichnis die Datei *multigeiger.ino* im Verzeichnis *multigeiger* öffnen.   
