@@ -7,7 +7,10 @@ Ziel ist es, einen Low-Cost-Geigerzähler (für Gamma-Strahlung) zu entwickeln u
 
 Unsere Hard- und Software hat Jürgen Böhringer konzipiert (http://www.boehri.de). Reinhard/rexfue hat die Software und Platine weitergedacht und kümmert sich um die Einbindung der Sensoren in unsere Map https://ecocurious.de/projekte/multigeiger/.
 
-Das Besondere an unserem Multigeiger ist, das er wahlweise mit einem LoRa- oder Wifi-Modul betrieben werden kann. Noch in diesem Jahr starten wir die ersten Workshops, in denen Du die Hardware mit unserer Unterstützung zusammengebauen kannst. 
+Das Besondere an unserem Multigeiger ist, das er wahlweise mit einem LoRa- oder Wifi-Modul betrieben werden kann. Noch in diesem Jahr starten wir die ersten Workshops, in denen Du die Hardware mit unserer Unterstützung zusammengebauen kannst.
+
+Workshop-Termine findest DU hier: https://www.meetup.com/de-DE/Ecocurious-deine-Umwelt-Natur-und-Technik-Community/
+und hier:https://ecocurious.de/events/
 
 Klingt das interessant für Dich? Dann mach mit, herzliche Einladung! 
 
