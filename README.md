@@ -1,7 +1,16 @@
-# MultiGeiger
-Das Projekt "Multigeiger" wurde von Jürgen Böhringer entwickelt und ist auf seiner Webseite http://www.boehri.de beschrieben.
 
-Die Dokumentation dazu ist im Verzeichnis 'doc' zu finden (incl. Bauanleitung) und der Sourcecode liegt im Verzeichnis 'multigeiger' als .ino-Datei und kann mit der *Arduino-IDE* oder mit *Platformio  und Visual Code* übersetzt werden.
+Ecocurious ist Deine Umwelt-, Natur-  und Technik-Community. 
+
+# MultiGeiger
+Aktuell bauen wir einen Multigeiger, um Radioaktivität zu messen.  https://ecocurious.de/projekte/multigeiger/
+Ziel ist es, einen Low-Cost-Geigerzähler (für Gamma-Strahlung ) zu entwickeln und ein Bürger-Messnetz in Deutchland aufzubauen. 
+
+Unsere Hard- und Software hat Jürgen Böhringer entwickelt (http://www.boehri.de) 
+Reinhard/rexfue hat die Software und Platine weitergedacht und kümmert sich um die Einbindung der Sensoren in unsere Map  https://ecocurious.de/projekte/multigeiger/
+
+Das Besondere an unserem Multigeiger ist: 
+- Er kann wahlweise mit einem LoRa- oder Wifi-Modul betrieben werden. 
+- Die Hardware wird von uns als Bausatz herausgegeben uns kann in gemeinsamen Workshops zusammengebaut werden
 
 ## Installation
 Das Verzeichnis clonen oder als .zip runterladen und entpacken. Mit der Arduino-IDE in dem neuen Verzeichnis die Datei *multigeiger.ino* im Verzeichnis *multigeiger* öffnen.   
