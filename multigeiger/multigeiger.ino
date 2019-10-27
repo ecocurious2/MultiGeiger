@@ -160,9 +160,10 @@ enum {SPEAKER_ON, ANZEIGE_ON, LED_ON, UNUSED};
 
 //====================================================================================================================================
 // Constants
-// Factor to calculate µSievert per hour out of counts per minute, depending on the tube used
-const float GMZ_factor_uSvph_SBM20 = 1/2.47;                //   for SBM-20
-const float GMZ_factor_uSvph_SBM19 = 1/9.81888;             //   for SBM19
+// Factor to calculate µSievert per hour from counts per minute, depending on the GM tube used:
+const float GMZ_factor_uSvph_SBM20 = 1 / 2.47;         //   for SBM20
+const float GMZ_factor_uSvph_SBM19 = 1 / 9.81888;      //   for SBM19
+const float GMZ_factor_uSvph_Si22G = 1 / 1.0;          //   for Si22G - XXX FIXME: unknown conversion factor!
 
 const    unsigned long GMZ_dead_time        = 190;   // Dead Time of the Geiger-Counter. Has to be longer than the complete
                                                      // Pulse generated on the Pin PIN_GMZ_count_INPUT [µsec]
@@ -215,7 +216,7 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          float         t                      = 0.0;
          float         h                      = 0.0;
          float         p                      = 0.0;
-         float        GMZ_factor_uSvph        = GMZ_factor_uSvph_SBM20;
+         float        GMZ_factor_uSvph        = 0.0;
          String       rohr                    = "";
          char         sw[4]                   = {0,0,0,0};
 
@@ -367,13 +368,16 @@ void setup()
   iotWebConf.setThingName(ssid);
   iotWebConf.init();
 
-  // Setup GMZ-Conversion factor due to tube
+  // Set up conversion factor to uSv/h according to GM tube type:
   rohr = ROHRNAME;
   if (rohr == SBM19) {
     GMZ_factor_uSvph = GMZ_factor_uSvph_SBM19;
-  } else {
-    GMZ_factor_uSvph = GMZ_factor_uSvph_SBM19;
-  }
+  } else if (rohr == SBM20) {
+    GMZ_factor_uSvph = GMZ_factor_uSvph_SBM20;
+  } else if (rohr == Si22G) {
+    GMZ_factor_uSvph = GMZ_factor_uSvph_Si22G;
+  } // else: for unsupported tubes, it will just stay at factor 0.0.
+
   // -- Set up required URL handlers on the web server.
   server.on("/", handleRoot);
   server.on("/config", []{ iotWebConf.handleConfig(); });
