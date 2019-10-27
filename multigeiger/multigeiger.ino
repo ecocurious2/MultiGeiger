@@ -676,31 +676,31 @@ int jb_HV_gen_charge__chargepules() {
 }
 
 // ===================================================================================================================================
-// OLED-Subfunctions
+// OLED sub functions
 void DisplayStartscreen(void){
   u8x8.clear();
 
 #if CPU == STICK
-  // Print the upper Line including Time and measured radation
+  // print the upper line including time and measured radiation
   u8x8.setFont(u8x8_font_5x8_f);     // small size
   for (int i=2; i<6; i++) {
-      u8x8.drawString(0,i,"        ");
+      u8x8.drawString(0, i, "        ");
   }
-  u8x8.drawString(0,2,"Geiger-"); 
-  u8x8.drawString(0,3," Counter");
+  u8x8.drawString(0, 2, "Geiger-");
+  u8x8.drawString(0, 3, " Counter");
   char rv[9];
-  strncpy(rv,revString,4);
+  strncpy(rv, revString, 4);
   rv[4] = '\0';
-  u8x8.drawString(2,4,rv);
-  strncpy(rv,&revString[5],4);
-  strncpy(&rv[4],&revString[10],2);
-  strncpy(&rv[6],&revString[13],2);
+  u8x8.drawString(2, 4, rv);
+  strncpy(rv, &revString[5], 4);
+  strncpy(&rv[4], &revString[10], 2);
+  strncpy(&rv[6], &revString[13], 2);
   rv[8] = '\0';
-  u8x8.drawString(0,5,rv);
+  u8x8.drawString(0, 5, rv);
 #else  
   // Print the upper Line including Time and measured radation
   u8x8.setFont(u8x8_font_7x14_1x2_f);     // middle size
-//  u8x8.setFont(u8x8_font_5x8_f);     // middle size
+  // u8x8.setFont(u8x8_font_5x8_f);       // small size
                                           
   u8x8.println("Geiger-Counter"); 
   u8x8.println("==============");
@@ -711,45 +711,39 @@ void DisplayStartscreen(void){
 
 // ===================================================================================================================================
 void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
+  char output[80];
   u8x8.clear();
+
 #if CPU != STICK
-  int TimeMin=0;
+  int TimeMin = TimeSec / 60;             // calculate number of minutes
+  if(TimeMin >=999 ) TimeMin=999;         // limit minutes to max. 999
+
   // Print the upper Line including Time and measured radation
   u8x8.setFont(u8x8_font_7x14_1x2_f);     // middle size
-                                          
-  TimeMin=TimeSec/60;                     // calculate number of Minutes
 
-  if (TimeMin){                           // Display in Minutes
-    if(TimeMin>=999) TimeMin=999;         // limit stop at 999
-    if(TimeMin <   100) u8x8.print(" ");
-    if(TimeMin <    10) u8x8.print(" ");
-    u8x8.print(TimeMin);                  // Arduino Print function	
-  } else {                                // Display in Seconds
+  if(TimeMin >= 1){                       // >= 1 minute -> display in minutes
+    sprintf(output, "%3d", TimeMin);
+    u8x8.print(output);
+  } else {                                // < 1 minute -> display in seconds, inverse
+    sprintf(output, "%3d", TimeSec);
     u8x8.inverse();
-    if(TimeSec <   100) u8x8.print(" ");
-    if(TimeSec <    10) u8x8.print(" ");
-    u8x8.print(TimeSec);                 
-	u8x8.noInverse();
+    u8x8.print(output);
+    u8x8.noInverse();
   }
-  if(RadNSvph < 1000000) u8x8.print(" ");
-  if(RadNSvph <  100000) u8x8.print(" ");
-  if(RadNSvph <   10000) u8x8.print(" ");
-  if(RadNSvph <    1000) u8x8.print(" ");
-  if(RadNSvph <     100) u8x8.print(" ");
-  if(RadNSvph <      10) u8x8.print(" ");
-  u8x8.print(RadNSvph);                  // Arduino Print function	
-  u8x8.print(" nSv/h");
+
+  sprintf(output, "%7d nSv/h", RadNSvph);
+  u8x8.print(output);
 #endif  
  
   // Print the lower Line including Time CPM
 #if CPU != STICK
-  u8x8.setFont(u8x8_font_inb33_3x6_n);  // Big in Size
-  u8x8.drawString(0,2,nullFill(CPS,5));
+  u8x8.setFont(u8x8_font_inb33_3x6_n);  // big size
+  u8x8.drawString(0, 2, nullFill(CPS, 5));
 #else
-  u8x8.setFont(u8x8_font_5x8_f);     // small size
-  u8x8.drawString(0,2,nullFill(RadNSvph,8));
-  u8x8.draw2x2String(0,3,nullFill(CPS,4));
-  u8x8.drawString(0,5,"     cpm");
+  u8x8.setFont(u8x8_font_5x8_f);        // small size
+  u8x8.drawString(0, 2, nullFill(RadNSvph, 8));
+  u8x8.draw2x2String(0, 3, nullFill(CPS, 4));
+  u8x8.drawString(0, 5, "     cpm");
 #endif
   
 #if CPU != STICK
@@ -765,24 +759,24 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
 #if CPU != STICK
 void clearDisplayLine(int line) {
   String blank = F("                ");
-  u8x8.drawString(0,line,blank.c_str());	    // clear line
+  u8x8.drawString(0, line, blank.c_str());  // clear line
 }
 
 void displayStatusLine(String txt) {
     u8x8.setFont(u8x8_font_5x8_f);          // small size
     clearDisplayLine(7);                    // clear line
-    u8x8.drawString(0,7,txt.c_str());			  // print it
+    u8x8.drawString(0, 7, txt.c_str()); 	  // print it
 }
 #else
 void clearDisplayLine(int line) {
   String blank = F("        ");
-  u8x8.drawString(0,line,blank.c_str());	    // clear line
+  u8x8.drawString(0, line, blank.c_str());  // clear line
 }
 
 void displayStatusLine(String txt) {
-  u8x8.setFont(u8x8_font_5x8_f);          // small size
-  clearDisplayLine(5);                    // clear line
-  u8x8.drawString(0,5,txt.c_str());			  // print it
+  u8x8.setFont(u8x8_font_5x8_f);            // small size
+  clearDisplayLine(5);                      // clear line
+  u8x8.drawString(0, 5, txt.c_str());	      // print it
 }
 #endif
 
