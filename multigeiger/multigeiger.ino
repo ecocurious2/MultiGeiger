@@ -353,7 +353,7 @@ void setup()
     while (!Serial) {};
   }
 
-  Serial.printf("Los Gehts! \n");
+  Serial.printf("Let's go!\n");
   uint32_t xx = getESPchipID();
 
   // build SSID
@@ -454,7 +454,7 @@ void loop()
   //convert farenheit to celcius
   double temp = ( temp_farenheit - 32 ) / 1.8;
 
-  Serial.printf("internal temp [°C]: %.0f\n", temp);
+  Serial.printf("Internal temperature [°C]: %.0f\n", temp);
   delay(1000);
 */
 
@@ -604,9 +604,9 @@ void loop()
       t = bme.readTemperature();
       h = bme.readHumidity();
       p = bme.readPressure();
-      Serial.printf("Gemessen: cpm= %d T=%.2f H=%.f P=%.f\n",current_cpm,t,h,p);
+      Serial.printf("Measured: cpm= %d T=%.2f H=%.f P=%.f\n",current_cpm,t,h,p);
     } else {
-      Serial.printf("Gemessen: cpm= %d\n",current_cpm);
+      Serial.printf("Measured: cpm= %d\n",current_cpm);
     }
 
     #if SEND2DUMMY
@@ -620,7 +620,7 @@ void loop()
     #endif
 
     #if SEND2MADAVI
-    Serial.println("sending to madavi ...");
+    Serial.println("Sending to Madavi ...");
     displayStatusLine(F("Madavi"));
     sendData2madavi(true,current_cpm);
     if (haveBME280) {
@@ -630,7 +630,7 @@ void loop()
     #endif
 
     #if SEND2LUFTDATEN
-    Serial.println("sending to luftdaten ...");
+    Serial.println("Sending to Luftdaten ...");
     displayStatusLine(F("Luftdaten"));
     sendData2luftdaten(true,current_cpm);
     if (haveBME280) {
@@ -641,7 +641,7 @@ void loop()
 
     // if we are LoRa, then send datas to TTN
     #if SEND2LORA
-    Serial.println("sending to TTN ...");
+    Serial.println("Sending to TTN ...");
     displayStatusLine(F("TTN"));
     if(haveBME280) {
       sendData2TTN(current_cpm,t,h,p);
