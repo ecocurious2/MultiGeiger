@@ -289,7 +289,7 @@ U8X8_SSD1306_64X32_NONAME_HW_I2C u8x8(/* reset=*/ 16, /* clock=*/ 15, /* data=*/
 
 // -- Initial password to connect to the Thing, when it creates an own Access Point.
 const char wifiInitialApPassword[] = "ESP32Geiger";
-const char* theName = "Defaultname fuer die SSID     ";       // 30 chars log !
+const char* theName = "Default name for the SSID     ";       // 30 chars long!
 
 DNSServer dnsServer;
 WebServer server(80);
