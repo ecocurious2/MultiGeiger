@@ -217,7 +217,7 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          float         h                      = 0.0;
          float         p                      = 0.0;
          float         GMZ_factor_uSvph       = 0.0;
-         String        rohr                   = "";
+         String        tube                   = "";
          char          sw[4]                  = {0,0,0,0};
 
 
@@ -369,12 +369,12 @@ void setup()
   iotWebConf.init();
 
   // Set up conversion factor to uSv/h according to GM tube type:
-  rohr = ROHRNAME;
-  if (rohr == SBM19) {
+  tube = TUBE_TYPE;
+  if (tube == SBM19) {
     GMZ_factor_uSvph = GMZ_factor_uSvph_SBM19;
-  } else if (rohr == SBM20) {
+  } else if (tube == SBM20) {
     GMZ_factor_uSvph = GMZ_factor_uSvph_SBM20;
-  } else if (rohr == Si22G) {
+  } else if (tube == Si22G) {
     GMZ_factor_uSvph = GMZ_factor_uSvph_Si22G;
   } // else: for unsupported tubes, it will just stay at factor 0.0.
 
@@ -839,7 +839,7 @@ String buildhttpHeaderandBodySBM(HTTPClient *head, int wert, boolean addname) {
   chipID.replace("ESP32","esp32");
   head->addHeader("X-Sensor",chipID);
   head->addHeader("Connection","close");
-  String valuetype = (addname ? rohr.substring(10)+"_" : "");
+  String valuetype = (addname ? tube.substring(10)+"_" : "");
   valuetype += "counts_per_minute";
   String body = "{\"software_version\":\""+String(revString)+"\",\
   \"sensordatavalues\":[{\"value_type\":\""+valuetype+"\",\
