@@ -143,8 +143,8 @@ enum {SPEAKER_ON, DISPLAY_ON, LED_ON, UNUSED};
 #define PIN_DISPLAY_ON 25
 #endif
 
-// Messinteravll (default 10min) [sec]
-#define MESSINTERVAL 60
+// Measurement interval (default 1min) [sec]
+#define MEASUREMENT_INTERVAL 60
 
 // MAX time to wait until connected. After then, meaurement starts but there is no sending to servers  [msec]
 #define MAX_WAIT_TIME 300000
@@ -589,7 +589,7 @@ void loop()
   }
 
   // Check, if we have to send to luftdaten.info
-  if((millis() - toSendTime) >= (MESSINTERVAL*1000) ) {
+  if((millis() - toSendTime) >= (MEASUREMENT_INTERVAL*1000) ) {
     toSendTime = millis();
     noInterrupts();
     GMZ_counts_2send      = isr_GMZ_counts_2send;                    // copy values from ISR
