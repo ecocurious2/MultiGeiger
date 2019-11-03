@@ -135,12 +135,12 @@ int PIN_SPEAKER_OUTPUT_N    =   0;
 #endif
 
 // What are the switches good for?
-enum {SPEAKER_ON, ANZEIGE_ON, LED_ON, UNUSED};
+enum {SPEAKER_ON, DISPLAY_ON, LED_ON, UNUSED};
 
 #define TESTPIN 13
 
 #if CPU == STICK
-#define  DISPLAY_ON 25
+#define PIN_DISPLAY_ON 25
 #endif
 
 // Messinteravll (default 10min) [sec]
@@ -335,8 +335,8 @@ void setup()
   digitalWrite(TESTPIN, LOW);
 
 #if CPU == STICK
-  pinMode (DISPLAY_ON, OUTPUT);
-  digitalWrite(DISPLAY_ON, HIGH);
+  pinMode (PIN_DISPLAY_ON, OUTPUT);
+  digitalWrite(PIN_DISPLAY_ON, HIGH);
 #endif
   // Initialize Pins
   digitalWrite (PIN_SPEAKER_OUTPUT_P, HIGH);
@@ -515,7 +515,7 @@ void loop()
     accumulated_Dose_Rate    = accumulated_Count_Rate *GMZ_factor_uSvph;
 
     // Write it to the display
-    if(showDisplay && sw[ANZEIGE_ON]) {
+    if(showDisplay && sw[DISPLAY_ON]) {
       DisplayGMZ(((int)accumulated_time/1000), (int)(accumulated_Dose_Rate*1000), (int)(Count_Rate*60));
       displayIsClear = false;
     } else {
