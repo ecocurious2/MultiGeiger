@@ -266,12 +266,12 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS);
 void SoundStartsound();
 void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume);
 void DisplayStartscreen(void);
-void sendData2luftdaten(bool sendwhat, int wert, float t=0.0, float h=0.0, float p=0.0);
-void sendData2madavi(bool sendwhat, int wert, float t=0.0, float h=0.0, float p=0.0);
-void sendData2toilet(bool sendwhat, int wert, float t=0.0, float h=0.0, float p=0.0);
-void sendData2TTN(int wert, float t=0.0, float h=0.0, float p=0.0);
+void sendData2luftdaten(bool sendwhat, int radiation_cpm, float t=0.0, float h=0.0, float p=0.0);
+void sendData2madavi(bool sendwhat, int radiation_cpm, float t=0.0, float h=0.0, float p=0.0);
+void sendData2toilet(bool sendwhat, int radiation_cpm, float t=0.0, float h=0.0, float p=0.0);
+void sendData2TTN(int radiation_cpm, float t=0.0, float h=0.0, float p=0.0);
 String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bool addname);
-String buildhttpHeaderandBodySBM(HTTPClient *head, int wert, bool addname);
+String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, bool addname);
 void displayStatusLine(String txt);
 void clearDisplayLine(int line);
 void handleRoot(void);
@@ -832,7 +832,7 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
 // ===================================================================================================================================
 // Send to Server Subfunctions
 
-String buildhttpHeaderandBodySBM(HTTPClient *head, int wert, boolean addname) {
+String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, boolean addname) {
   head->addHeader("Content-Type", "application/json; charset=UTF-8");
   head->addHeader("X-PIN","19");
   String chipID = String(ssid);
@@ -843,7 +843,7 @@ String buildhttpHeaderandBodySBM(HTTPClient *head, int wert, boolean addname) {
   valuetype += "counts_per_minute";
   String body = "{\"software_version\":\""+String(revString)+"\",\
   \"sensordatavalues\":[{\"value_type\":\""+valuetype+"\",\
-  \"value\":\""+String(wert)+"\"}]}";                       //Build the actual POST request
+  \"value\":\""+String(radiation_cpm)+"\"}]}";                       //Build the actual POST request
   if (DEBUG_SERVER_SEND == 1) {
     Serial.println(body);
   }
@@ -875,12 +875,12 @@ String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bo
   return body;
 }
 
-void sendData2luftdaten(bool sendwhat, int wert, float t, float h, float p) {
+void sendData2luftdaten(bool sendwhat, int radiation_cpm, float t, float h, float p) {
   HTTPClient http;
   String body;
   http.begin(LUFTDATEN);
   if (sendwhat) {                                 // send SBM data
-    body = buildhttpHeaderandBodySBM(&http,wert,false);
+    body = buildhttpHeaderandBodySBM(&http,radiation_cpm,false);
   } else {                                        // send BME data
     body = buildhttpHeaderandBodyBME(&http,t,h,p,false);
   }
@@ -898,12 +898,12 @@ void sendData2luftdaten(bool sendwhat, int wert, float t, float h, float p) {
   http.end();
 }
 
-void sendData2madavi(bool sendwhat, int wert, float t, float h, float p) {
+void sendData2madavi(bool sendwhat, int radiation_cpm, float t, float h, float p) {
   HTTPClient http;
   String body;
   http.begin(MADAVI);
   if (sendwhat) {                                 // send SBM data
-    body = buildhttpHeaderandBodySBM(&http,wert,true);
+    body = buildhttpHeaderandBodySBM(&http,radiation_cpm,true);
   } else {                                           // send BME data
     if (haveBME280) {
       body = buildhttpHeaderandBodyBME(&http,t,h,p,true);
@@ -923,12 +923,12 @@ void sendData2madavi(bool sendwhat, int wert, float t, float h, float p) {
   http.end();
 }
 
-void sendData2toilet(bool sendwhat, int wert, float t, float h, float p) {
+void sendData2toilet(bool sendwhat, int radiation_cpm, float t, float h, float p) {
   HTTPClient http;
   String body;
   http.begin(TOILET);
   if (sendwhat) {                                 // send SBM data
-    body = buildhttpHeaderandBodySBM(&http,wert,false);
+    body = buildhttpHeaderandBodySBM(&http,radiation_cpm,false);
   } else {                                           // send BME data
     if (haveBME280) {
       body = buildhttpHeaderandBodyBME(&http,t,h,p,true);
@@ -949,14 +949,14 @@ void sendData2toilet(bool sendwhat, int wert, float t, float h, float p) {
 }
 
 #if SEND2LORA
-void sendData2TTN(int wert, float t, float h, float p) {
+void sendData2TTN(int radiation_cpm, float t, float h, float p) {
   unsigned char ttnData[20];
   int cnt;
   // put data for Cayenne
   ttnData[0] = 1;
   ttnData[1] = 0x65;
-  ttnData[2] = wert >> 8;
-  ttnData[3] = wert & 0xFF;
+  ttnData[2] = radiation_cpm >> 8;
+  ttnData[3] = radiation_cpm & 0xFF;
   cnt = 4;
   if (haveBME280) {
     ttnData[4] = 2;
