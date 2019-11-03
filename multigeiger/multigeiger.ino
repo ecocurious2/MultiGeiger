@@ -6,7 +6,7 @@
 //   - has a audibal tick
 //   - produces a listing via RS232 (via USB)
 //   - is adaptable to your application
-// 
+//
 // Information to the new Heltec board ESP32 WIFI OLED
 // - for Information how to get the device up and running please check:
 //   - https://robotzero.one/heltec-wifi-kit-32/
@@ -16,7 +16,7 @@
 //   - http://www.heltec.cn/project/wifi-kit-32/?lang=en
 // - it is sold in ebay e. g. under the following names
 //   - "1X(ESP32 WIFI Bluetooth Entwicklungsboard OLED 0.96 "Display IOT Kit Modul GY"
-// - there is also a LoRaWAN-Variant available. Check: 
+// - there is also a LoRaWAN-Variant available. Check:
 //   - http://fambach.net/esp32-wifi-lora-433/
 //   - https://www.hackerspace-ffm.de/wiki/index.php?title=Heltec_Wifi_LoRa_32
 //
@@ -25,8 +25,8 @@
 //const char* revString = "2019_03_25";   // Juergen Boehringer      - Version 1 for ESP32-Board
 //const char* revString = "2019_04_26";   // Juergen Boehringer      - added 1 Minute RS232-Logging-Mode
 //const char* revString = "2019_05_12";   // Juergen Boehringer      - Added Bugfix for the "Double-Trigger-Problem". This was caused
-//                                                                   by the rising edge falsly triggering an other pulse recording. 
-//                                                                   The Problem is that there is no Schmitt-Trigger available in the 
+//                                                                   by the rising edge falsly triggering an other pulse recording.
+//                                                                   The Problem is that there is no Schmitt-Trigger available in the
 //                                                                   Controller
 //                                                                 - simplified serial printing modes
 //                                                                 - made seconds in Display as inverse to be able to seperate it from
@@ -37,14 +37,14 @@
 //                                                                 - WiFiManager to enter WLAN data and other configs
 //                                                                 - send to luftdaten.info every 2.5 min
 // const char* revString = "V1.1_2019_09_01";   // rxf              - build SSID out of MAC corrected: first 3 Byte of MAC build SSID
-//                                                                 - IoTWebConfig: setter for thingName added; lib moved into local source path          
+//                                                                 - IoTWebConfig: setter for thingName added; lib moved into local source path
 //                                                                 - LoRa autodetection removed
 // const char* revString = "V1.2_2019_09_02";   // rxf             - sending to madavi corrected
 // const char* revString = "V1.3_2019_09_03";   // rxf             - Building MAC changed again. Now its identical to 'Feinstaubsensor'
 // const char* revString = "V1.4_2019-09-03";   // rxf              - default config, measurment interval 10min
 // const char* revString = "V1.5_2019-09-11";     // rxf               - added BME280 via I2C
 //                                                                  - Display adapted for Wireless Stick
-//                                                                  - added Lora 
+//                                                                  - added Lora
 // const char* revString = "V1.6_2019-09-13";     // rxf               - rearrangement of files
 //                                                                  - test dip-switch
 //                                                                  - Hardware-Layout V1.3 and lower - OLD Wifi-Kit-32 !
@@ -60,11 +60,11 @@ const char* revString = "V1.7_2019-10-21";     // rxf               - PINs rearr
 #define   Serial_Logging         2  // Log measurement as table via RS232(USB)
 #define   Serial_One_Minute_Log  3  // One Minute logging will be printed via RS232(USB)
 #define   Serial_Statistics_Log  4  // Lists time between two events in us via RS232(USB)
-//       
+//
 // At luftdaten.info predefined counter tubes:
 #define SBM20 "Radiation SBM-20"
 #define SBM19 "Radiation SBM-19"
-#define Si22G "Radiation Si22G"      
+#define Si22G "Radiation Si22G"
 
 // Usable CPU-Types
 // WIFI -> Heltev Wifi Kit 32
@@ -178,19 +178,19 @@ const    unsigned long GMZ_dead_time        = 190;   // Dead Time of the Geiger-
 volatile bool          GMZ_cap_full           = 0;
 volatile unsigned char isr_GMZ_counts         = 0;
          unsigned char counts_before          = 0;
-volatile unsigned long isr_count_timestamp    = millis(); 
+volatile unsigned long isr_count_timestamp    = millis();
 volatile unsigned long isr_count_time_between = micros();
-volatile unsigned int  isr_GMZ_counts_2send   = 0; 
+volatile unsigned int  isr_GMZ_counts_2send   = 0;
 volatile unsigned long isr_count_timestamp_2send= micros();
          unsigned char GMZ_counts             = 0;
          unsigned int  GMZ_counts_2send       = 0;
          unsigned int  accumulated_GMZ_counts = 0;
-         unsigned long count_timestamp        = millis(); 
-         unsigned long count_timestamp_2send  = millis(); 
-         unsigned long last_count_timestamp   = millis(); 
+         unsigned long count_timestamp        = millis();
+         unsigned long count_timestamp_2send  = millis();
+         unsigned long last_count_timestamp   = millis();
          unsigned long last_count_timestamp_2send = millis();
-         unsigned long time_difference        = 1000; 
-         unsigned long accumulated_time       = 0; 		 
+         unsigned long time_difference        = 1000;
+         unsigned long accumulated_time       = 0;
          unsigned char last_GMZ_counts        = 0;
          unsigned char speaker_count          = 0;
               uint32_t HV_pulse_count         = 0;
@@ -198,7 +198,7 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          float         Dose_Rate              = 0.0;
          float         accumulated_Count_Rate = 0.0;
          float         accumulated_Dose_Rate  = 0.0;
-         unsigned long lastMinuteLog          = millis();		 
+         unsigned long lastMinuteLog          = millis();
          unsigned int  lastMinuteLogCounts    = 0;
          unsigned int  lastMinuteLogCountRate = 0;
          unsigned int  current_cpm            = 0;
@@ -225,7 +225,7 @@ int  Serial_Print_Mode      = SERIAL_DEBUG;
 
 extern "C" {
 uint8_t temprature_sens_read();
-}       
+}
 
 //====================================================================================================================================
 // ISRs
@@ -242,9 +242,9 @@ void isr_GMZ_count() {
 
   isr_count_timestamp_us_prev = isr_count_timestamp_us;
   isr_count_timestamp_us      = micros();
-  if ((isr_count_timestamp_us-isr_count_timestamp_us_prev) > GMZ_dead_time){ 
-    // the rest ist only executed if GMZ_dead_time is exeded. 
-    // Reason: Pulses occuring short after an other pulse are false pulses generated by the rising edge on PIN_GMZ_count_INPUT. This 
+  if ((isr_count_timestamp_us-isr_count_timestamp_us_prev) > GMZ_dead_time){
+    // the rest ist only executed if GMZ_dead_time is exeded.
+    // Reason: Pulses occuring short after an other pulse are false pulses generated by the rising edge on PIN_GMZ_count_INPUT. This
     // happens because we don't have an Schmitt-Trigger in this controller pin
     isr_GMZ_counts++;                                     // Count
     isr_count_timestamp       = millis();                 // notice (System)-Time of the Count
@@ -253,8 +253,8 @@ void isr_GMZ_count() {
 
     isr_count_time_between           = isr_count_timestamp_us-isr_count_timestamp_us_prev_used;	// Save for Statistic Debuging
 	  isr_count_timestamp_us_prev_used = isr_count_timestamp_us;
-  } 
-  interrupts();                                        // Re-enable interrupts  
+  }
+  interrupts();                                        // Re-enable interrupts
   digitalWrite(TESTPIN,LOW);
 }
 
@@ -289,7 +289,7 @@ U8X8_SSD1306_64X32_NONAME_HW_I2C u8x8(/* reset=*/ 16, /* clock=*/ 15, /* data=*/
 
 // -- Initial password to connect to the Thing, when it creates an own Access Point.
 const char wifiInitialApPassword[] = "ESP32Geiger";
-const char* theName = "Defaultname fuer die SSID     ";       // 30 chars log !      
+const char* theName = "Defaultname fuer die SSID     ";       // 30 chars log !
 
 DNSServer dnsServer;
 WebServer server(80);
@@ -320,9 +320,9 @@ void setup()
     u8x8.begin();
 
   // set IO-Pins
-  pinMode      (LED_BUILTIN,         OUTPUT);  
-  pinMode      (PIN_HV_FET_OUTPUT  , OUTPUT);    
-  pinMode      (PIN_SPEAKER_OUTPUT_P,OUTPUT); 
+  pinMode      (LED_BUILTIN,         OUTPUT);
+  pinMode      (PIN_HV_FET_OUTPUT  , OUTPUT);
+  pinMode      (PIN_SPEAKER_OUTPUT_P,OUTPUT);
   pinMode      (PIN_SPEAKER_OUTPUT_N,OUTPUT);
   pinMode      (PIN_GMZ_count_INPUT,INPUT);
 
@@ -340,25 +340,25 @@ void setup()
 #endif
   // Initialize Pins
   digitalWrite (PIN_SPEAKER_OUTPUT_P, HIGH);
-  digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW); 
+  digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW);
 
   // set Interrupts (on pin change), attach interrupt handler
   attachInterrupt (digitalPinToInterrupt (PIN_HV_CAP_FULL_INPUT), isr_GMZ_capacitor_full, RISING);// Capacitor full
   attachInterrupt (digitalPinToInterrupt (PIN_GMZ_count_INPUT), isr_GMZ_count, FALLING);          // GMZ pulse detected
 
-  // set and init Serial Communication 
+  // set and init Serial Communication
   if (Serial_Print_Mode != Serial_None) {
     noInterrupts();
     Serial.begin(115200);
     while (!Serial) {};
   }
-  
+
   Serial.printf("Los Gehts! \n");
   uint32_t xx = getESPchipID();
 
   // build SSID
   sprintf(ssid,"ESP32-%d",xx);
-  
+
   // Check, if we have an BME280 connected:
   haveBME280 = bme.begin();
 //  Serial.printf("BME_Status: %d  ID:%0X\n", haveBME280, bme.sensorID());
@@ -386,38 +386,38 @@ void setup()
 
   if (Serial_Print_Mode == Serial_Logging) {
     // Write Header of Table	
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
+    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     Serial.print  ("Simple Arduino Geiger, Version ");
     Serial.println(revString);
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
+    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     Serial.println("GMZ_counts\tTime_difference\tCount_Rate\tDose_Rate\tHV Pulses  \tAccu_GMZ  \tAccu_Time \tAccu_Rate         \tAccu_Dose");
     Serial.println("[Counts]  \t[ms]           \t[cps]     \t[uSv/h]  \t[-]        \t[Counts]  \t[ms]      \t[cps]             \t[uSv/h]");
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
-    interrupts();	  
+    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+    interrupts();
   }
 
   if (Serial_Print_Mode == Serial_One_Minute_Log) {
     // Write Header of Table	
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
+    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     Serial.print  ("Simple Arduino Geiger, Version ");
     Serial.println(revString);
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
+    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     Serial.println("Time\tCounte-Rate\tCounts");
     Serial.println("[sec]\t[cpm]\t[Counts per last measurment]");
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
-    interrupts();	  
+    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+    interrupts();
   }
 
   if (Serial_Print_Mode == Serial_Statistics_Log) {
     // Write Header of Table	
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
+    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     Serial.print  ("Simple Arduino Geiger, Version ");
     Serial.println(revString);
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
+    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     Serial.println("Time between two impacts");
     Serial.println("[usec]");
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
-    interrupts();	  
+    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+    interrupts();
   }
 
 #if SEND2LORA
@@ -425,7 +425,7 @@ void setup()
   lorawan_setup();
 #endif
 
-  // StartScreen 
+  // StartScreen
   DisplayStartscreen();
   displayIsClear = false;
 
@@ -441,11 +441,11 @@ void setup()
 void loop()
 {
   // read out values from ISR
-  noInterrupts();   
+  noInterrupts();
   GMZ_counts     	     = isr_GMZ_counts     ;                    // copy values from ISR
-  count_timestamp	     = isr_count_timestamp;      
+  count_timestamp	     = isr_count_timestamp;
   GMZ_counts_2send     = isr_GMZ_counts_2send;                    // copy values from ISR
-  count_timestamp_2send = isr_count_timestamp_2send;      
+  count_timestamp_2send = isr_count_timestamp_2send;
   interrupts();                                                    // re-enable Interrupts	
 
 /*
@@ -453,7 +453,7 @@ void loop()
  uint8_t temp_farenheit= temprature_sens_read();
   //convert farenheit to celcius
   double temp = ( temp_farenheit - 32 ) / 1.8;
-  
+
   Serial.printf("internal temp [°C]: %.0f\n", temp);
   delay(1000);
 */
@@ -466,22 +466,22 @@ void loop()
   sw[1] = !digitalRead(PIN_SWI_1);
   sw[2] = !digitalRead(PIN_SWI_2);
   sw[3] = !digitalRead(PIN_SWI_3);
-  
+
   // make LED-Flicker and speaker tick
-  if (GMZ_counts != last_GMZ_counts) {  
+  if (GMZ_counts != last_GMZ_counts) {
 //    if(ledTick && sw[LED_ON]) {
       digitalWrite(LED_BUILTIN, HIGH);    // switch on LED
 //    }
-    if(speakerTick && sw[SPEAKER_ON]) {                              
+    if(speakerTick && sw[SPEAKER_ON]) {
       for (speaker_count = 0; speaker_count <= 3; speaker_count++){ // make "Tick"-Sound
-        digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW); 
-        digitalWrite (PIN_SPEAKER_OUTPUT_N, HIGH); 
-        delayMicroseconds(500); 
-        digitalWrite (PIN_SPEAKER_OUTPUT_P, HIGH); 
-        digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW); 
+        digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW);
+        digitalWrite (PIN_SPEAKER_OUTPUT_N, HIGH);
+        delayMicroseconds(500);
+        digitalWrite (PIN_SPEAKER_OUTPUT_P, HIGH);
+        digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW);
         delayMicroseconds(500);	
       }
-    } 
+    }
     if(ledTick & !speakerTick) {
       delay(4);
     }
@@ -493,27 +493,27 @@ void loop()
 
 
 
-  // Check if there are enough pules detected or if enough time has elapsed. If yes than its 
-  // time to charge the HV-capacitor and calculate the pulse rate  
-  if ((GMZ_counts>=100) || ((count_timestamp - last_count_timestamp)>=10000)) {  
+  // Check if there are enough pules detected or if enough time has elapsed. If yes than its
+  // time to charge the HV-capacitor and calculate the pulse rate
+  if ((GMZ_counts>=100) || ((count_timestamp - last_count_timestamp)>=10000)) {
     noInterrupts();
-    isr_GMZ_counts           = 0;   
+    isr_GMZ_counts           = 0;
     interrupts();                                   // initialize ISR values
     time_difference = count_timestamp - last_count_timestamp;          // Calculate all derived values
     last_count_timestamp     = count_timestamp;                        // notice the old timestamp
-    HV_pulse_count           = jb_HV_gen_charge__chargepules();        // Charge HV Capacitor    
+    HV_pulse_count           = jb_HV_gen_charge__chargepules();        // Charge HV Capacitor
     accumulated_time         += time_difference;                       // accumulate all the time
     accumulated_GMZ_counts   += GMZ_counts;                            // accumulate all the pulses
-    lastMinuteLogCounts      += GMZ_counts;  
+    lastMinuteLogCounts      += GMZ_counts;
 
 	  Count_Rate   = (float)GMZ_counts*1000.0/(float)time_difference;    // calculate the current coutrate
     Dose_Rate = Count_Rate *GMZ_factor_uSvph;                          // ... and dose rate
 	
-                                                                       // calculate the radiation over the complete 
+                                                                       // calculate the radiation over the complete
                                                                        // time from start
-  	accumulated_Count_Rate   = (float)accumulated_GMZ_counts*1000.0/(float)accumulated_time; 
+  	accumulated_Count_Rate   = (float)accumulated_GMZ_counts*1000.0/(float)accumulated_time;
     accumulated_Dose_Rate    = accumulated_Count_Rate *GMZ_factor_uSvph;
- 
+
 	  // Write it to the display
     if(showDisplay && sw[ANZEIGE_ON]) {
       DisplayGMZ(((int)accumulated_time/1000), (int)(accumulated_Dose_Rate*1000), (int)(Count_Rate*60));
@@ -528,38 +528,38 @@ void loop()
     }
 	
 
-    if (Serial_Print_Mode == Serial_Logging) {                       // Report all 
+    if (Serial_Print_Mode == Serial_Logging) {                       // Report all
 //      noInterrupts();
-      Serial.print(GMZ_counts, DEC); 
-      Serial.print("\t");    
-      Serial.print(count_timestamp, DEC); 
-      Serial.print("\t");    
-      Serial.print(time_difference, DEC); 
-      Serial.print("\t");    
-      Serial.print(Count_Rate, 2); 
-      Serial.print("\t");    
-      Serial.print(Dose_Rate, 2); 
-      Serial.print("\t");    
-      Serial.print(HV_pulse_count, DEC); 
-      Serial.print("\t");    
-      Serial.print(accumulated_GMZ_counts, DEC); 
-      Serial.print("\t");    
-      Serial.print(accumulated_time, DEC); 
-      Serial.print("\t");    
-      Serial.print(accumulated_Count_Rate, DEC); 
-      Serial.print("\t");    
-      Serial.print(accumulated_Dose_Rate, DEC); 
+      Serial.print(GMZ_counts, DEC);
+      Serial.print("\t");
+      Serial.print(count_timestamp, DEC);
+      Serial.print("\t");
+      Serial.print(time_difference, DEC);
+      Serial.print("\t");
+      Serial.print(Count_Rate, 2);
+      Serial.print("\t");
+      Serial.print(Dose_Rate, 2);
+      Serial.print("\t");
+      Serial.print(HV_pulse_count, DEC);
+      Serial.print("\t");
+      Serial.print(accumulated_GMZ_counts, DEC);
+      Serial.print("\t");
+      Serial.print(accumulated_time, DEC);
+      Serial.print("\t");
+      Serial.print(accumulated_Count_Rate, DEC);
+      Serial.print("\t");
+      Serial.print(accumulated_Dose_Rate, DEC);
       Serial.println();
 //      interrupts();
     }
-    if (Serial_Print_Mode == Serial_One_Minute_Log) {              // 1 Minute Log active?  
+    if (Serial_Print_Mode == Serial_One_Minute_Log) {              // 1 Minute Log active?
       if (millis() > (lastMinuteLog + 60000)){                     // Time for a 1-Minute-Log?
-        noInterrupts();	  
+        noInterrupts();
 		    lastMinuteLogCountRate = ( (lastMinuteLogCounts*60000) / (millis()-lastMinuteLog) );    // = *60 /1000
 		    if( ( ( ( (lastMinuteLogCounts*60000) % (millis()-lastMinuteLog) ) * 2 ) / (millis()-lastMinuteLog) ) >= 1 ) {
 		      lastMinuteLogCountRate++;                                // Rounding
 		    }
-        Serial.print((millis()/1000), DEC); 
+        Serial.print((millis()/1000), DEC);
         Serial.print("\t");
         Serial.print(lastMinuteLogCountRate, DEC);    // = *60 /1000        +0.5: to reduce rounding-errors
         Serial.print("\t");
@@ -571,12 +571,12 @@ void loop()
     }
         GMZ_counts           = 0;                                      // initialize ISR values
   }
- 
-  if ((Serial_Print_Mode == Serial_Statistics_Log) && (counts_before != isr_GMZ_counts)) {              // Statistics Log active?  
-    noInterrupts();	  
+
+  if ((Serial_Print_Mode == Serial_Statistics_Log) && (counts_before != isr_GMZ_counts)) {              // Statistics Log active?
+    noInterrupts();
     Serial.println(isr_count_time_between, DEC);
     counts_before = isr_GMZ_counts;	
-    interrupts();	  
+    interrupts();
   }	
 
   // If there were no Pulses after 3 sec after start,
@@ -595,7 +595,7 @@ void loop()
     toSendTime = millis();
     noInterrupts();
     GMZ_counts_2send     = isr_GMZ_counts_2send;                    // copy values from ISR
-    count_timestamp_2send = isr_count_timestamp_2send;      
+    count_timestamp_2send = isr_count_timestamp_2send;
     isr_GMZ_counts_2send = 0;
     interrupts();                                                    // re-enable Interrupts	
 
@@ -672,9 +672,9 @@ int jb_HV_gen_charge__chargepules() {
     digitalWrite(PIN_HV_FET_OUTPUT, HIGH);              // turn the HV FET on
 	delayMicroseconds(1500);                            // 5000 usec gives 1,3 times more charge, 500 usec gives 1/20 th of charge
     digitalWrite(PIN_HV_FET_OUTPUT, LOW);               // turn the HV FET off
-    delayMicroseconds(1000);	                        
-	chargepules++;                                      
-  }                                                     
+    delayMicroseconds(1000);
+	chargepules++;
+  }
   while ( (chargepules < 1000) && !GMZ_cap_full);       // either Timeout or capacitor full stops this loop
   return chargepules;
 }
@@ -701,12 +701,12 @@ void DisplayStartscreen(void){
   strncpy(&rv[6], &revString[13], 2);
   rv[8] = '\0';
   u8x8.drawString(0, 5, rv);
-#else  
+#else
   // Print the upper Line including Time and measured radation
   u8x8.setFont(u8x8_font_7x14_1x2_f);     // middle size
   // u8x8.setFont(u8x8_font_5x8_f);       // small size
-                                          
-  u8x8.println("Geiger-Counter"); 
+
+  u8x8.println("Geiger-Counter");
   u8x8.println("==============");
   u8x8.println(revString);
   u8x8.println("Info:boehri.de");
@@ -737,8 +737,8 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
 
   sprintf(output, "%7d nSv/h", RadNSvph);
   u8x8.print(output);
-#endif  
- 
+#endif
+
   // Print the lower Line including Time CPM
 #if CPU != STICK
   u8x8.setFont(u8x8_font_inb33_3x6_n);  // big size
@@ -749,7 +749,7 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
   u8x8.draw2x2String(0, 3, nullFill(CPS, 4));
   u8x8.drawString(0, 5, "     cpm");
 #endif
-  
+
 #if CPU != STICK
   // Print 'connecting...' as long as we aren't connected
   if (iotWebConf.getState() != IOTWEBCONF_STATE_ONLINE) {
@@ -793,10 +793,10 @@ void SoundStartsound(){
   jbTone(1174659*freq_factor,    2*time_factor, 1); // D
   delay(                         2*time_factor   ); // ---
   jbTone(1318510*freq_factor,    2*time_factor, 1); // E
-  delay(                         2*time_factor   ); // ---  
+  delay(                         2*time_factor   ); // ---
   jbTone(1479978*freq_factor,    2*time_factor, 1); // Fis
   delay(                         2*time_factor   ); // ---
-  
+
   jbTone(1567982*freq_factor,    4*time_factor, 1); // G
   jbTone(1174659*freq_factor,    2*time_factor, 1); // D
   jbTone(1318510*freq_factor,    2*time_factor, 1); // E
@@ -813,21 +813,21 @@ void SoundStartsound(){
 void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume){
   unsigned int  cycle_time_us, cycle_1_time_us, cycle_2_time_us;
   unsigned long count_timestamp_end;
-    
+
   cycle_time_us   = 1000000000/frequency_mHz;       // calculate all we need
   cycle_1_time_us = cycle_time_us/2;
   cycle_2_time_us = cycle_time_us - cycle_1_time_us;
   count_timestamp_end = millis() + time_ms;
 
   do{
-	digitalWrite (PIN_SPEAKER_OUTPUT_P, (volume==1)); 
-    digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW); 
-    delayMicroseconds(cycle_1_time_us); 
-    digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW); 
-    digitalWrite (PIN_SPEAKER_OUTPUT_N, HIGH); 
+	digitalWrite (PIN_SPEAKER_OUTPUT_P, (volume==1));
+    digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW);
+    delayMicroseconds(cycle_1_time_us);
+    digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW);
+    digitalWrite (PIN_SPEAKER_OUTPUT_N, HIGH);
     delayMicroseconds(cycle_2_time_us);
   }
-  while(millis()<count_timestamp_end);     
+  while(millis()<count_timestamp_end);
   return;
 }
 
@@ -870,7 +870,7 @@ String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bo
 {\"value_type\":\""+temp+"\",\"value\":\""+String(t,2)+"\"},\
 {\"value_type\":\""+humi+"\",\"value\":\""+String(h,2)+"\"},\
 {\"value_type\":\""+press+"\",\"value\":\""+String(p,2)+"\"}\
-]}";                     
+]}";
   if (DEBUG_SERVER_SEND == 1) {
     Serial.println(body);
   }
@@ -878,14 +878,14 @@ String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bo
 }
 
 void sendData2luftdaten(bool sendwhat, int wert, float t, float h, float p) {
-  HTTPClient http;   
+  HTTPClient http;
   String body;
   http.begin(LUFTDATEN);
-  if (sendwhat) {                                 // send SBM data 
+  if (sendwhat) {                                 // send SBM data
     body = buildhttpHeaderandBodySBM(&http,wert,false);
   } else {                                        // send BME data
     body = buildhttpHeaderandBodyBME(&http,t,h,p,false);
-  }  
+  }
   int httpResponseCode = http.POST(body);                   //Send the actual POST request
   if(httpResponseCode>0){
     String response = http.getString();                       //Get the response to the request
@@ -897,20 +897,20 @@ void sendData2luftdaten(bool sendwhat, int wert, float t, float h, float p) {
     Serial.print("Error on sending POST: ");
     Serial.println(httpResponseCode);
   }
-   http.end(); 
+   http.end();
 }
 
 void sendData2madavi(bool sendwhat, int wert, float t, float h, float p) {
-  HTTPClient http;   
+  HTTPClient http;
   String body;
   http.begin(MADAVI);
-  if (sendwhat) {                                 // send SBM data 
+  if (sendwhat) {                                 // send SBM data
     body = buildhttpHeaderandBodySBM(&http,wert,true);
   } else {                                           // send BME data
-if (haveBME280) { 
+if (haveBME280) {
     body = buildhttpHeaderandBodyBME(&http,t,h,p,true);
-}    
-  }  
+}
+  }
   int httpResponseCode = http.POST(body);                   //Send the actual POST request
   if(httpResponseCode>0){
     String response = http.getString();                       //Get the response to the request
@@ -922,20 +922,20 @@ if (haveBME280) {
     Serial.print("Error on sending POST: ");
     Serial.println(httpResponseCode);
   }
-   http.end(); 
+   http.end();
 }
 
 void sendData2toilet(bool sendwhat, int wert, float t, float h, float p) {
-  HTTPClient http;   
+  HTTPClient http;
   String body;
   http.begin(TOILET);
-  if (sendwhat) {                                 // send SBM data 
+  if (sendwhat) {                                 // send SBM data
     body = buildhttpHeaderandBodySBM(&http,wert,false);
   } else {                                           // send BME data
-if (haveBME280) { 
+if (haveBME280) {
     body = buildhttpHeaderandBodyBME(&http,t,h,p,true);
-}    
-  }  
+}
+  }
   int httpResponseCode = http.POST(body);                   //Send the actual POST request
   if(httpResponseCode>0){
     String response = http.getString();                      //Get the response to the request
@@ -947,7 +947,7 @@ if (haveBME280) {
     Serial.print("Error on sending POST: ");
     Serial.println(httpResponseCode);
   }
-   http.end(); 
+   http.end();
 }
 
 #if SEND2LORA
