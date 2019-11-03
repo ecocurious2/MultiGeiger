@@ -1,7 +1,8 @@
 //====================================================================================================================================
-// ***************************************
-// User changable parameters:
-// ***************************************
+// User / hardware specific definitions - do NOT edit THIS (example) file.
+//
+// To use them please copy this file to userdefines.h (do not add that file to version control)
+// and then edit userdefines.h as appropriate for your use case / hardware.
 //====================================================================================================================================
 
 // ** Please uncomment one and only one of following CPU-Defines
