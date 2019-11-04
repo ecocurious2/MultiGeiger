@@ -135,16 +135,16 @@ int PIN_SPEAKER_OUTPUT_N    =   0;
 #endif
 
 // What are the switches good for?
-enum {SPEAKER_ON, ANZEIGE_ON, LED_ON, UNUSED};
+enum {SPEAKER_ON, DISPLAY_ON, LED_ON, UNUSED};
 
 #define TESTPIN 13
 
 #if CPU == STICK
-#define  DISPLAY_ON 25
+#define PIN_DISPLAY_ON 25
 #endif
 
-// Messinteravll (default 10min) [sec]
-#define MESSINTERVAL 60
+// Measurement interval (default 1min) [sec]
+#define MEASUREMENT_INTERVAL 60
 
 // MAX time to wait until connected. After then, meaurement starts but there is no sending to servers  [msec]
 #define MAX_WAIT_TIME 300000
@@ -217,7 +217,7 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          float         h                      = 0.0;
          float         p                      = 0.0;
          float         GMZ_factor_uSvph       = 0.0;
-         String        rohr                   = "";
+         String        tube                   = "";
          char          sw[4]                  = {0,0,0,0};
 
 
@@ -266,12 +266,12 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS);
 void SoundStartsound();
 void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume);
 void DisplayStartscreen(void);
-void sendData2luftdaten(bool sendwhat, int wert, float t=0.0, float h=0.0, float p=0.0);
-void sendData2madavi(bool sendwhat, int wert, float t=0.0, float h=0.0, float p=0.0);
-void sendData2toilet(bool sendwhat, int wert, float t=0.0, float h=0.0, float p=0.0);
-void sendData2TTN(int wert, float t=0.0, float h=0.0, float p=0.0);
+void sendData2luftdaten(bool sendwhat, int radiation_cpm, float t=0.0, float h=0.0, float p=0.0);
+void sendData2madavi(bool sendwhat, int radiation_cpm, float t=0.0, float h=0.0, float p=0.0);
+void sendData2toilet(bool sendwhat, int radiation_cpm, float t=0.0, float h=0.0, float p=0.0);
+void sendData2TTN(int radiation_cpm, float t=0.0, float h=0.0, float p=0.0);
 String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bool addname);
-String buildhttpHeaderandBodySBM(HTTPClient *head, int wert, bool addname);
+String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, bool addname);
 void displayStatusLine(String txt);
 void clearDisplayLine(int line);
 void handleRoot(void);
@@ -289,7 +289,7 @@ U8X8_SSD1306_64X32_NONAME_HW_I2C u8x8(/* reset=*/ 16, /* clock=*/ 15, /* data=*/
 
 // -- Initial password to connect to the Thing, when it creates an own Access Point.
 const char wifiInitialApPassword[] = "ESP32Geiger";
-const char* theName = "Defaultname fuer die SSID     ";       // 30 chars log !
+const char* theName = "Default name for the SSID     ";       // 30 chars long!
 
 DNSServer dnsServer;
 WebServer server(80);
@@ -335,8 +335,8 @@ void setup()
   digitalWrite(TESTPIN, LOW);
 
 #if CPU == STICK
-  pinMode (DISPLAY_ON, OUTPUT);
-  digitalWrite(DISPLAY_ON, HIGH);
+  pinMode (PIN_DISPLAY_ON, OUTPUT);
+  digitalWrite(PIN_DISPLAY_ON, HIGH);
 #endif
   // Initialize Pins
   digitalWrite (PIN_SPEAKER_OUTPUT_P, HIGH);
@@ -353,7 +353,7 @@ void setup()
     while (!Serial) {};
   }
 
-  Serial.printf("Los Gehts! \n");
+  Serial.printf("Let's go!\n");
   uint32_t xx = getESPchipID();
 
   // build SSID
@@ -369,12 +369,12 @@ void setup()
   iotWebConf.init();
 
   // Set up conversion factor to uSv/h according to GM tube type:
-  rohr = ROHRNAME;
-  if (rohr == SBM19) {
+  tube = TUBE_TYPE;
+  if (tube == SBM19) {
     GMZ_factor_uSvph = GMZ_factor_uSvph_SBM19;
-  } else if (rohr == SBM20) {
+  } else if (tube == SBM20) {
     GMZ_factor_uSvph = GMZ_factor_uSvph_SBM20;
-  } else if (rohr == Si22G) {
+  } else if (tube == Si22G) {
     GMZ_factor_uSvph = GMZ_factor_uSvph_Si22G;
   } // else: for unsupported tubes, it will just stay at factor 0.0.
 
@@ -454,7 +454,7 @@ void loop()
   //convert farenheit to celcius
   double temp = ( temp_farenheit - 32 ) / 1.8;
 
-  Serial.printf("internal temp [°C]: %.0f\n", temp);
+  Serial.printf("Internal temperature [°C]: %.0f\n", temp);
   delay(1000);
 */
 
@@ -515,7 +515,7 @@ void loop()
     accumulated_Dose_Rate    = accumulated_Count_Rate *GMZ_factor_uSvph;
 
     // Write it to the display
-    if(showDisplay && sw[ANZEIGE_ON]) {
+    if(showDisplay && sw[DISPLAY_ON]) {
       DisplayGMZ(((int)accumulated_time/1000), (int)(accumulated_Dose_Rate*1000), (int)(Count_Rate*60));
       displayIsClear = false;
     } else {
@@ -589,7 +589,7 @@ void loop()
   }
 
   // Check, if we have to send to luftdaten.info
-  if((millis() - toSendTime) >= (MESSINTERVAL*1000) ) {
+  if((millis() - toSendTime) >= (MEASUREMENT_INTERVAL*1000) ) {
     toSendTime = millis();
     noInterrupts();
     GMZ_counts_2send      = isr_GMZ_counts_2send;                    // copy values from ISR
@@ -604,9 +604,9 @@ void loop()
       t = bme.readTemperature();
       h = bme.readHumidity();
       p = bme.readPressure();
-      Serial.printf("Gemessen: cpm= %d T=%.2f H=%.f P=%.f\n",current_cpm,t,h,p);
+      Serial.printf("Measured: cpm= %d T=%.2f H=%.f P=%.f\n",current_cpm,t,h,p);
     } else {
-      Serial.printf("Gemessen: cpm= %d\n",current_cpm);
+      Serial.printf("Measured: cpm= %d\n",current_cpm);
     }
 
     #if SEND2DUMMY
@@ -620,7 +620,7 @@ void loop()
     #endif
 
     #if SEND2MADAVI
-    Serial.println("sending to madavi ...");
+    Serial.println("Sending to Madavi ...");
     displayStatusLine(F("Madavi"));
     sendData2madavi(true,current_cpm);
     if (haveBME280) {
@@ -630,7 +630,7 @@ void loop()
     #endif
 
     #if SEND2LUFTDATEN
-    Serial.println("sending to luftdaten ...");
+    Serial.println("Sending to Luftdaten ...");
     displayStatusLine(F("Luftdaten"));
     sendData2luftdaten(true,current_cpm);
     if (haveBME280) {
@@ -641,7 +641,7 @@ void loop()
 
     // if we are LoRa, then send datas to TTN
     #if SEND2LORA
-    Serial.println("sending to TTN ...");
+    Serial.println("Sending to TTN ...");
     displayStatusLine(F("TTN"));
     if(haveBME280) {
       sendData2TTN(current_cpm,t,h,p);
@@ -832,18 +832,18 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
 // ===================================================================================================================================
 // Send to Server Subfunctions
 
-String buildhttpHeaderandBodySBM(HTTPClient *head, int wert, boolean addname) {
+String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, boolean addname) {
   head->addHeader("Content-Type", "application/json; charset=UTF-8");
   head->addHeader("X-PIN","19");
   String chipID = String(ssid);
   chipID.replace("ESP32","esp32");
   head->addHeader("X-Sensor",chipID);
   head->addHeader("Connection","close");
-  String valuetype = (addname ? rohr.substring(10)+"_" : "");
+  String valuetype = (addname ? tube.substring(10)+"_" : "");
   valuetype += "counts_per_minute";
   String body = "{\"software_version\":\""+String(revString)+"\",\
   \"sensordatavalues\":[{\"value_type\":\""+valuetype+"\",\
-  \"value\":\""+String(wert)+"\"}]}";                       //Build the actual POST request
+  \"value\":\""+String(radiation_cpm)+"\"}]}";                       //Build the actual POST request
   if (DEBUG_SERVER_SEND == 1) {
     Serial.println(body);
   }
@@ -875,12 +875,12 @@ String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bo
   return body;
 }
 
-void sendData2luftdaten(bool sendwhat, int wert, float t, float h, float p) {
+void sendData2luftdaten(bool sendwhat, int radiation_cpm, float t, float h, float p) {
   HTTPClient http;
   String body;
   http.begin(LUFTDATEN);
   if (sendwhat) {                                 // send SBM data
-    body = buildhttpHeaderandBodySBM(&http,wert,false);
+    body = buildhttpHeaderandBodySBM(&http,radiation_cpm,false);
   } else {                                        // send BME data
     body = buildhttpHeaderandBodyBME(&http,t,h,p,false);
   }
@@ -898,12 +898,12 @@ void sendData2luftdaten(bool sendwhat, int wert, float t, float h, float p) {
   http.end();
 }
 
-void sendData2madavi(bool sendwhat, int wert, float t, float h, float p) {
+void sendData2madavi(bool sendwhat, int radiation_cpm, float t, float h, float p) {
   HTTPClient http;
   String body;
   http.begin(MADAVI);
   if (sendwhat) {                                 // send SBM data
-    body = buildhttpHeaderandBodySBM(&http,wert,true);
+    body = buildhttpHeaderandBodySBM(&http,radiation_cpm,true);
   } else {                                           // send BME data
     if (haveBME280) {
       body = buildhttpHeaderandBodyBME(&http,t,h,p,true);
@@ -923,12 +923,12 @@ void sendData2madavi(bool sendwhat, int wert, float t, float h, float p) {
   http.end();
 }
 
-void sendData2toilet(bool sendwhat, int wert, float t, float h, float p) {
+void sendData2toilet(bool sendwhat, int radiation_cpm, float t, float h, float p) {
   HTTPClient http;
   String body;
   http.begin(TOILET);
   if (sendwhat) {                                 // send SBM data
-    body = buildhttpHeaderandBodySBM(&http,wert,false);
+    body = buildhttpHeaderandBodySBM(&http,radiation_cpm,false);
   } else {                                           // send BME data
     if (haveBME280) {
       body = buildhttpHeaderandBodyBME(&http,t,h,p,true);
@@ -949,14 +949,14 @@ void sendData2toilet(bool sendwhat, int wert, float t, float h, float p) {
 }
 
 #if SEND2LORA
-void sendData2TTN(int wert, float t, float h, float p) {
+void sendData2TTN(int radiation_cpm, float t, float h, float p) {
   unsigned char ttnData[20];
   int cnt;
   // put data for Cayenne
   ttnData[0] = 1;
   ttnData[1] = 0x65;
-  ttnData[2] = wert >> 8;
-  ttnData[3] = wert & 0xFF;
+  ttnData[2] = radiation_cpm >> 8;
+  ttnData[3] = radiation_cpm & 0xFF;
   cnt = 4;
   if (haveBME280) {
     ttnData[4] = 2;

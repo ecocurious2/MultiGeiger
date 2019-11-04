@@ -10,9 +10,9 @@
 //#define CPU STICK
 
 // ** select (uncomment) one counter tube
-//#define ROHRNAME SBM20
-#define ROHRNAME SBM19
-//#define ROHRNAME Si22G
+//#define TUBE_TYPE SBM20
+#define TUBE_TYPE SBM19
+//#define TUBE_TYPE Si22G
 
 // ** select (uncomment) debug level output to serial io (USB)
 //#define   SERIAL_DEBUG Serial_None            // No Serial Printout
