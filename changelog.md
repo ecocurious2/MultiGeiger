@@ -1,6 +1,13 @@
 # Change log  
 This is the change log for the multigeiger project.
 
+### Version 1.9 2019-11-05 
+*   structure for different counter tubes
+*   LoRa payload changed again
+*   hv puls every second
+*   calculate and display cpm value every 10 seconds
+*   fixed div by 0 if there's no tube
+
 ### Version 1.8  2019-11-04  
  * merged pull requests from TW:  
     indentation/spacing, refactor OLED functions, fix conversion factor

@@ -32,9 +32,10 @@
 #define   Serial_Statistics_Log  4  // Lists time between two events in us via RS232(USB)
 //
 // At luftdaten.info predefined counter tubes:
-#define SBM20 "Radiation SBM-20"
-#define SBM19 "Radiation SBM-19"
-#define Si22G "Radiation Si22G"
+#define SBM20 1
+#define SBM19 2
+#define Si22G 3
+
 
 // Usable CPU-Types
 // WIFI -> Heltev Wifi Kit 32
@@ -47,6 +48,9 @@
 // Includes
 //====================================================================================================================================
 #include "userdefines.h"
+#ifndef TUBE_TYPE
+#define TUBE_TYPE 0
+#endif
 //====================================================================================================================================
 #include <Arduino.h>
 #include <U8x8lib.h>
@@ -107,6 +111,9 @@ int PIN_SPEAKER_OUTPUT_N    =   0;
 // What are the switches good for?
 enum {SPEAKER_ON, DISPLAY_ON, LED_ON, UNUSED};
 
+// What to send to luftdaten etc.
+enum {SEND_CPM,SEND_BME};
+
 #define TESTPIN 13
 
 #if CPU == STICK
@@ -128,12 +135,28 @@ enum {SPEAKER_ON, DISPLAY_ON, LED_ON, UNUSED};
 // Config-Version for IoTWebConfig
 #define CONFIG_VERSION "012"
 
+// typedef for geiger tube
+typedef struct {
+  const char* type;                                         // type string for luftdaten.info
+  const char  nbr;                                          // number to be sent by LoRa
+  const float factor;                                       // Factor to calculate µSievert per hour from counts per minute
+} TUBETYPE;
+
+TUBETYPE tubes[] = {
+  {"Radiation unknown",0,1.0},
+  {"Radiation SBM-20",20, 1/2.47},                          //   for SBM20
+  {"Radiation SBM-19",19, 1/9.81888},                       //   for SBM19
+  {"Radiation Si22G",22, 1.0}                               //   for Si22G - XXX FIXME: unknown conversion factor!
+};
+
 //====================================================================================================================================
 // Constants
+/*
 // Factor to calculate µSievert per hour from counts per minute, depending on the GM tube used:
-const float GMZ_factor_uSvph_SBM20 = 1 / 2.47;         //   for SBM20
-const float GMZ_factor_uSvph_SBM19 = 1 / 9.81888;      //   for SBM19
+const float GMZ_factor_uSvph_SBM20 = 1 / 2.47;         
+const float GMZ_factor_uSvph_SBM19 = 1 / 9.81888;      
 const float GMZ_factor_uSvph_Si22G = 1 / 1.0;          //   for Si22G - XXX FIXME: unknown conversion factor!
+*/
 
 const unsigned long GMZ_dead_time = 190;  // Dead Time of the Geiger-Counter. Has to be longer than the complete
                                           // Pulse generated on the Pin PIN_GMZ_count_INPUT [µsec]
@@ -164,6 +187,7 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          unsigned char last_GMZ_counts        = 0;
          unsigned char speaker_count          = 0;
          uint32_t      HV_pulse_count         = 0;
+         unsigned int  hvpulscnt2send         = 0;
          float         Count_Rate             = 0.0;
          float         Dose_Rate              = 0.0;
          float         accumulated_Count_Rate = 0.0;
@@ -175,6 +199,8 @@ volatile unsigned long isr_count_timestamp_2send= micros();
 
          unsigned long toSendTime             = millis();
          unsigned long afterStartTime         = 0;
+         unsigned long time2hvpuls            = millis();
+         unsigned long time2display           = millis();
 
          bool          showDisplay            = SHOW_DISPLAY;
          bool          speakerTick            = SPEAKER_TICK;
@@ -183,11 +209,11 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          bool          displayIsClear         = false;
          char          ssid[30];
          int           haveBME280             = 0;
-         float         t                      = 0.0;
-         float         h                      = 0.0;
-         float         p                      = 0.0;
+         float         bme_temperature        = 0.0;
+         float         bme_humidity           = 0.0;
+         float         bme_pressure           = 0.0;
          float         GMZ_factor_uSvph       = 0.0;
-         String        tube                   = "";
+//         String        tube                   = "";
          char          sw[4]                  = {0,0,0,0};
 
 
@@ -236,12 +262,12 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS);
 void SoundStartsound();
 void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume);
 void DisplayStartscreen(void);
-void sendData2luftdaten(bool sendwhat, int radiation_cpm, float t=0.0, float h=0.0, float p=0.0);
-void sendData2madavi(bool sendwhat, int radiation_cpm, float t=0.0, float h=0.0, float p=0.0);
-void sendData2toilet(bool sendwhat, int radiation_cpm, float t=0.0, float h=0.0, float p=0.0);
-void sendData2TTN(int radiation_cpm, float t=0.0, float h=0.0, float p=0.0);
+void sendData2luftdaten(int sendwhat, unsigned int hvpulses);
+void sendData2madavi(int sendwhat, unsigned int hvpulses);
+void sendData2toilet(int sendwhat, unsigned int hvpulses);
+void sendData2TTN(int sendwhat, unsigned int hvpulses);
 String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bool addname);
-String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, bool addname);
+String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, unsigned int hvpulses, bool addname);
 void displayStatusLine(String txt);
 void clearDisplayLine(int line);
 void handleRoot(void);
@@ -331,7 +357,7 @@ void setup()
 
   // Check, if we have an BME280 connected:
   haveBME280 = bme.begin();
-  //  Serial.printf("BME_Status: %d  ID:%0X\n", haveBME280, bme.sensorID());
+  Serial.printf("BME_Status: %d  ID:%0X\n", haveBME280, bme.sensorID());
 
   // Setup IoTWebConf
   iotWebConf.setConfigSavedCallback(&configSaved);
@@ -339,14 +365,7 @@ void setup()
   iotWebConf.init();
 
   // Set up conversion factor to uSv/h according to GM tube type:
-  tube = TUBE_TYPE;
-  if (tube == SBM19) {
-    GMZ_factor_uSvph = GMZ_factor_uSvph_SBM19;
-  } else if (tube == SBM20) {
-    GMZ_factor_uSvph = GMZ_factor_uSvph_SBM20;
-  } else if (tube == Si22G) {
-    GMZ_factor_uSvph = GMZ_factor_uSvph_Si22G;
-  } // else: for unsupported tubes, it will just stay at factor 0.0.
+    GMZ_factor_uSvph = tubes[TUBE_TYPE].factor;
 
   // -- Set up required URL handlers on the web server.
   server.on("/", handleRoot);
@@ -407,6 +426,7 @@ void setup()
 } // end of setup
 
 // ===================================================================================================================================
+// *************  LOOP  *************************
 // ===================================================================================================================================
 void loop()
 {
@@ -417,16 +437,6 @@ void loop()
   GMZ_counts_2send      = isr_GMZ_counts_2send;                    // copy values from ISR
   count_timestamp_2send = isr_count_timestamp_2send;
   interrupts();                                                    // re-enable Interrupts
-
-/*
-// DEBUG DEBUG DEBUG
- uint8_t temp_farenheit= temprature_sens_read();
-  //convert farenheit to celcius
-  double temp = ( temp_farenheit - 32 ) / 1.8;
-
-  Serial.printf("Internal temperature [°C]: %.0f\n", temp);
-  delay(1000);
-*/
 
   // Loop for IoTWebConf
   iotWebConf.doLoop();
@@ -463,28 +473,42 @@ void loop()
     last_GMZ_counts = GMZ_counts;                              // notice old value
   }
 
+  // Pulse the high voltage at minimum every second
+  #define HVPULSRATE 1000
+  if((millis() - time2hvpuls) >= HVPULSRATE ) {
+    HV_pulse_count = jb_HV_gen_charge__chargepules();       // Charge HV Capacitor - restarts time2hvpusl !
+    hvpulscnt2send += HV_pulse_count;                       // count for sending
+  }
 
-
+  #define DISPLAYREFRESH 10000
+  #define MAXCOUNTS 100
   // Check if there are enough pules detected or if enough time has elapsed. If yes than its
   // time to charge the HV-capacitor and calculate the pulse rate
-  if ((GMZ_counts>=100) || ((count_timestamp - last_count_timestamp)>=10000)) {
+  if ((GMZ_counts >= MAXCOUNTS) || ((millis() - time2display) >= DISPLAYREFRESH )) {
     noInterrupts();
-    isr_GMZ_counts           = 0;
-    interrupts();                                   // initialize ISR values
-    time_difference = count_timestamp - last_count_timestamp;          // Calculate all derived values
-    last_count_timestamp     = count_timestamp;                        // notice the old timestamp
-    HV_pulse_count           = jb_HV_gen_charge__chargepules();        // Charge HV Capacitor
-    accumulated_time         += time_difference;                       // accumulate all the time
-    accumulated_GMZ_counts   += GMZ_counts;                            // accumulate all the pulses
-    lastMinuteLogCounts      += GMZ_counts;
+    isr_GMZ_counts = 0;
+    interrupts();                 
+    time2display = millis();
+    time_difference = count_timestamp - last_count_timestamp; // Calculate all derived values
+    last_count_timestamp = count_timestamp;                 // notice the old timestamp
+    HV_pulse_count = jb_HV_gen_charge__chargepules();       // Charge HV Capacitor
+    hvpulscnt2send += HV_pulse_count;                       // count for sending
+    accumulated_time += time_difference;                    // accumulate all the time
+    accumulated_GMZ_counts += GMZ_counts;                   // accumulate all the pulses
+    lastMinuteLogCounts += GMZ_counts;
 
-    Count_Rate = (float)GMZ_counts*1000.0/(float)time_difference;      // calculate the current coutrate
-    Dose_Rate = Count_Rate *GMZ_factor_uSvph;                          // ... and dose rate
+    Count_Rate = 0;
+    if (time_difference != 0.0) {
+      Count_Rate = (float)GMZ_counts*1000.0/(float)time_difference;  // calculate the current coutrate
+    }
+    Dose_Rate = Count_Rate *GMZ_factor_uSvph;               // ... and dose rate
 
-                                                                       // calculate the radiation over the complete
-                                                                       // time from start
-    accumulated_Count_Rate   = (float)accumulated_GMZ_counts*1000.0/(float)accumulated_time;
-    accumulated_Dose_Rate    = accumulated_Count_Rate *GMZ_factor_uSvph;
+    // calculate the radiation over the complete time from start
+    accumulated_Count_Rate = 0.0;
+    if (accumulated_time != 0) {
+      accumulated_Count_Rate = (float)accumulated_GMZ_counts*1000.0/(float)accumulated_time;
+    }
+    accumulated_Dose_Rate = accumulated_Count_Rate *GMZ_factor_uSvph;
 
     // Write it to the display
     if(showDisplay && sw[DISPLAY_ON]) {
@@ -541,6 +565,18 @@ void loop()
       }
     }
     GMZ_counts = 0;  // initialize ISR values
+
+/*
+// DEBUG DEBUG DEBUG
+ uint8_t temp_farenheit= temprature_sens_read();
+  //convert farenheit to celcius
+  double temp = ( temp_farenheit - 32 ) / 1.8;
+
+  Serial.printf("Internal temperature [°C]: %.0f\n", temp);
+  delay(1000);
+*/
+
+
   }
 
   if ((Serial_Print_Mode == Serial_Statistics_Log) && (counts_before != isr_GMZ_counts)) {              // Statistics Log active?
@@ -560,33 +596,34 @@ void loop()
     }
   }
 
-  // Check, if we have to send to luftdaten.info
+  // Check, if we have to send to luftdaten.info etc.
   if((millis() - toSendTime) >= (MEASUREMENT_INTERVAL*1000) ) {
     toSendTime = millis();
     noInterrupts();
     GMZ_counts_2send      = isr_GMZ_counts_2send;                    // copy values from ISR
     count_timestamp_2send = isr_count_timestamp_2send;
     isr_GMZ_counts_2send = 0;
-    interrupts();                                                    // re-enable Interrupts
-
+    interrupts();     
+    unsigned int hvp = hvpulscnt2send;
+    hvpulscnt2send = 0;
     time_difference = count_timestamp_2send - last_count_timestamp_2send;
     last_count_timestamp_2send = count_timestamp_2send;
     current_cpm = (int)(GMZ_counts_2send*60000/time_difference);
-    if (haveBME280) {
-      t = bme.readTemperature();
-      h = bme.readHumidity();
-      p = bme.readPressure();
-      Serial.printf("Measured: cpm= %d T=%.2f H=%.f P=%.f\n",current_cpm,t,h,p);
+    if (haveBME280) {                                       // read in the BME280 values
+      bme_temperature = bme.readTemperature();
+      bme_humidity = bme.readHumidity();
+      bme_pressure = bme.readPressure();
+      Serial.printf("Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f\n", current_cpm, hvp, bme_temperature, bme_humidity, bme_pressure);
     } else {
-      Serial.printf("Measured: cpm= %d\n",current_cpm);
+      Serial.printf("Measured: cpm= %d HV=%d\n",current_cpm, hvp);
     }
 
     #if SEND2DUMMY
     displayStatusLine(F("Toilet"));
     Serial.println("SENDING TO TOILET");
-    sendData2toilet(true,cpm);
-    if (haveBME280) {
-      sendData2toilet(false,0,t,h,p);
+    sendData2http(TOILET,SEND_CPM,hvp,true);
+    if(haveBME280) {
+      sendData2http(TOILET,SEND_BME,hvp,true);
     }
     delay(300);
     #endif
@@ -594,9 +631,9 @@ void loop()
     #if SEND2MADAVI
     Serial.println("Sending to Madavi ...");
     displayStatusLine(F("Madavi"));
-    sendData2madavi(true,current_cpm);
-    if (haveBME280) {
-      sendData2madavi(false,0,t,h,p);
+    sendData2http(MADAVI,SEND_CPM,hvp,false);
+    if(haveBME280) {
+      sendData2http(MADAVI,SEND_BME,hvp,false);
     }
     delay(300);
     #endif
@@ -604,9 +641,9 @@ void loop()
     #if SEND2LUFTDATEN
     Serial.println("Sending to Luftdaten ...");
     displayStatusLine(F("Luftdaten"));
-    sendData2luftdaten(true,current_cpm);
-    if (haveBME280) {
-      sendData2luftdaten(false,0,t,h,p);
+    sendData2http(LUFTDATEN,SEND_CPM,hvp,false);
+    if(haveBME280) {
+      sendData2http(LUFTDATEN,SEND_BME,hvp,false);
     }
     delay(300);
     #endif
@@ -615,10 +652,9 @@ void loop()
     #if SEND2LORA
     Serial.println("Sending to TTN ...");
     displayStatusLine(F("TTN"));
+    sendData2TTN(SEND_CPM,hvp);
     if(haveBME280) {
-      sendData2TTN(current_cpm,t,h,p);
-    } else {
-      sendData2TTN(current_cpm);
+      sendData2TTN(SEND_BME,hvp);
     }
     #endif
 
@@ -646,6 +682,7 @@ int jb_HV_gen_charge__chargepules() {
     chargepules++;
   }
   while ( (chargepules < 1000) && !GMZ_cap_full);       // either Timeout or capacitor full stops this loop
+  time2hvpuls = millis();                               // we just pulsed, so restart timer
   return chargepules;
 }
 
@@ -804,25 +841,32 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
 // ===================================================================================================================================
 // Send to Server Subfunctions
 
-String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, boolean addname) {
+String buildhttpHeaderandBodySBM(HTTPClient *head, unsigned int hvpulse, boolean addname, bool debug) {
   head->addHeader("Content-Type", "application/json; charset=UTF-8");
   head->addHeader("X-PIN","19");
   String chipID = String(ssid);
   chipID.replace("ESP32","esp32");
   head->addHeader("X-Sensor",chipID);
   head->addHeader("Connection","close");
-  String valuetype = (addname ? tube.substring(10)+"_" : "");
+  String tubetype = tubes[TUBE_TYPE].type;
+  tubetype = tubetype.substring(10);
+  String valuetype = (addname ? tubetype+"_" : "");
   valuetype += "counts_per_minute";
-  String body = "{\"software_version\":\""+String(revString)+"\",\
-  \"sensordatavalues\":[{\"value_type\":\""+valuetype+"\",\
-  \"value\":\""+String(radiation_cpm)+"\"}]}";                       //Build the actual POST request
+  String body = "{\"sensordatavalues\":[";
+  body += "{\"value_type\":\""+valuetype+"\",\"value\":\""+current_cpm+"\"}";
+  if (debug) {
+    body += ",{\"value_type\":\"hv_pulses\",\"value\":\""+String(hvpulse)+"\"},";
+    body += ",{\"value_type\":\"tube\",\"value\":\""+tubetype+"\"},";
+    body += ",{\"value_type\":\"software_version\",\"value\":\"V"+String(SOFTWARE_VERSION)+"\"}";
+  }
+  body += "]}";            
   if (DEBUG_SERVER_SEND == 1) {
     Serial.println(body);
   }
   return body;
 }
 
-String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, boolean addname) {
+String buildhttpHeaderandBodyBME(HTTPClient *head, boolean addname, bool debug) {
   head->addHeader("Content-Type", "application/json; charset=UTF-8");
   head->addHeader("X-PIN","11");
   String chipID = String(ssid);
@@ -835,11 +879,10 @@ String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bo
   humi += "humidity";
   String press = (addname ? "BME280_" : "");
   press += "pressure";
-  String body = "{\"software_version\":\""+String(revString)+"\",\
-  \"sensordatavalues\":[\
-{\"value_type\":\""+temp+"\",\"value\":\""+String(t,2)+"\"},\
-{\"value_type\":\""+humi+"\",\"value\":\""+String(h,2)+"\"},\
-{\"value_type\":\""+press+"\",\"value\":\""+String(p,2)+"\"}\
+  String body = "{\"sensordatavalues\":[\
+{\"value_type\":\""+temp+"\",\"value\":\""+String(bme_temperature,2)+"\"},\
+{\"value_type\":\""+humi+"\",\"value\":\""+String(bme_humidity,2)+"\"},\
+{\"value_type\":\""+press+"\",\"value\":\""+String(bme_pressure,2)+"\"}\
 ]}";
   if (DEBUG_SERVER_SEND == 1) {
     Serial.println(body);
@@ -847,21 +890,22 @@ String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bo
   return body;
 }
 
-void sendData2luftdaten(bool sendwhat, int radiation_cpm, float t, float h, float p) {
+void sendData2http(const char* host, int sendwhat, unsigned int hvpulse, bool debug) {
   HTTPClient http;
   String body;
-  http.begin(LUFTDATEN);
-  if (sendwhat) {                                 // send SBM data
-    body = buildhttpHeaderandBodySBM(&http,radiation_cpm,false);
-  } else {                                        // send BME data
-    body = buildhttpHeaderandBodyBME(&http,t,h,p,false);
+  http.begin(host);
+  if (sendwhat == SEND_CPM) {                               // send SBM data
+    body = buildhttpHeaderandBodySBM(&http,hvpulse,false,debug);
+  } 
+  if (sendwhat == SEND_BME) {                        // send BME data
+    body = buildhttpHeaderandBodyBME(&http,false,debug);
   }
   int httpResponseCode = http.POST(body);                   //Send the actual POST request
   if(httpResponseCode>0){
-    String response = http.getString();                       //Get the response to the request
+    String response = http.getString();                     //Get the response to the request
     if (DEBUG_SERVER_SEND == 1) {
-      Serial.println(httpResponseCode);   //Print return code
-      Serial.println(response);           //Print request answer
+      Serial.println(httpResponseCode);                     //Print return code
+      Serial.println(response);                             //Print request answer
     }
   } else {
     Serial.print("Error on sending POST: ");
@@ -870,80 +914,37 @@ void sendData2luftdaten(bool sendwhat, int radiation_cpm, float t, float h, floa
   http.end();
 }
 
-void sendData2madavi(bool sendwhat, int radiation_cpm, float t, float h, float p) {
-  HTTPClient http;
-  String body;
-  http.begin(MADAVI);
-  if (sendwhat) {                                 // send SBM data
-    body = buildhttpHeaderandBodySBM(&http,radiation_cpm,true);
-  } else {                                           // send BME data
-    if (haveBME280) {
-      body = buildhttpHeaderandBodyBME(&http,t,h,p,true);
-    }
-  }
-  int httpResponseCode = http.POST(body);                   //Send the actual POST request
-  if(httpResponseCode>0){
-    String response = http.getString();                       //Get the response to the request
-    if (DEBUG_SERVER_SEND == 1) {
-      Serial.println(httpResponseCode);   //Print return code
-      Serial.println(response);           //Print request answer
-    }
-  } else {
-    Serial.print("Error on sending POST: ");
-    Serial.println(httpResponseCode);
-  }
-  http.end();
-}
-
-void sendData2toilet(bool sendwhat, int radiation_cpm, float t, float h, float p) {
-  HTTPClient http;
-  String body;
-  http.begin(TOILET);
-  if (sendwhat) {                                 // send SBM data
-    body = buildhttpHeaderandBodySBM(&http,radiation_cpm,false);
-  } else {                                           // send BME data
-    if (haveBME280) {
-      body = buildhttpHeaderandBodyBME(&http,t,h,p,true);
-    }
-  }
-  int httpResponseCode = http.POST(body);                   //Send the actual POST request
-  if(httpResponseCode>0){
-    String response = http.getString();                      //Get the response to the request
-    if (DEBUG_SERVER_SEND == 1) {
-      Serial.println(httpResponseCode);   //Print return code
-      Serial.println(response);           //Print request answer
-    }
-  } else {
-    Serial.print("Error on sending POST: ");
-    Serial.println(httpResponseCode);
-  }
-  http.end();
-}
-
+// LoRa payload:
+// to minimise airtime, we only send necessary bytes. We do NOT use Cayenne LPP.
+// The payload will be translated via http integration and a small python program
+// to be compatible with luftdaten.info. For byte definitions see ttn2luft.pdf in
+// docs directory
 #if SEND2LORA
-void sendData2TTN(int radiation_cpm, float t, float h, float p) {
+void sendData2TTN(int sendwhat, unsigned int hvpulses) {
   unsigned char ttnData[20];
   int cnt;
-  // put data for Cayenne
-  ttnData[0] = 1;
-  ttnData[1] = 0x65;
-  ttnData[2] = radiation_cpm >> 8;
-  ttnData[3] = radiation_cpm & 0xFF;
-  cnt = 4;
+  if(sendwhat == SEND_CPM) {
+  // first two byte are the cpm
+  ttnData[0] = current_cpm >> 8;
+  ttnData[1] = current_cpm & 0xFF;
+  // next two bytes are the number of HV pulses
+  ttnData[2] = hvpulses >> 8;
+  ttnData[3] = hvpulses & 0xFF;
+  // next byte is the tube version
+  ttnData[4] = tubes[TUBE_TYPE].nbr;
+  Serial.println(ttnData[4]);
+  // and last is software version
+  ttnData[5] = SOFTWARE_VERSION;
+  cnt = 6;
   lorawan_send(1,ttnData,cnt,false,NULL,NULL,NULL);
-  if (haveBME280) {
-    ttnData[0] = 2;
-    ttnData[1] = 0x67;
-    ttnData[2] = ((int)(t*10)) >> 8;
-    ttnData[3] = ((int)(t*10)) & 0xFF;
-    ttnData[4] = 3;
-    ttnData[5] = 0x68;
-    ttnData[6] = (int)(h*2);
-    ttnData[7] = 4;
-    ttnData[8] = 0x73;
-    ttnData[9] = ((int)(p/10)) >> 8;
-    ttnData[10] = ((int)(p/10)) & 0xFF;
-    cnt = 11;
+  };
+  if(sendwhat == SEND_BME) {
+    ttnData[0] = ((int)(bme_temperature*10)) >> 8;
+    ttnData[1] = ((int)(bme_temperature*10)) & 0xFF;
+    ttnData[2] = (int)(bme_humidity*2);
+    ttnData[3] = ((int)(bme_pressure/10)) >> 8;
+    ttnData[4] = ((int)(bme_pressure/10)) & 0xFF;
+    cnt = 5;
     lorawan_send(2,ttnData,cnt,false,NULL,NULL,NULL);
   }
 }

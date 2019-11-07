@@ -16,28 +16,35 @@ Klingt das interessant für Dich? Dann mach mit, herzliche Einladung!
 
 ## Installation
 Das Verzeichnis clonen oder als .zip runterladen und entpacken. Mit der Arduino-IDE in dem neuen Verzeichnis die Datei *multigeiger.ino* im Verzeichnis *multigeiger* öffnen.   
-Der aktuelle **master**-Branch (Version 1.7) ist für die Hardware-Version 1.4 (steht unten auf der Platine).  
+Der aktuelle **master**-Branch in GitHub ist für die Hardware-Version 1.4 (steht unten auf der Platine).  
 Die Platine ist für zwei verschiedene Heltec-Bausteine vorgesehen, die Software passt für beide und muss entsprechend eingestellt werden:  
+
+Die Umschaltung zwischen den beiden Hardware-Versionen geschieht über die Datei **userdefines.h** und (bei platformio) zusätzlich auch über die Datei **platformio.ini**. Beide Dateien sind **nicht** auf GitHub enthalten, sondern jeweils nur die Muster **userdefines-example.h** und **platformio-example.ini**. Diese beiden Dateien müssen also kopiert werden: **userdefines-example.h** nach **userdefines.h** und **platformio-example.ini** nach **platformio.ini**.     
+Änderungen und Einstellungen dann **nur** in den neuen Dateien machen!
 
  * **Heltec WiFi Kit 32**  
 Diese MCU hat ein großes Display und WiFi. Auf dem Board wird dieser Baustein in die längeren Buchsenleisten gesteckt. Für die Arduino-IDE ist als Board der **Heltec WiFi Kit 32** einzustellen, in der Datei *userdefs.h* muss **#define CPU WIFI** entkommentiert werden (die anderen CPU-defines werden auskommentiert).   
-Für Platfomio ist in *platformio.ini* ganz oben **default_envs = stick** einzustellen. In *userdefs.h* ist (wie bei Arduino-IDE) das **#define CPU WIFI** zu entkommentieren.
+Für Platfomio ist in *platformio.ini* ganz oben **default_envs = wifi** einzustellen. In *userdefs.h* ist (wie bei Arduino-IDE) das **#define CPU WIFI** zu entkommentieren.
+
  * **Heltec Wireless Stick**  
 Diese Board hat ein sehr kleines Display, dafür aber zusätzlich zu WiFi noch LoRa. Es wird in die kürzeren Buchsenleisten gesteckt. Für die Arduino-IDE muss als Board **Heltec Wireless Stick** eingestellt werden. In *userdefs.h* wird nun das **#define CPU STICK** entkommentiert, die anderen mit Kommentarzeichen versehen).  
-Für Platfomio ist in *platformio.ini* ganz oben **default_envs = wifi** einzustellen. In *userdefs.h* gleich wie bei der Arduino-IDE.  
-Zusätzlich muss in *userdefs.h* eingestellt werden, dass zu **TTN** gesendet werden soll. Dazu **#define SENDT2ORA 1** anstelle von 0 einstellen. Die anderen beiden können (SEND2MADAVI und SEND2LUFTDATEN) können entweder auf 1 bleiben (dann wird auch dahin gesendet) oder auf 0 gesetzt werden (siehe weiter unten).  
+Für Platfomio ist *platformio.ini*  ganz oben **default_envs = stick** einzustellen. In *userdefs.h* gleich wie bei der Arduino-IDE.  
+Zusätzlich muss in *userdefs.h* eingestellt werden, dass zu **TTN** gesendet werden soll. Dazu **#define SENDT2ORA 1** anstelle von 0 einstellen. Die anderen beiden können (SEND2MADAVI und SEND2LUFTDATEN) entweder auf 1 bleiben (dann wird auch dahin gesendet) oder auf 0 gesetzt werden (siehe weiter unten).  
 Die **LoRa**-Credentials werden in der Datei *lorawan.cpp* ab Zeile 65 eingetragen.
 
 
 Als externe Libraries werden benötigt:   
 
- * U8g2 von Oliver, aktuelle Version 2.16.4  
+ * U8g2 von Oliver, aktuelle Version 2.16.14  
  * Adafruit BME280 Library Version 1.0.7  
  * Adafruit Unified Sensor Version 1.02  
+
+für LoRa zusätzlich:
+ * MCCI LoRaWAN LMIC library Version 2.3.2
+
 Falls der Compiler andere Libraries anmahnt, diese bitte in der Arduino IDE per *Sketch -> Include Library -> Manage Libraries ..* installieren. 
 
- 
-In dem Sourcecode ( in der Datei **userdefines.h**) können vor dem Übersetzen noch folgende Grundeinstellungen gemacht werden:
+Zum einstellen von diversen Parametern ist die Datei **userdefines-example.h** vorgesehen. Diese Datei bitte unbedingt nach **userdefines.h** kopieren und *nur* in **userdefines.h** dann die folgenden Einstellungen machen:
  * **#define CPU**  
 Eine der drei mögliche CPUs durch auskommentieren auswählen.
  * **#define ROHRNAHME**  
@@ -89,7 +96,8 @@ Diese hat die folgenden 4 Zeilen:
  Hier muss nun die SSID des eigenen WLANs eingegeben werden.
  * WiFi password
  Und hier das zugehörige Passwort.
- 
+
+Es wird empfohlen, bei dem eigene WLAN das Gastnetz zu verwenden (falls ein solches existiert). Normalerweise wird das Gastnetz im Router vom normalen Netz abgeschottet und ist damit sicherer.    
 Ist alles eingegeben, kann man auf **Apply** drücken. Nun werden die eingestellten Daten übernommen und in das interne EEPROM gespeichert. Nun bitte **unbedingt** über **Abbrechen** diese Seite verlassen! Nur dann verlässt das Programm den Config-Mode und verbindet sich mit dem heimischen WLAN. Wenn es kein **Abbrechen** gibt, dann wieder zurück in die WLAN-Einstellungen des Gerätes gehen und da dann das normale Heim-Netzwerk wieder einstellen.
 
 ## Server
