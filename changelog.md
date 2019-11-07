@@ -1,6 +1,18 @@
 # Change log  
 This is the change log for the multigeiger project.
 
+### Version 1.8  2019-11-04  
+ * merged pull requests from TW:  
+    indentation/spacing, refactor OLED functions, fix conversion factor
+ * MEASUREMENT_INTERVAL 150sec
+ * changed LoRa payload
+
+### Version 1.7 2019-10-21
+ * PINs rearranged, so we can use new Wifi-Kit-32 and
+ * WiFi Stick Light
+ * Hardware-Layout V1.4 and up
+ * use switch for speaker tick and display off
+
 ### Version 1.61 2019-09-30
  * default measuring interval is now 2.5min 
   

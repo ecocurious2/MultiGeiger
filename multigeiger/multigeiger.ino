@@ -21,37 +21,7 @@
 //   - https://www.hackerspace-ffm.de/wiki/index.php?title=Heltec_Wifi_LoRa_32
 //
 //
-// Revision History:
-//const char* revString = "2019_03_25";   // Juergen Boehringer      - Version 1 for ESP32-Board
-//const char* revString = "2019_04_26";   // Juergen Boehringer      - added 1 Minute RS232-Logging-Mode
-//const char* revString = "2019_05_12";   // Juergen Boehringer      - Added Bugfix for the "Double-Trigger-Problem". This was caused
-//                                                                   by the rising edge falsly triggering an other pulse recording.
-//                                                                   The Problem is that there is no Schmitt-Trigger available in the
-//                                                                   Controller
-//                                                                 - simplified serial printing modes
-//                                                                 - made seconds in Display as inverse to be able to seperate it from
-//                                                                   minutes
-//                                                                 - cleaned up the code
-//                                                                 - Fixed Overflow-Bug in Minute-Count
-// const char* revString = "V1.0_2019_08_19";   // rxf             - added detection of LoRa-Device
-//                                                                 - WiFiManager to enter WLAN data and other configs
-//                                                                 - send to luftdaten.info every 2.5 min
-// const char* revString = "V1.1_2019_09_01";   // rxf              - build SSID out of MAC corrected: first 3 Byte of MAC build SSID
-//                                                                 - IoTWebConfig: setter for thingName added; lib moved into local source path
-//                                                                 - LoRa autodetection removed
-// const char* revString = "V1.2_2019_09_02";   // rxf             - sending to madavi corrected
-// const char* revString = "V1.3_2019_09_03";   // rxf             - Building MAC changed again. Now its identical to 'Feinstaubsensor'
-// const char* revString = "V1.4_2019-09-03";   // rxf              - default config, measurment interval 10min
-// const char* revString = "V1.5_2019-09-11";     // rxf               - added BME280 via I2C
-//                                                                  - Display adapted for Wireless Stick
-//                                                                  - added Lora
-// const char* revString = "V1.6_2019-09-13";     // rxf               - rearrangement of files
-//                                                                  - test dip-switch
-//                                                                  - Hardware-Layout V1.3 and lower - OLD Wifi-Kit-32 !
-const char* revString = "V1.7_2019-10-21";     // rxf               - PINs rearranged, so we can use new Wifi-Kit-32 and
-//                                                                    WiFi Stick Light
-//                                                                  - Hardware-Layout V1.4 and up
-//                                                                  - use switch for speaker tick and display off
+#include "version.h"
 
 // Fix Parameters
 // Possible Values for Serial_Print_Mode  ! DONT TOUCH !
@@ -143,8 +113,8 @@ enum {SPEAKER_ON, DISPLAY_ON, LED_ON, UNUSED};
 #define PIN_DISPLAY_ON 25
 #endif
 
-// Measurement interval (default 1min) [sec]
-#define MEASUREMENT_INTERVAL 60
+// Measurement interval (default 2.5min) [sec]
+#define MEASUREMENT_INTERVAL 150
 
 // MAX time to wait until connected. After then, meaurement starts but there is no sending to servers  [msec]
 #define MAX_WAIT_TIME 300000
@@ -469,9 +439,10 @@ void loop()
 
   // make LED-Flicker and speaker tick
   if (GMZ_counts != last_GMZ_counts) {
-//    if(ledTick && sw[LED_ON]) {
+    if(ledTick && sw[LED_ON]) {
       digitalWrite(LED_BUILTIN, HIGH);    // switch on LED
-//    }
+    }
+
     if(speakerTick && sw[SPEAKER_ON]) {
       for (speaker_count = 0; speaker_count <= 3; speaker_count++) {  // make "Tick"-Sound
         digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW);
@@ -482,6 +453,7 @@ void loop()
         delayMicroseconds(500);
       }
     }
+
     if(ledTick & !speakerTick) {
       delay(4);
     }
@@ -713,10 +685,10 @@ void DisplayStartscreen(void){
 
 // ===================================================================================================================================
 void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
-  char output[80];
   u8x8.clear();
 
 #if CPU != STICK
+  char output[80];
   int TimeMin = TimeSec / 60;             // calculate number of minutes
   if(TimeMin >=999 ) TimeMin=999;         // limit minutes to max. 999
 
@@ -958,24 +930,24 @@ void sendData2TTN(int radiation_cpm, float t, float h, float p) {
   ttnData[2] = radiation_cpm >> 8;
   ttnData[3] = radiation_cpm & 0xFF;
   cnt = 4;
-  if (haveBME280) {
-    ttnData[4] = 2;
-    ttnData[5] = 0x67;
-    ttnData[6] = ((int)(t*10)) >> 8;
-    ttnData[7] = ((int)(t*10)) & 0xFF;
-    ttnData[8] = 3;
-    ttnData[9] = 0x68;
-    ttnData[10] = (int)(h*2);
-    ttnData[11] = 4;
-    ttnData[12] = 0x73;
-    ttnData[13] = ((int)(p/10)) >> 8;
-    ttnData[14] = ((int)(p/10)) & 0xFF;
-    cnt = 15;
-  }
   lorawan_send(1,ttnData,cnt,false,NULL,NULL,NULL);
+  if (haveBME280) {
+    ttnData[0] = 2;
+    ttnData[1] = 0x67;
+    ttnData[2] = ((int)(t*10)) >> 8;
+    ttnData[3] = ((int)(t*10)) & 0xFF;
+    ttnData[4] = 3;
+    ttnData[5] = 0x68;
+    ttnData[6] = (int)(h*2);
+    ttnData[7] = 4;
+    ttnData[8] = 0x73;
+    ttnData[9] = ((int)(p/10)) >> 8;
+    ttnData[10] = ((int)(p/10)) & 0xFF;
+    cnt = 11;
+    lorawan_send(2,ttnData,cnt,false,NULL,NULL,NULL);
+  }
 }
 #endif
-
 
 /**
  * Handle web requests to "/" path.
