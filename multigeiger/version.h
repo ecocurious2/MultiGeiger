@@ -1,9 +1,17 @@
 // Revision history:
 
-const char* revString = "V1.8_2019-11-04";
+const char* revString = "V1.9_2019-11-12";
+#define SOFTWARE_VERSION 19
 
 /*
 * Version date        author
+*
+* V1.9    2019-11-05  rxf 
+*   - structure for different counter tubes
+*   - LoRa payload changed again
+*   - hv puls every second
+*   - calculate and display cpm value every 10 seconds
+*   - fixed div by 0 if there's no tube
 *
 * V1.8    2019-11-04  rxf 
 *   - merged pull requests from TW:
