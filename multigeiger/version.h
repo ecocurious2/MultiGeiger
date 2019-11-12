@@ -1,6 +1,6 @@
 // Revision history:
 
-const char* revString = "V1.9_2019-11-07";
+const char* revString = "V1.9_2019-11-12";
 #define SOFTWARE_VERSION 19
 
 /*

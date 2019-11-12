@@ -24,12 +24,12 @@ Die Umschaltung zwischen den beiden Hardware-Versionen geschieht über die Datei
 
  * **Heltec WiFi Kit 32**  
 Diese MCU hat ein großes Display und WiFi. Auf dem Board wird dieser Baustein in die längeren Buchsenleisten gesteckt. Für die Arduino-IDE ist als Board der **Heltec WiFi Kit 32** einzustellen, in der Datei *userdefs.h* muss **#define CPU WIFI** entkommentiert werden (die anderen CPU-defines werden auskommentiert).   
-Für Platfomio ist in *platformio.ini* ganz oben **default_envs = wifi** einzustellen. In *userdefs.h* ist (wie bei Arduino-IDE) das **#define CPU WIFI** zu entkommentieren.
+Für Platformio ist in *platformio.ini* ganz oben **default_envs = wifi** einzustellen. In *userdefs.h* ist (wie bei Arduino-IDE) das **#define CPU WIFI** zu entkommentieren.
 
  * **Heltec Wireless Stick**  
 Diese Board hat ein sehr kleines Display, dafür aber zusätzlich zu WiFi noch LoRa. Es wird in die kürzeren Buchsenleisten gesteckt. Für die Arduino-IDE muss als Board **Heltec Wireless Stick** eingestellt werden. In *userdefs.h* wird nun das **#define CPU STICK** entkommentiert, die anderen mit Kommentarzeichen versehen).  
-Für Platfomio ist *platformio.ini*  ganz oben **default_envs = stick** einzustellen. In *userdefs.h* gleich wie bei der Arduino-IDE.  
-Zusätzlich muss in *userdefs.h* eingestellt werden, dass zu **TTN** gesendet werden soll. Dazu **#define SENDT2ORA 1** anstelle von 0 einstellen. Die anderen beiden können (SEND2MADAVI und SEND2LUFTDATEN) entweder auf 1 bleiben (dann wird auch dahin gesendet) oder auf 0 gesetzt werden (siehe weiter unten).  
+Für Platformio ist *platformio.ini*         ganz oben **default_envs = stick** einzustellen. In *userdefs.h* gleich wie bei der Arduino-IDE.  
+Zusätzlich muss in *userdefs.h* eingestellt werden, dass zu **TTN** gesendet werden soll. Dazu **#define SEND2LORA 1** anstelle von 0 einstellen. Die anderen beiden können (SEND2MADAVI und SEND2LUFTDATEN) entweder auf 1 bleiben (dann wird auch dahin gesendet) oder auf 0 gesetzt werden (siehe weiter unten).  
 Die **LoRa**-Credentials werden in der Datei *lorawan.cpp* ab Zeile 65 eingetragen.
 
 
@@ -128,7 +128,7 @@ Dann das Formular ausfüllen:
  * Position  
  Hier bitte die Koordinaten eingeben, so genau wie möglich (oder über den rechten Knopf die Koordinaten rechnen lassen). Dies wird benötigt, um den Sensor später auf der Karte anzeigen zu können.
 
- Nun mit *Einstellungen speichern* das Ganze beenden. Dann auf der Übersichts-Seite  bei diesem Sensor auf *Daten* klicken. Nun steht hinter *Sensor ID* die ID des Sensors. Diese bitte merken: sie wird für die Abfrage bei luftdaten.info bzw. bei der Anzeige auf https://geiger.rexfue.de benötigt (zur Zeit heißt das noch https://test1.rexfue.de und ist laufend in Arbeit - kann also ab und zu ausfallen :wink: )
+ Nun mit *Einstellungen speichern* das Ganze beenden. Dann auf der Übersichts-Seite  bei diesem Sensor auf *Daten* klicken. Nun steht hinter *Sensor ID* die ID des Sensors. Diese bitte merken: sie wird für die Abfrage bei luftdaten.info bzw. bei der Anzeige auf https://multigeiger.rexfue.de benötigt (zur Zeit ist dan noch laufend in Arbeit - kann also ab und zu ausfallen :wink: )
 
 
 

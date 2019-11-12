@@ -1,5 +1,20 @@
 //====================================================================================================================================
-// Project:     Simple Arduino Geiger
+// Project:     Simple Multi-Geiger
+//
+// This program is free software: you can redistribute it and/or modify 
+// it under the terms of the GNU General Public License as published by 
+// the Free Software Foundation, either version 3 of the License, or    
+// (at your option) any later version.                                  
+//                                                                      
+// This program is distributed in the hope that it will be useful,      
+// but WITHOUT ANY WARRANTY; without even the implied warranty of       
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        
+// GNU General Public License for more details.                         
+//                                                                      
+// You should have received a copy of the GNU General Public License    
+// along with this program. If not, see <http://www.gnu.org/licenses/>. 
+//   
+//                                                                   
 // Description: With minimal exteral Components you are able to build a Geiger Counter that:
 //   - is precice
 //   - cheap
@@ -48,9 +63,9 @@
 // Includes
 //====================================================================================================================================
 #include "userdefines.h"
-#ifndef TUBE_TYPE
-#define TUBE_TYPE 0
-#endif
+//#ifndef TUBE_TYPE
+//#define TUBE_TYPE 0
+//#endif
 //====================================================================================================================================
 #include <Arduino.h>
 #include <U8x8lib.h>
@@ -130,7 +145,7 @@ enum {SEND_CPM,SEND_BME};
 #define AFTERSTART 5000
 
 // Dummy server for debugging
-#define SEND2DUMMY 0
+#define SEND2DUMMY 1
 
 // Config-Version for IoTWebConfig
 #define CONFIG_VERSION "012"
@@ -139,25 +154,18 @@ enum {SEND_CPM,SEND_BME};
 typedef struct {
   const char* type;                                         // type string for luftdaten.info
   const char  nbr;                                          // number to be sent by LoRa
-  const float factor;                                       // Factor to calculate µSievert per hour from counts per minute
+  const float cps_to_uSvph;                                 // Factor to calculate µSievert per hour from counts per second
 } TUBETYPE;
 
 TUBETYPE tubes[] = {
   {"Radiation unknown",0,1.0},
   {"Radiation SBM-20",20, 1/2.47},                          //   for SBM20
   {"Radiation SBM-19",19, 1/9.81888},                       //   for SBM19
-  {"Radiation Si22G",22, 1.0}                               //   for Si22G - XXX FIXME: unknown conversion factor!
+  {"Radiation Si22G",22, 0.0}                               //   for Si22G - XXX FIXME: unknown conversion factor!
 };
 
 //====================================================================================================================================
 // Constants
-/*
-// Factor to calculate µSievert per hour from counts per minute, depending on the GM tube used:
-const float GMZ_factor_uSvph_SBM20 = 1 / 2.47;         
-const float GMZ_factor_uSvph_SBM19 = 1 / 9.81888;      
-const float GMZ_factor_uSvph_Si22G = 1 / 1.0;          //   for Si22G - XXX FIXME: unknown conversion factor!
-*/
-
 const unsigned long GMZ_dead_time = 190;  // Dead Time of the Geiger-Counter. Has to be longer than the complete
                                           // Pulse generated on the Pin PIN_GMZ_count_INPUT [µsec]
 
@@ -187,7 +195,7 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          unsigned char last_GMZ_counts        = 0;
          unsigned char speaker_count          = 0;
          uint32_t      HV_pulse_count         = 0;
-         unsigned int  hvpulscnt2send         = 0;
+         unsigned int  hvpulsecnt2send         = 0;
          float         Count_Rate             = 0.0;
          float         Dose_Rate              = 0.0;
          float         accumulated_Count_Rate = 0.0;
@@ -199,7 +207,7 @@ volatile unsigned long isr_count_timestamp_2send= micros();
 
          unsigned long toSendTime             = millis();
          unsigned long afterStartTime         = 0;
-         unsigned long time2hvpuls            = millis();
+         unsigned long time2hvpulse            = millis();
          unsigned long time2display           = millis();
 
          bool          showDisplay            = SHOW_DISPLAY;
@@ -213,7 +221,6 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          float         bme_humidity           = 0.0;
          float         bme_pressure           = 0.0;
          float         GMZ_factor_uSvph       = 0.0;
-//         String        tube                   = "";
          char          sw[4]                  = {0,0,0,0};
 
 
@@ -262,10 +269,8 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS);
 void SoundStartsound();
 void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume);
 void DisplayStartscreen(void);
-void sendData2luftdaten(int sendwhat, unsigned int hvpulses);
-void sendData2madavi(int sendwhat, unsigned int hvpulses);
-void sendData2toilet(int sendwhat, unsigned int hvpulses);
 void sendData2TTN(int sendwhat, unsigned int hvpulses);
+void sendData2http(const char* host, int sendwhat, unsigned int hvpulse, bool debug);
 String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bool addname);
 String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, unsigned int hvpulses, bool addname);
 void displayStatusLine(String txt);
@@ -365,7 +370,7 @@ void setup()
   iotWebConf.init();
 
   // Set up conversion factor to uSv/h according to GM tube type:
-    GMZ_factor_uSvph = tubes[TUBE_TYPE].factor;
+  GMZ_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
   // -- Set up required URL handlers on the web server.
   server.on("/", handleRoot);
@@ -474,10 +479,10 @@ void loop()
   }
 
   // Pulse the high voltage at minimum every second
-  #define HVPULSRATE 1000
-  if((millis() - time2hvpuls) >= HVPULSRATE ) {
+  #define HVPULSERATE 1000
+  if((millis() - time2hvpulse) >= HVPULSERATE ) {
     HV_pulse_count = jb_HV_gen_charge__chargepules();       // Charge HV Capacitor - restarts time2hvpusl !
-    hvpulscnt2send += HV_pulse_count;                       // count for sending
+    hvpulsecnt2send += HV_pulse_count;                       // count for sending
   }
 
   #define DISPLAYREFRESH 10000
@@ -492,7 +497,7 @@ void loop()
     time_difference = count_timestamp - last_count_timestamp; // Calculate all derived values
     last_count_timestamp = count_timestamp;                 // notice the old timestamp
     HV_pulse_count = jb_HV_gen_charge__chargepules();       // Charge HV Capacitor
-    hvpulscnt2send += HV_pulse_count;                       // count for sending
+    hvpulsecnt2send += HV_pulse_count;                       // count for sending
     accumulated_time += time_difference;                    // accumulate all the time
     accumulated_GMZ_counts += GMZ_counts;                   // accumulate all the pulses
     lastMinuteLogCounts += GMZ_counts;
@@ -604,8 +609,8 @@ void loop()
     count_timestamp_2send = isr_count_timestamp_2send;
     isr_GMZ_counts_2send = 0;
     interrupts();     
-    unsigned int hvp = hvpulscnt2send;
-    hvpulscnt2send = 0;
+    unsigned int hvp = hvpulsecnt2send;
+    hvpulsecnt2send = 0;
     time_difference = count_timestamp_2send - last_count_timestamp_2send;
     last_count_timestamp_2send = count_timestamp_2send;
     current_cpm = (int)(GMZ_counts_2send*60000/time_difference);
@@ -682,7 +687,7 @@ int jb_HV_gen_charge__chargepules() {
     chargepules++;
   }
   while ( (chargepules < 1000) && !GMZ_cap_full);       // either Timeout or capacitor full stops this loop
-  time2hvpuls = millis();                               // we just pulsed, so restart timer
+  time2hvpulse = millis();                               // we just pulsed, so restart timer
   return chargepules;
 }
 
@@ -841,7 +846,7 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
 // ===================================================================================================================================
 // Send to Server Subfunctions
 
-String buildhttpHeaderandBodySBM(HTTPClient *head, unsigned int hvpulse, boolean addname, bool debug) {
+String buildhttpHeaderandBodySBM(HTTPClient *head, unsigned int hvpulses, boolean addname, bool debug) {
   head->addHeader("Content-Type", "application/json; charset=UTF-8");
   head->addHeader("X-PIN","19");
   String chipID = String(ssid);
@@ -852,12 +857,11 @@ String buildhttpHeaderandBodySBM(HTTPClient *head, unsigned int hvpulse, boolean
   tubetype = tubetype.substring(10);
   String valuetype = (addname ? tubetype+"_" : "");
   valuetype += "counts_per_minute";
-  String body = "{\"sensordatavalues\":[";
+  String body = "{\"software_version\":\""+String(revString)+"\",\"sensordatavalues\":[";
   body += "{\"value_type\":\""+valuetype+"\",\"value\":\""+current_cpm+"\"}";
   if (debug) {
-    body += ",{\"value_type\":\"hv_pulses\",\"value\":\""+String(hvpulse)+"\"},";
-    body += ",{\"value_type\":\"tube\",\"value\":\""+tubetype+"\"},";
-    body += ",{\"value_type\":\"software_version\",\"value\":\"V"+String(SOFTWARE_VERSION)+"\"}";
+    body += ",{\"value_type\":\"hv_pulses\",\"value\":\""+String(hvpulses)+"\"}";
+    body += ",{\"value_type\":\"tube\",\"value\":\""+tubetype+"\"}";
   }
   body += "]}";            
   if (DEBUG_SERVER_SEND == 1) {
@@ -879,7 +883,7 @@ String buildhttpHeaderandBodyBME(HTTPClient *head, boolean addname, bool debug) 
   humi += "humidity";
   String press = (addname ? "BME280_" : "");
   press += "pressure";
-  String body = "{\"sensordatavalues\":[\
+  String body = "{\"software_version\":\""+String(revString)+"\",\"sensordatavalues\":[\
 {\"value_type\":\""+temp+"\",\"value\":\""+String(bme_temperature,2)+"\"},\
 {\"value_type\":\""+humi+"\",\"value\":\""+String(bme_humidity,2)+"\"},\
 {\"value_type\":\""+press+"\",\"value\":\""+String(bme_pressure,2)+"\"}\
@@ -890,12 +894,12 @@ String buildhttpHeaderandBodyBME(HTTPClient *head, boolean addname, bool debug) 
   return body;
 }
 
-void sendData2http(const char* host, int sendwhat, unsigned int hvpulse, bool debug) {
+void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, bool debug) {
   HTTPClient http;
   String body;
   http.begin(host);
   if (sendwhat == SEND_CPM) {                               // send SBM data
-    body = buildhttpHeaderandBodySBM(&http,hvpulse,false,debug);
+    body = buildhttpHeaderandBodySBM(&http,hvpulses,false,debug);
   } 
   if (sendwhat == SEND_BME) {                        // send BME data
     body = buildhttpHeaderandBodyBME(&http,false,debug);
