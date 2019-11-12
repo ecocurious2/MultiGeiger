@@ -1,5 +1,6 @@
 //====================================================================================================================================
 // Project: Simple Multi-Geiger
+// (c) 2019 by the authors, see AUTHORS file in toplevel directory.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,7 +14,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
-//
+// (see LICENSE file in toplevel directory)
 //
 // Description: With minimal external components you are able to build a Geiger Counter that:
 //   - is precise
