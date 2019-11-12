@@ -1,5 +1,5 @@
+# Projekt "Simple Multi-Geiger"
 
-# MultiGeiger
 Wir sind Ecocurious, Deine Umwelt-, Natur-  und Technik-Community.
 Aktuell bauen wir einen Multigeiger, um Radioaktivität zu messen. https://ecocurious.de/projekte/multigeiger/
 

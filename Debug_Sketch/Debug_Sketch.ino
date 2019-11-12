@@ -1,5 +1,5 @@
 //===========================================================================================
-// Project:     Simple Arduino Geiger
+// Project:     Simple Multi-Geiger
 // Description: With minimal exteral Components you are able to build a Geiger Counter that:
 //   - is precice
 //   - cheap
@@ -165,7 +165,7 @@ void setup()
 	
       // Write Header of Table	
       Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
-      Serial.print  ("Simple Arduino Geiger, Version ");
+      Serial.print  ("Simple Multi-Geiger, Version ");
       Serial.println(revString);
       Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
       Serial.println("GMZ_counts\tTime_difference\tCount_Rate\tDose_Rate\tHV Pulses  \tAccu_GMZ  \tAccu_Time \tAccu_Rate         \tAccu_Dose");
