@@ -1,20 +1,20 @@
 //====================================================================================================================================
 // Project:     Simple Multi-Geiger
 //
-// This program is free software: you can redistribute it and/or modify 
-// it under the terms of the GNU General Public License as published by 
-// the Free Software Foundation, either version 3 of the License, or    
-// (at your option) any later version.                                  
-//                                                                      
-// This program is distributed in the hope that it will be useful,      
-// but WITHOUT ANY WARRANTY; without even the implied warranty of       
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        
-// GNU General Public License for more details.                         
-//                                                                      
-// You should have received a copy of the GNU General Public License    
-// along with this program. If not, see <http://www.gnu.org/licenses/>. 
-//   
-//                                                                   
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+//
+//
 // Description: With minimal exteral Components you are able to build a Geiger Counter that:
 //   - is precice
 //   - cheap
@@ -492,7 +492,7 @@ void loop()
   if ((GMZ_counts >= MAXCOUNTS) || ((millis() - time2display) >= DISPLAYREFRESH )) {
     noInterrupts();
     isr_GMZ_counts = 0;
-    interrupts();                 
+    interrupts();
     time2display = millis();
     time_difference = count_timestamp - last_count_timestamp; // Calculate all derived values
     last_count_timestamp = count_timestamp;                 // notice the old timestamp
@@ -608,7 +608,7 @@ void loop()
     GMZ_counts_2send      = isr_GMZ_counts_2send;                    // copy values from ISR
     count_timestamp_2send = isr_count_timestamp_2send;
     isr_GMZ_counts_2send = 0;
-    interrupts();     
+    interrupts();
     unsigned int hvp = hvpulsecnt2send;
     hvpulsecnt2send = 0;
     time_difference = count_timestamp_2send - last_count_timestamp_2send;
@@ -863,7 +863,7 @@ String buildhttpHeaderandBodySBM(HTTPClient *head, unsigned int hvpulses, boolea
     body += ",{\"value_type\":\"hv_pulses\",\"value\":\""+String(hvpulses)+"\"}";
     body += ",{\"value_type\":\"tube\",\"value\":\""+tubetype+"\"}";
   }
-  body += "]}";            
+  body += "]}";
   if (DEBUG_SERVER_SEND == 1) {
     Serial.println(body);
   }
@@ -900,7 +900,7 @@ void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, bool d
   http.begin(host);
   if (sendwhat == SEND_CPM) {                               // send SBM data
     body = buildhttpHeaderandBodySBM(&http,hvpulses,false,debug);
-  } 
+  }
   if (sendwhat == SEND_BME) {                        // send BME data
     body = buildhttpHeaderandBodyBME(&http,false,debug);
   }
