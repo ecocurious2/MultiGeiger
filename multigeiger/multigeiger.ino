@@ -385,7 +385,7 @@ void setup()
   if (Serial_Print_Mode == Serial_Logging) {
     // Write Header of Table
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    Serial.print  ("Simple Arduino Geiger, Version ");
+    Serial.print  ("Simple Multi-Geiger, Version ");
     Serial.println(revString);
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     Serial.println("GMZ_counts\tTime_difference\tCount_Rate\tDose_Rate\tHV Pulses  \tAccu_GMZ  \tAccu_Time \tAccu_Rate         \tAccu_Dose");
@@ -397,7 +397,7 @@ void setup()
   if (Serial_Print_Mode == Serial_One_Minute_Log) {
     // Write Header of Table
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    Serial.print  ("Simple Arduino Geiger, Version ");
+    Serial.print  ("Simple Multi-Geiger, Version ");
     Serial.println(revString);
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     Serial.println("Time\tCounte-Rate\tCounts");
@@ -409,7 +409,7 @@ void setup()
   if (Serial_Print_Mode == Serial_Statistics_Log) {
     // Output table header
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    Serial.print  ("Simple Arduino Geiger, Version ");
+    Serial.print  ("Simple Multi-Geiger, Version ");
     Serial.println(revString);
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     Serial.println("Time between two impacts");
