@@ -21,21 +21,24 @@ Klingt das interessant für Dich? Dann mach mit, Du bist herzlich eingeladen!
 ## Installation
 Das Verzeichnis clonen oder als .zip runterladen und entpacken. Mit der Arduino-IDE in dem neuen Verzeichnis die Datei *multigeiger.ino* im Verzeichnis *multigeiger* öffnen.
 Der aktuelle **master**-Branch in GitHub ist für die Hardware-Version 1.4 (steht unten auf der Platine).
-Die Platine ist für zwei verschiedene Heltec-Bausteine vorgesehen, die Software passt für beide und muss entsprechend eingestellt werden:
 
-Die Umschaltung zwischen den beiden Hardware-Versionen geschieht über die Datei **userdefines.h** und (bei platformio) zusätzlich auch über die Datei **platformio.ini**. Beide Dateien sind **nicht** im Git-Repository enthalten, sondern jeweils nur die Muster **userdefines-example.h** und **platformio-example.ini**. Diese beiden Dateien müssen also kopiert werden: **userdefines-example.h** nach **userdefines.h** und **platformio-example.ini** nach **platformio.ini**.
-Änderungen und Einstellungen dann **nur** in den neuen Dateien machen!
+Die Platine unterstützt zwei verschiedene Heltec-Bausteine, verschiedene Zählrohre und optional einen Temperatur/Luftdruck/Luftfeuchtigkeits-Sensor.
+Die Software kann via Netzwerk Daten zu verschiedenen Services senden.
 
  * **Heltec WiFi Kit 32**
-Diese MCU hat ein großes Display und WiFi. Auf dem Board wird dieser Baustein in die längeren Buchsenleisten gesteckt. Für die Arduino-IDE ist als Board der **Heltec WiFi Kit 32** einzustellen, in der Datei *userdefines.h* muss **#define CPU WIFI** entkommentiert werden (die anderen CPU-defines werden auskommentiert).
-Für Platformio ist in *platformio.ini* ganz oben **default_envs = wifi** einzustellen. In *userdefines.h* ist (wie bei Arduino-IDE) das **#define CPU WIFI** zu entkommentieren.
+Diese MCU hat ein großes Display und WiFi.
+Auf dem Board wird dieser Baustein in die längeren Buchsenleisten gesteckt.
+Für die Arduino-IDE ist als Board der **Heltec WiFi Kit 32** einzustellen.
 
  * **Heltec Wireless Stick**
-Diese MCU hat ein sehr kleines Display, dafür aber zusätzlich zu WiFi noch LoRa. Es wird in die kürzeren Buchsenleisten gesteckt. Für die Arduino-IDE muss als Board **Heltec Wireless Stick** eingestellt werden. In *userdefines.h* wird nun das **#define CPU STICK** entkommentiert, die anderen mit Kommentarzeichen versehen).
-Für Platformio ist *platformio.ini* ganz oben **default_envs = stick** einzustellen. In *userdefines.h* gleich wie bei der Arduino-IDE.
-Zusätzlich muss in *userdefines.h* eingestellt werden, dass zu **TTN** gesendet werden soll. Dazu **#define SEND2LORA 1** anstelle von 0 einstellen. Die anderen beiden können (SEND2MADAVI und SEND2LUFTDATEN) entweder auf 1 bleiben (dann wird auch dahin gesendet) oder auf 0 gesetzt werden (siehe weiter unten).
-Die **LoRa**-Credentials werden in der Datei *lorawan.cpp* ab Zeile 65 eingetragen.
+Diese MCU hat ein sehr kleines Display, dafür aber zusätzlich zu WiFi noch LoRa.
+Es wird in die kürzeren Buchsenleisten gesteckt.
+Für die Arduino-IDE muss als Board **Heltec Wireless Stick** eingestellt werden.
 
+Die Hard- und Software-Einstellungen muss man über diese Dateien machen (siehe Kommentare dort):
+
+ * **./multigeiger/userdefines.h** (immer notwendig, ein Beispiel hierzu wird in userdefines-example.h mitgeliefert)
+ * **./platformio.ini** (nur bei platformio, ein Beispiel hierzu wird in platformio-example.ini mitgeliefert)
 
 Als externe Libraries werden benötigt:
 
@@ -47,33 +50,6 @@ Für LoRa zusätzlich:
  * MCCI LoRaWAN LMIC library, Version 2.3.2
 
 Falls der Compiler andere Libraries anmahnt, diese bitte in der Arduino IDE per *Sketch -> Include Library -> Manage Libraries ..* installieren.
-
-Das Einstellen von diversen Parametern ist *nur* in der Datei **userdefines.h** vorgesehen:
- * **#define CPU**
-Genau eine der drei möglichen "CPUs" (uC-Boards) aktivieren durch Entfernen der Kommentarzeichen.
- * **#define TUBE_TYPE**
-Einen der möglichen Zählrohr-Namen aktivieren.
- * **#define SERIAL_DEBUG**
-Einen der möglichen Debug-Levels aktivieren.
- * **#define CONNECT_TIMEOUT**
-Zeit in Sekunden, die das Programm versucht, sich mit den eingestellten WLAN zu verbinden (Standardwert ist 30s)
- * **#define WAIT_4_CONFIG**
-Zeit in Sekunden, die das Programm wartet, bis sich ein Client auf den internen Access-Point verbindet (Standard 180s)
- * **#define SPEAKER_TICKS 0/1**
-Knackgeräusche bei einem Zählpuls? 0=Nein, 1=Ja.
- * **#define LED_TICK 0/1**
-Blitzen der uC-LED bei einem Zählpuls?
- * **#define PLAY_SOUND 0/1**
-Beim Start/Reboot einen Sound abspielen?
- * **#define SEND2MADAVI 0/1**
-Daten zum Madavi-Server senden?
- * **#define SEND2LUFTDATEN 0/1**
-Daten zum Luftdaten-Server senden?. Dies sollte immer auf 1 stehen, damit die Daten dort gespeichert werden.
- * **#define SEND2LORA 0/1**
-Daten via LoRa-WAN an TTN senden? Die TTN-Konfiguration muss in der Datei **lorawan.cpp** erfolgen.
-Wenn die Hardware kein LoRa kann, wird dies automatisch deaktiviert.
- * **#define DEBUG_SERVER_SEND 0/1**
-Jedesmal beim Senden der Daten zum Server (madavi oder luftdaten) auf der seriellen Schnittstelle (USB) Debug-Info ausgegeben?
 
 ## Ablauf nach dem Start
 Das Gerät baut einen eigenen WLAN-Accesspoint (AP) auf. Die SSID des AP lautet **ESP32-xxxxxxxx**, wobei die xxx
