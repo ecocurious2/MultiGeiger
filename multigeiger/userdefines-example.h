@@ -5,16 +5,16 @@
 // and then edit userdefines.h as appropriate for your use case / hardware.
 //====================================================================================================================================
 
-// ** Please uncomment one and only one of following CPU (board type) defines:
-#define CPU WIFI
-//#define CPU STICK
+// ** select (uncomment) exactly one of following CPU (board type) defines:
+#define CPU WIFI                                // Heltec WiFi Kit 32 (big display, WiFi-only)
+//#define CPU STICK                             // Heltec Wireless Stick (small display, WiFi+LoRa)
 
-// ** select (uncomment) one counter tube
+// ** select (uncomment) exactly one Geiger-Mueller counter tube:
 //#define TUBE_TYPE SBM20
 #define TUBE_TYPE SBM19
 //#define TUBE_TYPE Si22G
 
-// ** select (uncomment) debug level output to serial io (USB)
+// ** select (uncomment) exactly one kind of debug level output to serial io (USB)
 //#define   SERIAL_DEBUG Serial_None            // No Serial Printout
 //#define   SERIAL_DEBUG Serial_Debug           // Only debug and error output
 #define   SERIAL_DEBUG Serial_Logging           // Log measurements as table
@@ -26,29 +26,32 @@
 // Time for configuration via local access point [sec]
 #define WAIT_4_CONFIG 180
 
-// Speaker Ticks  1-> on,  0-> off
+// Speaker Ticks with every pulse?  1-> on,  0-> off
 #define SPEAKER_TICK 1
-// white LED on uC board blinks with every tick
+// White LED on uC board flashing with every pulse?
 #define LED_TICK  1
-// Display
+// Enable display?
 #define SHOW_DISPLAY 1
-// Start sound
+// Play a start sound at boot/reboot time?
 #define PLAY_SOUND 0
 
 // Send to servers:
-// Madavi to see values in real time
+// Send data to Madavi server?
+// Madavi should be used to see values in real time.
 #define SEND2MADAVI 1
-// Luftdaten should always be 1 -> standard server (for devices without LoRa)
+// Send data to Luftdaten server?
+// Should always be 1 so that the data is archived there. Standard server for devices without LoRa.
 #define SEND2LUFTDATEN 1
-// For devices with LoRa, send to TTN (if this is set to 1, sending to
-// Madavi and Luftdaten should be deactivated!)
+// Send data via LoRa to TTN?
+// Only for devices with LoRa, automatically deactivated for devices without LoRa.
+// If this is set to 1, sending to Madavi and Luftdaten should be deactivated!
+// Note: The TTN configuration needs to be done in lorawan.cpp (starting at line 65).
 #define SEND2LORA 1
 
-// Print debug infos while sending to servers
+// Print debug infos on serial (USB) interface while sending to servers (madavi or luftdaten)?
 #define DEBUG_SERVER_SEND 1
 
-
 // *********************************************************************************
-// END of user changable parameters.  Do not edit beyond this point!
+// END of user changeable parameters.  Do not edit beyond this point!
 // *********************************************************************************
 //====================================================================================================================================
