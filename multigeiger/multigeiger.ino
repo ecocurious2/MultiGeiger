@@ -263,13 +263,13 @@ void isr_GMZ_count() {
 
 //====================================================================================================================================
 // Function Prototypes
-int jb_HV_gen_charge__chargepules();
+int jb_HV_gen_charge__chargepulses();
 void DisplayGMZ(int TimeSec, int RadNSvph, int CPS);
 void SoundStartsound();
 void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume);
 void DisplayStartscreen(void);
 void sendData2TTN(int sendwhat, unsigned int hvpulses);
-void sendData2http(const char* host, int sendwhat, unsigned int hvpulse, bool debug);
+void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, bool debug);
 String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bool addname);
 String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, unsigned int hvpulses, bool addname);
 void displayStatusLine(String txt);
@@ -395,8 +395,8 @@ void setup()
     Serial.print  ("Simple Multi-Geiger, Version ");
     Serial.println(revString);
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    Serial.println("Time\tCounte-Rate\tCounts");
-    Serial.println("[sec]\t[cpm]\t[Counts per last measurment]");
+    Serial.println("Time\tCount_Rate\tCounts");
+    Serial.println("[sec]\t[cpm]\t[Counts per last measurement]");
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     interrupts();
   }
@@ -420,7 +420,7 @@ void setup()
   DisplayStartscreen();
   displayIsClear = false;
 
-  jb_HV_gen_charge__chargepules();
+  jb_HV_gen_charge__chargepulses();
   if(playSound) {
     SoundStartsound();
   }
@@ -478,13 +478,13 @@ void loop()
   // Pulse the high voltage at least every second
   #define HVPULSERATE 1000
   if((millis() - time2hvpulse) >= HVPULSERATE ) {
-    HV_pulse_count = jb_HV_gen_charge__chargepules();       // charge HV capacitor - restarts time2hvpulse!
+    HV_pulse_count = jb_HV_gen_charge__chargepulses();      // charge HV capacitor - restarts time2hvpulse!
     hvpulsecnt2send += HV_pulse_count;                      // count for sending
   }
 
   #define DISPLAYREFRESH 10000
   #define MAXCOUNTS 100
-  // Check if there are enough pules detected or if enough time has elapsed.
+  // Check if there are enough pulses detected or if enough time has elapsed.
   // If yes, then it is time to charge the HV capacitor and calculate the pulse rate.
   if ((GMZ_counts >= MAXCOUNTS) || ((millis() - time2display) >= DISPLAYREFRESH )) {
     noInterrupts();
@@ -493,7 +493,7 @@ void loop()
     time2display = millis();
     time_difference = count_timestamp - last_count_timestamp; // calculate all derived values
     last_count_timestamp = count_timestamp;                   // notice the old timestamp
-    HV_pulse_count = jb_HV_gen_charge__chargepules();         // charge HV capacitor
+    HV_pulse_count = jb_HV_gen_charge__chargepulses();        // charge HV capacitor
     hvpulsecnt2send += HV_pulse_count;                        // count for sending
     accumulated_time += time_difference;                      // accumulate all the time
     accumulated_GMZ_counts += GMZ_counts;                     // accumulate all the pulses
@@ -570,9 +570,8 @@ void loop()
 
 /*
 // DEBUG DEBUG DEBUG
- uint8_t temp_farenheit= temprature_sens_read();
-  //convert fahrenheit to celsius
-  double temp = ( temp_farenheit - 32 ) / 1.8;
+  uint8_t temp_fahrenheit = temperature_sens_read();
+  double temp = ( temp_fahrenheit - 32 ) / 1.8;
 
   Serial.printf("Internal temperature [°C]: %.0f\n", temp);
   delay(1000);
@@ -671,19 +670,19 @@ void loop()
 // Subfunctions
 
 // GMZ-Sub-Functions
-int jb_HV_gen_charge__chargepules() {
-  int  chargepules  = 0;
+int jb_HV_gen_charge__chargepulses() {
+  int  chargepulses  = 0;
        GMZ_cap_full = 0;
   do {
     digitalWrite(PIN_HV_FET_OUTPUT, HIGH);              // turn the HV FET on
     delayMicroseconds(1500);                            // 5000 usec gives 1,3 times more charge, 500 usec gives 1/20 th of charge
     digitalWrite(PIN_HV_FET_OUTPUT, LOW);               // turn the HV FET off
     delayMicroseconds(1000);
-    chargepules++;
+    chargepulses++;
   }
-  while ( (chargepules < 1000) && !GMZ_cap_full);       // either a timeout or a capacitor full interrupt stops this loop
+  while ( (chargepulses < 1000) && !GMZ_cap_full);      // either a timeout or a capacitor full interrupt stops this loop
   time2hvpulse = millis();                              // we just pulsed, so restart timer
-  return chargepules;
+  return chargepulses;
 }
 
 // ===================================================================================================================================
