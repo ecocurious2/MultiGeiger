@@ -395,8 +395,8 @@ void setup()
     Serial.print  ("Simple Multi-Geiger, Version ");
     Serial.println(revString);
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    Serial.println("Time\tCounte-Rate\tCounts");
-    Serial.println("[sec]\t[cpm]\t[Counts per last measurment]");
+    Serial.println("Time\tCount_Rate\tCounts");
+    Serial.println("[sec]\t[cpm]\t[Counts per last measurement]");
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     interrupts();
   }
@@ -570,9 +570,8 @@ void loop()
 
 /*
 // DEBUG DEBUG DEBUG
- uint8_t temp_farenheit= temprature_sens_read();
-  //convert fahrenheit to celsius
-  double temp = ( temp_farenheit - 32 ) / 1.8;
+  uint8_t temp_fahrenheit = temperature_sens_read();
+  double temp = ( temp_fahrenheit - 32 ) / 1.8;
 
   Serial.printf("Internal temperature [°C]: %.0f\n", temp);
   delay(1000);
