@@ -227,10 +227,6 @@ volatile unsigned long isr_count_timestamp_2send= micros();
 
 int Serial_Print_Mode = SERIAL_DEBUG;
 
-extern "C" {
-  uint8_t temprature_sens_read();
-}
-
 //====================================================================================================================================
 // ISRs
 void isr_GMC_capacitor_full() {
@@ -569,16 +565,6 @@ void loop()
       }
     }
     GMC_counts = 0;  // initialize ISR values
-
-/*
-// DEBUG DEBUG DEBUG
-  uint8_t temp_fahrenheit = temperature_sens_read();
-  double temp = ( temp_fahrenheit - 32 ) / 1.8;
-
-  Serial.printf("Internal temperature [°C]: %.0f\n", temp);
-  delay(1000);
-*/
-
   }
 
   if ((Serial_Print_Mode == Serial_Statistics_Log) && (counts_before != isr_GMC_counts)) {  // statistics log active?
