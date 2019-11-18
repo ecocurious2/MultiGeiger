@@ -157,8 +157,9 @@ typedef struct {
 } TUBETYPE;
 
 TUBETYPE tubes[] = {
-  {"Radiation unknown", 0, 0.0},                            // use 0.0 conversion factor for unknown tubes, so it displays a
-                                                            // a "obviously-wrong" 0.0 uSv/h value rather than a confusing one.
+  {"Radiation unknown", 0, 0.0},                            // use 0.0 conversion factor for unknown tubes, so it computes an
+                                                            // "obviously-wrong" 0.0 uSv/h value rather than a confusing one.
+  // XXX FIXME: add comments about "how are the conversion factors determined / computed? sources for these values?"
   {"Radiation SBM-20", 20, 1/2.47},
   {"Radiation SBM-19", 19, 1/9.81888},
   {"Radiation Si22G", 22, 0.0}                              // XXX FIXME: unknown conversion factor!
