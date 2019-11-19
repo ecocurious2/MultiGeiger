@@ -178,13 +178,13 @@ const unsigned long GMC_dead_time = 190;  // Dead Time of the Geiger Counter. Ha
 //====================================================================================================================================
 // Variables
 volatile bool          GMC_cap_full           = 0;
-volatile unsigned char isr_GMC_counts         = 0;
-         unsigned char counts_before          = 0;
+volatile unsigned int  isr_GMC_counts         = 0;
+volatile bool          gotGMCpulse            = 0;
 volatile unsigned long isr_count_timestamp    = millis();
 volatile unsigned long isr_count_time_between = micros();
 volatile unsigned int  isr_GMC_counts_2send   = 0;
 volatile unsigned long isr_count_timestamp_2send= micros();
-         unsigned char GMC_counts             = 0;
+         unsigned int  GMC_counts             = 0;
          unsigned int  GMC_counts_2send       = 0;
          unsigned int  accumulated_GMC_counts = 0;
          unsigned long count_timestamp        = millis();
@@ -193,9 +193,9 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          unsigned long last_count_timestamp_2send = millis();
          unsigned long time_difference        = 1000;
          unsigned long accumulated_time       = 0;
-         unsigned char last_GMC_counts        = 0;
+         unsigned int  last_GMC_counts        = 0;
          unsigned char speaker_count          = 0;
-         uint32_t      HV_pulse_count         = 0;
+         unsigned int  HV_pulse_count         = 0;
          unsigned int  hvpulsecnt2send        = 0;
          float         Count_Rate             = 0.0;
          float         Dose_Rate              = 0.0;
@@ -203,7 +203,6 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          float         accumulated_Dose_Rate  = 0.0;
          unsigned long lastMinuteLog          = millis();
          unsigned int  lastMinuteLogCounts    = 0;
-         unsigned int  lastMinuteLogCountRate = 0;
          unsigned int  current_cpm            = 0;
 
          unsigned long toSendTime             = millis();
@@ -223,23 +222,21 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          float         bme_pressure           = 0.0;
          float         GMC_factor_uSvph       = 0.0;
          char          sw[4]                  = {0,0,0,0};
-
+         portMUX_TYPE  mux = portMUX_INITIALIZER_UNLOCKED;
 
 int Serial_Print_Mode = SERIAL_DEBUG;
 
 //====================================================================================================================================
 // ISRs
-void isr_GMC_capacitor_full() {
+void IRAM_ATTR isr_GMC_capacitor_full() {
   GMC_cap_full = 1;
 }
 
-void isr_GMC_count() {
+void IRAM_ATTR isr_GMC_count() {
   static unsigned long isr_count_timestamp_us;
   static unsigned long isr_count_timestamp_us_prev;
   static unsigned long isr_count_timestamp_us_prev_used;
   digitalWrite(TESTPIN,HIGH);
-  noInterrupts();                                       // Disable interrupts (to read variables of the ISR correctly)
-
   isr_count_timestamp_us_prev = isr_count_timestamp_us;
   isr_count_timestamp_us      = micros();
   if ((isr_count_timestamp_us-isr_count_timestamp_us_prev) > GMC_dead_time) {
@@ -250,11 +247,11 @@ void isr_GMC_count() {
     isr_count_timestamp       = millis();              // notice (system) time of the pulse
     isr_GMC_counts_2send++;
     isr_count_timestamp_2send = millis();
+    gotGMCpulse = 1;
 
     isr_count_time_between           = isr_count_timestamp_us-isr_count_timestamp_us_prev_used;  // save for statistics debuging
     isr_count_timestamp_us_prev_used = isr_count_timestamp_us;
   }
-  interrupts();                                        // Re-enable interrupts
   digitalWrite(TESTPIN,LOW);
 }
 
@@ -340,13 +337,8 @@ void setup()
   digitalWrite (PIN_SPEAKER_OUTPUT_P, HIGH);
   digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW);
 
-  // set interrupts (on pin change), attach interrupt handler
-  attachInterrupt (digitalPinToInterrupt (PIN_HV_CAP_FULL_INPUT), isr_GMC_capacitor_full, RISING);  // capacitor full
-  attachInterrupt (digitalPinToInterrupt (PIN_GMC_count_INPUT), isr_GMC_count, FALLING);            // GMC pulse detected
-
   // set and init serial communication
   if (Serial_Print_Mode != Serial_None) {
-    noInterrupts();
     Serial.begin(115200);
     while (!Serial) {};
   }
@@ -385,7 +377,6 @@ void setup()
     Serial.println("GMC_counts\tTime_difference\tCount_Rate\tDose_Rate\tHV Pulses  \tAccu_GMC  \tAccu_Time \tAccu_Rate         \tAccu_Dose");
     Serial.println("[Counts]  \t[ms]           \t[cps]     \t[uSv/h]  \t[-]        \t[Counts]  \t[ms]      \t[cps]             \t[uSv/h]");
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    interrupts();
   }
 
   if (Serial_Print_Mode == Serial_One_Minute_Log) {
@@ -396,7 +387,6 @@ void setup()
     Serial.println("Time\tCount_Rate\tCounts");
     Serial.println("[sec]\t[cpm]\t[Counts per last measurement]");
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    interrupts();
   }
 
   if (Serial_Print_Mode == Serial_Statistics_Log) {
@@ -407,7 +397,6 @@ void setup()
     Serial.println("Time between two impacts");
     Serial.println("[usec]");
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    interrupts();
   }
 
 #if SEND2LORA
@@ -418,11 +407,18 @@ void setup()
   DisplayStartscreen();
   displayIsClear = false;
 
-  jb_HV_gen_charge__chargepulses();
   if(playSound) {
     SoundStartsound();
   }
   afterStartTime = AFTERSTART;
+
+  // set interrupts (on pin change), attach interrupt handler
+  attachInterrupt (digitalPinToInterrupt (PIN_HV_CAP_FULL_INPUT), isr_GMC_capacitor_full, RISING);  // capacitor full
+  attachInterrupt (digitalPinToInterrupt (PIN_GMC_count_INPUT), isr_GMC_count, FALLING);            // GMC pulse detected
+  
+  // charge hv capacitor
+  jb_HV_gen_charge__chargepulses();
+
 }
 
 // ===================================================================================================================================
@@ -430,14 +426,6 @@ void setup()
 // ===================================================================================================================================
 void loop()
 {
-  noInterrupts();
-  // copy values from ISR
-  GMC_counts            = isr_GMC_counts;
-  count_timestamp       = isr_count_timestamp;
-  GMC_counts_2send      = isr_GMC_counts_2send;
-  count_timestamp_2send = isr_count_timestamp_2send;
-  interrupts();
-
   // Loop for IoTWebConf
   iotWebConf.doLoop();
 
@@ -485,9 +473,16 @@ void loop()
   // Check if there are enough pulses detected or if enough time has elapsed.
   // If yes, then it is time to charge the HV capacitor and calculate the pulse rate.
   if ((GMC_counts >= MAXCOUNTS) || ((millis() - time2display) >= DISPLAYREFRESH )) {
-    noInterrupts();
+    // copy values from ISR
+    portENTER_CRITICAL(&mux);                               // enter critical section
+    GMC_counts = isr_GMC_counts;
     isr_GMC_counts = 0;
-    interrupts();
+    count_timestamp = isr_count_timestamp;
+    GMC_counts_2send = isr_GMC_counts_2send;
+    count_timestamp_2send = isr_count_timestamp_2send;
+    portEXIT_CRITICAL(&mux);                                // leave critical section
+
+
     time2display = millis();
     time_difference = count_timestamp - last_count_timestamp; // calculate all derived values
     last_count_timestamp = count_timestamp;                   // notice the old timestamp
@@ -524,7 +519,6 @@ void loop()
     }
 
     if (Serial_Print_Mode == Serial_Logging) {                       // Report all
-//      noInterrupts();
       Serial.print(GMC_counts, DEC);
       Serial.print("\t");
       Serial.print(count_timestamp, DEC);
@@ -545,12 +539,11 @@ void loop()
       Serial.print("\t");
       Serial.print(accumulated_Dose_Rate, DEC);
       Serial.println();
-//      interrupts();
     }
+
     if (Serial_Print_Mode == Serial_One_Minute_Log) {              // 1 Minute Log active?
       if (millis() > (lastMinuteLog + 60000)){                     // Time reached for next 1-Minute log?
-        noInterrupts();
-        lastMinuteLogCountRate = ( (lastMinuteLogCounts*60000) / (millis()-lastMinuteLog) );    // = *60 /1000
+        unsigned int lastMinuteLogCountRate = ( (lastMinuteLogCounts*60000) / (millis()-lastMinuteLog) );    // = *60 /1000
         if( ( ( ( (lastMinuteLogCounts*60000) % (millis()-lastMinuteLog) ) * 2 ) / (millis()-lastMinuteLog) ) >= 1 ) {
             lastMinuteLogCountRate++;                              // Rounding
         }
@@ -561,17 +554,18 @@ void loop()
         Serial.println(lastMinuteLogCounts, DEC);
         lastMinuteLogCounts = 0;
         lastMinuteLog       = millis();
-        interrupts();
       }
     }
     GMC_counts = 0;  // initialize ISR values
   }
 
-  if ((Serial_Print_Mode == Serial_Statistics_Log) && (counts_before != isr_GMC_counts)) {  // statistics log active?
-    noInterrupts();
-    Serial.println(isr_count_time_between, DEC);
-    counts_before = isr_GMC_counts;
-    interrupts();
+  if ((Serial_Print_Mode == Serial_Statistics_Log) && (gotGMCpulse)) {   // statistics log active?
+    unsigned int count_time_between;
+    portEXIT_CRITICAL(&mux);
+    count_time_between = isr_count_time_between;
+    gotGMCpulse = 0;
+    portEXIT_CRITICAL(&mux);
+    Serial.println(count_time_between, DEC);
   }
 
   // If there were no pulses after 3 secs after start,
@@ -587,11 +581,11 @@ void loop()
   // Check, if we have to send to luftdaten.info etc.
   if((millis() - toSendTime) >= (MEASUREMENT_INTERVAL*1000) ) {
     toSendTime = millis();
-    noInterrupts();
+    portENTER_CRITICAL(&mux);
     GMC_counts_2send      = isr_GMC_counts_2send;                    // copy values from ISR
     count_timestamp_2send = isr_count_timestamp_2send;
     isr_GMC_counts_2send = 0;
-    interrupts();
+    portEXIT_CRITICAL(&mux);
     unsigned int hvp = hvpulsecnt2send;
     hvpulsecnt2send = 0;
     time_difference = count_timestamp_2send - last_count_timestamp_2send;
