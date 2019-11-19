@@ -40,7 +40,7 @@
 #include "version.h"
 
 // Fix Parameters
-// Values for Serial_Print_Mode to configure Serial (USB) output mode.  ! DONT TOUCH !
+// Values for Serial_Print_Mode to configure Serial (USB) output mode.  DON'T TOUCH!
 #define   Serial_None            0  // No Serial output
 #define   Serial_Debug           1  // Only debug and error messages
 #define   Serial_Logging         2  // Log measurements as a table
@@ -65,10 +65,6 @@
 // Includes
 //====================================================================================================================================
 #include "userdefines.h"
-//#ifndef TUBE_TYPE
-//#define TUBE_TYPE 0
-//#endif
-//====================================================================================================================================
 #include <Arduino.h>
 #include <U8x8lib.h>
 
@@ -108,7 +104,7 @@
 //  used for optional LoRa    DIO2 (10) = GPIO32 (12)
 int PIN_HV_FET_OUTPUT       =  23;  //
 int PIN_HV_CAP_FULL_INPUT   =  22;  // !! has to be capable of "interrupt on change"
-int PIN_GMZ_count_INPUT     =   2;  // !! has to be capable of "interrupt on change"
+int PIN_GMC_count_INPUT     =   2;  // !! has to be capable of "interrupt on change"
 int PIN_SPEAKER_OUTPUT_P    =  12;
 int PIN_SPEAKER_OUTPUT_N    =   0;
 
@@ -154,7 +150,6 @@ enum {SEND_CPM,SEND_BME};
 // Config version for IoTWebConfig
 #define CONFIG_VERSION "012"
 
-// typedef for geiger tube
 typedef struct {
   const char* type;                                         // type string for luftdaten.info
   const char  nbr;                                          // number to be sent by LoRa
@@ -162,16 +157,18 @@ typedef struct {
 } TUBETYPE;
 
 TUBETYPE tubes[] = {
-  {"Radiation unknown",0,1.0},
-  {"Radiation SBM-20",20, 1/2.47},                          //   for SBM20
-  {"Radiation SBM-19",19, 1/9.81888},                       //   for SBM19
-  {"Radiation Si22G",22, 0.0}                               //   for Si22G - XXX FIXME: unknown conversion factor!
+  {"Radiation unknown", 0, 0.0},                            // use 0.0 conversion factor for unknown tubes, so it computes an
+                                                            // "obviously-wrong" 0.0 uSv/h value rather than a confusing one.
+  // XXX FIXME: add comments about "how are the conversion factors determined / computed? sources for these values?"
+  {"Radiation SBM-20", 20, 1/2.47},
+  {"Radiation SBM-19", 19, 1/9.81888},
+  {"Radiation Si22G", 22, 0.0}                              // XXX FIXME: unknown conversion factor!
 };
 
 //====================================================================================================================================
 // Constants
-const unsigned long GMZ_dead_time = 190;  // Dead Time of the Geiger Counter. Has to be longer than the complete
-                                          // pulse generated on the Pin PIN_GMZ_count_INPUT. [µsec]
+const unsigned long GMC_dead_time = 190;  // Dead Time of the Geiger Counter. Has to be longer than the complete
+                                          // pulse generated on the Pin PIN_GMC_count_INPUT. [µsec]
 
 // Hosts for data delivery
 #define MADAVI "http://api-rrd.madavi.de/data.php"
@@ -180,26 +177,26 @@ const unsigned long GMZ_dead_time = 190;  // Dead Time of the Geiger Counter. Ha
 
 //====================================================================================================================================
 // Variables
-volatile bool          GMZ_cap_full           = 0;
-volatile unsigned char isr_GMZ_counts         = 0;
+volatile bool          GMC_cap_full           = 0;
+volatile unsigned char isr_GMC_counts         = 0;
          unsigned char counts_before          = 0;
 volatile unsigned long isr_count_timestamp    = millis();
 volatile unsigned long isr_count_time_between = micros();
-volatile unsigned int  isr_GMZ_counts_2send   = 0;
+volatile unsigned int  isr_GMC_counts_2send   = 0;
 volatile unsigned long isr_count_timestamp_2send= micros();
-         unsigned char GMZ_counts             = 0;
-         unsigned int  GMZ_counts_2send       = 0;
-         unsigned int  accumulated_GMZ_counts = 0;
+         unsigned char GMC_counts             = 0;
+         unsigned int  GMC_counts_2send       = 0;
+         unsigned int  accumulated_GMC_counts = 0;
          unsigned long count_timestamp        = millis();
          unsigned long count_timestamp_2send  = millis();
          unsigned long last_count_timestamp   = millis();
          unsigned long last_count_timestamp_2send = millis();
          unsigned long time_difference        = 1000;
          unsigned long accumulated_time       = 0;
-         unsigned char last_GMZ_counts        = 0;
+         unsigned char last_GMC_counts        = 0;
          unsigned char speaker_count          = 0;
          uint32_t      HV_pulse_count         = 0;
-         unsigned int  hvpulsecnt2send         = 0;
+         unsigned int  hvpulsecnt2send        = 0;
          float         Count_Rate             = 0.0;
          float         Dose_Rate              = 0.0;
          float         accumulated_Count_Rate = 0.0;
@@ -211,7 +208,7 @@ volatile unsigned long isr_count_timestamp_2send= micros();
 
          unsigned long toSendTime             = millis();
          unsigned long afterStartTime         = 0;
-         unsigned long time2hvpulse            = millis();
+         unsigned long time2hvpulse           = millis();
          unsigned long time2display           = millis();
 
          bool          showDisplay            = SHOW_DISPLAY;
@@ -224,23 +221,19 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          float         bme_temperature        = 0.0;
          float         bme_humidity           = 0.0;
          float         bme_pressure           = 0.0;
-         float         GMZ_factor_uSvph       = 0.0;
+         float         GMC_factor_uSvph       = 0.0;
          char          sw[4]                  = {0,0,0,0};
 
 
 int Serial_Print_Mode = SERIAL_DEBUG;
 
-extern "C" {
-  uint8_t temprature_sens_read();
-}
-
 //====================================================================================================================================
 // ISRs
-void isr_GMZ_capacitor_full() {
-  GMZ_cap_full = 1;
+void isr_GMC_capacitor_full() {
+  GMC_cap_full = 1;
 }
 
-void isr_GMZ_count() {
+void isr_GMC_count() {
   static unsigned long isr_count_timestamp_us;
   static unsigned long isr_count_timestamp_us_prev;
   static unsigned long isr_count_timestamp_us_prev_used;
@@ -249,13 +242,13 @@ void isr_GMZ_count() {
 
   isr_count_timestamp_us_prev = isr_count_timestamp_us;
   isr_count_timestamp_us      = micros();
-  if ((isr_count_timestamp_us-isr_count_timestamp_us_prev) > GMZ_dead_time) {
-    // the rest is only executed if GMZ_dead_time is exceeded.
-    // Reason: pulses occurring short after another pulse are false pulses generated by the rising edge on the PIN_GMZ_count_INPUT.
+  if ((isr_count_timestamp_us-isr_count_timestamp_us_prev) > GMC_dead_time) {
+    // the rest is only executed if GMC_dead_time is exceeded.
+    // Reason: pulses occurring short after another pulse are false pulses generated by the rising edge on the PIN_GMC_count_INPUT.
     // This happens because we don't have an Schmitt-Trigger on this controller pin.
-    isr_GMZ_counts++;                                     // count
-    isr_count_timestamp       = millis();                 // notice (system) time of the count
-    isr_GMZ_counts_2send++;
+    isr_GMC_counts++;                                  // count the pulse
+    isr_count_timestamp       = millis();              // notice (system) time of the pulse
+    isr_GMC_counts_2send++;
     isr_count_timestamp_2send = millis();
 
     isr_count_time_between           = isr_count_timestamp_us-isr_count_timestamp_us_prev_used;  // save for statistics debuging
@@ -268,13 +261,13 @@ void isr_GMZ_count() {
 
 //====================================================================================================================================
 // Function Prototypes
-int jb_HV_gen_charge__chargepules();
-void DisplayGMZ(int TimeSec, int RadNSvph, int CPS);
+int jb_HV_gen_charge__chargepulses();
+void DisplayGMC(int TimeSec, int RadNSvph, int CPS);
 void SoundStartsound();
 void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume);
 void DisplayStartscreen(void);
 void sendData2TTN(int sendwhat, unsigned int hvpulses);
-void sendData2http(const char* host, int sendwhat, unsigned int hvpulse, bool debug);
+void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, bool debug);
 String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bool addname);
 String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, unsigned int hvpulses, bool addname);
 void displayStatusLine(String txt);
@@ -329,9 +322,9 @@ void setup()
   pinMode (PIN_HV_FET_OUTPUT,    OUTPUT);
   pinMode (PIN_SPEAKER_OUTPUT_P, OUTPUT);
   pinMode (PIN_SPEAKER_OUTPUT_N, OUTPUT);
-  pinMode (PIN_GMZ_count_INPUT,  INPUT);
+  pinMode (PIN_GMC_count_INPUT,  INPUT);
 
-  pinMode (PIN_SWI_0, INPUT);     // !!! These pins DON'T HAVE PULLUPS !!
+  pinMode (PIN_SWI_0, INPUT);     // These pins DON'T HAVE PULLUPS!
   pinMode (PIN_SWI_1, INPUT);
   pinMode (PIN_SWI_2, INPUT);
   pinMode (PIN_SWI_3, INPUT);
@@ -348,8 +341,8 @@ void setup()
   digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW);
 
   // set interrupts (on pin change), attach interrupt handler
-  attachInterrupt (digitalPinToInterrupt (PIN_HV_CAP_FULL_INPUT), isr_GMZ_capacitor_full, RISING);  // capacitor full
-  attachInterrupt (digitalPinToInterrupt (PIN_GMZ_count_INPUT), isr_GMZ_count, FALLING);            // GMZ pulse detected
+  attachInterrupt (digitalPinToInterrupt (PIN_HV_CAP_FULL_INPUT), isr_GMC_capacitor_full, RISING);  // capacitor full
+  attachInterrupt (digitalPinToInterrupt (PIN_GMC_count_INPUT), isr_GMC_count, FALLING);            // GMC pulse detected
 
   // set and init serial communication
   if (Serial_Print_Mode != Serial_None) {
@@ -374,7 +367,7 @@ void setup()
   iotWebConf.init();
 
   // Set up conversion factor to uSv/h according to GM tube type:
-  GMZ_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
+  GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
   // -- Set up required URL handlers on the web server.
   server.on("/", handleRoot);
@@ -382,34 +375,33 @@ void setup()
   server.onNotFound([](){ iotWebConf.handleNotFound(); });
 
 
+  // Write Header of Table, depending on the logging mode:
+
   if (Serial_Print_Mode == Serial_Logging) {
-    // Write Header of Table
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    Serial.print  ("Simple Arduino Geiger, Version ");
+    Serial.print  ("Simple Multi-Geiger, Version ");
     Serial.println(revString);
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    Serial.println("GMZ_counts\tTime_difference\tCount_Rate\tDose_Rate\tHV Pulses  \tAccu_GMZ  \tAccu_Time \tAccu_Rate         \tAccu_Dose");
+    Serial.println("GMC_counts\tTime_difference\tCount_Rate\tDose_Rate\tHV Pulses  \tAccu_GMC  \tAccu_Time \tAccu_Rate         \tAccu_Dose");
     Serial.println("[Counts]  \t[ms]           \t[cps]     \t[uSv/h]  \t[-]        \t[Counts]  \t[ms]      \t[cps]             \t[uSv/h]");
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     interrupts();
   }
 
   if (Serial_Print_Mode == Serial_One_Minute_Log) {
-    // Write Header of Table
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    Serial.print  ("Simple Arduino Geiger, Version ");
+    Serial.print  ("Simple Multi-Geiger, Version ");
     Serial.println(revString);
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    Serial.println("Time\tCounte-Rate\tCounts");
-    Serial.println("[sec]\t[cpm]\t[Counts per last measurment]");
+    Serial.println("Time\tCount_Rate\tCounts");
+    Serial.println("[sec]\t[cpm]\t[Counts per last measurement]");
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     interrupts();
   }
 
   if (Serial_Print_Mode == Serial_Statistics_Log) {
-    // Output table header
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    Serial.print  ("Simple Arduino Geiger, Version ");
+    Serial.print  ("Simple Multi-Geiger, Version ");
     Serial.println(revString);
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     Serial.println("Time between two impacts");
@@ -423,47 +415,46 @@ void setup()
   lorawan_setup();
 #endif
 
-  // StartScreen
   DisplayStartscreen();
   displayIsClear = false;
 
-  jb_HV_gen_charge__chargepules();
+  jb_HV_gen_charge__chargepulses();
   if(playSound) {
     SoundStartsound();
   }
   afterStartTime = AFTERSTART;
-} // end of setup
+}
 
 // ===================================================================================================================================
 // *************  LOOP  *************************
 // ===================================================================================================================================
 void loop()
 {
-  // read out values from ISR
   noInterrupts();
-  GMZ_counts            = isr_GMZ_counts;                          // copy values from ISR
+  // copy values from ISR
+  GMC_counts            = isr_GMC_counts;
   count_timestamp       = isr_count_timestamp;
-  GMZ_counts_2send      = isr_GMZ_counts_2send;                    // copy values from ISR
+  GMC_counts_2send      = isr_GMC_counts_2send;
   count_timestamp_2send = isr_count_timestamp_2send;
-  interrupts();                                                    // re-enable Interrupts
+  interrupts();
 
   // Loop for IoTWebConf
   iotWebConf.doLoop();
 
-  // Read Switches (active LOW !!)
+  // Read Switches (active LOW!)
   sw[0] = !digitalRead(PIN_SWI_0);
   sw[1] = !digitalRead(PIN_SWI_1);
   sw[2] = !digitalRead(PIN_SWI_2);
   sw[3] = !digitalRead(PIN_SWI_3);
 
   // make LED flicker and speaker tick
-  if (GMZ_counts != last_GMZ_counts) {
+  if (GMC_counts != last_GMC_counts) {
     if(ledTick && sw[LED_ON]) {
       digitalWrite(LED_BUILTIN, HIGH);    // switch on LED
     }
 
-    if(speakerTick && sw[SPEAKER_ON]) {
-      for (speaker_count = 0; speaker_count <= 3; speaker_count++) {  // make "Tick" sound
+    if(speakerTick && sw[SPEAKER_ON]) {   // make "Tick" sound
+      for (speaker_count = 0; speaker_count <= 3; speaker_count++) {
         digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW);
         digitalWrite (PIN_SPEAKER_OUTPUT_N, HIGH);
         delayMicroseconds(500);
@@ -477,51 +468,51 @@ void loop()
       delay(4);
     }
     if(ledTick && sw[LED_ON]) {
-      digitalWrite(LED_BUILTIN, LOW);                                // switch off LED
+      digitalWrite(LED_BUILTIN, LOW);     // switch off LED
     }
-    last_GMZ_counts = GMZ_counts;                              // notice old value
+    last_GMC_counts = GMC_counts;         // notice old value
   }
 
   // Pulse the high voltage at least every second
   #define HVPULSERATE 1000
   if((millis() - time2hvpulse) >= HVPULSERATE ) {
-    HV_pulse_count = jb_HV_gen_charge__chargepules();       // charge HV capacitor - restarts time2hvpulse!
+    HV_pulse_count = jb_HV_gen_charge__chargepulses();      // charge HV capacitor - restarts time2hvpulse!
     hvpulsecnt2send += HV_pulse_count;                      // count for sending
   }
 
   #define DISPLAYREFRESH 10000
   #define MAXCOUNTS 100
-  // Check if there are enough pules detected or if enough time has elapsed.
+  // Check if there are enough pulses detected or if enough time has elapsed.
   // If yes, then it is time to charge the HV capacitor and calculate the pulse rate.
-  if ((GMZ_counts >= MAXCOUNTS) || ((millis() - time2display) >= DISPLAYREFRESH )) {
+  if ((GMC_counts >= MAXCOUNTS) || ((millis() - time2display) >= DISPLAYREFRESH )) {
     noInterrupts();
-    isr_GMZ_counts = 0;
+    isr_GMC_counts = 0;
     interrupts();
     time2display = millis();
     time_difference = count_timestamp - last_count_timestamp; // calculate all derived values
     last_count_timestamp = count_timestamp;                   // notice the old timestamp
-    HV_pulse_count = jb_HV_gen_charge__chargepules();         // charge HV capacitor
+    HV_pulse_count = jb_HV_gen_charge__chargepulses();        // charge HV capacitor
     hvpulsecnt2send += HV_pulse_count;                        // count for sending
     accumulated_time += time_difference;                      // accumulate all the time
-    accumulated_GMZ_counts += GMZ_counts;                     // accumulate all the pulses
-    lastMinuteLogCounts += GMZ_counts;
+    accumulated_GMC_counts += GMC_counts;                     // accumulate all the pulses
+    lastMinuteLogCounts += GMC_counts;
 
     Count_Rate = 0;
     if (time_difference != 0.0) {
-      Count_Rate = (float)GMZ_counts*1000.0/(float)time_difference;  // calculate the current count rate
+      Count_Rate = (float)GMC_counts*1000.0/(float)time_difference;  // calculate the current count rate
     }
-    Dose_Rate = Count_Rate *GMZ_factor_uSvph;               // ... and dose rate
+    Dose_Rate = Count_Rate *GMC_factor_uSvph;                        // ... and dose rate
 
     // calculate the radiation over the complete time from start
     accumulated_Count_Rate = 0.0;
     if (accumulated_time != 0) {
-      accumulated_Count_Rate = (float)accumulated_GMZ_counts*1000.0/(float)accumulated_time;
+      accumulated_Count_Rate = (float)accumulated_GMC_counts*1000.0/(float)accumulated_time;
     }
-    accumulated_Dose_Rate = accumulated_Count_Rate *GMZ_factor_uSvph;
+    accumulated_Dose_Rate = accumulated_Count_Rate *GMC_factor_uSvph;
 
     // ... and display it.
     if(showDisplay && sw[DISPLAY_ON]) {
-      DisplayGMZ(((int)accumulated_time/1000), (int)(accumulated_Dose_Rate*1000), (int)(Count_Rate*60));
+      DisplayGMC(((int)accumulated_time/1000), (int)(accumulated_Dose_Rate*1000), (int)(Count_Rate*60));
       displayIsClear = false;
     } else {
       if (!displayIsClear) {
@@ -534,7 +525,7 @@ void loop()
 
     if (Serial_Print_Mode == Serial_Logging) {                       // Report all
 //      noInterrupts();
-      Serial.print(GMZ_counts, DEC);
+      Serial.print(GMC_counts, DEC);
       Serial.print("\t");
       Serial.print(count_timestamp, DEC);
       Serial.print("\t");
@@ -546,7 +537,7 @@ void loop()
       Serial.print("\t");
       Serial.print(HV_pulse_count, DEC);
       Serial.print("\t");
-      Serial.print(accumulated_GMZ_counts, DEC);
+      Serial.print(accumulated_GMC_counts, DEC);
       Serial.print("\t");
       Serial.print(accumulated_time, DEC);
       Serial.print("\t");
@@ -561,7 +552,7 @@ void loop()
         noInterrupts();
         lastMinuteLogCountRate = ( (lastMinuteLogCounts*60000) / (millis()-lastMinuteLog) );    // = *60 /1000
         if( ( ( ( (lastMinuteLogCounts*60000) % (millis()-lastMinuteLog) ) * 2 ) / (millis()-lastMinuteLog) ) >= 1 ) {
-            lastMinuteLogCountRate++;                                // Rounding
+            lastMinuteLogCountRate++;                              // Rounding
         }
         Serial.print((millis()/1000), DEC);
         Serial.print("\t");
@@ -573,25 +564,13 @@ void loop()
         interrupts();
       }
     }
-    GMZ_counts = 0;  // initialize ISR values
-
-/*
-// DEBUG DEBUG DEBUG
- uint8_t temp_farenheit= temprature_sens_read();
-  //convert fahrenheit to celsius
-  double temp = ( temp_farenheit - 32 ) / 1.8;
-
-  Serial.printf("Internal temperature [°C]: %.0f\n", temp);
-  delay(1000);
-*/
-
-
+    GMC_counts = 0;  // initialize ISR values
   }
 
-  if ((Serial_Print_Mode == Serial_Statistics_Log) && (counts_before != isr_GMZ_counts)) {  // statistics log active?
+  if ((Serial_Print_Mode == Serial_Statistics_Log) && (counts_before != isr_GMC_counts)) {  // statistics log active?
     noInterrupts();
     Serial.println(isr_count_time_between, DEC);
-    counts_before = isr_GMZ_counts;
+    counts_before = isr_GMC_counts;
     interrupts();
   }
 
@@ -600,7 +579,7 @@ void loop()
   if(afterStartTime && ((millis()-toSendTime) >= afterStartTime)) {
     afterStartTime = 0;
     if(showDisplay) {
-      DisplayGMZ(((int)accumulated_time/1000), (int)(accumulated_Dose_Rate*1000), (int)(Count_Rate*60));
+      DisplayGMC(((int)accumulated_time/1000), (int)(accumulated_Dose_Rate*1000), (int)(Count_Rate*60));
       displayIsClear = false;
     }
   }
@@ -609,15 +588,15 @@ void loop()
   if((millis() - toSendTime) >= (MEASUREMENT_INTERVAL*1000) ) {
     toSendTime = millis();
     noInterrupts();
-    GMZ_counts_2send      = isr_GMZ_counts_2send;                    // copy values from ISR
+    GMC_counts_2send      = isr_GMC_counts_2send;                    // copy values from ISR
     count_timestamp_2send = isr_count_timestamp_2send;
-    isr_GMZ_counts_2send = 0;
+    isr_GMC_counts_2send = 0;
     interrupts();
     unsigned int hvp = hvpulsecnt2send;
     hvpulsecnt2send = 0;
     time_difference = count_timestamp_2send - last_count_timestamp_2send;
     last_count_timestamp_2send = count_timestamp_2send;
-    current_cpm = (int)(GMZ_counts_2send*60000/time_difference);
+    current_cpm = (int)(GMC_counts_2send*60000/time_difference);
     if (haveBME280) {                                       // read in the BME280 values
       bme_temperature = bme.readTemperature();
       bme_humidity = bme.readHumidity();
@@ -657,7 +636,6 @@ void loop()
     delay(300);
     #endif
 
-    // if we have LoRa, send data to TTN
     #if SEND2LORA
     Serial.println("Sending to TTN ...");
     displayStatusLine(F("TTN"));
@@ -679,20 +657,19 @@ void loop()
 // ===================================================================================================================================
 // Subfunctions
 
-// GMZ-Sub-Functions
-int jb_HV_gen_charge__chargepules() {
-  int  chargepules  = 0;
-       GMZ_cap_full = 0;
+// GMC-Sub-Functions
+int jb_HV_gen_charge__chargepulses() {
+  int chargepulses = 0;
+  GMC_cap_full = 0;
   do {
     digitalWrite(PIN_HV_FET_OUTPUT, HIGH);              // turn the HV FET on
     delayMicroseconds(1500);                            // 5000 usec gives 1,3 times more charge, 500 usec gives 1/20 th of charge
     digitalWrite(PIN_HV_FET_OUTPUT, LOW);               // turn the HV FET off
     delayMicroseconds(1000);
-    chargepules++;
-  }
-  while ( (chargepules < 1000) && !GMZ_cap_full);       // either a timeout or a capacitor full interrupt stops this loop
+    chargepulses++;
+  } while ( (chargepulses < 1000) && !GMC_cap_full);    // either a timeout or a capacitor full interrupt stops this loop
   time2hvpulse = millis();                              // we just pulsed, so restart timer
-  return chargepules;
+  return chargepulses;
 }
 
 // ===================================================================================================================================
@@ -701,8 +678,7 @@ void DisplayStartscreen(void){
   u8x8.clear();
 
 #if CPU == STICK
-  // print the upper line including time and measured radiation
-  u8x8.setFont(u8x8_font_5x8_f);     // small size
+  u8x8.setFont(u8x8_font_5x8_f);
   for (int i=2; i<6; i++) {
     u8x8.drawString(0, i, "        ");
   }
@@ -718,9 +694,7 @@ void DisplayStartscreen(void){
   rv[8] = '\0';
   u8x8.drawString(0, 5, rv);
 #else
-  // print the upper line including time and measured radation
-  u8x8.setFont(u8x8_font_7x14_1x2_f); // medium size
-  // u8x8.setFont(u8x8_font_5x8_f);   // small size
+  u8x8.setFont(u8x8_font_7x14_1x2_f);
 
   u8x8.println("Geiger-Counter");
   u8x8.println("==============");
@@ -730,7 +704,7 @@ void DisplayStartscreen(void){
 };
 
 // ===================================================================================================================================
-void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
+void DisplayGMC(int TimeSec, int RadNSvph, int CPS){
   u8x8.clear();
 
 #if CPU != STICK
@@ -739,7 +713,7 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
   if(TimeMin >=999 ) TimeMin=999;         // limit minutes to max. 999
 
   // print the upper line including time and measured radation
-  u8x8.setFont(u8x8_font_7x14_1x2_f);     // medium size
+  u8x8.setFont(u8x8_font_7x14_1x2_f);
 
   if(TimeMin >= 1){                       // >= 1 minute -> display in minutes
     sprintf(output, "%3d", TimeMin);
@@ -757,10 +731,10 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
 
   // print the lower line including time and CPM value
 #if CPU != STICK
-  u8x8.setFont(u8x8_font_inb33_3x6_n);  // big size
+  u8x8.setFont(u8x8_font_inb33_3x6_n);
   u8x8.drawString(0, 2, nullFill(CPS, 5));
 #else
-  u8x8.setFont(u8x8_font_5x8_f);        // small size
+  u8x8.setFont(u8x8_font_5x8_f);
   u8x8.drawString(0, 2, nullFill(RadNSvph, 8));
   u8x8.draw2x2String(0, 3, nullFill(CPS, 4));
   u8x8.drawString(0, 5, "     cpm");
@@ -779,31 +753,31 @@ void DisplayGMZ(int TimeSec, int RadNSvph, int CPS){
 #if CPU != STICK
 void clearDisplayLine(int line) {
   String blank = F("                ");
-  u8x8.drawString(0, line, blank.c_str());  // clear line
+  u8x8.drawString(0, line, blank.c_str());
 }
 
 void displayStatusLine(String txt) {
-  u8x8.setFont(u8x8_font_5x8_f);          // small size
-  clearDisplayLine(7);                    // clear line
-  u8x8.drawString(0, 7, txt.c_str());     // print it
+  u8x8.setFont(u8x8_font_5x8_f);
+  clearDisplayLine(7);
+  u8x8.drawString(0, 7, txt.c_str());
 }
 #else
 void clearDisplayLine(int line) {
   String blank = F("        ");
-  u8x8.drawString(0, line, blank.c_str());  // clear line
+  u8x8.drawString(0, line, blank.c_str());
 }
 
 void displayStatusLine(String txt) {
-  u8x8.setFont(u8x8_font_5x8_f);            // small size
-  clearDisplayLine(5);                      // clear line
-  u8x8.drawString(0, 5, txt.c_str());       // print it
+  u8x8.setFont(u8x8_font_5x8_f);
+  clearDisplayLine(5);
+  u8x8.drawString(0, 5, txt.c_str());
 }
 #endif
 
 // ===================================================================================================================================
 // Sound Subfunctions
 void SoundStartsound(){
-  float freq_factor = 0.75;    // adaption factors
+  float freq_factor = 0.75;
   int time_factor   =   85;
 
   jbTone(1174659*freq_factor,    2*time_factor, 1); // D
@@ -830,7 +804,7 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
   unsigned int  cycle_time_us, cycle_1_time_us, cycle_2_time_us;
   unsigned long count_timestamp_end;
 
-  cycle_time_us   = 1000000000/frequency_mHz;       // calculate all we need
+  cycle_time_us   = 1000000000/frequency_mHz;
   cycle_1_time_us = cycle_time_us/2;
   cycle_2_time_us = cycle_time_us - cycle_1_time_us;
   count_timestamp_end = millis() + time_ms;
@@ -842,8 +816,7 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
     digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW);
     digitalWrite (PIN_SPEAKER_OUTPUT_N, HIGH);
     delayMicroseconds(cycle_2_time_us);
-  }
-  while(millis()<count_timestamp_end);
+  } while(millis()<count_timestamp_end);
   return;
 }
 
@@ -902,18 +875,18 @@ void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, bool d
   HTTPClient http;
   String body;
   http.begin(host);
-  if (sendwhat == SEND_CPM) {                               // send SBM data
+  if (sendwhat == SEND_CPM) {
     body = buildhttpHeaderandBodySBM(&http,hvpulses,false,debug);
   }
-  if (sendwhat == SEND_BME) {                               // send BME data
+  if (sendwhat == SEND_BME) {
     body = buildhttpHeaderandBodyBME(&http,false,debug);
   }
-  int httpResponseCode = http.POST(body);                   // send the actual POST request
+  int httpResponseCode = http.POST(body);
   if(httpResponseCode>0){
-    String response = http.getString();                     // get the response to the request
+    String response = http.getString();
     if (DEBUG_SERVER_SEND == 1) {
-      Serial.println(httpResponseCode);                     // print return code
-      Serial.println(response);                             // print request answer
+      Serial.println(httpResponseCode);
+      Serial.println(response);
     }
   } else {
     Serial.print("Error on sending POST: ");

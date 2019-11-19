@@ -1,25 +1,7 @@
 //===========================================================================================
-// Project:     Simple Arduino Geiger
-// Description: With minimal exteral Components you are able to build a Geiger Counter that:
-//   - is precice
-//   - cheap
-//   - has a audibal tick
-//   - produces a listing via RS232 (via USB)
-//   - is adaptable to your application
-// 
-// Information to the new Heltec board ESP32 WIFI OLED
-// - for Information how to get the device up and running please check:
-//   - https://robotzero.one/heltec-wifi-kit-32/
-// - The driver for the USB=>UART-Chip CP2102 you can find here:
-//   - http://esp32.net/usb-uart/#SiLabs
-// - Informations from the Board-Manufacturer:
-//   - http://www.heltec.cn/project/wifi-kit-32/?lang=en
-// - it is sold in ebay e. g. under the following names
-//   - "1X(ESP32 WIFI Bluetooth Entwicklungsboard OLED 0.96 "Display IOT Kit Modul GY"
-// - there is also a LoRaWAN-Variant available. Check: 
-//   - http://fambach.net/esp32-wifi-lora-433/
-//   - https://www.hackerspace-ffm.de/wiki/index.php?title=Heltec_Wifi_LoRa_32
-//
+// Project: Simple Multi-Geiger, Code for Debugging
+// (c) 2019 by the authors, see AUTHORS file in toplevel directory.
+// License: see LICENSE file in toplevel directory.
 //
 // Revision History:
 //const char* revString = "2019_03_25";   // Juergen Boehringer      Version 1 for ESP32-Board
@@ -165,7 +147,7 @@ void setup()
 	
       // Write Header of Table	
       Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
-      Serial.print  ("Simple Arduino Geiger, Version ");
+      Serial.print  ("Simple Multi-Geiger, Version ");
       Serial.println(revString);
       Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");	  
       Serial.println("GMZ_counts\tTime_difference\tCount_Rate\tDose_Rate\tHV Pulses  \tAccu_GMZ  \tAccu_Time \tAccu_Rate         \tAccu_Dose");
