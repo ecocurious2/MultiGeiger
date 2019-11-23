@@ -224,6 +224,8 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          char          sw[4]                  = {0,0,0,0};
          char          *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s\n";
          char          *Serial_Logging_Body   = "%10d %15d %10f %9f %9d %8d %9d %9f %9f\n";
+         char          *Serial_One_Minute_Log_Header = "%4s %10s %29s\n";
+         char          *Serial_One_Minute_Log_Body   = "%4d %10d %29d\n";
 
 int Serial_Print_Mode = SERIAL_DEBUG;
 
@@ -395,8 +397,10 @@ void setup()
     Serial.print  ("Simple Multi-Geiger, Version ");
     Serial.println(revString);
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    Serial.println("Time\tCount_Rate\tCounts");
-    Serial.println("[sec]\t[cpm]\t[Counts per last measurement]");
+    Serial.printf(Serial_One_Minute_Log_Header,
+                  "Time", "Count_Rate", "Counts");
+    Serial.printf(Serial_One_Minute_Log_Header,
+                  "[s]",  "[cpm]",      "[Counts per last measurement]");
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     interrupts();
   }
@@ -539,11 +543,10 @@ void loop()
         if( ( ( ( (lastMinuteLogCounts*60000) % (millis()-lastMinuteLog) ) * 2 ) / (millis()-lastMinuteLog) ) >= 1 ) {
             lastMinuteLogCountRate++;                              // Rounding
         }
-        Serial.print((millis()/1000), DEC);
-        Serial.print("\t");
-        Serial.print(lastMinuteLogCountRate, DEC);    // = *60 /1000 +0.5: to reduce rounding errors
-        Serial.print("\t");
-        Serial.println(lastMinuteLogCounts, DEC);
+        Serial.printf(Serial_One_Minute_Log_Body,
+                      (millis()/1000),
+                      lastMinuteLogCountRate, // = *60 /1000 +0.5: to reduce rounding errors
+                      lastMinuteLogCounts);
         lastMinuteLogCounts = 0;
         lastMinuteLog       = millis();
         interrupts();
