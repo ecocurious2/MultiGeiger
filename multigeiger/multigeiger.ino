@@ -194,7 +194,6 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          unsigned long time_difference        = 1000;
          unsigned long accumulated_time       = 0;
          unsigned char last_GMC_counts        = 0;
-         unsigned char speaker_count          = 0;
          uint32_t      HV_pulse_count         = 0;
          unsigned int  hvpulsecnt2send        = 0;
          float         Count_Rate             = 0.0;
@@ -454,7 +453,7 @@ void loop()
     }
 
     if(speakerTick && sw[SPEAKER_ON]) {   // make "Tick" sound
-      for (speaker_count = 0; speaker_count <= 3; speaker_count++) {
+      for (int speaker_count = 0; speaker_count <= 3; speaker_count++) {
         digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW);
         digitalWrite (PIN_SPEAKER_OUTPUT_N, HIGH);
         delayMicroseconds(500);
