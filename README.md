@@ -63,9 +63,8 @@ Die Verbindung fragt nach einem Passwort, es lautet **ESP32Geiger**.
 Ist die Verbindung mit dem Accesspoint hergestellt, hat man beliebig Zeit, die Daten einzugeben.
 Es öffnet sich **automatisch** die Startseite des Gerätes. Es braucht also - in der Regel - nicht extra der Browser aufgerufen werden.
 Falls die Startseite ausnahmsweise doch nicht erscheint, so muss mit dem Browser die Adresse **192.168.4.1** aufgerufen werden und nun erscheint die Startseite.
-Diese besteht nur aus einer Zeile mit einem Link *Go to __configure page__ to change settings* - dort drauf klicken und man kommt zur Einstellungsseite:
+Diese besteht nur aus einer Zeile mit einem Link *Go to __configure page__ to change settings* - dort drauf klicken und man kommt zur Einstellungsseite.
 
-![config](/images/config1.png)
 Diese hat die folgenden 4 Zeilen:
  * Geiger accesspoint SSID
  Dies ist die SSID des eingebauten APs und kann zwar geändert werden, sollte aber nicht!
