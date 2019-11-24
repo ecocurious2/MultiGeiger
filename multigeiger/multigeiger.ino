@@ -221,25 +221,22 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          float         bme_pressure           = 0.0;
          float         GMC_factor_uSvph       = 0.0;
          char          sw[4]                  = {0,0,0,0};
-         portMUX_TYPE  mux = portMUX_INITIALIZER_UNLOCKED;
+         portMUX_TYPE  mux_cap_full = portMUX_INITIALIZER_UNLOCKED;
+         portMUX_TYPE  mux_GMC_count = portMUX_INITIALIZER_UNLOCKED;
 
 int Serial_Print_Mode = SERIAL_DEBUG;
 
 //====================================================================================================================================
 // ISRs
 
-// In my opinion it is not necessary to use here the portENTER_CRITICAL_ISR to
-// mnark these routine critical. As I understand the interrupt handling, the
-// controller masks the same interrupt as long as it is in the isr.
-// And we don't have any other interrupt, that aceeses the isr variables.
-// So, to have  portENTER.. in the main loop seems to be save.
-// If I am wrong, please add the portENTER/EXIT calls.
-
 void IRAM_ATTR isr_GMC_capacitor_full() {
+  portENTER_CRITICAL_ISR(&mux_cap_full);
   GMC_cap_full = 1;
+  portEXIT_CRITICAL_ISR(&mux_cap_full);
 }
 
 void IRAM_ATTR isr_GMC_count() {
+  portENTER_CRITICAL_ISR(&mux_GMC_count);
   static unsigned long isr_count_timestamp_us;
   static unsigned long isr_count_timestamp_us_prev;
   static unsigned long isr_count_timestamp_us_prev_used;
@@ -258,6 +255,7 @@ void IRAM_ATTR isr_GMC_count() {
 
     isr_count_time_between           = isr_count_timestamp_us-isr_count_timestamp_us_prev_used;  // save for statistics debuging
     isr_count_timestamp_us_prev_used = isr_count_timestamp_us;
+  portEXIT_CRITICAL_ISR(&mux_GMC_count);
   }
   digitalWrite(TESTPIN,LOW);
 }
@@ -481,13 +479,13 @@ void loop()
   // If yes, then it is time to charge the HV capacitor and calculate the pulse rate.
   if ((GMC_counts >= MAXCOUNTS) || ((millis() - time2display) >= DISPLAYREFRESH )) {
     // copy values from ISR
-    portENTER_CRITICAL(&mux);                               // enter critical section
+    portENTER_CRITICAL(&mux_GMC_count);                               // enter critical section
     GMC_counts = isr_GMC_counts;
     isr_GMC_counts = 0;
     count_timestamp = isr_count_timestamp;
     GMC_counts_2send = isr_GMC_counts_2send;
     count_timestamp_2send = isr_count_timestamp_2send;
-    portEXIT_CRITICAL(&mux);                                // leave critical section
+    portEXIT_CRITICAL(&mux_GMC_count);                                // leave critical section
 
 
     time2display = millis();
@@ -568,10 +566,10 @@ void loop()
 
   if ((Serial_Print_Mode == Serial_Statistics_Log) && (gotGMCpulse)) {   // statistics log active?
     unsigned int count_time_between;
-    portENTER_CRITICAL(&mux);
+    portENTER_CRITICAL(&mux_GMC_count);
     count_time_between = isr_count_time_between;
     gotGMCpulse = 0;
-    portEXIT_CRITICAL(&mux);
+    portEXIT_CRITICAL(&mux_GMC_count);
     Serial.println(count_time_between, DEC);
   }
 
@@ -588,11 +586,11 @@ void loop()
   // Check, if we have to send to luftdaten.info etc.
   if((millis() - toSendTime) >= (MEASUREMENT_INTERVAL*1000) ) {
     toSendTime = millis();
-    portENTER_CRITICAL(&mux);
+    portENTER_CRITICAL(&mux_GMC_count);
     GMC_counts_2send      = isr_GMC_counts_2send;                    // copy values from ISR
     count_timestamp_2send = isr_count_timestamp_2send;
     isr_GMC_counts_2send = 0;
-    portEXIT_CRITICAL(&mux);
+    portEXIT_CRITICAL(&mux_GMC_count);
     unsigned int hvp = hvpulsecnt2send;
     hvpulsecnt2send = 0;
     time_difference = count_timestamp_2send - last_count_timestamp_2send;
