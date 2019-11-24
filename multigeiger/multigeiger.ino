@@ -227,6 +227,14 @@ int Serial_Print_Mode = SERIAL_DEBUG;
 
 //====================================================================================================================================
 // ISRs
+
+// In my opinion it is not necessary to use here the portENTER_CRITICAL_ISR to
+// mnark these routine critical. As I understand the interrupt handling, the
+// controller masks the same interrupt as long as it is in the isr.
+// And we don't have any other interrupt, that aceeses the isr variables.
+// So, to have  portENTER.. in the main loop seems to be save.
+// If I am wrong, please add the portENTER/EXIT calls.
+
 void IRAM_ATTR isr_GMC_capacitor_full() {
   GMC_cap_full = 1;
 }
@@ -560,7 +568,7 @@ void loop()
 
   if ((Serial_Print_Mode == Serial_Statistics_Log) && (gotGMCpulse)) {   // statistics log active?
     unsigned int count_time_between;
-    portEXIT_CRITICAL(&mux);
+    portENTER_CRITICAL(&mux);
     count_time_between = isr_count_time_between;
     gotGMCpulse = 0;
     portEXIT_CRITICAL(&mux);
