@@ -43,7 +43,7 @@ Als externe Libraries werden benötigt:
  * Adafruit Unified Sensor, Version 1.02
 
 Für LoRa zusätzlich:
- * MCCI LoRaWAN LMIC library, Version 2.3.2  
+ * MCCI LoRaWAN LMIC library, Version >= 2.3.2  
 **Achtung:** Bitte prüfen, dass in der Datei  project_config/lmic_project_config.h (in der obersten Ebene in dieser Library) unbedingt
 die richtigen Configs eingestellt sind. Die Datei muss folgendermassen aussehen:
 ```
