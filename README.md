@@ -43,7 +43,20 @@ Als externe Libraries werden benötigt:
  * Adafruit Unified Sensor, Version 1.02
 
 Für LoRa zusätzlich:
- * MCCI LoRaWAN LMIC library, Version 2.3.2
+ * MCCI LoRaWAN LMIC library, Version >= 2.3.2  
+**Achtung:** Bitte prüfen, dass in der Datei  project_config/lmic_project_config.h (in der obersten Ebene in dieser Library) unbedingt
+die richtigen Configs eingestellt sind. Die Datei muss folgendermassen aussehen:
+```
+// project-specific definitions
+#define CFG_eu868 1
+//#define CFG_us915 1
+//#define CFG_au921 1
+//#define CFG_as923 1
+// #define LMIC_COUNTRY_CODE LMIC_COUNTRY_CODE_JP	/* for as923-JP */
+//#define CFG_in866 1
+#define CFG_sx1276_radio 1
+//#define LMIC_USE_INTERRUPTS
+```
 
 Falls der Compiler andere Libraries anmahnt, diese bitte in der Arduino IDE per *Sketch -> Include Library -> Manage Libraries ..* installieren.
 
