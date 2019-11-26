@@ -222,7 +222,10 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          float         bme_pressure           = 0.0;
          float         GMC_factor_uSvph       = 0.0;
          char          sw[4]                  = {0,0,0,0};
-
+         char          *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s\n";
+         char          *Serial_Logging_Body   = "%10d %15d %10f %9f %9d %8d %9d %9f %9f\n";
+         char          *Serial_One_Minute_Log_Header = "%4s %10s %29s\n";
+         char          *Serial_One_Minute_Log_Body   = "%4d %10d %29d\n";
 
 int Serial_Print_Mode = SERIAL_DEBUG;
 
@@ -381,8 +384,10 @@ void setup()
     Serial.print  ("Simple Multi-Geiger, Version ");
     Serial.println(revString);
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    Serial.println("GMC_counts\tTime_difference\tCount_Rate\tDose_Rate\tHV Pulses  \tAccu_GMC  \tAccu_Time \tAccu_Rate         \tAccu_Dose");
-    Serial.println("[Counts]  \t[ms]           \t[cps]     \t[uSv/h]  \t[-]        \t[Counts]  \t[ms]      \t[cps]             \t[uSv/h]");
+    Serial.printf(Serial_Logging_Header,
+                  "GMC_counts", "Time_difference", "Count_Rate", "Dose_Rate", "HV Pulses", "Accu_GMC", "Accu_Time", "Accu_Rate", "Accu_Dose");
+    Serial.printf(Serial_Logging_Header,
+                  "[Counts]",   "[ms]",            "[cps]",      "[uSv/h]",   "[-]",       "[Counts]", "[ms]",      "[cps]",     "[uSv/h]");
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     interrupts();
   }
@@ -392,8 +397,10 @@ void setup()
     Serial.print  ("Simple Multi-Geiger, Version ");
     Serial.println(revString);
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
-    Serial.println("Time\tCount_Rate\tCounts");
-    Serial.println("[sec]\t[cpm]\t[Counts per last measurement]");
+    Serial.printf(Serial_One_Minute_Log_Header,
+                  "Time", "Count_Rate", "Counts");
+    Serial.printf(Serial_One_Minute_Log_Header,
+                  "[s]",  "[cpm]",      "[Counts per last measurement]");
     Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
     interrupts();
   }
@@ -524,26 +531,9 @@ void loop()
 
     if (Serial_Print_Mode == Serial_Logging) {                       // Report all
 //      noInterrupts();
-      Serial.print(GMC_counts, DEC);
-      Serial.print("\t");
-      Serial.print(count_timestamp, DEC);
-      Serial.print("\t");
-      Serial.print(time_difference, DEC);
-      Serial.print("\t");
-      Serial.print(Count_Rate, 2);
-      Serial.print("\t");
-      Serial.print(Dose_Rate, 2);
-      Serial.print("\t");
-      Serial.print(HV_pulse_count, DEC);
-      Serial.print("\t");
-      Serial.print(accumulated_GMC_counts, DEC);
-      Serial.print("\t");
-      Serial.print(accumulated_time, DEC);
-      Serial.print("\t");
-      Serial.print(accumulated_Count_Rate, DEC);
-      Serial.print("\t");
-      Serial.print(accumulated_Dose_Rate, DEC);
-      Serial.println();
+      Serial.printf(Serial_Logging_Body,
+                    GMC_counts, time_difference, Count_Rate, Dose_Rate, HV_pulse_count,
+                    accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate);
 //      interrupts();
     }
     if (Serial_Print_Mode == Serial_One_Minute_Log) {              // 1 Minute Log active?
@@ -553,11 +543,10 @@ void loop()
         if( ( ( ( (lastMinuteLogCounts*60000) % (millis()-lastMinuteLog) ) * 2 ) / (millis()-lastMinuteLog) ) >= 1 ) {
             lastMinuteLogCountRate++;                              // Rounding
         }
-        Serial.print((millis()/1000), DEC);
-        Serial.print("\t");
-        Serial.print(lastMinuteLogCountRate, DEC);    // = *60 /1000 +0.5: to reduce rounding errors
-        Serial.print("\t");
-        Serial.println(lastMinuteLogCounts, DEC);
+        Serial.printf(Serial_One_Minute_Log_Body,
+                      (millis()/1000),
+                      lastMinuteLogCountRate, // = *60 /1000 +0.5: to reduce rounding errors
+                      lastMinuteLogCounts);
         lastMinuteLogCounts = 0;
         lastMinuteLog       = millis();
         interrupts();
