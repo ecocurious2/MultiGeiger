@@ -177,7 +177,7 @@ const unsigned long GMC_dead_time = 190;  // Dead Time of the Geiger Counter. Ha
 
 //====================================================================================================================================
 // Variables
-volatile bool          GMC_cap_full           = 0;
+volatile bool          isr_GMC_cap_full       = 0;
 volatile unsigned int  isr_GMC_counts         = 0;
 volatile bool          gotGMCpulse            = 0;
 volatile unsigned long isr_count_timestamp    = millis();
@@ -235,7 +235,7 @@ int Serial_Print_Mode = SERIAL_DEBUG;
 
 void IRAM_ATTR isr_GMC_capacitor_full() {
   portENTER_CRITICAL_ISR(&mux_cap_full);
-  GMC_cap_full = 1;
+  isr_GMC_cap_full = 1;
   portEXIT_CRITICAL_ISR(&mux_cap_full);
 }
 
@@ -649,14 +649,14 @@ void loop()
 // GMC-Sub-Functions
 int jb_HV_gen_charge__chargepulses() {
   int chargepulses = 0;
-  GMC_cap_full = 0;
+  isr_GMC_cap_full = 0;
   do {
     digitalWrite(PIN_HV_FET_OUTPUT, HIGH);              // turn the HV FET on
     delayMicroseconds(1500);                            // 5000 usec gives 1,3 times more charge, 500 usec gives 1/20 th of charge
     digitalWrite(PIN_HV_FET_OUTPUT, LOW);               // turn the HV FET off
     delayMicroseconds(1000);
     chargepulses++;
-  } while ( (chargepulses < 1000) && !GMC_cap_full);    // either a timeout or a capacitor full interrupt stops this loop
+  } while ((chargepulses < 1000) && !isr_GMC_cap_full); // either a timeout or a capacitor full interrupt stops this loop
   time2hvpulse = millis();                              // we just pulsed, so restart timer
   return chargepulses;
 }
