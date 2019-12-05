@@ -179,11 +179,12 @@ const unsigned long GMC_dead_time = 190;  // Dead Time of the Geiger Counter. Ha
 // Variables
 volatile bool          isr_GMC_cap_full       = 0;
 volatile unsigned int  isr_GMC_counts         = 0;
-volatile bool          gotGMCpulse            = 0;
+volatile bool          isr_gotGMCpulse        = 0;
 volatile unsigned long isr_count_timestamp    = millis();
 volatile unsigned long isr_count_time_between = micros();
 volatile unsigned int  isr_GMC_counts_2send   = 0;
 volatile unsigned long isr_count_timestamp_2send= micros();
+
          unsigned int  GMC_counts             = 0;
          unsigned int  GMC_counts_2send       = 0;
          unsigned int  accumulated_GMC_counts = 0;
@@ -255,7 +256,7 @@ void IRAM_ATTR isr_GMC_count() {
     isr_count_timestamp       = millis();              // notice (system) time of the pulse
     isr_GMC_counts_2send++;
     isr_count_timestamp_2send = millis();
-    gotGMCpulse = 1;
+    isr_gotGMCpulse = 1;
 
     isr_count_time_between           = isr_count_timestamp_us-isr_count_timestamp_us_prev_used;  // save for statistics debuging
     isr_count_timestamp_us_prev_used = isr_count_timestamp_us;
@@ -554,11 +555,11 @@ void loop()
     GMC_counts = 0;  // initialize ISR values
   }
 
-  if ((Serial_Print_Mode == Serial_Statistics_Log) && (gotGMCpulse)) {   // statistics log active?
+  if ((Serial_Print_Mode == Serial_Statistics_Log) && isr_gotGMCpulse) {   // statistics log active?
     unsigned int count_time_between;
     portENTER_CRITICAL(&mux_GMC_count);
     count_time_between = isr_count_time_between;
-    gotGMCpulse = 0;
+    isr_gotGMCpulse = 0;
     portEXIT_CRITICAL(&mux_GMC_count);
     Serial.println(count_time_between, DEC);
   }
