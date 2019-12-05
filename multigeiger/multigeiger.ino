@@ -193,7 +193,6 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          unsigned long last_count_timestamp_2send = millis();
          unsigned long accumulated_time       = 0;
          unsigned char last_GMC_counts        = 0;
-         unsigned int  HV_pulse_count         = 0;
          unsigned int  hvpulsecnt2send        = 0;
          float         Count_Rate             = 0.0;
          float         Dose_Rate              = 0.0;
@@ -439,6 +438,7 @@ void setup()
 void loop()
 {
   unsigned long time_difference;
+  unsigned int HV_pulse_count;
 
   // Loop for IoTWebConf
   iotWebConf.doLoop();
