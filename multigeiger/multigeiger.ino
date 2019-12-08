@@ -507,10 +507,11 @@ void loop()
     accumulated_GMC_counts += GMC_counts;                     // accumulate all the pulses
     lastMinuteLogCounts += GMC_counts;
 
-    Count_Rate = 0;
-    if (time_difference != 0.0) {
+    Count_Rate = 0.0;
+    if (time_difference != 0) {
       Count_Rate = (float)GMC_counts*1000.0/(float)time_difference;  // calculate the current count rate
-    }
+    } 
+
     Dose_Rate = Count_Rate *GMC_factor_uSvph;                        // ... and dose rate
 
     // calculate the radiation over the complete time from start
@@ -587,7 +588,12 @@ void loop()
     hvpulsecnt2send = 0;
     time_difference = count_timestamp_2send - last_count_timestamp_2send;
     last_count_timestamp_2send = count_timestamp_2send;
-    current_cpm = (int)(GMC_counts_2send*60000/time_difference);
+
+    current_cpm = 0;
+    if(time_difference != 0) {
+      current_cpm = (int)(GMC_counts_2send*60000/time_difference);
+    }
+    
     if (haveBME280) {                                       // read in the BME280 values
       bme_temperature = bme.readTemperature();
       bme_humidity = bme.readHumidity();
