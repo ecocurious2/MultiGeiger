@@ -474,10 +474,10 @@ void loop()
         digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW);
         delayMicroseconds(500);
       }
-    }
-
-    if(ledTick & !speakerTick) {
-      delay(4);
+    } else {
+      if(ledTick && sw[LED_ON]) {
+        delay(4);
+      }
     }
     if(ledTick && sw[LED_ON]) {
       digitalWrite(LED_BUILTIN, LOW);     // switch off LED
