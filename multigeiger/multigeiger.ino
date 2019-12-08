@@ -463,9 +463,9 @@ void loop()
   count_timestamp_2send = isr_count_timestamp_2send;
   portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
 
-  // Pulse the high voltage at least every second
-  #define HVPULSERATE 1000
-  if((current_ms - time2hvpulse) >= HVPULSERATE ) {
+  // Pulse the high voltage if we got enough GMC pulses to update the display or at least every 1000ms.
+  #define HVPULSE_MS 1000
+  if(update_display || (current_ms - time2hvpulse) >= HVPULSE_MS ) {
     HV_pulse_count = jb_HV_gen_charge__chargepulses();      // charge HV capacitor - restarts time2hvpulse!
     hvpulsecnt2send += HV_pulse_count;                      // count for sending
   }
@@ -474,8 +474,6 @@ void loop()
     time2display = current_ms;
     time_difference = count_timestamp - last_count_timestamp; // calculate all derived values
     last_count_timestamp = count_timestamp;                   // notice the old timestamp
-    HV_pulse_count = jb_HV_gen_charge__chargepulses();        // charge HV capacitor
-    hvpulsecnt2send += HV_pulse_count;                        // count for sending
     accumulated_time += time_difference;                      // accumulate all the time
     accumulated_GMC_counts += GMC_counts;                     // accumulate all the pulses
     lastMinuteLogCounts += GMC_counts;
