@@ -192,10 +192,8 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          unsigned long count_timestamp_2send  = millis();
          unsigned long last_count_timestamp   = millis();
          unsigned long last_count_timestamp_2send = millis();
-         unsigned long time_difference        = 1000;
          unsigned long accumulated_time       = 0;
          unsigned char last_GMC_counts        = 0;
-         unsigned int  HV_pulse_count         = 0;
          unsigned int  hvpulsecnt2send        = 0;
          float         Count_Rate             = 0.0;
          float         Dose_Rate              = 0.0;
@@ -221,7 +219,6 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          float         bme_humidity           = 0.0;
          float         bme_pressure           = 0.0;
          float         GMC_factor_uSvph       = 0.0;
-         char          sw[4]                  = {0,0,0,0};
          portMUX_TYPE  mux_cap_full = portMUX_INITIALIZER_UNLOCKED;
          portMUX_TYPE  mux_GMC_count = portMUX_INITIALIZER_UNLOCKED;
          char          *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s\n";
@@ -440,6 +437,10 @@ void setup()
 // ===================================================================================================================================
 void loop()
 {
+  unsigned long time_difference;
+  unsigned int HV_pulse_count;
+  char sw[4];
+
   // Loop for IoTWebConf
   iotWebConf.doLoop();
 
