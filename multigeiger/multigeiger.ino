@@ -439,7 +439,16 @@ void loop()
   unsigned long time_difference;
   unsigned int HV_pulse_count;
   char sw[4];
-  unsigned long current_ms = millis();                      // to save multiple calls to millis()
+  unsigned long current_ms = millis();                           // to save multiple calls to millis()
+
+  // copy values from ISR
+  portENTER_CRITICAL(&mux_GMC_count);                            // enter critical section
+  GMC_counts = isr_GMC_counts;
+  isr_GMC_counts = 0;
+  count_timestamp = isr_count_timestamp;
+  GMC_counts_2send = isr_GMC_counts_2send;
+  count_timestamp_2send = isr_count_timestamp_2send;
+  portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
 
   // Loop for IoTWebConf
   iotWebConf.doLoop();
@@ -488,16 +497,6 @@ void loop()
   // Check if there are enough pulses detected or if enough time has elapsed.
   // If yes, then it is time to charge the HV capacitor and calculate the pulse rate.
   if ((GMC_counts >= MAXCOUNTS) || ((current_ms - time2display) >= DISPLAYREFRESH )) {
-    // copy values from ISR
-    portENTER_CRITICAL(&mux_GMC_count);                               // enter critical section
-    GMC_counts = isr_GMC_counts;
-    isr_GMC_counts = 0;
-    count_timestamp = isr_count_timestamp;
-    GMC_counts_2send = isr_GMC_counts_2send;
-    count_timestamp_2send = isr_count_timestamp_2send;
-    portEXIT_CRITICAL(&mux_GMC_count);                                // leave critical section
-
-
     time2display = current_ms;
     time_difference = count_timestamp - last_count_timestamp; // calculate all derived values
     last_count_timestamp = count_timestamp;                   // notice the old timestamp
