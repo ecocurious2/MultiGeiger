@@ -177,13 +177,14 @@ const unsigned long GMC_dead_time = 190;  // Dead Time of the Geiger Counter. Ha
 
 //====================================================================================================================================
 // Variables
-volatile bool          GMC_cap_full           = 0;
+volatile bool          isr_GMC_cap_full       = 0;
 volatile unsigned int  isr_GMC_counts         = 0;
-volatile bool          gotGMCpulse            = 0;
+volatile bool          isr_gotGMCpulse        = 0;
 volatile unsigned long isr_count_timestamp    = millis();
 volatile unsigned long isr_count_time_between = micros();
 volatile unsigned int  isr_GMC_counts_2send   = 0;
 volatile unsigned long isr_count_timestamp_2send= micros();
+
          unsigned int  GMC_counts             = 0;
          unsigned int  GMC_counts_2send       = 0;
          unsigned int  accumulated_GMC_counts = 0;
@@ -235,7 +236,7 @@ int Serial_Print_Mode = SERIAL_DEBUG;
 
 void IRAM_ATTR isr_GMC_capacitor_full() {
   portENTER_CRITICAL_ISR(&mux_cap_full);
-  GMC_cap_full = 1;
+  isr_GMC_cap_full = 1;
   portEXIT_CRITICAL_ISR(&mux_cap_full);
 }
 
@@ -255,7 +256,7 @@ void IRAM_ATTR isr_GMC_count() {
     isr_count_timestamp       = millis();              // notice (system) time of the pulse
     isr_GMC_counts_2send++;
     isr_count_timestamp_2send = millis();
-    gotGMCpulse = 1;
+    isr_gotGMCpulse = 1;
 
     isr_count_time_between           = isr_count_timestamp_us-isr_count_timestamp_us_prev_used;  // save for statistics debuging
     isr_count_timestamp_us_prev_used = isr_count_timestamp_us;
@@ -554,11 +555,11 @@ void loop()
     GMC_counts = 0;  // initialize ISR values
   }
 
-  if ((Serial_Print_Mode == Serial_Statistics_Log) && (gotGMCpulse)) {   // statistics log active?
+  if ((Serial_Print_Mode == Serial_Statistics_Log) && isr_gotGMCpulse) {   // statistics log active?
     unsigned int count_time_between;
     portENTER_CRITICAL(&mux_GMC_count);
     count_time_between = isr_count_time_between;
-    gotGMCpulse = 0;
+    isr_gotGMCpulse = 0;
     portEXIT_CRITICAL(&mux_GMC_count);
     Serial.println(count_time_between, DEC);
   }
@@ -649,14 +650,14 @@ void loop()
 // GMC-Sub-Functions
 int jb_HV_gen_charge__chargepulses() {
   int chargepulses = 0;
-  GMC_cap_full = 0;
+  isr_GMC_cap_full = 0;
   do {
     digitalWrite(PIN_HV_FET_OUTPUT, HIGH);              // turn the HV FET on
     delayMicroseconds(1500);                            // 5000 usec gives 1,3 times more charge, 500 usec gives 1/20 th of charge
     digitalWrite(PIN_HV_FET_OUTPUT, LOW);               // turn the HV FET off
     delayMicroseconds(1000);
     chargepulses++;
-  } while ( (chargepulses < 1000) && !GMC_cap_full);    // either a timeout or a capacitor full interrupt stops this loop
+  } while ((chargepulses < 1000) && !isr_GMC_cap_full); // either a timeout or a capacitor full interrupt stops this loop
   time2hvpulse = millis();                              // we just pulsed, so restart timer
   return chargepulses;
 }
