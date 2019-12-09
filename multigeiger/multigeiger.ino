@@ -440,18 +440,7 @@ void loop()
   unsigned int HV_pulse_count;
   char sw[4];
   unsigned long current_ms = millis();                           // to save multiple calls to millis()
-
-  // copy values from ISR
-  portENTER_CRITICAL(&mux_GMC_count);                            // enter critical section
-  GMC_counts = isr_GMC_counts;
-  isr_GMC_counts = 0;
-  count_timestamp = isr_count_timestamp;
-  GMC_counts_2send = isr_GMC_counts_2send;
-  count_timestamp_2send = isr_count_timestamp_2send;
-  portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
-
-  // Loop for IoTWebConf
-  iotWebConf.doLoop();
+  bool update_display;
 
   // Read Switches (active LOW!)
   sw[0] = !digitalRead(PIN_SWI_0);
@@ -459,49 +448,32 @@ void loop()
   sw[2] = !digitalRead(PIN_SWI_2);
   sw[3] = !digitalRead(PIN_SWI_3);
 
-  // make LED flicker and speaker tick
-  if (GMC_counts != last_GMC_counts) {
-    if(ledTick && sw[LED_ON]) {
-      digitalWrite(LED_BUILTIN, HIGH);    // switch on LED
-    }
+  #define DISPLAYREFRESH 10000
+  #define MAXCOUNTS 100
 
-    if(speakerTick && sw[SPEAKER_ON]) {   // make "Tick" sound
-      for (int speaker_count = 0; speaker_count <= 3; speaker_count++) {
-        digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW);
-        digitalWrite (PIN_SPEAKER_OUTPUT_N, HIGH);
-        delayMicroseconds(500);
-        digitalWrite (PIN_SPEAKER_OUTPUT_P, HIGH);
-        digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW);
-        delayMicroseconds(500);
-      }
-    } else {
-      if(ledTick && sw[LED_ON]) {
-        delay(4);
-      }
-    }
-    if(ledTick && sw[LED_ON]) {
-      digitalWrite(LED_BUILTIN, LOW);     // switch off LED
-    }
-    last_GMC_counts = GMC_counts;         // notice old value
-  }
+  // copy values from ISR
+  portENTER_CRITICAL(&mux_GMC_count);                            // enter critical section
+  GMC_counts = isr_GMC_counts;
+  // Check if there are enough pulses detected or if enough time has elapsed.
+  // If yes, then it is time to calculate the pulse rate, update the display and recharge the HV capacitor.
+  update_display = (GMC_counts >= MAXCOUNTS) || ((current_ms - time2display) >= DISPLAYREFRESH);
+  if(update_display) isr_GMC_counts = 0;
+  count_timestamp = isr_count_timestamp;
+  GMC_counts_2send = isr_GMC_counts_2send;
+  count_timestamp_2send = isr_count_timestamp_2send;
+  portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
 
-  // Pulse the high voltage at least every second
-  #define HVPULSERATE 1000
-  if((current_ms - time2hvpulse) >= HVPULSERATE ) {
+  // Pulse the high voltage if we got enough GMC pulses to update the display or at least every 1000ms.
+  #define HVPULSE_MS 1000
+  if(update_display || (current_ms - time2hvpulse) >= HVPULSE_MS ) {
     HV_pulse_count = jb_HV_gen_charge__chargepulses();      // charge HV capacitor - restarts time2hvpulse!
     hvpulsecnt2send += HV_pulse_count;                      // count for sending
   }
 
-  #define DISPLAYREFRESH 10000
-  #define MAXCOUNTS 100
-  // Check if there are enough pulses detected or if enough time has elapsed.
-  // If yes, then it is time to charge the HV capacitor and calculate the pulse rate.
-  if ((GMC_counts >= MAXCOUNTS) || ((current_ms - time2display) >= DISPLAYREFRESH )) {
+  if(update_display) {
     time2display = current_ms;
     time_difference = count_timestamp - last_count_timestamp; // calculate all derived values
     last_count_timestamp = count_timestamp;                   // notice the old timestamp
-    HV_pulse_count = jb_HV_gen_charge__chargepulses();        // charge HV capacitor
-    hvpulsecnt2send += HV_pulse_count;                        // count for sending
     accumulated_time += time_difference;                      // accumulate all the time
     accumulated_GMC_counts += GMC_counts;                     // accumulate all the pulses
     lastMinuteLogCounts += GMC_counts;
@@ -552,7 +524,6 @@ void loop()
         lastMinuteLog       = current_ms;
       }
     }
-    GMC_counts = 0;  // initialize ISR values
   }
 
   if ((Serial_Print_Mode == Serial_Statistics_Log) && isr_gotGMCpulse) {   // statistics log active?
@@ -641,6 +612,33 @@ void loop()
     Serial.printf("SW0: %d  SW1: %d  SW2: %d  SW3: %d\n",sw[0],sw[1],sw[2],sw[3]);
   }
 
+  // make LED flicker and speaker tick
+  if (GMC_counts != last_GMC_counts) {
+    if(ledTick && sw[LED_ON]) {
+      digitalWrite(LED_BUILTIN, HIGH);    // switch on LED
+    }
+    if(speakerTick && sw[SPEAKER_ON]) {   // make "Tick" sound
+      for (int speaker_count = 0; speaker_count <= 3; speaker_count++) {
+        digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW);
+        digitalWrite (PIN_SPEAKER_OUTPUT_N, HIGH);
+        delayMicroseconds(500);
+        digitalWrite (PIN_SPEAKER_OUTPUT_P, HIGH);
+        digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW);
+        delayMicroseconds(500);
+      }
+    } else {
+      if(ledTick && sw[LED_ON]) {
+        delay(4);
+      }
+    }
+    if(ledTick && sw[LED_ON]) {
+      digitalWrite(LED_BUILTIN, LOW);     // switch off LED
+    }
+    last_GMC_counts = GMC_counts;         // notice old value
+  }
+
+  // Loop for IoTWebConf
+  iotWebConf.doLoop();
 }
 
 // ===================================================================================================================================
