@@ -79,13 +79,13 @@ Falls die Startseite ausnahmsweise doch nicht erscheint, so muss mit dem Browser
 Diese besteht nur aus einer Zeile mit einem Link *Go to __configure page__ to change settings* - dort drauf klicken und man kommt zur Einstellungsseite.
 
 Diese hat die folgenden 4 Zeilen:
- * Geiger accesspoint SSID
- Dies ist die SSID des eingebauten APs und kann zwar geändert werden, sollte aber nicht!
- * Geiger accesspoint password
+ * Geiger accesspoint SSID  
+ Dies ist die SSID des eingebauten APs und kann zwar geändert werden, sollte aber nicht! Der Sensor wird mit dieser Nummer bei luftdaten.info angemeldet. Wird sie geändert, muss eine neue Anmeldung erfolgen.
+ * Geiger accesspoint password  
  Dies ist das Passwort für den eingebauten AP. Dieses **MUSS** beim ersten Mal geändert werden. Es kann natürlich auch das gleiche Passwort wieder verwendet werden - wichtig ist nur, dass da was reingeschrieben wird und dass man das **nicht vergessen** darf.
- * WiFi client SSID
+ * WiFi client SSID  
  Hier muss die SSID des WLANs für den Netzwerk/Internet-Zugang eingegeben werden.
- * WiFi client password
+ * WiFi client password  
  Und hier das zugehörige Passwort.
 
 Es wird empfohlen, beim WLAN das Gastnetz zu verwenden (falls ein solches existiert). Normalerweise wird das Gastnetz im Router vom normalen Netz abgeschottet und ist damit sicherer.
@@ -123,5 +123,5 @@ Dann das Formular ausfüllen:
  * Position
  Hier bitte die Koordinaten eingeben, so genau wie möglich (oder über den rechten Knopf die Koordinaten rechnen lassen). Dies wird benötigt, um den Sensor später auf der Karte anzeigen zu können.
 
- Nun mit *Einstellungen speichern* das Ganze beenden. Dann auf der Übersichts-Seite bei diesem Sensor auf *Daten* klicken. Nun steht hinter *Sensor ID* die ID des Sensors. Diese bitte merken: sie wird für die Abfrage bei luftdaten.info bzw. bei der Anzeige auf https://multigeiger.rexfue.de benötigt (zur Zeit ist dan noch laufend in Arbeit - kann also ab und zu ausfallen :wink: ).
+ Nun mit *Einstellungen speichern* das Ganze beenden. Dann auf der Übersichts-Seite bei diesem Sensor auf *Daten* klicken. Nun steht hinter *Sensor ID* die ID des Sensors. Diese bitte merken: sie wird für die Abfrage bei luftdaten.info bzw. bei der Anzeige auf https://multigeiger.citysensor.de benötigt (zur Zeit ist das noch laufend in Arbeit - kann/wird also ab und zu ausfallen :wink: ).
 
