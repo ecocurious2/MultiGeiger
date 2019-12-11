@@ -1,18 +1,19 @@
 
 # MultiGeiger
-Wir sind Ecocurious, Deine Umwelt-, Natur-  und Technik-Community.
-Aktuell bauen wir einen Multigeiger, um Radioaktivität zu messen. https://ecocurious.de/projekte/multigeiger/
+Wir sind Ecocurious, Deine Umwelt-, Natur-  und Technik-Community. Aktuell bauen wir einen Multigeiger, um Radioaktivität zu messen. https://ecocurious.de/projekte/multigeiger/
 
-Ziel ist es, einen Low-Cost-Geigerzähler (für Gamma-Strahlung) zu entwickeln und ein Bürger-Messnetz in Deutchland aufzubauen.
+Ziel ist es, einen Low-Cost-Geigerzähler (für Gamma-Strahlung) zu entwickeln und ein Bürger-Messnetz in Deutschland aufzubauen.
 
-Unsere Hard- und Software hat Jürgen Böhringer konzipiert (http://www.boehri.de). Reinhard/rexfue hat die Software und Platine weitergedacht und kümmert sich um die Einbindung der Sensoren in unsere Map https://ecocurious.de/projekte/multigeiger/.
+Unsere Hard- und Software hat Jürgen Böhringer konzipiert (http://www.boehri.de). Reinhard/rexfue hat die Software und Platine weitergedacht und kümmert sich um die Einbindung der Sensoren in unsere Map https://ecocurious.de/multigeiger-karte/.
 
-Das Besondere an unserem Multigeiger ist, das er wahlweise mit einem LoRa- oder Wifi-Modul betrieben werden kann. Noch in diesem Jahr starten wir die ersten Workshops, in denen Du die Hardware mit unserer Unterstützung zusammengebauen kannst.
+Das Besondere an unserem Multigeiger ist, dass er wahlweise mit einem LoRa- oder Wifi-Modul betrieben werden kann. Noch in diesem Jahr starten wir die ersten Workshops, in denen Du die Hardware mit unserer Unterstützung zusammengebauen kannst.
 
 Workshop-Termine findest DU hier: https://www.meetup.com/de-DE/Ecocurious-deine-Umwelt-Natur-und-Technik-Community/
 und hier:https://ecocurious.de/events/
 
 Klingt das interessant für Dich? Dann mach mit, herzliche Einladung!
+
+
 
 ## Installation
 Das Verzeichnis clonen oder als .zip runterladen und entpacken. Mit der Arduino-IDE in dem neuen Verzeichnis die Datei *multigeiger.ino* im Verzeichnis *multigeiger* öffnen.
