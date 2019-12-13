@@ -145,7 +145,7 @@ enum {SEND_CPM,SEND_BME};
 #define AFTERSTART 5000
 
 // Dummy server for debugging
-#define SEND2DUMMY 1
+#define SEND2DUMMY 0
 
 // Config version for IoTWebConfig
 #define CONFIG_VERSION "012"
@@ -573,9 +573,11 @@ void loop()
       bme_temperature = bme.readTemperature();
       bme_humidity = bme.readHumidity();
       bme_pressure = bme.readPressure();
+#if 0
       Serial.printf("Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f\n", current_cpm, hvp, bme_temperature, bme_humidity, bme_pressure);
     } else {
       Serial.printf("Measured: cpm= %d HV=%d\n",current_cpm, hvp);
+#endif
     }
 
     #if SEND2DUMMY
@@ -619,8 +621,10 @@ void loop()
 
     displayStatusLine(" ");
 
+    #if 0
     // log state of switch
     Serial.printf("SW0: %d  SW1: %d  SW2: %d  SW3: %d\n",sw[0],sw[1],sw[2],sw[3]);
+    #endif
   }
 
   // make LED flicker and speaker tick
