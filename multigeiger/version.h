@@ -1,11 +1,20 @@
 // Revision history:
 
-const char* revString = "V1.9_2019-11-12";
-#define SOFTWARE_VERSION 19
+const char* revString = "V1.10_2019-12-13";
+#define SOFTWARE_VERSION 1A
 
 /*
 * Version date        author
 *
+* V1.10 2019-12-13  rxf/tw
+*   - conversion factor for Si22G tube fixed
+*   - char variables changed to int
+*   - isr routines shielded with portMUX
+*   - debug serial out formatting improved
+*   - sequence of counting and dispaying and hv charging improved
+*   - speaker and led tick fixed
+*   - many calls to millis() consolidated
+* 
 * V1.9 2019-11-05 rxf
 *   - structure for different counter tubes
 *   - LoRa payload changed again

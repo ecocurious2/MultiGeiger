@@ -1,6 +1,15 @@
 # Change log
 This is the change log for the multigeiger project.
 
+### Version 1.10 2019-12-13
+* conversion factor for Si22G tube fixed
+* char variables changed to int
+* isr routines shielded with portMUX
+* debug serial out formatting improved
+* sequence of counting and dispaying and hv charging improved
+* speaker and led tick fixed
+* many calls to millis() consolidated
+
 ### Version 1.9 2019-11-12
 *   structure for different counter tubes
 *   LoRa payload changed again
