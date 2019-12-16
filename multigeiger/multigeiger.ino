@@ -177,7 +177,7 @@ const unsigned long GMC_dead_time = 190;  // Dead Time of the Geiger Counter. Ha
 
 // Hosts for data delivery
 #define MADAVI "http://api-rrd.madavi.de/data.php"
-#define LUFTDATEN "http://api.luftdaten.info/v1/push-sensor-data/"
+#define LUFTDATEN "http://api.sensor.community/v1/push-sensor-data/"
 #define TOILET "http://ptsv2.com/t/enbwck3/post"
 
 //====================================================================================================================================
