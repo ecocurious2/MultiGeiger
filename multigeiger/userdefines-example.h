@@ -5,9 +5,11 @@
 // and then edit userdefines.h as appropriate for your use case / hardware.
 //====================================================================================================================================
 
+#ifndef CPU
 // ** select (uncomment) exactly one of following CPU (board type) defines:
 #define CPU WIFI                                // Heltec WiFi Kit 32 (big display, WiFi-only)
 //#define CPU STICK                             // Heltec Wireless Stick (small display, WiFi+LoRa)
+#endif
 
 // ** select (uncomment) exactly one Geiger-Mueller counter tube:
 //#define TUBE_TYPE SBM20
