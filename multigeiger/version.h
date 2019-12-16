@@ -1,10 +1,15 @@
 // Revision history:
 
-const char* revString = "V1.10_2019-12-13";
-#define SOFTWARE_VERSION 1A
+const char* revString = "V1.11_2019-12-16";
+#define SOFTWARE_VERSION 0x010B
 
 /*
 * Version date        author
+*
+* V1.11 2019-12-16  rxf
+*   - defaults in userdefines-example.h changed
+*   - Software version for LoRa now 2 Bytes
+*   - Display start screen for Wireless stick fixed
 *
 * V1.10 2019-12-13  rxf/tw
 *   - conversion factor for Si22G tube fixed

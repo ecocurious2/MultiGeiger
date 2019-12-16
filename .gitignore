@@ -7,3 +7,5 @@
 userdefines.h
 platformio.ini
 *.bin
+flash
+

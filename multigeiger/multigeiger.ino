@@ -688,12 +688,12 @@ void DisplayStartscreen(void){
   u8x8.drawString(0, 2, "Geiger-");
   u8x8.drawString(0, 3, " Counter");
   char rv[9];
-  strncpy(rv, revString, 4);
-  rv[4] = '\0';
+  strncpy(rv, revString, 5);
+  rv[5] = '\0';
   u8x8.drawString(2, 4, rv);
-  strncpy(rv, &revString[5], 4);
-  strncpy(&rv[4], &revString[10], 2);
-  strncpy(&rv[6], &revString[13], 2);
+  strncpy(rv, &revString[6], 4);
+  strncpy(&rv[4], &revString[11], 2);
+  strncpy(&rv[6], &revString[14], 2);
   rv[8] = '\0';
   u8x8.drawString(0, 5, rv);
 #else
@@ -916,10 +916,10 @@ void sendData2TTN(int sendwhat, unsigned int hvpulses) {
   ttnData[3] = hvpulses & 0xFF;
   // next byte is the tube version
   ttnData[4] = tubes[TUBE_TYPE].nbr;
-  Serial.println(ttnData[4]);
-  // and last is software version
-  ttnData[5] = SOFTWARE_VERSION;
-  cnt = 6;
+    // and last is software version
+  ttnData[5] = SOFTWARE_VERSION>>8;
+  ttnData[6] = SOFTWARE_VERSION&0xFF;
+  cnt = 7;
   lorawan_send(1,ttnData,cnt,false,NULL,NULL,NULL);
   };
   if(sendwhat == SEND_BME) {
