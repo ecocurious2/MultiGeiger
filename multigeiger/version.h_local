@@ -1,9 +1,14 @@
-const char* software_version = "1.11";
-const char* software_version_date = "2019-12-16";
+// Revision history:
 
-/**** Revision history:
-*
+const char* revString = "V1.11_2019-12-16";
+#define SOFTWARE_VERSION 0x010B
+
+/*
 * Version date        author
+*
+* V1.12 2019-xx-xx  rxf
+*   - added comment in userdefines-example.h
+*
 *
 * V1.11 2019-12-16  rxf
 *   - defaults in userdefines-example.h changed
