@@ -8,4 +8,6 @@ userdefines.h
 platformio.ini
 *.bin
 flash
+version.h_local
+
 
