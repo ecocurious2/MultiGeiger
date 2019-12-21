@@ -230,7 +230,7 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          char          *Serial_Logging_Body   = "%10d %15d %10f %9f %9d %8d %9d %9f %9f\n";
          char          *Serial_One_Minute_Log_Header = "%4s %10s %29s\n";
          char          *Serial_One_Minute_Log_Body   = "%4d %10d %29d\n";
-         char          revString[20]          = "V";
+         char          revString[20];
          uint8_t       lora_software_version[2]; 
 int Serial_Print_Mode = SERIAL_DEBUG;
 
