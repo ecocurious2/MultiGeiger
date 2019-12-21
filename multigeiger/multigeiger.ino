@@ -231,7 +231,7 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          char          *Serial_One_Minute_Log_Header = "%4s %10s %29s\n";
          char          *Serial_One_Minute_Log_Body   = "%4d %10d %29d\n";
          char          revString[20]          = "V";
-         int           lora_software_version[2]; 
+         uint8_t       lora_software_version[2]; 
 int Serial_Print_Mode = SERIAL_DEBUG;
 
 //====================================================================================================================================
@@ -355,32 +355,26 @@ void setup()
     while (!Serial) {};
   }
 
-  // build revString
-  strcat(revString,software_version);
-  strcat(revString," ");
-  strcat(revString,software_version_date);
-  
-#if SEND2LORA
-  // build LoRa software version
-  char loravers[10];
-  int i = 0;
-  char *p = (char *)software_version;
-  while (*p != '\0') {
-    if (*p != '.') {
-      loravers[i++] = *p;
-    }
-    p++;
-  }
-  loravers[i] = '\0';
-  lora_software_version[0] = atoi(loravers)/100;
-  lora_software_version[1] = atoi(loravers)%100;
-#endif
-
+  // just for fun
   Serial.printf("Let's go!\n");
-  uint32_t xx = getESPchipID();
+
+  // build revString
+  sprintf(revString,"V%s %s",software_version,software_version_date);
 
   // build SSID
+  uint32_t xx = getESPchipID();
   sprintf(ssid,"ESP32-%d",xx);
+
+#if SEND2LORA
+// build LoRa software version
+char softvers[8];
+strcpy(softvers,software_version);
+char *p;
+p = strtok(softvers,".");
+lora_software_version[0] = (uint8_t)atoi(p);
+p = strtok(NULL,".");
+lora_software_version[1] = (uint8_t)atoi(p);
+#endif
 
   // Check, if we have a BME280 connected:
   haveBME280 = bme.begin();
@@ -703,8 +697,8 @@ void DisplayStartscreen(void){
   u8x8.clear();
 
 #if CPU == STICK
-  char rvStr[20];
-  strcpy(rvStr, revString);
+  char softversdat[20];
+  char *p;
   // Display is only 4 lines by 8 characters; lines counting from 2 to 5
   u8x8.setFont(u8x8_font_5x8_f);                            // use really small font
   for (int i=2; i<6; i++) {
@@ -713,24 +707,20 @@ void DisplayStartscreen(void){
   u8x8.drawString(0, 2, "Geiger-");
   u8x8.drawString(0, 3, " Counter");
   char rv[9];
-  char delim[] = "_-";
-  char *p; 
-  p = strtok((char *)rvStr,delim); 
-  strcpy(rv, p);
+  sprintf(rv,"V%s",software_version);
   u8x8.drawString(2, 4, rv);
   *rv = '\0';
-  p = strtok(NULL,delim);
+  strcpy(softversdat, software_version_date);
+  p = strtok(softversdat,"-");
   while (p != NULL) {
     strcat(rv,p);
-    p = strtok(NULL,delim);
+    p = strtok(NULL,"-");
   }
   u8x8.drawString(0, 5, rv);
 #else
   u8x8.setFont(u8x8_font_7x14_1x2_f);
-
   u8x8.println("Geiger-Counter");
   u8x8.println("==============");
-
   u8x8.print(revString);
   u8x8.setCursor(0,6);
   u8x8.print("Info:boehri.de");
@@ -948,8 +938,8 @@ void sendData2TTN(int sendwhat, unsigned int hvpulses) {
   // next byte is the tube version
   ttnData[4] = tubes[TUBE_TYPE].nbr;
     // and last is software version
-  ttnData[5] = (unsigned char)lora_software_version[0];
-  ttnData[6] = (unsigned char)lora_software_version[1];
+  ttnData[5] = lora_software_version[0];
+  ttnData[6] = lora_software_version[1];
   cnt = 7;
   lorawan_send(1,ttnData,cnt,false,NULL,NULL,NULL);
   };
