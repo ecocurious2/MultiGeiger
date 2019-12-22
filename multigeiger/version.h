@@ -1,14 +1,18 @@
-const char* software_version = "1.11";
-const char* software_version_date = "2019-12-16";
+// To fit in 16bit for lora version number we have
+// some limits here: max. VERSION_MAJOR = 15, max. VERSION_PATCH = 15
+#define VERSION_MAJOR 1
+#define VERSION_MINOR 11
+#define VERSION_PATCH 0
+#define VERSION_DATE "2019-12-16"
 
 /**** Revision history:
-*
 * Version date        author
 *
 * V1.11 2019-12-16  rxf
 *   - defaults in userdefines-example.h changed
 *   - Software version for LoRa now 2 Bytes
 *   - Display start screen for Wireless stick fixed
+*   - changed to semantic versioning
 *
 * V1.10 2019-12-13  rxf/tw
 *   - conversion factor for Si22G tube fixed
