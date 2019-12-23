@@ -5,10 +5,12 @@
 // and then edit userdefines.h as appropriate for your use case / hardware.
 //====================================================================================================================================
 
-#ifndef CPU           // if using platformio, CPU is defined in platformio.ini
-// ** select (uncomment) exactly one of following CPU (board type) defines:
-#define CPU WIFI                                // Heltec WiFi Kit 32 (big display, WiFi-only)
-// #define CPU STICK                             // Heltec Wireless Stick (small display, WiFi+LoRa)
+// If you use platformio, CPU is defined in platformio.ini and
+// you don't need to change the definition of CPU.
+// Arduino IDE users *must* define CPU here and uncomment one and only one of following CPU-Defines.
+#ifndef CPU 
+#define CPU WIFI    // is used for WiFi Kit 32
+//#define CPU STICK     // is used for Wireless stick
 #endif
 
 // ** select (uncomment) exactly one Geiger-Mueller counter tube:

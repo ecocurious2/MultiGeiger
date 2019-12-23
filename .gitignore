@@ -9,5 +9,3 @@ platformio.ini
 *.bin
 flash
 version.h_local
-
-
