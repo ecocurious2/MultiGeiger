@@ -6,8 +6,8 @@
 //====================================================================================================================================
 
 // If you use platformio, CPU is defined in platformio.ini and
-// you don't need to change the definition of CPU
-// Arduino-IDE users *must* define CPU here and uncomment one and only one of following CPU-Defines
+// you don't need to change the definition of CPU.
+// Arduino IDE users *must* define CPU here and uncomment one and only one of following CPU-Defines.
 #ifndef CPU 
 #define CPU WIFI    // is used for WiFi Kit 32
 //#define CPU STICK     // is used for Wireless stick

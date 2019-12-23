@@ -1,8 +1,9 @@
 // To fit in 16bit for lora version number we have
-// some limits here: max. VERSION_MAJOR = 15, max. VERSION_PATCH = 15
+// some limits here: max. VERSION_MAJOR = 15, max. VERSION_PATCH = 15.
 #define VERSION_MAJOR 1
 #define VERSION_MINOR 11
 #define VERSION_PATCH 0
+// Date is in format "YYY-MM-DD".
 #define VERSION_DATE "2019-12-16"
 
 /**** Revision history:

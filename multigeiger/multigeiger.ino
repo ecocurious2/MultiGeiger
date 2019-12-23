@@ -706,9 +706,9 @@ void DisplayStartscreen(void){
   u8x8.println("Geiger-Counter");
   u8x8.println("==============");
   sprintf(line,"V%d.%d.%d",VERSION_MAJOR,VERSION_MINOR,VERSION_PATCH);
-  u8x8.setCursor(7-strlen(line)/2,4);
+  u8x8.setCursor(7-strlen(line)/2, 4);
   u8x8.print(line);
-  u8x8.setCursor(1,6);
+  u8x8.setCursor(1, 6);
   u8x8.print("Info:boehri.de");
 #endif
 };
@@ -923,7 +923,7 @@ void sendData2TTN(int sendwhat, unsigned int hvpulses) {
   ttnData[3] = hvpulses & 0xFF;
   // next byte is the tube version
   ttnData[4] = tubes[TUBE_TYPE].nbr;
-    // and last is software version
+  // and last is software version
   ttnData[5] = (lora_software_version>>8)&0xFF;
   ttnData[6] = lora_software_version&0xFF;
   cnt = 7;
