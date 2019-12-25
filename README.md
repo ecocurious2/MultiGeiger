@@ -99,7 +99,7 @@ Jeweils nach diesem Zyklus werden die Daten zu den Servern bei *sensor.community
 
 Bei *sensor.community* werden die Daten gespeichert und stehen am nächsten Tag zum Abruf als CSV-Datei bereit:
 http://archive.sensor.community/DATE/DATE_radiation_si22g_sensor_SID.csv
-wobei DATE = Datum im Format YYYY-MM-DD ist (beides mal gleich) und SID die Sensornummer des Sensors (**nicht** die ChipID).
+wobei DATE = Datum im Format YYYY-MM-DD ist (beides mal gleich) und SID die Sensornummer des Sensors (**nicht** die ChipID). Bei anderen Sensoren ist der Zählrohr-Name **si22g** durch den entsprechenden Namen zu ersetzen (z.B.: sbm-20 oder sbm-19) 
 
 Bei *madavi* werden die Daten in einer RRD-Datenbank abgelegt und können direkt aktuell als Grafik über diesen Link betrachtet werden:
 https://www.madavi.de/sensor/graph.php?sensor=esp32-CHIPID-si22g
