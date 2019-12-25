@@ -81,8 +81,8 @@ Diese besteht nur aus einer Zeile mit einem Link *Go to __configure page__ to ch
 
 Diese hat die folgenden 4 Zeilen:
  * Geiger accesspoint SSID  
- Dies ist die SSID des eingebauten APs und kann zwar geändert werden, sollte aber nicht! Der Sensor wird mit dieser Nummer bei luftdaten.info angemeldet. Wird sie geändert, muss eine neue Anmeldung erfolgen.
- * Geiger accesspoint password  
+ Dies ist die SSID des eingebauten APs und kann zwar geändert werden, sollte aber nicht! Der Sensor wird mit dieser Nummer bei sensor.community (früher: luftdaten.info) angemeldet. Wird sie geändert, muss eine neue Anmeldung erfolgen.
+ * Geiger accesspoint password
  Dies ist das Passwort für den eingebauten AP. Dieses **MUSS** beim ersten Mal geändert werden. Es kann natürlich auch das gleiche Passwort wieder verwendet werden - wichtig ist nur, dass da was reingeschrieben wird und dass man das **nicht vergessen** darf.
  * WiFi client SSID  
  Hier muss die SSID des WLANs für den Netzwerk/Internet-Zugang eingegeben werden.
@@ -95,20 +95,20 @@ Ist alles eingegeben, kann man auf **Apply** drücken. Nun werden die eingestell
 
 ## Server
 Es werden jeweils einen Messzyklus lang die Impulse gezählt und dann die "Counts per Minute" (cpm) berechnet.
-Jeweils nach diesem Zyklus werden die Daten zu den Servern bei *luftdaten.info* und bei *madavi.de* gesendet.
+Jeweils nach diesem Zyklus werden die Daten zu den Servern bei *sensor.community* und bei *madavi.de* gesendet.
 
-Bei *luftdaten* werden die Daten gespeichert und stehen am nächsten Tag zum Abruf als CSV-Datei bereit:
-http://archive.luftdaten.info/date/date_radiation_sbm-20_sensor_SID.csv
-wobei date = Datum im Format YYYY-MM-DD ist (beides mal gleich) und SID die Sensornummer des Sensors (**nicht** die ChipID).
+Bei *sensor.community* werden die Daten gespeichert und stehen am nächsten Tag zum Abruf als CSV-Datei bereit:
+http://archive.sensor.community/DATE/DATE_radiation_si22g_sensor_SID.csv
+wobei DATE = Datum im Format YYYY-MM-DD ist (beides mal gleich) und SID die Sensornummer des Sensors (**nicht** die ChipID).
 
 Bei *madavi* werden die Daten in einer RRD-Datenbank abgelegt und können direkt aktuell als Grafik über diesen Link betrachtet werden:
-https://www.madavi.de/sensor/graph.php?sensor=esp32-CHIPID-sbm20
+https://www.madavi.de/sensor/graph.php?sensor=esp32-CHIPID-si22g
 Hier ist dann CHIPID die ChipId (also die Ziffern der SSID des internen Accesspoints).
 
 Während der Übertragung der Daten zu den Servern wird in der Statuszeile (unterste Zeile) des Displays kurz der Name des Servers eingeblendet.
 
-## Anmeldung bei luftdaten.info
-Damit die Daten, die der Sensor nach luftdaten.info schickt, von dem Server auch angenommen werden, muss man sich dort anmelden. Das geschieht über die Seite https://meine.luftdaten.info.
+## Anmeldung bei sensor.community (luftdaten.info)
+Damit die Daten, die der Sensor nach sensor.community schickt, von dem Server auch angenommen werden, muss man sich dort anmelden. Das geschieht über die Seite https://meine.luftdaten.info.
 Zuerst über den *Registrieren*-Knopf einen Account anlegen. Dann damit über *Login* einloggen und *Neuen Sensor registrieren* anklicken.
 Dann das Formular ausfüllen:
  * Erste Zeile, Sensor ID:
@@ -120,7 +120,7 @@ Dann das Formular ausfüllen:
  * Zusätzliche Informationen:
  Kann freigelassen werden, darf aber auch ausgefüllt werden.
  * Hardware-Konfiguration:
- Hier als Sensor-Typ den Eintrag **Radiation SBM-20** (oder ggf. entsprechend) auswählen. Für den zweiten Sensor kann DHT22 stehen bleiben, das ist für uns irrelevant.
+ Hier als Sensor-Typ den Eintrag **Radiation Si22G** (oder ggf. entsprechend) auswählen. Für den zweiten Sensor kann DHT22 stehen bleiben, das ist für uns irrelevant.
  * Position
  Hier bitte die Koordinaten eingeben, so genau wie möglich (oder über den rechten Knopf die Koordinaten rechnen lassen). Dies wird benötigt, um den Sensor später auf der Karte anzeigen zu können.
 
