@@ -26,7 +26,7 @@
 // #define   SERIAL_DEBUG Serial_Statistics_Log  // Lists time [us] between two events
 
 // ** Special debug info: 
-// if set to 1, print debug info on serial (USB) interface while sending to servers (madavi or luftdaten)
+// if set to 1, print debug info on serial (USB) interface while sending to servers (madavi or sensor.community)
 #define DEBUG_SERVER_SEND 0
 
 // Time to try to connect to saved WiFi [sec]
@@ -47,12 +47,12 @@
 // Send data to Madavi server?
 // Madavi should be used to see values in real time.
 #define SEND2MADAVI 1
-// Send data to Luftdaten server?
+// Send data to sensor.community server?
 // Should always be 1 so that the data is archived there. Standard server for devices without LoRa.
-#define SEND2LUFTDATEN 1
+#define SEND2SENSORCOMMUNITY 1
 // Send data via LoRa to TTN?
 // Only for devices with LoRa, automatically deactivated for devices without LoRa.
-// If this is set to 1, sending to Madavi and Luftdaten should be deactivated!
+// If this is set to 1, sending to Madavi and sensor.community should be deactivated!
 // Note: The TTN configuration needs to be done in lorawan.cpp (starting at line 65).
 #define SEND2LORA 0
 

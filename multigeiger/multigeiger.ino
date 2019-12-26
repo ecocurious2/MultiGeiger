@@ -47,7 +47,7 @@
 #define   Serial_One_Minute_Log  3  // "One Minute logging"
 #define   Serial_Statistics_Log  4  // Logs time [us] between two events
 //
-// At luftdaten.info predefined counter tubes:
+// At sensor.community predefined counter tubes:
 #define SBM20 1
 #define SBM19 2
 #define Si22G 3
@@ -74,6 +74,7 @@
 // for use with BME280:
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
+
 
 // Check if a CPU (board) with LoRa is selected. If not, deactivate SEND2LORA.
 #if !((CPU==LORA) || (CPU==STICK))
@@ -124,7 +125,7 @@ int PIN_SPEAKER_OUTPUT_N    =   0;
 // What are the switches good for?
 enum {SPEAKER_ON, DISPLAY_ON, LED_ON, UNUSED};
 
-// What to send to luftdaten etc.
+// What to send to sensor.community etc.
 enum {SEND_CPM,SEND_BME};
 
 #define TESTPIN 13
@@ -151,7 +152,7 @@ enum {SEND_CPM,SEND_BME};
 #define CONFIG_VERSION "012"
 
 typedef struct {
-  const char* type;                                         // type string for luftdaten.info
+  const char* type;                                         // type string for sensor.community
   const char  nbr;                                          // number to be sent by LoRa
   const float cps_to_uSvph;                                 // factor to convert counts per second to µSievert per hour
 } TUBETYPE;
@@ -177,7 +178,7 @@ const unsigned long GMC_dead_time = 190;  // Dead Time of the Geiger Counter. Ha
 
 // Hosts for data delivery
 #define MADAVI "http://api-rrd.madavi.de/data.php"
-#define LUFTDATEN "http://api.sensor.community/v1/push-sensor-data/"
+#define SENSORCOMMUNITY "http://api.sensor.community/v1/push-sensor-data/"
 #define TOILET "http://ptsv2.com/t/enbwck3/post"
 
 //====================================================================================================================================
@@ -560,7 +561,7 @@ void loop()
     }
   }
 
-  // Check, if we have to send to luftdaten.info etc.
+  // Check, if we have to send to sensor.community etc.
   if((current_ms - toSendTime) >= (MEASUREMENT_INTERVAL*1000) ) {
     toSendTime = current_ms;
     portENTER_CRITICAL(&mux_GMC_count);
@@ -609,12 +610,12 @@ void loop()
     delay(300);
     #endif
 
-    #if SEND2LUFTDATEN
-    Serial.println("Sending to Luftdaten ...");
-    displayStatusLine(F("Luftdaten"));
-    sendData2http(LUFTDATEN,SEND_CPM,hvp,false);
+    #if SEND2SENSORCOMMUNITY
+    Serial.println("Sending to sensor.community ...");
+    displayStatusLine(F("sensor.community"));
+    sendData2http(SENSORCOMMUNITY,SEND_CPM,hvp,false);
     if(haveBME280) {
-      sendData2http(LUFTDATEN,SEND_BME,hvp,false);
+      sendData2http(SENSORCOMMUNITY,SEND_BME,hvp,false);
     }
     delay(300);
     #endif
@@ -908,7 +909,7 @@ void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, bool d
 // LoRa payload:
 // To minimise airtime, we only send necessary bytes. We do NOT use Cayenne LPP.
 // The payload will be translated via http integration and a small python program
-// to be compatible with luftdaten.info. For byte definitions see ttn2luft.pdf in
+// to be compatible with sensor.community. For byte definitions see ttn2luft.pdf in
 // docs directory.
 #if SEND2LORA
 void sendData2TTN(int sendwhat, unsigned int hvpulses) {
