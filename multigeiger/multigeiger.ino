@@ -227,10 +227,10 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          float         GMC_factor_uSvph       = 0.0;
          portMUX_TYPE  mux_cap_full = portMUX_INITIALIZER_UNLOCKED;
          portMUX_TYPE  mux_GMC_count = portMUX_INITIALIZER_UNLOCKED;
-         char          *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s\r\r\n";
-         char          *Serial_Logging_Body   = "%10d %15d %10f %9f %9d %8d %9d %9f %9f\r\r\n";
-         char          *Serial_One_Minute_Log_Header = "%4s %10s %29s\r\r\n";
-         char          *Serial_One_Minute_Log_Body   = "%4d %10d %29d\r\r\n";
+         char          *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s\r\n";
+         char          *Serial_Logging_Body   = "%10d %15d %10f %9f %9d %8d %9d %9f %9f\r\n";
+         char          *Serial_One_Minute_Log_Header = "%4s %10s %29s\r\n";
+         char          *Serial_One_Minute_Log_Body   = "%4d %10d %29d\r\n";
          char          revString[25];
          unsigned int  lora_software_version; 
          String          dashes                = F("----------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -315,8 +315,8 @@ unsigned long getESPchipID() {
   pid[0] = (uint8_t)pespid[5];
   pid[1] = (uint8_t)pespid[4];
   pid[2] = (uint8_t)pespid[3];
-  Serial.printf("ID: %08X\r\r\n", id);
-  Serial.printf("MAC: %04X%08X\r\r\n",(uint16_t)(espid>>32),(uint32_t)espid);
+  Serial.printf("ID: %08X\r\n", id);
+  Serial.printf("MAC: %04X%08X\r\n",(uint16_t)(espid>>32),(uint32_t)espid);
   return id;
 }
 
