@@ -227,13 +227,14 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          float         GMC_factor_uSvph       = 0.0;
          portMUX_TYPE  mux_cap_full = portMUX_INITIALIZER_UNLOCKED;
          portMUX_TYPE  mux_GMC_count = portMUX_INITIALIZER_UNLOCKED;
-         char          *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s\n";
-         char          *Serial_Logging_Body   = "%10d %15d %10f %9f %9d %8d %9d %9f %9f\n";
-         char          *Serial_One_Minute_Log_Header = "%4s %10s %29s\n";
-         char          *Serial_One_Minute_Log_Body   = "%4d %10d %29d\n";
+         char          *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s\r\n";
+         char          *Serial_Logging_Body   = "%10d %15d %10f %9f %9d %8d %9d %9f %9f\r\n";
+         char          *Serial_One_Minute_Log_Header = "%4s %10s %29s\r\n";
+         char          *Serial_One_Minute_Log_Body   = "%4d %10d %29d\r\n";
          char          revString[25];
          unsigned int  lora_software_version; 
-int Serial_Print_Mode = SERIAL_DEBUG;
+         String          dashes                = F("----------------------------------------------------------------------------------------------------------------------------------------------------");
+         int           Serial_Print_Mode       = SERIAL_DEBUG;
 
 //====================================================================================================================================
 // ISRs
@@ -314,8 +315,8 @@ unsigned long getESPchipID() {
   pid[0] = (uint8_t)pespid[5];
   pid[1] = (uint8_t)pespid[4];
   pid[2] = (uint8_t)pespid[3];
-  Serial.printf("ID: %08X\n", id);
-  Serial.printf("MAC: %04X%08X\n",(uint16_t)(espid>>32),(uint32_t)espid);
+  Serial.printf("ID: %08X\r\n", id);
+  Serial.printf("MAC: %04X%08X\r\n",(uint16_t)(espid>>32),(uint32_t)espid);
   return id;
 }
 
@@ -357,7 +358,7 @@ void setup()
   }
 
   // just for fun
-  Serial.printf("Let's go!\n");
+  Serial.printf("Let's go!\r\n");
 
   // build revString
   sprintf(revString,"V%d.%d.%d %s",VERSION_MAJOR,VERSION_MINOR,VERSION_PATCH,VERSION_DATE);
@@ -372,7 +373,7 @@ void setup()
 #endif
   // Check, if we have a BME280 connected:
   haveBME280 = bme.begin();
-  Serial.printf("BME_Status: %d  ID:%0X\n", haveBME280, bme.sensorID());
+  Serial.printf("BME_Status: %d  ID:%0X\r\n", haveBME280, bme.sensorID());
 
   // Setup IoTWebConf
   iotWebConf.setConfigSavedCallback(&configSaved);
@@ -391,37 +392,37 @@ void setup()
   // Write Header of Table, depending on the logging mode:
 
   if (Serial_Print_Mode == Serial_Logging) {
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+    Serial.println(dashes);
     Serial.print  ("Simple Multi-Geiger, Version ");
     Serial.println(revString);
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+    Serial.println(dashes);
     Serial.printf(Serial_Logging_Header,
                   "GMC_counts", "Time_difference", "Count_Rate", "Dose_Rate", "HV Pulses", "Accu_GMC", "Accu_Time", "Accu_Rate", "Accu_Dose");
     Serial.printf(Serial_Logging_Header,
                   "[Counts]",   "[ms]",            "[cps]",      "[uSv/h]",   "[-]",       "[Counts]", "[ms]",      "[cps]",     "[uSv/h]");
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+    Serial.println(dashes);
   }
 
   if (Serial_Print_Mode == Serial_One_Minute_Log) {
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+    Serial.println(dashes);
     Serial.print  ("Simple Multi-Geiger, Version ");
     Serial.println(revString);
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+    Serial.println(dashes);
     Serial.printf(Serial_One_Minute_Log_Header,
                   "Time", "Count_Rate", "Counts");
     Serial.printf(Serial_One_Minute_Log_Header,
                   "[s]",  "[cpm]",      "[Counts per last measurement]");
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+    Serial.println(dashes);
   }
 
   if (Serial_Print_Mode == Serial_Statistics_Log) {
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+    Serial.println(dashes);
     Serial.print  ("Simple Multi-Geiger, Version ");
     Serial.println(revString);
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+    Serial.println(dashes);
     Serial.println("Time between two impacts");
     Serial.println("[usec]");
-    Serial.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+    Serial.println(dashes);
   }
 
 #if SEND2LORA
@@ -584,9 +585,9 @@ void loop()
       bme_humidity = bme.readHumidity();
       bme_pressure = bme.readPressure();
 #if 0
-      Serial.printf("Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f\n", current_cpm, hvp, bme_temperature, bme_humidity, bme_pressure);
+      Serial.printf("Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f\r\n", current_cpm, hvp, bme_temperature, bme_humidity, bme_pressure);
     } else {
-      Serial.printf("Measured: cpm= %d HV=%d\n",current_cpm, hvp);
+      Serial.printf("Measured: cpm= %d HV=%d\r\n",current_cpm, hvp);
 #endif
     }
 
@@ -633,7 +634,7 @@ void loop()
 
     #if 0
     // log state of switch
-    Serial.printf("SW0: %d  SW1: %d  SW2: %d  SW3: %d\n",sw[0],sw[1],sw[2],sw[3]);
+    Serial.printf("SW0: %d  SW1: %d  SW2: %d  SW3: %d\r\n",sw[0],sw[1],sw[2],sw[3]);
     #endif
   }
 
