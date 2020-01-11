@@ -8,7 +8,7 @@ Unsere Hard- und Software hat Jürgen Böhringer konzipiert (http://www.boehri.d
 
 Das Besondere an unserem Multigeiger ist, dass er wahlweise mit einem LoRa- oder Wifi-Modul betrieben werden kann. Noch in diesem Jahr starten wir die ersten Workshops, in denen Du die Hardware mit unserer Unterstützung zusammengebauen kannst.
 
-Workshop-Termine findest DU hier: https://www.meetup.com/de-DE/Ecocurious-deine-Umwelt-Natur-und-Technik-Community/
+Workshop-Termine findest Du hier: https://www.meetup.com/de-DE/Ecocurious-deine-Umwelt-Natur-und-Technik-Community/
 und hier:https://ecocurious.de/events/
 
 Klingt das interessant für Dich? Dann mach mit, herzliche Einladung!
