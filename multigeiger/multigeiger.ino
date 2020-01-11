@@ -137,8 +137,10 @@ enum {SEND_CPM,SEND_BME};
 // Measurement interval (default 2.5min) [sec]
 #define MEASUREMENT_INTERVAL 150
 
-// How many HV capacitor charge pulses to generate before giving up:
-#define MAX_CHARGEPULSES 1000
+// How many HV capacitor charge pulses to generate before giving up.
+// (MAX_CHARGEPULSES * pulse_duration) should be less than the interval in
+// the main loop (currently 1000ms) where it unconditionally recharges.
+#define MAX_CHARGEPULSES 333
 
 // MAX time to wait until connected. [msec]
 // If there is still no connection after that time,
