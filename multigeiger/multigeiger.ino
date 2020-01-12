@@ -138,6 +138,11 @@ enum {SEND_CPM,SEND_BME};
 // Measurement interval (default 2.5min) [sec]
 #define MEASUREMENT_INTERVAL 150
 
+// How many HV capacitor charge pulses to generate before giving up.
+// (MAX_CHARGE_PULSES * pulse_duration) should be less than the interval in
+// the main loop (currently 1000ms) where it unconditionally recharges.
+#define MAX_CHARGE_PULSES 333
+
 // MAX time to wait until connected. [msec]
 // If there is still no connection after that time,
 // measurements will start, but won't be sent to servers.
@@ -273,7 +278,7 @@ void IRAM_ATTR isr_GMC_count() {
 
 //====================================================================================================================================
 // Function Prototypes
-int jb_HV_gen_charge__chargepulses();
+int gen_charge_pulses(int max_charge_pulses);
 void DisplayGMC(int TimeSec, int RadNSvph, int CPS);
 void SoundStartsound();
 void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume);
@@ -444,7 +449,7 @@ void setup()
   attachInterrupt (digitalPinToInterrupt (PIN_GMC_count_INPUT), isr_GMC_count, FALLING);            // GMC pulse detected
   
   // charge hv capacitor
-  jb_HV_gen_charge__chargepulses();
+  gen_charge_pulses(MAX_CHARGE_PULSES);
 
 }
 
@@ -483,7 +488,7 @@ void loop()
   // Pulse the high voltage if we got enough GMC pulses to update the display or at least every 1000ms.
   #define HVPULSE_MS 1000
   if(update_display || (current_ms - time2hvpulse) >= HVPULSE_MS ) {
-    HV_pulse_count = jb_HV_gen_charge__chargepulses();      // charge HV capacitor - restarts time2hvpulse!
+    HV_pulse_count = gen_charge_pulses(MAX_CHARGE_PULSES);   // charge HV capacitor - restarts time2hvpulse!
     hvpulsecnt2send += HV_pulse_count;                      // count for sending
   }
 
@@ -673,18 +678,21 @@ void loop()
 // Subfunctions
 
 // GMC-Sub-Functions
-int jb_HV_gen_charge__chargepulses() {
-  int chargepulses = 0;
+
+int gen_charge_pulses(int max_charge_pulses) {
+  int charge_pulses = 0;
   isr_GMC_cap_full = 0;
   do {
     digitalWrite(PIN_HV_FET_OUTPUT, HIGH);              // turn the HV FET on
     delayMicroseconds(1500);                            // 5000 usec gives 1,3 times more charge, 500 usec gives 1/20 th of charge
     digitalWrite(PIN_HV_FET_OUTPUT, LOW);               // turn the HV FET off
     delayMicroseconds(1000);
-    chargepulses++;
-  } while ((chargepulses < 1000) && !isr_GMC_cap_full); // either a timeout or a capacitor full interrupt stops this loop
+    charge_pulses++;
+  } while ((charge_pulses < max_charge_pulses) && !isr_GMC_cap_full); // either a timeout or a capacitor full interrupt stops this loop
   time2hvpulse = millis();                              // we just pulsed, so restart timer
-  return chargepulses;
+  if((charge_pulses == max_charge_pulses) && !isr_GMC_cap_full)
+    Serial.println("Error: HV charging failed!");       // pulsed a lot, but still the capacitor is not at desired voltage
+  return charge_pulses;
 }
 
 // ===================================================================================================================================
