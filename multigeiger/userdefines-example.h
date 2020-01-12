@@ -14,6 +14,7 @@
 #endif
 
 // ** select (uncomment) exactly one Geiger-Mueller counter tube:
+// #define TUBE_TYPE TUBE_UNKNOWN  // this can be used for experimenting with other GM tubes and has a 0 CPM to uSv/h conversion factor.
 // #define TUBE_TYPE SBM20
 // #define TUBE_TYPE SBM19
 #define TUBE_TYPE Si22G

@@ -48,6 +48,7 @@
 #define   Serial_Statistics_Log  4  // Logs time [us] between two events
 //
 // At sensor.community predefined counter tubes:
+#define TUBE_UNKNOWN 0
 #define SBM20 1
 #define SBM19 2
 #define Si22G 3
