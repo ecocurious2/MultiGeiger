@@ -144,6 +144,10 @@ enum {SEND_CPM,SEND_BME};
 // the main loop (currently 1000ms) where it unconditionally recharges.
 #define MAX_CHARGE_PULSES 333
 
+// How many HV capacitor charge pulses to generate for first charge,
+// for the call in setup(). Not timing critical and capacitor is empty.
+#define MAX_CHARGE_PULSES_INITIAL 3333
+
 // MAX time to wait until connected. [msec]
 // If there is still no connection after that time,
 // measurements will start, but won't be sent to servers.
@@ -454,7 +458,7 @@ void setup()
   attachInterrupt (digitalPinToInterrupt (PIN_GMC_count_INPUT), isr_GMC_count, FALLING);            // GMC pulse detected
   
   // charge hv capacitor
-  gen_charge_pulses(MAX_CHARGE_PULSES);
+  gen_charge_pulses(MAX_CHARGE_PULSES_INITIAL);
 
 }
 
