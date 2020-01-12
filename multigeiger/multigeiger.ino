@@ -312,6 +312,7 @@ const char* theName = "Default name for the SSID     ";       // 30 chars long!
 
 DNSServer dnsServer;
 WebServer server(80);
+HTTPUpdateServer httpUpdater;
 
 IotWebConf iotWebConf(theName, &dnsServer, &server, wifiInitialApPassword, CONFIG_VERSION);
 
@@ -387,6 +388,7 @@ void setup()
 
   // Setup IoTWebConf
   iotWebConf.setConfigSavedCallback(&configSaved);
+  iotWebConf.setupUpdateServer(&httpUpdater);
   iotWebConf.setThingName(ssid);
   iotWebConf.init();
 
@@ -967,12 +969,21 @@ void handleRoot(void)
     // -- Captive portal requests were already served.
     return;
   }
-  String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/>";
-  s += "<title>IotWebConf 01 Minimal</title></head><body>";
-  s += "Go to <a href='config'>configure page</a> to change settings.";
-  s += "</body></html>\n";
-
-  server.send(200, "text/html", s);
+  const char *index =
+"<!DOCTYPE html>"
+"<html lang='en'>"
+"<head>"
+  "<meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />"
+  "<title>MultiGeiger Configuration</title>"
+"</head>"
+"<body>"
+  "<h1>Configuration</h1>"
+  "<p>"
+    "Go to the <a href='config'>configure page</a> to change settings or update firmware."
+  "</p>"
+"</body>"
+"</html>\n";
+  server.send(200, "text/html;charset=UTF-8", index);
 }
 
 void configSaved(void) {

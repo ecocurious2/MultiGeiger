@@ -1,13 +1,16 @@
 // To fit in 16bit for lora version number we have
 // some limits here: max. VERSION_MAJOR = 15, max. VERSION_PATCH = 15.
 #define VERSION_MAJOR 1
-#define VERSION_MINOR 11
+#define VERSION_MINOR 12
 #define VERSION_PATCH 0
 // Date is in format "YYYY-MM-DD".
-#define VERSION_DATE "2019-12-16"
+#define VERSION_DATE "2020-01-12"
 
 /**** Revision history:
 * Version date        author
+*
+* V1.12 2020-01-12  tw
+*   - simple OTA (Over-The-Air) updates via web browser based upload
 *
 * V1.11 2019-12-16  rxf
 *   - defaults in userdefines-example.h changed
