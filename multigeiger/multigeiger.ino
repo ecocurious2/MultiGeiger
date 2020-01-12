@@ -237,7 +237,7 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          bool          ledTick                = LED_TICK;
          bool          playSound              = PLAY_SOUND;
          bool          displayIsClear         = false;
-         char          ssid[30];
+         char          ssid[IOTWEBCONF_WORD_LEN];  // LEN == 33 (2020-01-13)
          int           haveBME280             = 0;
          float         bme_temperature        = 0.0;
          float         bme_humidity           = 0.0;
@@ -397,7 +397,11 @@ void setup()
   // Setup IoTWebConf
   iotWebConf.setConfigSavedCallback(&configSaved);
   iotWebConf.setupUpdateServer(&httpUpdater);
-  iotWebConf.setThingName(ssid);
+
+  // dirty hack until iotWebConf.setThingName(ssid) is implemented:
+  auto iotThingName = iotWebConf.getThingName();
+  strncpy(iotThingName, ssid, IOTWEBCONF_WORD_LEN);
+
   iotWebConf.init();
 
   // Set up conversion factor to uSv/h according to GM tube type:
