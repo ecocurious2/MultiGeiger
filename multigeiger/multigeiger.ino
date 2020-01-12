@@ -71,7 +71,6 @@
 
 #include "IotWebConf.h"
 #include <HTTPClient.h>
-#include <Update.h>
 
 // for use with BME280:
 #include <Adafruit_Sensor.h>
@@ -191,9 +190,6 @@ const unsigned long GMC_dead_time = 190;  // Dead Time of the Geiger Counter. Ha
 #define MADAVI "http://api-rrd.madavi.de/data.php"
 #define SENSORCOMMUNITY "http://api.sensor.community/v1/push-sensor-data/"
 #define TOILET "http://ptsv2.com/t/enbwck3/post"
-
-const char *ct_text_html = "text/html;charset=UTF-8";
-const char *ct_text_plain = "text/plain;charset=UTF-8";
 
 //====================================================================================================================================
 // Variables
@@ -316,6 +312,7 @@ const char* theName = "Default name for the SSID     ";       // 30 chars long!
 
 DNSServer dnsServer;
 WebServer server(80);
+HTTPUpdateServer httpUpdater;
 
 IotWebConf iotWebConf(theName, &dnsServer, &server, wifiInitialApPassword, CONFIG_VERSION);
 
@@ -391,6 +388,7 @@ void setup()
 
   // Setup IoTWebConf
   iotWebConf.setConfigSavedCallback(&configSaved);
+  iotWebConf.setupUpdateServer(&httpUpdater);
   iotWebConf.setThingName(ssid);
   iotWebConf.init();
 
@@ -398,11 +396,10 @@ void setup()
   GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
   // -- Set up required URL handlers on the web server.
-  server.onNotFound([](){ iotWebConf.handleNotFound(); });
   server.on("/", handleRoot);
   server.on("/config", []{ iotWebConf.handleConfig(); });
-  /*handling uploading firmware file */
-  server.on("/update", HTTP_POST, handleUpdateResult, handleUpdate);
+  server.onNotFound([](){ iotWebConf.handleNotFound(); });
+
 
   // Write Header of Table, depending on the logging mode:
 
@@ -977,84 +974,16 @@ void handleRoot(void)
 "<html lang='en'>"
 "<head>"
   "<meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />"
-  "<title>MultiGeiger Configuration and Update</title>"
-  "<script src='http://code.jquery.com/jquery-3.4.1.min.js'></script>"
+  "<title>MultiGeiger Configuration</title>"
 "</head>"
 "<body>"
-  "<h1>MultiGeiger</h1>"
-  "<h2>Configuration</h2>"
+  "<h1>Configuration</h1>"
   "<p>"
-    "Go to <a href='config'>configure page</a> to change settings."
+    "Go to the <a href='config'>configure page</a> to change settings or update firmware."
   "</p>"
-  "<h2>Firmware Update (OTA)</h2>"
-  "<p>"
-    "To update your MultiGeiger, select a firmware update file (*.bin), then click on 'Update':"
-  "</p>"
-  "<form method='POST' action='#' enctype='multipart/form-data' id='upload_form'>"
-    "<input type='file' name='update'>"
-    "<br>"
-    "<input type='submit' value='Update'>"
-  "</form>"
-  "<div id='prg'>Progress: 0%</div>"
-  "<script>"
-    "$('form').submit(function(e){"
-      "e.preventDefault();"
-      "var form = $('#upload_form')[0];"
-      "var data = new FormData(form);"
-      "$.ajax({"
-        "url: '/update',"
-        "type: 'POST',"
-        "data: data,"
-        "contentType: false,"
-        "processData: false,"
-        "xhr: function() {"
-          "var xhr = new window.XMLHttpRequest();"
-          "xhr.upload.addEventListener('progress', function(evt) {"
-            "if (evt.lengthComputable) {"
-              "var per = evt.loaded / evt.total;"
-              "$('#prg').html('Progress: ' + Math.round(per*100) + '%');"
-            "}"
-          "}, false);"
-          "return xhr;"
-        "},"
-        "success:function(d, s) {"
-          "console.log('success!')"
-        "},"
-        "error: function (a, b, c) {"
-        "}"
-      "});"
-    "});"
-  "</script>"
 "</body>"
 "</html>\n";
-  server.send(200, ct_text_html, index);
-}
-
-void handleUpdate(void) {  // Firmware Update
-  HTTPUpload& upload = server.upload();
-  if (upload.status == UPLOAD_FILE_START) {
-    Serial.printf("Update: %s\n", upload.filename.c_str());
-    if (!Update.begin(UPDATE_SIZE_UNKNOWN)) { // start with max. available size
-      Update.printError(Serial);
-    }
-  } else if (upload.status == UPLOAD_FILE_WRITE) {
-    // flashing firmware to ESP
-    if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
-      Update.printError(Serial);
-    }
-  } else if (upload.status == UPLOAD_FILE_END) {
-    if (Update.end(true)) { // true to set the size to the current progress
-      Serial.printf("Update Success: %u\nRebooting...\n", upload.totalSize);
-    } else {
-      Update.printError(Serial);
-    }
-  }
-}
-
-void handleUpdateResult(void) {
-  server.sendHeader("Connection", "close");
-  server.send(200, ct_text_plain, (Update.hasError()) ? "FAIL" : "OK");
-  ESP.restart();
+  server.send(200, "text/html;charset=UTF-8", index);
 }
 
 void configSaved(void) {

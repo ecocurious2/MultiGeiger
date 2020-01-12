@@ -9,7 +9,7 @@
 /**** Revision history:
 * Version date        author
 *
-* V1.12 2020-01-12  tw (not released yet / WIP)
+* V1.12 2020-01-12  tw
 *   - simple OTA (Over-The-Air) updates via web browser based upload
 *
 * V1.11 2019-12-16  rxf
