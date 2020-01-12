@@ -1,6 +1,6 @@
 //====================================================================================================================================
 // Project: Simple Multi-Geiger
-// (c) 2019 by the authors, see AUTHORS file in toplevel directory.
+// (c) 2019,2020 by the authors, see AUTHORS file in toplevel directory.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
