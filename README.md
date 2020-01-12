@@ -77,9 +77,10 @@ Die Verbindung fragt nach einem Passwort, es lautet **ESP32Geiger**.
 Ist die Verbindung mit dem Accesspoint hergestellt, hat man beliebig Zeit, die Daten einzugeben.
 Es öffnet sich **automatisch** die Startseite des Gerätes. Es braucht also - in der Regel - nicht extra der Browser aufgerufen werden.
 Falls die Startseite ausnahmsweise doch nicht erscheint, so muss mit dem Browser die Adresse **192.168.4.1** aufgerufen werden und nun erscheint die Startseite.
-Diese besteht nur aus einer Zeile mit einem Link *Go to __configure page__ to change settings* - dort drauf klicken und man kommt zur Einstellungsseite.
+Dort findet man einen Link zur __configure page__ - dort drauf klicken und man kommt zur Einstellungsseite.
 
-Diese hat die folgenden 4 Zeilen:
+
+Diese hat die folgenden Zeilen:
  * Geiger accesspoint SSID  
  Dies ist die SSID des eingebauten APs und kann zwar geändert werden, sollte aber nicht! Der Sensor wird mit dieser Nummer bei sensor.community (früher: luftdaten.info) angemeldet. Wird sie geändert, muss eine neue Anmeldung erfolgen.
  * Geiger accesspoint password
@@ -92,6 +93,15 @@ Diese hat die folgenden 4 Zeilen:
 Es wird empfohlen, beim WLAN das Gastnetz zu verwenden (falls ein solches existiert). Normalerweise wird das Gastnetz im Router vom normalen Netz abgeschottet und ist damit sicherer.
 
 Ist alles eingegeben, kann man auf **Apply** drücken. Nun werden die eingestellten Daten übernommen und in das interne EEPROM gespeichert. Nun bitte **unbedingt** über **Abbrechen** diese Seite verlassen! Nur dann verlässt das Programm den Config-Mode und verbindet sich mit dem heimischen WLAN. Wenn es kein **Abbrechen** gibt, dann wieder zurück in die WLAN-Einstellungen des Gerätes gehen und da dann das normale Heim-Netzwerk wieder einstellen.
+
+Auf der Einstellungsseite gibt es auch einen Link __Firmware update__ - hiermit kann man die Software auf dem MultiGeiger aktualisieren.
+Man braucht dazu die zum Gerät passende .bin-Datei, wählt diese dann über **Browse...** aus und klickt zum Aktualisieren auf **Update**.
+Danach dauert es ca. 30s für das Hochladen und Flashen der Datei.
+
+Der Browser zeigt dann (hoffentlich) **Update Success! Rebooting...** an, der MultiGeiger startet dann neu und ab dann ist die neue
+Firmware aktiv.
+
+Erscheint **Update error: ...**, dann hat das Update nicht geklappt - es ist dann die seitherige Firmware weiter aktiv.
 
 ## Server
 Es werden jeweils einen Messzyklus lang die Impulse gezählt und dann die "Counts per Minute" (cpm) berechnet.
