@@ -37,7 +37,15 @@
 //   - https://www.hackerspace-ffm.de/wiki/index.php?title=Heltec_Wifi_LoRa_32
 //
 //
-#include "version.h"
+
+// Release version and date
+// To fit in 16bit for lora version number we have some limits here:
+// VERSION_MAJOR = 0..15, VERSION_MINOR = 0..255, VERSION_PATCH = 0..15.
+#define VERSION_MAJOR 1
+#define VERSION_MINOR 12
+#define VERSION_PATCH 0
+// Date is in format "YYYY-MM-DD".
+#define VERSION_DATE "2020-01-13"
 
 // Fix Parameters
 // Values for Serial_Print_Mode to configure Serial (USB) output mode.  DON'T TOUCH!
