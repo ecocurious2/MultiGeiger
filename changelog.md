@@ -1,7 +1,16 @@
 # Change Log
 
 ### V1.12.0 2020-01-xx (not released yet)
-* simple OTA (Over-The-Air) updates via web browser based upload
+* simple OTA (Over-The-Air) updates via web browser based upload, #120
+* use less charge pulses in loop() for timing, more in setup() for initial charging, #134
+* output error msg on Serial if HV charging fails
+* add TUBE_UNKNOWN 0 to have a specific value for experimenting
+* adapted platformio.ini to pull all dependencies
+* send CR and LF on serial
+* changed default tube from sbm-20 to si22g
+* semantic versioning, version numbers now like x.y.z
+* changed building of revString and lora_version
+* docs updated / improved
 
 ### V1.11.1 2019-12-16 rxf
 * change luftdaten.info to sensor.community
