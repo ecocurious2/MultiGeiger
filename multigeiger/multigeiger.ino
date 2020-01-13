@@ -402,6 +402,12 @@ void setup()
   auto iotThingName = iotWebConf.getThingName();
   strncpy(iotThingName, ssid, IOTWEBCONF_WORD_LEN);
 
+  // override the confusing default labels of IotWebConf:
+  iotWebConf.getThingNameParameter()->label = "Geiger accesspoint SSID";
+  iotWebConf.getApPasswordParameter()->label = "Geiger accesspoint password";
+  iotWebConf.getWifiSsidParameter()->label = "WiFi client SSID";
+  iotWebConf.getWifiPasswordParameter()->label = "WiFi client password";
+
   iotWebConf.init();
 
   // Set up conversion factor to uSv/h according to GM tube type:
