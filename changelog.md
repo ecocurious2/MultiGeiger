@@ -11,6 +11,7 @@
 * semantic versioning, version numbers now like x.y.z
 * changed building of revString and lora_version
 * docs updated / improved
+* removed IotWebconf bundled&patched code, used as a lib now.
 
 ### V1.11.1 2019-12-16 rxf
 * change luftdaten.info to sensor.community
