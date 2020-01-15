@@ -304,6 +304,7 @@ void clearDisplayLine(int line);
 void handleRoot(void);
 void configSaved(void);
 char * nullFill(int n, int digits);
+char* buildSSID();
 
 
 
@@ -316,7 +317,7 @@ U8X8_SSD1306_64X32_NONAME_HW_I2C u8x8(/* reset=*/ 16, /* clock=*/ 15, /* data=*/
 
 // -- Initial password to connect to the Thing, when it creates an own Access Point.
 const char wifiInitialApPassword[] = "ESP32Geiger";
-const char* theName = "Default name for the SSID     ";       // 30 chars long!
+const char* theName = buildSSID();                          // build SSID from ESP chip id
 
 DNSServer dnsServer;
 WebServer server(80);
@@ -337,6 +338,13 @@ unsigned long getESPchipID() {
   Serial.printf("ID: %08X\r\n", id);
   Serial.printf("MAC: %04X%08X\r\n",(uint16_t)(espid>>32),(uint32_t)espid);
   return id;
+}
+
+// build SSID
+char* buildSSID() {
+  uint32_t xx = getESPchipID();
+  sprintf(ssid,"ESP32-%d",xx);
+  return ssid;
 }
 
 //====================================================================================================================================
@@ -382,10 +390,6 @@ void setup()
   // build revString
   sprintf(revString,"V%d.%d.%d %s",VERSION_MAJOR,VERSION_MINOR,VERSION_PATCH,VERSION_DATE);
 
-  // build SSID
-  uint32_t xx = getESPchipID();
-  sprintf(ssid,"ESP32-%d",xx);
-
 #if SEND2LORA
   // build LoRa software version
   lora_software_version = (VERSION_MAJOR<<12)+ (VERSION_MINOR<<4) + VERSION_PATCH;
@@ -397,10 +401,6 @@ void setup()
   // Setup IoTWebConf
   iotWebConf.setConfigSavedCallback(&configSaved);
   iotWebConf.setupUpdateServer(&httpUpdater);
-
-  // dirty hack until iotWebConf.setThingName(ssid) is implemented:
-  auto iotThingName = iotWebConf.getThingName();
-  strncpy(iotThingName, ssid, IOTWEBCONF_WORD_LEN);
 
   // override the confusing default labels of IotWebConf:
   iotWebConf.getThingNameParameter()->label = "Geiger accesspoint SSID";
