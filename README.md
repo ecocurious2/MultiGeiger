@@ -42,6 +42,7 @@ Als externe Libraries werden benötigt:
  * U8g2 von Oliver, Version 2.16.14
  * Adafruit BME280 Library, Version 1.0.7
  * Adafruit Unified Sensor, Version 1.02
+ * IotWebConf, Version 2.3.0
 
 Für LoRa zusätzlich:
  * MCCI LoRaWAN LMIC library, Version >= 2.3.2  
