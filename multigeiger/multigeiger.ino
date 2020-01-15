@@ -178,7 +178,7 @@ typedef struct {
 TUBETYPE tubes[] = {
   {"Radiation unknown", 0, 0.0},                            // use 0.0 conversion factor for unknown tubes, so it computes an
                                                             // "obviously-wrong" 0.0 uSv/h value rather than a confusing one.
-  // XXX FIXME: add comments about "how are the conversion factors determined / computed? sources for these values?"
+  // The conversion factors for SBM-10 and SBM-19 are taken from the datasheets (according to Jürgen)
   {"Radiation SBM-20", 20, 1/2.47},
   {"Radiation SBM-19", 19, 1/9.81888},
   // The Si22G conversion factor was determined by Juergen Boehringer like this:
@@ -303,7 +303,7 @@ void displayStatusLine(String txt);
 void clearDisplayLine(int line);
 void handleRoot(void);
 void configSaved(void);
-char * nullFill(int n, int digits);
+char* nullFill(int n, int digits);
 char* buildSSID();
 
 
@@ -987,7 +987,7 @@ void handleRoot(void)
     // -- Captive portal requests were already served.
     return;
   }
-  const char *index =
+  const char* index =
 "<!DOCTYPE html>"
 "<html lang='en'>"
 "<head>"
@@ -1008,7 +1008,7 @@ void configSaved(void) {
   Serial.println("Config saved");
 }
 
-char * nullFill(int n, int digits) {
+char* nullFill(int n, int digits) {
   static char erg[9];                          // max. 8 digits possible!
   if (digits > 8) {
     digits = 8;
