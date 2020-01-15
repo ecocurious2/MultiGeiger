@@ -178,7 +178,7 @@ typedef struct {
 TUBETYPE tubes[] = {
   {"Radiation unknown", 0, 0.0},                            // use 0.0 conversion factor for unknown tubes, so it computes an
                                                             // "obviously-wrong" 0.0 uSv/h value rather than a confusing one.
-  // The conversion factors for SBM-10 and SBM-19 are taken from the datasheets (according to Jürgen)
+  // The conversion factors for SBM-20 and SBM-19 are taken from the datasheets (according to Jürgen)
   {"Radiation SBM-20", 20, 1/2.47},
   {"Radiation SBM-19", 19, 1/9.81888},
   // The Si22G conversion factor was determined by Juergen Boehringer like this:
