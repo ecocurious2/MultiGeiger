@@ -580,7 +580,7 @@ void loop()
     count_time_between = isr_count_time_between;
     isr_gotGMCpulse = 0;
     portEXIT_CRITICAL(&mux_GMC_count);
-    Serial.printf("GEIGER: %d\n",count_time_between);
+    Serial.printf("GEIGER: %d\r\n",count_time_between);
   }
 
   // If there were no pulses after 3 secs after start,
