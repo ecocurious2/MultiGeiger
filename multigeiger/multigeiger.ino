@@ -245,13 +245,14 @@ volatile unsigned long isr_count_timestamp_2send= micros();
          float         GMC_factor_uSvph       = 0.0;
          portMUX_TYPE  mux_cap_full = portMUX_INITIALIZER_UNLOCKED;
          portMUX_TYPE  mux_GMC_count = portMUX_INITIALIZER_UNLOCKED;
-         char          *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s\r\n";
-         char          *Serial_Logging_Body   = "%10d %15d %10f %9f %9d %8d %9d %9f %9f\r\n";
-         char          *Serial_One_Minute_Log_Header = "%4s %10s %29s\r\n";
-         char          *Serial_One_Minute_Log_Body   = "%4d %10d %29d\r\n";
+         const char*         Serial_Logging_Header = "GEIGER: %10s %15s %10s %9s %9s %8s %9s %9s %9s\r\n";
+         const char*         Serial_Logging_Body   = "GEIGER: %10d %15d %10f %9f %9d %8d %9d %9f %9f\r\n";
+         const char*         Serial_One_Minute_Log_Header = "GEIGER: %4s %10s %29s\r\n";
+         const char*         Serial_One_Minute_Log_Body   = "GEIGER: %4d %10d %29d\r\n";
+         const char*         Serial_Logging_Name   = "GEIGER: Simple Multi-Geiger, Version ";
          char          revString[25];
          unsigned int  lora_software_version; 
-         String          dashes                = F("----------------------------------------------------------------------------------------------------------------------------------------------------");
+         const String        dashes                  = "GEIGER: -------------------------------------------------------------------------------------------------";
          int           Serial_Print_Mode       = SERIAL_DEBUG;
 
 //====================================================================================================================================
@@ -423,7 +424,7 @@ void setup()
 
   if (Serial_Print_Mode == Serial_Logging) {
     Serial.println(dashes);
-    Serial.print  ("Simple Multi-Geiger, Version ");
+    Serial.print  (Serial_Logging_Name);
     Serial.println(revString);
     Serial.println(dashes);
     Serial.printf(Serial_Logging_Header,
@@ -435,7 +436,7 @@ void setup()
 
   if (Serial_Print_Mode == Serial_One_Minute_Log) {
     Serial.println(dashes);
-    Serial.print  ("Simple Multi-Geiger, Version ");
+    Serial.print  (Serial_Logging_Name);
     Serial.println(revString);
     Serial.println(dashes);
     Serial.printf(Serial_One_Minute_Log_Header,
@@ -447,11 +448,11 @@ void setup()
 
   if (Serial_Print_Mode == Serial_Statistics_Log) {
     Serial.println(dashes);
-    Serial.print  ("Simple Multi-Geiger, Version ");
+    Serial.print  (Serial_Logging_Name);
     Serial.println(revString);
     Serial.println(dashes);
-    Serial.println("Time between two impacts");
-    Serial.println("[usec]");
+    Serial.println("GEIGER: Time between two impacts");
+    Serial.println("GEIGER: [usec]");
     Serial.println(dashes);
   }
 
@@ -579,7 +580,7 @@ void loop()
     count_time_between = isr_count_time_between;
     isr_gotGMCpulse = 0;
     portEXIT_CRITICAL(&mux_GMC_count);
-    Serial.println(count_time_between, DEC);
+    Serial.printf("GEIGER: %d\r\n",count_time_between);
   }
 
   // If there were no pulses after 3 secs after start,
@@ -622,7 +623,7 @@ void loop()
     }
 
     #if SEND2DUMMY
-    displayStatusLine(F("Toilet"));
+    displayStatusLine("Toilet");
     Serial.println("SENDING TO TOILET");
     sendData2http(TOILET,SEND_CPM,hvp,true);
     if(haveBME280) {
@@ -633,7 +634,7 @@ void loop()
 
     #if SEND2MADAVI
     Serial.println("Sending to Madavi ...");
-    displayStatusLine(F("Madavi"));
+    displayStatusLine("Madavi");
     sendData2http(MADAVI,SEND_CPM,hvp,false);
     if(haveBME280) {
       sendData2http(MADAVI,SEND_BME,hvp,false);
@@ -643,7 +644,7 @@ void loop()
 
     #if SEND2SENSORCOMMUNITY
     Serial.println("Sending to sensor.community ...");
-    displayStatusLine(F("sensor.community"));
+    displayStatusLine("sensor.community");
     sendData2http(SENSORCOMMUNITY,SEND_CPM,hvp,false);
     if(haveBME280) {
       sendData2http(SENSORCOMMUNITY,SEND_BME,hvp,false);
@@ -653,7 +654,7 @@ void loop()
 
     #if SEND2LORA
     Serial.println("Sending to TTN ...");
-    displayStatusLine(F("TTN"));
+    displayStatusLine("TTN");
     sendData2TTN(SEND_CPM,hvp);
     if(haveBME280) {
       sendData2TTN(SEND_BME,hvp);
@@ -788,7 +789,7 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPS){
 #if CPU != STICK
   // Print 'connecting...' as long as we aren't connected
   if (iotWebConf.getState() != IOTWEBCONF_STATE_ONLINE) {
-    displayStatusLine(F("connecting..."));
+    displayStatusLine("connecting...");
   } else {
     displayStatusLine(" ");
   }
@@ -797,7 +798,7 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPS){
 
 #if CPU != STICK
 void clearDisplayLine(int line) {
-  String blank = F("                ");
+  String blank = "                ";
   u8x8.drawString(0, line, blank.c_str());
 }
 
@@ -808,7 +809,7 @@ void displayStatusLine(String txt) {
 }
 #else
 void clearDisplayLine(int line) {
-  String blank = F("        ");
+  String blank = "        ";
   u8x8.drawString(0, line, blank.c_str());
 }
 
