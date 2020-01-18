@@ -45,7 +45,7 @@
 #define VERSION_MINOR 12
 #define VERSION_PATCH 0
 // Date is in format "YYYY-MM-DD".
-#define VERSION_DATE "2020-01-13"
+#define VERSION_DATE "2020-01-18"
 
 // Fix Parameters
 // Values for Serial_Print_Mode to configure Serial (USB) output mode.  DON'T TOUCH!
