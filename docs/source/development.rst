@@ -85,17 +85,22 @@ Checklist:
   next milestone
 - check if there are any pending fixes for severe issues
 - find and fix any low hanging fruit left on the issue tracker
-- update ``CHANGES.rst``, based on ``git log $PREVIOUS_RELEASE..``
-- check version number of upcoming release in ``CHANGES.rst``
+- update ``changes.rst``, based on ``git log $PREVIOUS_RELEASE..``
+- check version number in:
+
+  - ``changes.rst``
+  - ``docs/source/conf.py``
+  - ``multigeiger/multigeiger.ino``
 - tag the release::
 
     git tag -s -m "tagged/signed release Vx.y.z" Vx.y.z
 
-- create binaries
+- create binaries (see above), practically try the binaries
 
 - close release milestone on Github
 
 - create a Github release, include:
 
-  * binaries (see above for how to create them)
-  * a link to ``CHANGES.rst``
+  * binaries
+  * a link to ``changes.rst``
+
