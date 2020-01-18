@@ -1,9 +1,10 @@
 # Change Log
 
-### V1.12.0 2020-01-xx (not released yet)
+### V1.12.0 2020-01-18
 * simple OTA (Over-The-Air) updates via web browser based upload, #120
 * use less charge pulses in loop() for timing, more in setup() for initial charging, #134
 * output error msg on Serial if HV charging fails
+* tag log output with "GEIGER: ", #85
 * add TUBE_UNKNOWN 0 to have a specific value for experimenting
 * adapted platformio.ini to pull all dependencies
 * send CR and LF on serial
@@ -11,6 +12,7 @@
 * semantic versioning, version numbers now like x.y.z
 * changed building of revString and lora_version
 * docs updated / improved
+* explain SBM-19/SBM-20 conversion factor
 * removed IotWebconf bundled&patched code, used as a lib now.
 
 ### V1.11.1 2019-12-16 rxf
