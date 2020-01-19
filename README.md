@@ -16,8 +16,8 @@ Klingt das interessant für Dich? Dann mach mit, herzliche Einladung!
 
 
 ## Installation
-Das Verzeichnis clonen oder als .zip runterladen und entpacken. Mit der Arduino-IDE in dem neuen Verzeichnis die Datei *multigeiger.ino* im Verzeichnis *multigeiger* öffnen.
-Der aktuelle **master**-Branch in GitHub ist für die Hardware-Version 1.4 (steht unten auf der Platine).
+Hier in GitHub die neueste Release ( https://github.com/ecocurious/MultiGeiger/releases ) als Source code (zip) oder Source Code (tar.gz) herunterladen und entpacken.
+Mit der Arduino-IDE in dem neuen Verzeichnis die Datei *multigeiger.ino* im Verzeichnis *multigeiger* öffnen.
 
 Die Platine unterstützt zwei verschiedene Heltec-Bausteine, verschiedene Zählrohre und optional einen Temperatur/Luftdruck/Luftfeuchtigkeits-Sensor.
 Die Software kann via Netzwerk Daten zu verschiedenen Services senden.
