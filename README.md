@@ -32,6 +32,9 @@ Diese MCU hat ein sehr kleines Display, dafür aber zusätzlich zu WiFi noch LoR
 Es wird in die kürzeren Buchsenleisten gesteckt.
 Für die Arduino-IDE muss als Board **Heltec Wireless Stick** eingestellt werden.
 
+Um die Heltec-Boards in der Arduino IDE auswählen zu können, muss "https://docs.heltec.cn/download/package_heltec_esp32_index.json" in den Preferences unter Additional Boards Manager URLs hinzugefügt werden. Danach können unter Tools->Board->Boards Manager die Heltec Boards (Name "Heltec ESP32...")
+installiert und anschließend unter Tools->Board ausgewählt werden.
+
 Die Hard- und Software-Einstellungen muss man über diese Dateien machen (siehe Kommentare dort):
 
  * **./multigeiger/userdefines.h** (immer notwendig, ein Beispiel hierzu wird in userdefines-example.h mitgeliefert)
@@ -39,7 +42,7 @@ Die Hard- und Software-Einstellungen muss man über diese Dateien machen (siehe 
 
 Als externe Libraries werden benötigt:
 
- * U8g2 von Oliver, Version 2.16.14
+ * U8g2 von Oliver, Version 2.26.14
  * Adafruit BME280 Library, Version 1.0.7
  * Adafruit Unified Sensor, Version 1.02
  * IotWebConf, Version 2.3.0
