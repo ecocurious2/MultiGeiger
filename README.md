@@ -32,7 +32,7 @@ Diese MCU hat ein sehr kleines Display, dafür aber zusätzlich zu WiFi noch LoR
 Es wird in die kürzeren Buchsenleisten gesteckt.
 Für die Arduino-IDE muss als Board **Heltec Wireless Stick** eingestellt werden.
 
-Um die Heltec-Boards in der Arduino IDE auswählen zu können, muss "https://docs.heltec.cn/download/package_heltec_esp32_index.json" in den Preferences unter Additional Boards Manager URLs hinzugefügt werden. Danach können unter Tools->Board->Boards Manager die Heltec Boards (Name "Heltec ESP32...")
+Um die Heltec-Boards in der Arduino IDE auswählen zu können, muss https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json in den Preferences unter Additional Boards Manager URLs hinzugefügt werden. Danach können unter Tools->Board->Boards Manager die Heltec Boards (Name "Heltec ESP32...")
 installiert und anschließend unter Tools->Board ausgewählt werden.
 
 Die Hard- und Software-Einstellungen muss man über diese Dateien machen (siehe Kommentare dort):
