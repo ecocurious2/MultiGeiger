@@ -506,7 +506,6 @@ void loop()
   update_display = (GMC_counts >= MAXCOUNTS) || ((current_ms - time2display) >= DISPLAYREFRESH);
   if(update_display) isr_GMC_counts = 0;
   count_timestamp = isr_count_timestamp;
-  // GMC_counts_2send = isr_GMC_counts_2send;
   count_timestamp_2send = isr_count_timestamp_2send;
   portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
 
