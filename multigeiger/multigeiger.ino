@@ -506,7 +506,6 @@ void loop()
   update_display = (GMC_counts >= MAXCOUNTS) || ((current_ms - time2display) >= DISPLAYREFRESH);
   if(update_display) isr_GMC_counts = 0;
   count_timestamp = isr_count_timestamp;
-  count_timestamp_2send = isr_count_timestamp_2send;
   portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
 
   // Pulse the high voltage if we got enough GMC pulses to update the display or at least every 1000ms.
@@ -939,39 +938,38 @@ void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, unsign
   http.end();
 }
 
+#if SEND2LORA
 // LoRa payload:
 // To minimise airtime, we only send necessary bytes. We do NOT use Cayenne LPP.
 // The payload will be translated via http integration and a small python program
 // to be compatible with sensor.community. For byte definitions see ttn2luft.pdf in
 // docs directory.
-#if SEND2LORA
 void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff) {
   unsigned char ttnData[20];
   int cnt;
   if(sendwhat == SEND_CPM) {
-  // first two bytes are the cpm
-  ttnData[0] = current_cpm >> 8;
-  ttnData[1] = current_cpm & 0xFF;
-  // next two bytes are the number of HV pulses
-  ttnData[2] = hvpulses >> 8;
-  ttnData[3] = hvpulses & 0xFF;
-  // next byte is the tube version
-  ttnData[4] = tubes[TUBE_TYPE].nbr;
-  // next two bytes are software version
-  ttnData[5] = (lora_software_version>>8)&0xFF;
-  ttnData[6] = lora_software_version&0xFF;
-  // now the number of counts
-  ttnData[7] = (GMC_counts_2send >>24) & 0xFF;
-  ttnData[8] = (GMC_counts_2send >>16) & 0xFF;
-  ttnData[9] = (GMC_counts_2send >>8) & 0xFF;
-  ttnData[10] = GMC_counts_2send & 0xFF;
-  // and last the time in ms for this numer of counts
-  ttnData[11] = (timediff >> 24) & 0xFF;
-  ttnData[12] = (timediff >> 16) & 0xFF;
-  ttnData[13] = (timediff >> 8) & 0xFF;
-  ttnData[14] = timediff & 0xFF;                         
-  cnt = 15;
-  lorawan_send(1,ttnData,cnt,false,NULL,NULL,NULL);
+    // first two bytes are the cpm
+    ttnData[0] = current_cpm >> 8;
+    ttnData[1] = current_cpm & 0xFF;
+    // next two bytes are software version
+    ttnData[2] = (lora_software_version>>8)&0xFF;
+    ttnData[3] = lora_software_version&0xFF;
+    // next byte is the tube version
+    ttnData[4] = tubes[TUBE_TYPE].nbr;
+    // now the number of counts
+    ttnData[5] = (GMC_counts_2send >>24) & 0xFF;
+    ttnData[6] = (GMC_counts_2send >>16) & 0xFF;
+    ttnData[7] = (GMC_counts_2send >>8) & 0xFF;
+    ttnData[8] = GMC_counts_2send & 0xFF;
+    // now 3 bytes for the time in ms for this numer of counts (max ca. 4 hours)
+    ttnData[9] = (timediff >> 16) & 0xFF;
+    ttnData[10] = (timediff >> 8) & 0xFF;
+    ttnData[11] = timediff & 0xFF;                         
+    // and last two bytes are the number of HV pulses
+    ttnData[12] = hvpulses >> 8;
+    ttnData[13] = hvpulses & 0xFF;
+    cnt = 14;
+    lorawan_send(1,ttnData,cnt,false,NULL,NULL,NULL);
   };
   if(sendwhat == SEND_BME) {
     ttnData[0] = ((int)(bme_temperature*10)) >> 8;
