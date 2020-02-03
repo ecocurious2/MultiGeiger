@@ -63,3 +63,6 @@
 // 0x2A38: Heart Rate Sensor Position --> sends TUBE_TYPE
 // 0x2A39: Heart Rate Control Point --> allows to reset "energy expenditure", as required by service definition
 #define SEND2BLE false
+
+// 0: no RGB status LED, 1: WS2812B status LED
+#define STATUS_LED 1
