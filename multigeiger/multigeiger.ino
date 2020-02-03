@@ -296,10 +296,10 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPS);
 void SoundStartsound();
 void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume);
 void DisplayStartscreen(void);
-void sendData2TTN(int sendwhat, unsigned int hvpulses);
-void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, bool debug);
+void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff);
+void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, unsigned int timediff, bool debug);
 String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bool addname);
-String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, unsigned int hvpulses, bool addname);
+String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, unsigned int hvpulses, unsigned int timediff, bool addname);
 void displayStatusLine(String txt);
 void clearDisplayLine(int line);
 void handleRoot(void);
@@ -506,8 +506,6 @@ void loop()
   update_display = (GMC_counts >= MAXCOUNTS) || ((current_ms - time2display) >= DISPLAYREFRESH);
   if(update_display) isr_GMC_counts = 0;
   count_timestamp = isr_count_timestamp;
-  GMC_counts_2send = isr_GMC_counts_2send;
-  count_timestamp_2send = isr_count_timestamp_2send;
   portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
 
   // Pulse the high voltage if we got enough GMC pulses to update the display or at least every 1000ms.
@@ -625,9 +623,9 @@ void loop()
     #if SEND2DUMMY
     displayStatusLine("Toilet");
     Serial.println("SENDING TO TOILET");
-    sendData2http(TOILET,SEND_CPM,hvp,true);
+    sendData2http(TOILET,SEND_CPM,hvp,time_difference,true);
     if(haveBME280) {
-      sendData2http(TOILET,SEND_BME,hvp,true);
+      sendData2http(TOILET,SEND_BME,hvp,time_difference,true);
     }
     delay(300);
     #endif
@@ -635,9 +633,9 @@ void loop()
     #if SEND2MADAVI
     Serial.println("Sending to Madavi ...");
     displayStatusLine("Madavi");
-    sendData2http(MADAVI,SEND_CPM,hvp,false);
+    sendData2http(MADAVI,SEND_CPM,hvp,time_difference,false);
     if(haveBME280) {
-      sendData2http(MADAVI,SEND_BME,hvp,false);
+      sendData2http(MADAVI,SEND_BME,time_difference,hvp,false);
     }
     delay(300);
     #endif
@@ -645,9 +643,9 @@ void loop()
     #if SEND2SENSORCOMMUNITY
     Serial.println("Sending to sensor.community ...");
     displayStatusLine("sensor.community");
-    sendData2http(SENSORCOMMUNITY,SEND_CPM,hvp,false);
+    sendData2http(SENSORCOMMUNITY,SEND_CPM,hvp,time_difference,false);
     if(haveBME280) {
-      sendData2http(SENSORCOMMUNITY,SEND_BME,hvp,false);
+      sendData2http(SENSORCOMMUNITY,SEND_BME,time_difference,hvp,false);
     }
     delay(300);
     #endif
@@ -655,9 +653,9 @@ void loop()
     #if SEND2LORA
     Serial.println("Sending to TTN ...");
     displayStatusLine("TTN");
-    sendData2TTN(SEND_CPM,hvp);
+    sendData2TTN(SEND_CPM,hvp,time_difference);
     if(haveBME280) {
-      sendData2TTN(SEND_BME,hvp);
+      sendData2TTN(SEND_BME,hvp,time_difference);
     }
     #endif
 
@@ -869,7 +867,7 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
 // ===================================================================================================================================
 // Send to Server Subfunctions
 
-String buildhttpHeaderandBodySBM(HTTPClient *head, unsigned int hvpulses, boolean addname, bool debug) {
+String buildhttpHeaderandBodySBM(HTTPClient *head, unsigned int hvpulses, unsigned int timediff, boolean addname, bool debug) {
   head->addHeader("Content-Type", "application/json; charset=UTF-8");
   head->addHeader("X-PIN","19");
   String chipID = String(ssid);
@@ -882,10 +880,9 @@ String buildhttpHeaderandBodySBM(HTTPClient *head, unsigned int hvpulses, boolea
   valuetype += "counts_per_minute";
   String body = "{\"software_version\":\""+String(revString)+"\",\"sensordatavalues\":[";
   body += "{\"value_type\":\""+valuetype+"\",\"value\":\""+current_cpm+"\"}";
-  if (debug) {
-    body += ",{\"value_type\":\"hv_pulses\",\"value\":\""+String(hvpulses)+"\"}";
-    body += ",{\"value_type\":\"tube\",\"value\":\""+tubetype+"\"}";
-  }
+  body += ",{\"value_type\":\"hv_pulses\",\"value\":\""+String(hvpulses)+"\"}";
+  body += ",{\"value_type\":\"counts\",\"value\":\""+String(GMC_counts_2send)+"\"}";
+  body += ",{\"value_type\":\"sample_time_ms\",\"value\":\""+String(timediff)+"\"}";
   body += "]}";
   if (DEBUG_SERVER_SEND == 1) {
     Serial.println(body);
@@ -917,12 +914,12 @@ String buildhttpHeaderandBodyBME(HTTPClient *head, boolean addname, bool debug) 
   return body;
 }
 
-void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, bool debug) {
+void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, unsigned int timediff, bool debug) {
   HTTPClient http;
   String body;
   http.begin(host);
   if (sendwhat == SEND_CPM) {
-    body = buildhttpHeaderandBodySBM(&http,hvpulses,false,debug);
+    body = buildhttpHeaderandBodySBM(&http,hvpulses,timediff, false,debug);
   }
   if (sendwhat == SEND_BME) {
     body = buildhttpHeaderandBodyBME(&http,false,debug);
@@ -941,29 +938,33 @@ void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, bool d
   http.end();
 }
 
-// LoRa payload:
-// To minimise airtime, we only send necessary bytes. We do NOT use Cayenne LPP.
-// The payload will be translated via http integration and a small python program
-// to be compatible with sensor.community. For byte definitions see ttn2luft.pdf in
-// docs directory.
 #if SEND2LORA
-void sendData2TTN(int sendwhat, unsigned int hvpulses) {
+// LoRa payload:
+// To minimise airtime and follow the 'TTN Fair Access Policy', we only send necessary bytes. 
+// We do NOT use Cayenne LPP.
+// The payload will be translated via http integration and a small program
+// to be compatible with sensor.community. 
+// For byte definitions see ttn2luft.pdf in docs directory.
+void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff) {
   unsigned char ttnData[20];
   int cnt;
   if(sendwhat == SEND_CPM) {
-  // first two bytes are the cpm
-  ttnData[0] = current_cpm >> 8;
-  ttnData[1] = current_cpm & 0xFF;
-  // next two bytes are the number of HV pulses
-  ttnData[2] = hvpulses >> 8;
-  ttnData[3] = hvpulses & 0xFF;
-  // next byte is the tube version
-  ttnData[4] = tubes[TUBE_TYPE].nbr;
-  // and last is software version
-  ttnData[5] = (lora_software_version>>8)&0xFF;
-  ttnData[6] = lora_software_version&0xFF;
-  cnt = 7;
-  lorawan_send(1,ttnData,cnt,false,NULL,NULL,NULL);
+    // first the number of counts
+    ttnData[0] = (GMC_counts_2send >>24) & 0xFF;
+    ttnData[1] = (GMC_counts_2send >>16) & 0xFF;
+    ttnData[2] = (GMC_counts_2send >>8) & 0xFF;
+    ttnData[3] = GMC_counts_2send & 0xFF;
+    // now 3 bytes for the time in ms for this numer of counts (max ca. 4 hours)
+    ttnData[4] = (timediff >> 16) & 0xFF;
+    ttnData[5] = (timediff >> 8) & 0xFF;
+    ttnData[6] = timediff & 0xFF;                         
+    // next two bytes are software version
+    ttnData[7] = (lora_software_version>>8)&0xFF;
+    ttnData[8] = lora_software_version&0xFF;
+    // next byte is the tube version
+    ttnData[9] = tubes[TUBE_TYPE].nbr;
+    cnt = 10;
+    lorawan_send(1,ttnData,cnt,false,NULL,NULL,NULL);
   };
   if(sendwhat == SEND_BME) {
     ttnData[0] = ((int)(bme_temperature*10)) >> 8;
