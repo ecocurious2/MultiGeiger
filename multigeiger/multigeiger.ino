@@ -940,35 +940,30 @@ void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, unsign
 
 #if SEND2LORA
 // LoRa payload:
-// To minimise airtime, we only send necessary bytes. We do NOT use Cayenne LPP.
-// The payload will be translated via http integration and a small python program
-// to be compatible with sensor.community. For byte definitions see ttn2luft.pdf in
-// docs directory.
+// To minimise airtime and follow the 'TTN Fair Access Policy', we only send necessary bytes. 
+// We do NOT use Cayenne LPP.
+// The payload will be translated via http integration and a small program
+// to be compatible with sensor.community. 
+// For byte definitions see ttn2luft.pdf in docs directory.
 void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff) {
   unsigned char ttnData[20];
   int cnt;
   if(sendwhat == SEND_CPM) {
-    // first two bytes are the cpm
-    ttnData[0] = current_cpm >> 8;
-    ttnData[1] = current_cpm & 0xFF;
-    // next two bytes are software version
-    ttnData[2] = (lora_software_version>>8)&0xFF;
-    ttnData[3] = lora_software_version&0xFF;
-    // next byte is the tube version
-    ttnData[4] = tubes[TUBE_TYPE].nbr;
-    // now the number of counts
-    ttnData[5] = (GMC_counts_2send >>24) & 0xFF;
-    ttnData[6] = (GMC_counts_2send >>16) & 0xFF;
-    ttnData[7] = (GMC_counts_2send >>8) & 0xFF;
-    ttnData[8] = GMC_counts_2send & 0xFF;
+    // first the number of counts
+    ttnData[0] = (GMC_counts_2send >>24) & 0xFF;
+    ttnData[1] = (GMC_counts_2send >>16) & 0xFF;
+    ttnData[2] = (GMC_counts_2send >>8) & 0xFF;
+    ttnData[3] = GMC_counts_2send & 0xFF;
     // now 3 bytes for the time in ms for this numer of counts (max ca. 4 hours)
-    ttnData[9] = (timediff >> 16) & 0xFF;
-    ttnData[10] = (timediff >> 8) & 0xFF;
-    ttnData[11] = timediff & 0xFF;                         
-    // and last two bytes are the number of HV pulses
-    ttnData[12] = hvpulses >> 8;
-    ttnData[13] = hvpulses & 0xFF;
-    cnt = 14;
+    ttnData[4] = (timediff >> 16) & 0xFF;
+    ttnData[5] = (timediff >> 8) & 0xFF;
+    ttnData[6] = timediff & 0xFF;                         
+    // next two bytes are software version
+    ttnData[7] = (lora_software_version>>8)&0xFF;
+    ttnData[8] = lora_software_version&0xFF;
+    // next byte is the tube version
+    ttnData[9] = tubes[TUBE_TYPE].nbr;
+    cnt = 10;
     lorawan_send(1,ttnData,cnt,false,NULL,NULL,NULL);
   };
   if(sendwhat == SEND_BME) {
