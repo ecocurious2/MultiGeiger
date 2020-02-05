@@ -396,7 +396,10 @@ void setup()
   lora_software_version = (VERSION_MAJOR<<12)+ (VERSION_MINOR<<4) + VERSION_PATCH;
 #endif
   // Check, if we have a BME280 connected:
-  haveBME280 = bme.begin();
+  haveBME280 = bme.begin(BME280_ADDRESS);
+  if(haveBME280 == 0) {
+    haveBME280 = bme.begin(BME280_ADDRESS_ALTERNATE);
+  }
   Serial.printf("BME_Status: %d  ID:%0X\r\n", haveBME280, bme.sensorID());
 
   // Setup IoTWebConf
