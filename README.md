@@ -1,18 +1,41 @@
-
 # MultiGeiger
-Wir sind Ecocurious, Deine Umwelt-, Natur-  und Technik-Community. Aktuell bauen wir einen Multigeiger, um Radioaktivität zu messen. https://ecocurious.de/projekte/multigeiger/
 
-Ziel ist es, einen Low-Cost-Geigerzähler (für Gamma-Strahlung) zu entwickeln und ein Bürger-Messnetz in Deutschland aufzubauen.
+Der MultiGeiger ist ein Messgerät für Radioaktivität. Er ist:
 
-Unsere Hard- und Software hat Jürgen Böhringer konzipiert (http://www.boehri.de). Reinhard/rexfue hat die Software und Platine weitergedacht und kümmert sich um die Einbindung der Sensoren in unsere Map https://ecocurious.de/multigeiger-karte/.
+ * preiswert
+ * ESP32-basiert
+ * hat WiFi- bzw. WiFi/LoRa-Anbindung
 
-Das Besondere an unserem Multigeiger ist, dass er wahlweise mit einem LoRa- oder Wifi-Modul betrieben werden kann. Wir haben die ersten Workshops gestartet, in denen Du die Bauteile und das Gehäuse mit unserer Unterstützung zusammengebauen kannst.
+**Multi**Geiger heißt er deshalb, weil das Gerät sehr viele Einsatz-Möglichkeiten hat:
 
-Workshop-Termine findest Du hier: https://www.meetup.com/de-DE/Ecocurious-deine-Umwelt-Natur-und-Technik-Community/
-und hier:https://ecocurious.de/events/
+ * Unterschiedliche Zählrohre - eine breite Palette von 400V-Zählrohren kann verwendet werden:
+
+   - große Zählrohre, wie Si21g oder Si22g (wie wir es für die MultiGeiger-Messstation verwenden)
+   - Mini-Zählrohr SBM21 (mit dem man sehr gut Hot-Spots aufspüren kann)
+
+ * Unterschiedliche Verwendungen:
+
+   - Multigeiger-Mess-Stationen für ein ODL-Mess-Netzwerk.
+   - Mobiler Betrieb mit OLED-Anzeige.
+
+
+# Ecocurious
+
+Der MultiGeiger ist ein Projekt von Ecocurious, Deiner Umwelt-, Natur-  und Technik-Community, siehe https://ecocurious.de/projekte/multigeiger/.
+
+Ziel ist es, ein Bürger-Messnetz für Radioaktivität in Deutschland aufzubauen.
+
+Die MultiGeiger Hard- und Software hat Jürgen Böhringer konzipiert (http://www.boehri.de).
+
+Reinhard/rexfue hat die Software und Platine weitergedacht und kümmert sich um die Einbindung der Sensoren in unsere Map https://ecocurious.de/multigeiger-karte/.
+
+Wir haben die ersten Workshops gestartet, in denen Du die Bauteile und das Gehäuse mit unserer Unterstützung zusammenbauen kannst.
+
+Workshop-Termine findest Du hier:
+ * https://www.meetup.com/de-DE/Ecocurious-deine-Umwelt-Natur-und-Technik-Community/
+ * https://ecocurious.de/events/
 
 Klingt das interessant für Dich? Dann mach mit, herzliche Einladung!
-
 
 
 ## Installation
