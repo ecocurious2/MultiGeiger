@@ -177,7 +177,7 @@ typedef struct {
 
 TUBETYPE tubes[] = {
   {"Radiation unknown", 0, 0.0},                            // use 0.0 conversion factor for unknown tubes, so it computes an
-                                                            // "obviously-wrong" 0.0 uSv/h value rather than a confusing one.
+  // "obviously-wrong" 0.0 uSv/h value rather than a confusing one.
   // The conversion factors for SBM-20 and SBM-19 are taken from the datasheets (according to Jürgen)
   {"Radiation SBM-20", 20, 1/2.47},
   {"Radiation SBM-19", 19, 1/9.81888},
@@ -192,7 +192,7 @@ TUBETYPE tubes[] = {
 //====================================================================================================================================
 // Constants
 const unsigned long GMC_dead_time = 190;  // Dead Time of the Geiger Counter. Has to be longer than the complete
-                                          // pulse generated on the Pin PIN_GMC_count_INPUT. [µsec]
+// pulse generated on the Pin PIN_GMC_count_INPUT. [µsec]
 
 // Hosts for data delivery
 #define MADAVI "http://api-rrd.madavi.de/data.php"
@@ -209,51 +209,51 @@ volatile unsigned long isr_count_time_between = micros();
 volatile unsigned int  isr_GMC_counts_2send   = 0;
 volatile unsigned long isr_count_timestamp_2send= micros();
 
-         unsigned int  GMC_counts             = 0;
-         unsigned int  GMC_counts_2send       = 0;
-         unsigned int  accumulated_GMC_counts = 0;
-         unsigned long count_timestamp        = millis();
-         unsigned long count_timestamp_2send  = millis();
-         unsigned long last_count_timestamp   = millis();
-         unsigned long last_count_timestamp_2send = millis();
-         unsigned long accumulated_time       = 0;
-         unsigned int  last_GMC_counts        = 0;
-         unsigned int  hvpulsecnt2send        = 0;
-         float         Count_Rate             = 0.0;
-         float         Dose_Rate              = 0.0;
-         float         accumulated_Count_Rate = 0.0;
-         float         accumulated_Dose_Rate  = 0.0;
-         unsigned long lastMinuteLog          = millis();
-         unsigned int  lastMinuteLogCounts    = 0;
-         unsigned int  current_cpm            = 0;
+unsigned int  GMC_counts             = 0;
+unsigned int  GMC_counts_2send       = 0;
+unsigned int  accumulated_GMC_counts = 0;
+unsigned long count_timestamp        = millis();
+unsigned long count_timestamp_2send  = millis();
+unsigned long last_count_timestamp   = millis();
+unsigned long last_count_timestamp_2send = millis();
+unsigned long accumulated_time       = 0;
+unsigned int  last_GMC_counts        = 0;
+unsigned int  hvpulsecnt2send        = 0;
+float         Count_Rate             = 0.0;
+float         Dose_Rate              = 0.0;
+float         accumulated_Count_Rate = 0.0;
+float         accumulated_Dose_Rate  = 0.0;
+unsigned long lastMinuteLog          = millis();
+unsigned int  lastMinuteLogCounts    = 0;
+unsigned int  current_cpm            = 0;
 
-         unsigned long toSendTime             = millis();
-         unsigned long afterStartTime         = 0;
-         unsigned long time2hvpulse           = millis();
-         unsigned long time2display           = millis();
+unsigned long toSendTime             = millis();
+unsigned long afterStartTime         = 0;
+unsigned long time2hvpulse           = millis();
+unsigned long time2display           = millis();
 
-         bool          showDisplay            = SHOW_DISPLAY;
-         bool          speakerTick            = SPEAKER_TICK;
-         bool          ledTick                = LED_TICK;
-         bool          playSound              = PLAY_SOUND;
-         bool          displayIsClear         = false;
-         char          ssid[IOTWEBCONF_WORD_LEN];  // LEN == 33 (2020-01-13)
-         int           haveBME280             = 0;
-         float         bme_temperature        = 0.0;
-         float         bme_humidity           = 0.0;
-         float         bme_pressure           = 0.0;
-         float         GMC_factor_uSvph       = 0.0;
-         portMUX_TYPE  mux_cap_full = portMUX_INITIALIZER_UNLOCKED;
-         portMUX_TYPE  mux_GMC_count = portMUX_INITIALIZER_UNLOCKED;
-         const char*         Serial_Logging_Header = "GEIGER: %10s %15s %10s %9s %9s %8s %9s %9s %9s\r\n";
-         const char*         Serial_Logging_Body   = "GEIGER: %10d %15d %10f %9f %9d %8d %9d %9f %9f\r\n";
-         const char*         Serial_One_Minute_Log_Header = "GEIGER: %4s %10s %29s\r\n";
-         const char*         Serial_One_Minute_Log_Body   = "GEIGER: %4d %10d %29d\r\n";
-         const char*         Serial_Logging_Name   = "GEIGER: Simple Multi-Geiger, Version ";
-         char          revString[25];
-         unsigned int  lora_software_version; 
-         const String        dashes                  = "GEIGER: -------------------------------------------------------------------------------------------------";
-         int           Serial_Print_Mode       = SERIAL_DEBUG;
+bool          showDisplay            = SHOW_DISPLAY;
+bool          speakerTick            = SPEAKER_TICK;
+bool          ledTick                = LED_TICK;
+bool          playSound              = PLAY_SOUND;
+bool          displayIsClear         = false;
+char          ssid[IOTWEBCONF_WORD_LEN];  // LEN == 33 (2020-01-13)
+int           haveBME280             = 0;
+float         bme_temperature        = 0.0;
+float         bme_humidity           = 0.0;
+float         bme_pressure           = 0.0;
+float         GMC_factor_uSvph       = 0.0;
+portMUX_TYPE  mux_cap_full = portMUX_INITIALIZER_UNLOCKED;
+portMUX_TYPE  mux_GMC_count = portMUX_INITIALIZER_UNLOCKED;
+const char*         Serial_Logging_Header = "GEIGER: %10s %15s %10s %9s %9s %8s %9s %9s %9s\r\n";
+const char*         Serial_Logging_Body   = "GEIGER: %10d %15d %10f %9f %9d %8d %9d %9f %9f\r\n";
+const char*         Serial_One_Minute_Log_Header = "GEIGER: %4s %10s %29s\r\n";
+const char*         Serial_One_Minute_Log_Body   = "GEIGER: %4d %10d %29d\r\n";
+const char*         Serial_Logging_Name   = "GEIGER: Simple Multi-Geiger, Version ";
+char          revString[25];
+unsigned int  lora_software_version;
+const String        dashes                  = "GEIGER: -------------------------------------------------------------------------------------------------";
+int           Serial_Print_Mode       = SERIAL_DEBUG;
 
 //====================================================================================================================================
 // ISRs
@@ -351,8 +351,7 @@ char* buildSSID() {
 //====================================================================================================================================
 // *******  SETUP *******
 //====================================================================================================================================
-void setup()
-{
+void setup() {
   // OLED-Display
   u8x8.begin();
 
@@ -371,10 +370,10 @@ void setup()
   pinMode(TESTPIN, OUTPUT);
   digitalWrite(TESTPIN, LOW);
 
-#if CPU == STICK
+  #if CPU == STICK
   pinMode (PIN_DISPLAY_ON, OUTPUT);
   digitalWrite(PIN_DISPLAY_ON, HIGH);
-#endif
+  #endif
   // Initialize Pins
   digitalWrite (PIN_SPEAKER_OUTPUT_P, HIGH);
   digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW);
@@ -391,10 +390,10 @@ void setup()
   // build revString
   sprintf(revString,"V%d.%d.%d %s",VERSION_MAJOR,VERSION_MINOR,VERSION_PATCH,VERSION_DATE);
 
-#if SEND2LORA
+  #if SEND2LORA
   // build LoRa software version
   lora_software_version = (VERSION_MAJOR<<12)+ (VERSION_MINOR<<4) + VERSION_PATCH;
-#endif
+  #endif
   // Check, if we have a BME280 connected:
   haveBME280 = bme.begin(BME280_ADDRESS);
   if(haveBME280 == 0) {
@@ -419,8 +418,10 @@ void setup()
 
   // -- Set up required URL handlers on the web server.
   server.on("/", handleRoot);
-  server.on("/config", []{ iotWebConf.handleConfig(); });
-  server.onNotFound([](){ iotWebConf.handleNotFound(); });
+  server.on("/config", [] { iotWebConf.handleConfig(); });
+  server.onNotFound([]() {
+    iotWebConf.handleNotFound();
+  });
 
 
   // Write Header of Table, depending on the logging mode:
@@ -459,10 +460,10 @@ void setup()
     Serial.println(dashes);
   }
 
-#if SEND2LORA
+  #if SEND2LORA
   // init LoRa
   lorawan_setup();
-#endif
+  #endif
 
   DisplayStartscreen();
   displayIsClear = false;
@@ -475,7 +476,7 @@ void setup()
   // set interrupts (on pin change), attach interrupt handler
   attachInterrupt (digitalPinToInterrupt (PIN_HV_CAP_FULL_INPUT), isr_GMC_capacitor_full, RISING);  // capacitor full
   attachInterrupt (digitalPinToInterrupt (PIN_GMC_count_INPUT), isr_GMC_count, FALLING);            // GMC pulse detected
-  
+
   // charge hv capacitor
   gen_charge_pulses(MAX_CHARGE_PULSES_INITIAL);
 
@@ -484,8 +485,7 @@ void setup()
 // ===================================================================================================================================
 // *************  LOOP  *************************
 // ===================================================================================================================================
-void loop()
-{
+void loop() {
   unsigned long time_difference;
   unsigned int HV_pulse_count;
   char sw[4];
@@ -498,8 +498,8 @@ void loop()
   sw[2] = !digitalRead(PIN_SWI_2);
   sw[3] = !digitalRead(PIN_SWI_3);
 
-  #define DISPLAYREFRESH 10000
-  #define MAXCOUNTS 100
+#define DISPLAYREFRESH 10000
+#define MAXCOUNTS 100
 
   // copy values from ISR
   portENTER_CRITICAL(&mux_GMC_count);                            // enter critical section
@@ -512,7 +512,7 @@ void loop()
   portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
 
   // Pulse the high voltage if we got enough GMC pulses to update the display or at least every 1000ms.
-  #define HVPULSE_MS 1000
+#define HVPULSE_MS 1000
   if(update_display || (current_ms - time2hvpulse) >= HVPULSE_MS ) {
     HV_pulse_count = gen_charge_pulses(MAX_CHARGE_PULSES);   // charge HV capacitor - restarts time2hvpulse!
     hvpulsecnt2send += HV_pulse_count;                      // count for sending
@@ -529,7 +529,7 @@ void loop()
     Count_Rate = 0.0;
     if (time_difference != 0) {
       Count_Rate = (float)GMC_counts*1000.0/(float)time_difference;  // calculate the current count rate
-    } 
+    }
 
     Dose_Rate = Count_Rate *GMC_factor_uSvph;                        // ... and dose rate
 
@@ -560,10 +560,10 @@ void loop()
     }
 
     if (Serial_Print_Mode == Serial_One_Minute_Log) {              // 1 Minute Log active?
-      if (current_ms > (lastMinuteLog + 60000)){                     // Time reached for next 1-Minute log?
+      if (current_ms > (lastMinuteLog + 60000)) {                    // Time reached for next 1-Minute log?
         unsigned int lastMinuteLogCountRate = ( (lastMinuteLogCounts*60000) / (current_ms-lastMinuteLog) );    // = *60 /1000
         if( ( ( ( (lastMinuteLogCounts*60000) % (current_ms-lastMinuteLog) ) * 2 ) / (current_ms-lastMinuteLog) ) >= 1 ) {
-            lastMinuteLogCountRate++;                              // Rounding
+          lastMinuteLogCountRate++;                              // Rounding
         }
         Serial.printf(Serial_One_Minute_Log_Body,
                       (current_ms/1000),
@@ -611,16 +611,16 @@ void loop()
     if(time_difference != 0) {
       current_cpm = (int)(GMC_counts_2send*60000/time_difference);
     }
-    
+
     if (haveBME280) {                                       // read in the BME280 values
       bme_temperature = bme.readTemperature();
       bme_humidity = bme.readHumidity();
       bme_pressure = bme.readPressure();
-#if 0
+      #if 0
       Serial.printf("Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f\r\n", current_cpm, hvp, bme_temperature, bme_humidity, bme_pressure);
     } else {
       Serial.printf("Measured: cpm= %d HV=%d\r\n",current_cpm, hvp);
-#endif
+      #endif
     }
 
     #if SEND2DUMMY
@@ -723,11 +723,11 @@ int gen_charge_pulses(int max_charge_pulses) {
 
 // ===================================================================================================================================
 // OLED sub functions
-void DisplayStartscreen(void){
+void DisplayStartscreen(void) {
   char line[20];
 
   u8x8.clear();
-#if CPU == STICK
+  #if CPU == STICK
   // Display is only 4 lines by 8 characters; lines counting from 2 to 5
   u8x8.setFont(u8x8_font_5x8_f);                            // use really small font
   for (int i=2; i<6; i++) {
@@ -738,7 +738,7 @@ void DisplayStartscreen(void){
   u8x8.drawString(0, 4, "Version:");
   sprintf(line,"%d.%d.%d",VERSION_MAJOR,VERSION_MINOR,VERSION_PATCH);
   u8x8.drawString(0, 5, line);
-#else
+  #else
   u8x8.setFont(u8x8_font_7x14_1x2_f);
   u8x8.println("Geiger-Counter");
   u8x8.println("==============");
@@ -747,14 +747,14 @@ void DisplayStartscreen(void){
   u8x8.print(line);
   u8x8.setCursor(1, 6);
   u8x8.print("Info:boehri.de");
-#endif
+  #endif
 };
 
 // ===================================================================================================================================
-void DisplayGMC(int TimeSec, int RadNSvph, int CPS){
+void DisplayGMC(int TimeSec, int RadNSvph, int CPS) {
   u8x8.clear();
 
-#if CPU != STICK
+  #if CPU != STICK
   char output[80];
   int TimeMin = TimeSec / 60;             // calculate number of minutes
   if(TimeMin >=999 ) TimeMin=999;         // limit minutes to max. 999
@@ -762,7 +762,7 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPS){
   // print the upper line including time and measured radation
   u8x8.setFont(u8x8_font_7x14_1x2_f);
 
-  if(TimeMin >= 1){                       // >= 1 minute -> display in minutes
+  if(TimeMin >= 1) {                      // >= 1 minute -> display in minutes
     sprintf(output, "%3d", TimeMin);
     u8x8.print(output);
   } else {                                // < 1 minute -> display in seconds, inverse
@@ -774,27 +774,27 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPS){
 
   sprintf(output, "%7d nSv/h", RadNSvph);
   u8x8.print(output);
-#endif
+  #endif
 
   // print the lower line including time and CPM value
-#if CPU != STICK
+  #if CPU != STICK
   u8x8.setFont(u8x8_font_inb33_3x6_n);
   u8x8.drawString(0, 2, nullFill(CPS, 5));
-#else
+  #else
   u8x8.setFont(u8x8_font_5x8_f);
   u8x8.drawString(0, 2, nullFill(RadNSvph, 8));
   u8x8.draw2x2String(0, 3, nullFill(CPS, 4));
   u8x8.drawString(0, 5, "     cpm");
-#endif
+  #endif
 
-#if CPU != STICK
+  #if CPU != STICK
   // Print 'connecting...' as long as we aren't connected
   if (iotWebConf.getState() != IOTWEBCONF_STATE_ONLINE) {
     displayStatusLine("connecting...");
   } else {
     displayStatusLine(" ");
   }
-#endif
+  #endif
 };
 
 #if CPU != STICK
@@ -823,7 +823,7 @@ void displayStatusLine(String txt) {
 
 // ===================================================================================================================================
 // Sound Subfunctions
-void SoundStartsound(){
+void SoundStartsound() {
   float freq_factor = 0.75;
   int time_factor   =   85;
 
@@ -847,7 +847,7 @@ void SoundStartsound(){
 }
 
 
-void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume){
+void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume) {
   unsigned int  cycle_time_us, cycle_1_time_us, cycle_2_time_us;
   unsigned long count_timestamp_end;
 
@@ -856,7 +856,7 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
   cycle_2_time_us = cycle_time_us - cycle_1_time_us;
   count_timestamp_end = millis() + time_ms;
 
-  do{
+  do {
     digitalWrite (PIN_SPEAKER_OUTPUT_P, (volume==1));
     digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW);
     delayMicroseconds(cycle_1_time_us);
@@ -928,7 +928,7 @@ void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, unsign
     body = buildhttpHeaderandBodyBME(&http,false,debug);
   }
   int httpResponseCode = http.POST(body);
-  if(httpResponseCode>0){
+  if(httpResponseCode>0) {
     String response = http.getString();
     if (DEBUG_SERVER_SEND == 1) {
       Serial.println(httpResponseCode);
@@ -943,10 +943,10 @@ void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, unsign
 
 #if SEND2LORA
 // LoRa payload:
-// To minimise airtime and follow the 'TTN Fair Access Policy', we only send necessary bytes. 
+// To minimise airtime and follow the 'TTN Fair Access Policy', we only send necessary bytes.
 // We do NOT use Cayenne LPP.
 // The payload will be translated via http integration and a small program
-// to be compatible with sensor.community. 
+// to be compatible with sensor.community.
 // For byte definitions see ttn2luft.pdf in docs directory.
 void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff) {
   unsigned char ttnData[20];
@@ -960,7 +960,7 @@ void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff) {
     // now 3 bytes for the time in ms for this numer of counts (max ca. 4 hours)
     ttnData[4] = (timediff >> 16) & 0xFF;
     ttnData[5] = (timediff >> 8) & 0xFF;
-    ttnData[6] = timediff & 0xFF;                         
+    ttnData[6] = timediff & 0xFF;
     // next two bytes are software version
     ttnData[7] = (lora_software_version>>8)&0xFF;
     ttnData[8] = lora_software_version&0xFF;
@@ -984,28 +984,26 @@ void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff) {
 /**
  * Handle web requests to "/" path.
  */
-void handleRoot(void)
-{
+void handleRoot(void) {
   // -- Let IotWebConf test and handle captive portal requests.
-  if (iotWebConf.handleCaptivePortal())
-  {
+  if (iotWebConf.handleCaptivePortal()) {
     // -- Captive portal requests were already served.
     return;
   }
   const char* index =
-"<!DOCTYPE html>"
-"<html lang='en'>"
-"<head>"
-  "<meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />"
-  "<title>MultiGeiger Configuration</title>"
-"</head>"
-"<body>"
-  "<h1>Configuration</h1>"
-  "<p>"
+    "<!DOCTYPE html>"
+    "<html lang='en'>"
+    "<head>"
+    "<meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />"
+    "<title>MultiGeiger Configuration</title>"
+    "</head>"
+    "<body>"
+    "<h1>Configuration</h1>"
+    "<p>"
     "Go to the <a href='config'>configure page</a> to change settings or update firmware."
-  "</p>"
-"</body>"
-"</html>\n";
+    "</p>"
+    "</body>"
+    "</html>\n";
   server.send(200, "text/html;charset=UTF-8", index);
 }
 

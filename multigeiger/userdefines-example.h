@@ -8,7 +8,7 @@
 // If you use platformio, CPU is defined in platformio.ini and
 // you don't need to change the definition of CPU.
 // Arduino IDE users *must* define CPU here and uncomment one and only one of following CPU-Defines.
-#ifndef CPU 
+#ifndef CPU
 #define CPU WIFI    // is used for WiFi Kit 32
 //#define CPU STICK     // is used for Wireless stick
 #endif
@@ -26,7 +26,7 @@
 // #define   SERIAL_DEBUG Serial_One_Minute_Log  // One Minute logging
 // #define   SERIAL_DEBUG Serial_Statistics_Log  // Lists time [us] between two events
 
-// ** Special debug info: 
+// ** Special debug info:
 // if set to 1, print debug info on serial (USB) interface while sending to servers (madavi or sensor.community)
 #define DEBUG_SERVER_SEND 0
 
