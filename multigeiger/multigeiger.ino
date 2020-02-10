@@ -170,7 +170,7 @@ enum {SEND_CPM, SEND_BME};
 #define CONFIG_VERSION "012"
 
 typedef struct {
-  const char* type;                                         // type string for sensor.community
+  const char *type;                                         // type string for sensor.community
   const char  nbr;                                          // number to be sent by LoRa
   const float cps_to_uSvph;                                 // factor to convert counts per second to µSievert per hour
 } TUBETYPE;
@@ -246,11 +246,11 @@ float         bme_pressure = 0.0;
 float         GMC_factor_uSvph = 0.0;
 portMUX_TYPE  mux_cap_full = portMUX_INITIALIZER_UNLOCKED;
 portMUX_TYPE  mux_GMC_count = portMUX_INITIALIZER_UNLOCKED;
-const char*   Serial_Logging_Header = "GEIGER: %10s %15s %10s %9s %9s %8s %9s %9s %9s\r\n";
-const char*   Serial_Logging_Body = "GEIGER: %10d %15d %10f %9f %9d %8d %9d %9f %9f\r\n";
-const char*   Serial_One_Minute_Log_Header = "GEIGER: %4s %10s %29s\r\n";
-const char*   Serial_One_Minute_Log_Body = "GEIGER: %4d %10d %29d\r\n";
-const char*   Serial_Logging_Name = "GEIGER: Simple Multi-Geiger, Version ";
+const char   *Serial_Logging_Header = "GEIGER: %10s %15s %10s %9s %9s %8s %9s %9s %9s\r\n";
+const char   *Serial_Logging_Body = "GEIGER: %10d %15d %10f %9f %9d %8d %9d %9f %9f\r\n";
+const char   *Serial_One_Minute_Log_Header = "GEIGER: %4s %10s %29s\r\n";
+const char   *Serial_One_Minute_Log_Body = "GEIGER: %4d %10d %29d\r\n";
+const char   *Serial_Logging_Name = "GEIGER: Simple Multi-Geiger, Version ";
 char          revString[25];
 unsigned int  lora_software_version;
 const String  dashes = "GEIGER: -------------------------------------------------------------------------------------------------";
@@ -298,15 +298,15 @@ void SoundStartsound();
 void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume);
 void DisplayStartscreen(void);
 void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff);
-void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, unsigned int timediff, bool debug);
+void sendData2http(const char *host, int sendwhat, unsigned int hvpulses, unsigned int timediff, bool debug);
 String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bool addname);
 String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, unsigned int hvpulses, unsigned int timediff, bool addname);
 void displayStatusLine(String txt);
 void clearDisplayLine(int line);
 void handleRoot(void);
 void configSaved(void);
-char* nullFill(int n, int digits);
-char* buildSSID();
+char *nullFill(int n, int digits);
+char *buildSSID();
 
 
 
@@ -319,7 +319,7 @@ U8X8_SSD1306_64X32_NONAME_HW_I2C u8x8(/* reset=*/ 16, /* clock=*/ 15, /* data=*/
 
 // -- Initial password to connect to the Thing, when it creates an own Access Point.
 const char wifiInitialApPassword[] = "ESP32Geiger";
-const char* theName = buildSSID();                          // build SSID from ESP chip id
+const char *theName = buildSSID();                          // build SSID from ESP chip id
 
 DNSServer dnsServer;
 WebServer server(80);
@@ -331,7 +331,7 @@ Adafruit_BME280 bme;
 
 unsigned long getESPchipID() {
   uint64_t espid = ESP.getEfuseMac();
-  uint8_t *pespid = (uint8_t*)&espid;
+  uint8_t *pespid = (uint8_t *)&espid;
   uint32_t id = 0;
   uint8_t *pid = (uint8_t *)&id;
   pid[0] = (uint8_t)pespid[5];
@@ -343,7 +343,7 @@ unsigned long getESPchipID() {
 }
 
 // build SSID
-char* buildSSID() {
+char *buildSSID() {
   uint32_t xx = getESPchipID();
   sprintf(ssid, "ESP32-%d", xx);
   return ssid;
@@ -917,7 +917,7 @@ String buildhttpHeaderandBodyBME(HTTPClient *head, boolean addname, bool debug) 
   return body;
 }
 
-void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, unsigned int timediff, bool debug) {
+void sendData2http(const char *host, int sendwhat, unsigned int hvpulses, unsigned int timediff, bool debug) {
   HTTPClient http;
   String body;
   http.begin(host);
@@ -990,7 +990,7 @@ void handleRoot(void) {
     // -- Captive portal requests were already served.
     return;
   }
-  const char* index =
+  const char *index =
     "<!DOCTYPE html>"
     "<html lang='en'>"
     "<head>"
@@ -1011,7 +1011,7 @@ void configSaved(void) {
   Serial.println("Config saved");
 }
 
-char* nullFill(int n, int digits) {
+char *nullFill(int n, int digits) {
   static char erg[9];                          // max. 8 digits possible!
   if (digits > 8) {
     digits = 8;
