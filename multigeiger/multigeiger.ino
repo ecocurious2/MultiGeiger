@@ -827,14 +827,14 @@ void displayStatusLine(String txt) {
 // Sound Subfunctions
 void SoundStartsound() {
   float freq_factor = 0.75;
-  int time_factor   =   85;
+  int time_factor = 85;
 
   jbTone(1174659 * freq_factor,    2 * time_factor, 1); // D
-  delay(                         2 * time_factor   ); // ---
+  delay(                           2 * time_factor   ); // ---
   jbTone(1318510 * freq_factor,    2 * time_factor, 1); // E
-  delay(                         2 * time_factor   ); // ---
+  delay(                           2 * time_factor   ); // ---
   jbTone(1479978 * freq_factor,    2 * time_factor, 1); // Fis
-  delay(                         2 * time_factor   ); // ---
+  delay(                           2 * time_factor   ); // ---
 
   jbTone(1567982 * freq_factor,    4 * time_factor, 1); // G
   jbTone(1174659 * freq_factor,    2 * time_factor, 1); // D
@@ -844,8 +844,6 @@ void SoundStartsound() {
   jbTone(1046502 * freq_factor,    2 * time_factor, 1); // C
   jbTone( 987767 * freq_factor,    4 * time_factor, 1); // H
   jbTone( 987767 * freq_factor,    4 * time_factor, 0); // H
-
-  return;
 }
 
 
