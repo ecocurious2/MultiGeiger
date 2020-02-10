@@ -49,11 +49,11 @@
 
 // Fix Parameters
 // Values for Serial_Print_Mode to configure Serial (USB) output mode.  DON'T TOUCH!
-#define   Serial_None            0  // No Serial output
-#define   Serial_Debug           1  // Only debug and error messages
-#define   Serial_Logging         2  // Log measurements as a table
-#define   Serial_One_Minute_Log  3  // "One Minute logging"
-#define   Serial_Statistics_Log  4  // Logs time [us] between two events
+#define   Serial_None 0            // No Serial output
+#define   Serial_Debug 1           // Only debug and error messages
+#define   Serial_Logging 2         // Log measurements as a table
+#define   Serial_One_Minute_Log 3  // "One Minute logging"
+#define   Serial_Statistics_Log 4  // Logs time [us] between two events
 //
 // At sensor.community predefined counter tubes:
 #define TUBE_UNKNOWN 0
@@ -112,11 +112,11 @@
 //  used for optional LoRa    DIO0 (8) = GPIO26 (15)
 //  used for optional LoRa    DIO1 (9) = GPIO33 (13)
 //  used for optional LoRa    DIO2 (10) = GPIO32 (12)
-int PIN_HV_FET_OUTPUT       =  23;  //
-int PIN_HV_CAP_FULL_INPUT   =  22;  // !! has to be capable of "interrupt on change"
-int PIN_GMC_count_INPUT     =   2;  // !! has to be capable of "interrupt on change"
-int PIN_SPEAKER_OUTPUT_P    =  12;
-int PIN_SPEAKER_OUTPUT_N    =   0;
+int PIN_HV_FET_OUTPUT = 23;
+int PIN_HV_CAP_FULL_INPUT = 22;  // !! has to be capable of "interrupt on change"
+int PIN_GMC_count_INPUT = 2;  // !! has to be capable of "interrupt on change"
+int PIN_SPEAKER_OUTPUT_P = 12;
+int PIN_SPEAKER_OUTPUT_N = 0;
 
 // Inputs for the switches
 #if CPU == STICK
@@ -176,8 +176,8 @@ typedef struct {
 } TUBETYPE;
 
 TUBETYPE tubes[] = {
-  {"Radiation unknown", 0, 0.0},                            // use 0.0 conversion factor for unknown tubes, so it computes an
-  // "obviously-wrong" 0.0 uSv/h value rather than a confusing one.
+  // use 0.0 conversion factor for unknown tubes, so it computes an "obviously-wrong" 0.0 uSv/h value rather than a confusing one.
+  {"Radiation unknown", 0, 0.0},
   // The conversion factors for SBM-20 and SBM-19 are taken from the datasheets (according to Jürgen)
   {"Radiation SBM-20", 20, 1/2.47},
   {"Radiation SBM-19", 19, 1/9.81888},
@@ -191,8 +191,9 @@ TUBETYPE tubes[] = {
 
 //====================================================================================================================================
 // Constants
-const unsigned long GMC_dead_time = 190;  // Dead Time of the Geiger Counter. Has to be longer than the complete
-// pulse generated on the Pin PIN_GMC_count_INPUT. [µsec]
+
+// Dead Time of the Geiger Counter. Has to be longer than the complete pulse generated on the Pin PIN_GMC_count_INPUT. [µsec]
+const unsigned long GMC_dead_time = 190;
 
 // Hosts for data delivery
 #define MADAVI "http://api-rrd.madavi.de/data.php"
@@ -201,59 +202,59 @@ const unsigned long GMC_dead_time = 190;  // Dead Time of the Geiger Counter. Ha
 
 //====================================================================================================================================
 // Variables
-volatile bool          isr_GMC_cap_full       = 0;
-volatile unsigned int  isr_GMC_counts         = 0;
-volatile bool          isr_gotGMCpulse        = 0;
-volatile unsigned long isr_count_timestamp    = millis();
+volatile bool          isr_GMC_cap_full = 0;
+volatile unsigned int  isr_GMC_counts = 0;
+volatile bool          isr_gotGMCpulse = 0;
+volatile unsigned long isr_count_timestamp = millis();
 volatile unsigned long isr_count_time_between = micros();
-volatile unsigned int  isr_GMC_counts_2send   = 0;
-volatile unsigned long isr_count_timestamp_2send= micros();
+volatile unsigned int  isr_GMC_counts_2send = 0;
+volatile unsigned long isr_count_timestamp_2send = micros();
 
-unsigned int  GMC_counts             = 0;
-unsigned int  GMC_counts_2send       = 0;
+unsigned int  GMC_counts = 0;
+unsigned int  GMC_counts_2send = 0;
 unsigned int  accumulated_GMC_counts = 0;
-unsigned long count_timestamp        = millis();
-unsigned long count_timestamp_2send  = millis();
-unsigned long last_count_timestamp   = millis();
+unsigned long count_timestamp = millis();
+unsigned long count_timestamp_2send = millis();
+unsigned long last_count_timestamp = millis();
 unsigned long last_count_timestamp_2send = millis();
-unsigned long accumulated_time       = 0;
-unsigned int  last_GMC_counts        = 0;
-unsigned int  hvpulsecnt2send        = 0;
-float         Count_Rate             = 0.0;
-float         Dose_Rate              = 0.0;
+unsigned long accumulated_time = 0;
+unsigned int  last_GMC_counts = 0;
+unsigned int  hvpulsecnt2send = 0;
+float         Count_Rate = 0.0;
+float         Dose_Rate = 0.0;
 float         accumulated_Count_Rate = 0.0;
-float         accumulated_Dose_Rate  = 0.0;
-unsigned long lastMinuteLog          = millis();
-unsigned int  lastMinuteLogCounts    = 0;
-unsigned int  current_cpm            = 0;
+float         accumulated_Dose_Rate = 0.0;
+unsigned long lastMinuteLog = millis();
+unsigned int  lastMinuteLogCounts = 0;
+unsigned int  current_cpm = 0;
 
-unsigned long toSendTime             = millis();
-unsigned long afterStartTime         = 0;
-unsigned long time2hvpulse           = millis();
-unsigned long time2display           = millis();
+unsigned long toSendTime = millis();
+unsigned long afterStartTime = 0;
+unsigned long time2hvpulse = millis();
+unsigned long time2display = millis();
 
-bool          showDisplay            = SHOW_DISPLAY;
-bool          speakerTick            = SPEAKER_TICK;
-bool          ledTick                = LED_TICK;
-bool          playSound              = PLAY_SOUND;
-bool          displayIsClear         = false;
+bool          showDisplay = SHOW_DISPLAY;
+bool          speakerTick = SPEAKER_TICK;
+bool          ledTick = LED_TICK;
+bool          playSound = PLAY_SOUND;
+bool          displayIsClear = false;
 char          ssid[IOTWEBCONF_WORD_LEN];  // LEN == 33 (2020-01-13)
-int           haveBME280             = 0;
-float         bme_temperature        = 0.0;
-float         bme_humidity           = 0.0;
-float         bme_pressure           = 0.0;
-float         GMC_factor_uSvph       = 0.0;
+int           haveBME280 = 0;
+float         bme_temperature = 0.0;
+float         bme_humidity = 0.0;
+float         bme_pressure = 0.0;
+float         GMC_factor_uSvph = 0.0;
 portMUX_TYPE  mux_cap_full = portMUX_INITIALIZER_UNLOCKED;
 portMUX_TYPE  mux_GMC_count = portMUX_INITIALIZER_UNLOCKED;
-const char*         Serial_Logging_Header = "GEIGER: %10s %15s %10s %9s %9s %8s %9s %9s %9s\r\n";
-const char*         Serial_Logging_Body   = "GEIGER: %10d %15d %10f %9f %9d %8d %9d %9f %9f\r\n";
-const char*         Serial_One_Minute_Log_Header = "GEIGER: %4s %10s %29s\r\n";
-const char*         Serial_One_Minute_Log_Body   = "GEIGER: %4d %10d %29d\r\n";
-const char*         Serial_Logging_Name   = "GEIGER: Simple Multi-Geiger, Version ";
+const char*   Serial_Logging_Header = "GEIGER: %10s %15s %10s %9s %9s %8s %9s %9s %9s\r\n";
+const char*   Serial_Logging_Body = "GEIGER: %10d %15d %10f %9f %9d %8d %9d %9f %9f\r\n";
+const char*   Serial_One_Minute_Log_Header = "GEIGER: %4s %10s %29s\r\n";
+const char*   Serial_One_Minute_Log_Body = "GEIGER: %4d %10d %29d\r\n";
+const char*   Serial_Logging_Name = "GEIGER: Simple Multi-Geiger, Version ";
 char          revString[25];
 unsigned int  lora_software_version;
-const String        dashes                  = "GEIGER: -------------------------------------------------------------------------------------------------";
-int           Serial_Print_Mode       = SERIAL_DEBUG;
+const String  dashes = "GEIGER: -------------------------------------------------------------------------------------------------";
+int           Serial_Print_Mode = SERIAL_DEBUG;
 
 //====================================================================================================================================
 // ISRs
@@ -485,6 +486,11 @@ void setup() {
 // ===================================================================================================================================
 // *************  LOOP  *************************
 // ===================================================================================================================================
+
+#define DISPLAYREFRESH 10000
+#define MAXCOUNTS 100
+#define HVPULSE_MS 1000
+
 void loop() {
   unsigned long time_difference;
   unsigned int HV_pulse_count;
@@ -498,9 +504,6 @@ void loop() {
   sw[2] = !digitalRead(PIN_SWI_2);
   sw[3] = !digitalRead(PIN_SWI_3);
 
-#define DISPLAYREFRESH 10000
-#define MAXCOUNTS 100
-
   // copy values from ISR
   portENTER_CRITICAL(&mux_GMC_count);                            // enter critical section
   GMC_counts = isr_GMC_counts;
@@ -512,7 +515,6 @@ void loop() {
   portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
 
   // Pulse the high voltage if we got enough GMC pulses to update the display or at least every 1000ms.
-#define HVPULSE_MS 1000
   if(update_display || (current_ms - time2hvpulse) >= HVPULSE_MS ) {
     HV_pulse_count = gen_charge_pulses(MAX_CHARGE_PULSES);   // charge HV capacitor - restarts time2hvpulse!
     hvpulsecnt2send += HV_pulse_count;                      // count for sending
