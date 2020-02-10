@@ -25,6 +25,7 @@ Some guidance for contributors:
 
   - focus on some topic, resist changing anything else.
   - do not do style changes mixed with functional changes.
+  - run the automatic code formatter before committing
   - try to avoid refactorings mixed with functional changes.
   - if you need to fix something after commit/push:
 
@@ -45,6 +46,13 @@ Building a development environment
 ----------------------------------
 
 TODO
+
+Automatic Code Formatter
+------------------------
+
+Use this:
+
+  astyle --options=.astylerc 'multigeiger/*'
 
 
 Documentation
