@@ -357,27 +357,27 @@ void setup() {
   u8x8.begin();
 
   // set IO-Pins
-  pinMode (LED_BUILTIN,          OUTPUT);
-  pinMode (PIN_HV_FET_OUTPUT,    OUTPUT);
-  pinMode (PIN_SPEAKER_OUTPUT_P, OUTPUT);
-  pinMode (PIN_SPEAKER_OUTPUT_N, OUTPUT);
-  pinMode (PIN_GMC_count_INPUT,  INPUT);
+  pinMode(LED_BUILTIN,          OUTPUT);
+  pinMode(PIN_HV_FET_OUTPUT,    OUTPUT);
+  pinMode(PIN_SPEAKER_OUTPUT_P, OUTPUT);
+  pinMode(PIN_SPEAKER_OUTPUT_N, OUTPUT);
+  pinMode(PIN_GMC_count_INPUT,  INPUT);
 
-  pinMode (PIN_SWI_0, INPUT);     // These pins DON'T HAVE PULLUPS!
-  pinMode (PIN_SWI_1, INPUT);
-  pinMode (PIN_SWI_2, INPUT);
-  pinMode (PIN_SWI_3, INPUT);
+  pinMode(PIN_SWI_0, INPUT);      // These pins DON'T HAVE PULLUPS!
+  pinMode(PIN_SWI_1, INPUT);
+  pinMode(PIN_SWI_2, INPUT);
+  pinMode(PIN_SWI_3, INPUT);
 
   pinMode(TESTPIN, OUTPUT);
   digitalWrite(TESTPIN, LOW);
 
   #if CPU == STICK
-  pinMode (PIN_DISPLAY_ON, OUTPUT);
+  pinMode(PIN_DISPLAY_ON, OUTPUT);
   digitalWrite(PIN_DISPLAY_ON, HIGH);
   #endif
   // Initialize Pins
-  digitalWrite (PIN_SPEAKER_OUTPUT_P, HIGH);
-  digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW);
+  digitalWrite(PIN_SPEAKER_OUTPUT_P, HIGH);
+  digitalWrite(PIN_SPEAKER_OUTPUT_N, LOW);
 
   // set and init serial communication
   if (Serial_Print_Mode != Serial_None) {
@@ -397,7 +397,7 @@ void setup() {
   #endif
   // Check, if we have a BME280 connected:
   haveBME280 = bme.begin(BME280_ADDRESS);
-  if(haveBME280 == 0) {
+  if (haveBME280 == 0) {
     haveBME280 = bme.begin(BME280_ADDRESS_ALTERNATE);
   }
   Serial.printf("BME_Status: %d  ID:%0X\r\n", haveBME280, bme.sensorID());
@@ -429,7 +429,7 @@ void setup() {
 
   if (Serial_Print_Mode == Serial_Logging) {
     Serial.println(dashes);
-    Serial.print  (Serial_Logging_Name);
+    Serial.print(Serial_Logging_Name);
     Serial.println(revString);
     Serial.println(dashes);
     Serial.printf(Serial_Logging_Header,
@@ -441,7 +441,7 @@ void setup() {
 
   if (Serial_Print_Mode == Serial_One_Minute_Log) {
     Serial.println(dashes);
-    Serial.print  (Serial_Logging_Name);
+    Serial.print(Serial_Logging_Name);
     Serial.println(revString);
     Serial.println(dashes);
     Serial.printf(Serial_One_Minute_Log_Header,
@@ -453,7 +453,7 @@ void setup() {
 
   if (Serial_Print_Mode == Serial_Statistics_Log) {
     Serial.println(dashes);
-    Serial.print  (Serial_Logging_Name);
+    Serial.print(Serial_Logging_Name);
     Serial.println(revString);
     Serial.println(dashes);
     Serial.println("GEIGER: Time between two impacts");
@@ -469,14 +469,14 @@ void setup() {
   DisplayStartscreen();
   displayIsClear = false;
 
-  if(playSound) {
+  if (playSound) {
     SoundStartsound();
   }
   afterStartTime = AFTERSTART;
 
   // set interrupts (on pin change), attach interrupt handler
-  attachInterrupt (digitalPinToInterrupt (PIN_HV_CAP_FULL_INPUT), isr_GMC_capacitor_full, RISING);  // capacitor full
-  attachInterrupt (digitalPinToInterrupt (PIN_GMC_count_INPUT), isr_GMC_count, FALLING);            // GMC pulse detected
+  attachInterrupt(digitalPinToInterrupt(PIN_HV_CAP_FULL_INPUT), isr_GMC_capacitor_full, RISING);    // capacitor full
+  attachInterrupt(digitalPinToInterrupt(PIN_GMC_count_INPUT), isr_GMC_count, FALLING);              // GMC pulse detected
 
   // charge hv capacitor
   gen_charge_pulses(MAX_CHARGE_PULSES_INITIAL);
@@ -510,17 +510,17 @@ void loop() {
   // Check if there are enough pulses detected or if enough time has elapsed.
   // If yes, then it is time to calculate the pulse rate, update the display and recharge the HV capacitor.
   update_display = (GMC_counts >= MAXCOUNTS) || ((current_ms - time2display) >= DISPLAYREFRESH);
-  if(update_display) isr_GMC_counts = 0;
+  if (update_display) isr_GMC_counts = 0;
   count_timestamp = isr_count_timestamp;
   portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
 
   // Pulse the high voltage if we got enough GMC pulses to update the display or at least every 1000ms.
-  if(update_display || (current_ms - time2hvpulse) >= HVPULSE_MS ) {
+  if (update_display || (current_ms - time2hvpulse) >= HVPULSE_MS) {
     HV_pulse_count = gen_charge_pulses(MAX_CHARGE_PULSES);   // charge HV capacitor - restarts time2hvpulse!
     hvpulsecnt2send += HV_pulse_count;                      // count for sending
   }
 
-  if(update_display) {
+  if (update_display) {
     time2display = current_ms;
     time_difference = count_timestamp - last_count_timestamp; // calculate all derived values
     last_count_timestamp = count_timestamp;                   // notice the old timestamp
@@ -543,7 +543,7 @@ void loop() {
     accumulated_Dose_Rate = accumulated_Count_Rate * GMC_factor_uSvph;
 
     // ... and display it.
-    if(showDisplay && sw[DISPLAY_ON]) {
+    if (showDisplay && sw[DISPLAY_ON]) {
       DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60));
       displayIsClear = false;
     } else {
@@ -563,8 +563,8 @@ void loop() {
 
     if (Serial_Print_Mode == Serial_One_Minute_Log) {              // 1 Minute Log active?
       if (current_ms > (lastMinuteLog + 60000)) {                    // Time reached for next 1-Minute log?
-        unsigned int lastMinuteLogCountRate = ( (lastMinuteLogCounts * 60000) / (current_ms - lastMinuteLog) ); // = *60 /1000
-        if( ( ( ( (lastMinuteLogCounts * 60000) % (current_ms - lastMinuteLog) ) * 2 ) / (current_ms - lastMinuteLog) ) >= 1 ) {
+        unsigned int lastMinuteLogCountRate = ((lastMinuteLogCounts * 60000) / (current_ms - lastMinuteLog));   // = *60 /1000
+        if (((((lastMinuteLogCounts * 60000) % (current_ms - lastMinuteLog)) * 2) / (current_ms - lastMinuteLog)) >= 1) {
           lastMinuteLogCountRate++;                              // Rounding
         }
         Serial.printf(Serial_One_Minute_Log_Body,
@@ -588,16 +588,16 @@ void loop() {
 
   // If there were no pulses after 3 secs after start,
   // clear display anyway and show 0 counts.
-  if(afterStartTime && ((current_ms - toSendTime) >= afterStartTime)) {
+  if (afterStartTime && ((current_ms - toSendTime) >= afterStartTime)) {
     afterStartTime = 0;
-    if(showDisplay) {
+    if (showDisplay) {
       DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60));
       displayIsClear = false;
     }
   }
 
   // Check, if we have to send to sensor.community etc.
-  if((current_ms - toSendTime) >= (MEASUREMENT_INTERVAL * 1000) ) {
+  if ((current_ms - toSendTime) >= (MEASUREMENT_INTERVAL * 1000)) {
     toSendTime = current_ms;
     portENTER_CRITICAL(&mux_GMC_count);
     GMC_counts_2send      = isr_GMC_counts_2send;                    // copy values from ISR
@@ -610,7 +610,7 @@ void loop() {
     last_count_timestamp_2send = count_timestamp_2send;
 
     current_cpm = 0;
-    if(time_difference != 0) {
+    if (time_difference != 0) {
       current_cpm = (int)(GMC_counts_2send * 60000 / time_difference);
     }
 
@@ -629,7 +629,7 @@ void loop() {
     displayStatusLine("Toilet");
     Serial.println("SENDING TO TOILET");
     sendData2http(TOILET, SEND_CPM, hvp, time_difference, true);
-    if(haveBME280) {
+    if (haveBME280) {
       sendData2http(TOILET, SEND_BME, hvp, time_difference, true);
     }
     delay(300);
@@ -639,7 +639,7 @@ void loop() {
     Serial.println("Sending to Madavi ...");
     displayStatusLine("Madavi");
     sendData2http(MADAVI, SEND_CPM, hvp, time_difference, false);
-    if(haveBME280) {
+    if (haveBME280) {
       sendData2http(MADAVI, SEND_BME, time_difference, hvp, false);
     }
     delay(300);
@@ -649,7 +649,7 @@ void loop() {
     Serial.println("Sending to sensor.community ...");
     displayStatusLine("sensor.community");
     sendData2http(SENSORCOMMUNITY, SEND_CPM, hvp, time_difference, false);
-    if(haveBME280) {
+    if (haveBME280) {
       sendData2http(SENSORCOMMUNITY, SEND_BME, time_difference, hvp, false);
     }
     delay(300);
@@ -659,7 +659,7 @@ void loop() {
     Serial.println("Sending to TTN ...");
     displayStatusLine("TTN");
     sendData2TTN(SEND_CPM, hvp, time_difference);
-    if(haveBME280) {
+    if (haveBME280) {
       sendData2TTN(SEND_BME, hvp, time_difference);
     }
     #endif
@@ -674,24 +674,24 @@ void loop() {
 
   // make LED flicker and speaker tick
   if (GMC_counts != last_GMC_counts) {
-    if(ledTick && sw[LED_ON]) {
+    if (ledTick && sw[LED_ON]) {
       digitalWrite(LED_BUILTIN, HIGH);    // switch on LED
     }
-    if(speakerTick && sw[SPEAKER_ON]) {   // make "Tick" sound
+    if (speakerTick && sw[SPEAKER_ON]) {  // make "Tick" sound
       for (int speaker_count = 0; speaker_count <= 3; speaker_count++) {
-        digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW);
-        digitalWrite (PIN_SPEAKER_OUTPUT_N, HIGH);
+        digitalWrite(PIN_SPEAKER_OUTPUT_P, LOW);
+        digitalWrite(PIN_SPEAKER_OUTPUT_N, HIGH);
         delayMicroseconds(500);
-        digitalWrite (PIN_SPEAKER_OUTPUT_P, HIGH);
-        digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW);
+        digitalWrite(PIN_SPEAKER_OUTPUT_P, HIGH);
+        digitalWrite(PIN_SPEAKER_OUTPUT_N, LOW);
         delayMicroseconds(500);
       }
     } else {
-      if(ledTick && sw[LED_ON]) {
+      if (ledTick && sw[LED_ON]) {
         delay(4);
       }
     }
-    if(ledTick && sw[LED_ON]) {
+    if (ledTick && sw[LED_ON]) {
       digitalWrite(LED_BUILTIN, LOW);     // switch off LED
     }
     last_GMC_counts = GMC_counts;         // notice old value
@@ -718,7 +718,7 @@ int gen_charge_pulses(int max_charge_pulses) {
     charge_pulses++;
   } while ((charge_pulses < max_charge_pulses) && !isr_GMC_cap_full); // either a timeout or a capacitor full interrupt stops this loop
   time2hvpulse = millis();                              // we just pulsed, so restart timer
-  if((charge_pulses == max_charge_pulses) && !isr_GMC_cap_full)
+  if ((charge_pulses == max_charge_pulses) && !isr_GMC_cap_full)
     Serial.println("Error: HV charging failed!");       // pulsed a lot, but still the capacitor is not at desired voltage
   return charge_pulses;
 }
@@ -759,12 +759,12 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPS) {
   #if CPU != STICK
   char output[80];
   int TimeMin = TimeSec / 60;             // calculate number of minutes
-  if(TimeMin >= 999 ) TimeMin = 999;      // limit minutes to max. 999
+  if (TimeMin >= 999) TimeMin = 999;      // limit minutes to max. 999
 
   // print the upper line including time and measured radation
   u8x8.setFont(u8x8_font_7x14_1x2_f);
 
-  if(TimeMin >= 1) {                      // >= 1 minute -> display in minutes
+  if (TimeMin >= 1) {                     // >= 1 minute -> display in minutes
     sprintf(output, "%3d", TimeMin);
     u8x8.print(output);
   } else {                                // < 1 minute -> display in seconds, inverse
@@ -830,20 +830,20 @@ void SoundStartsound() {
   int time_factor = 85;
 
   jbTone(1174659 * freq_factor,    2 * time_factor, 1); // D
-  delay(                           2 * time_factor   ); // ---
+  delay(2 * time_factor);                               // ---
   jbTone(1318510 * freq_factor,    2 * time_factor, 1); // E
-  delay(                           2 * time_factor   ); // ---
+  delay(2 * time_factor);                               // ---
   jbTone(1479978 * freq_factor,    2 * time_factor, 1); // Fis
-  delay(                           2 * time_factor   ); // ---
+  delay(2 * time_factor);                               // ---
 
   jbTone(1567982 * freq_factor,    4 * time_factor, 1); // G
   jbTone(1174659 * freq_factor,    2 * time_factor, 1); // D
   jbTone(1318510 * freq_factor,    2 * time_factor, 1); // E
   jbTone(1174659 * freq_factor,    4 * time_factor, 1); // D
-  jbTone( 987767 * freq_factor,    2 * time_factor, 1); // H
+  jbTone(987767 * freq_factor,    2 * time_factor, 1);  // H
   jbTone(1046502 * freq_factor,    2 * time_factor, 1); // C
-  jbTone( 987767 * freq_factor,    4 * time_factor, 1); // H
-  jbTone( 987767 * freq_factor,    4 * time_factor, 0); // H
+  jbTone(987767 * freq_factor,    4 * time_factor, 1);  // H
+  jbTone(987767 * freq_factor,    4 * time_factor, 0);  // H
 }
 
 
@@ -857,13 +857,13 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
   count_timestamp_end = millis() + time_ms;
 
   do {
-    digitalWrite (PIN_SPEAKER_OUTPUT_P, (volume == 1));
-    digitalWrite (PIN_SPEAKER_OUTPUT_N, LOW);
+    digitalWrite(PIN_SPEAKER_OUTPUT_P, (volume == 1));
+    digitalWrite(PIN_SPEAKER_OUTPUT_N, LOW);
     delayMicroseconds(cycle_1_time_us);
-    digitalWrite (PIN_SPEAKER_OUTPUT_P, LOW);
-    digitalWrite (PIN_SPEAKER_OUTPUT_N, HIGH);
+    digitalWrite(PIN_SPEAKER_OUTPUT_P, LOW);
+    digitalWrite(PIN_SPEAKER_OUTPUT_N, HIGH);
     delayMicroseconds(cycle_2_time_us);
-  } while(millis() < count_timestamp_end);
+  } while (millis() < count_timestamp_end);
   return;
 }
 
@@ -928,7 +928,7 @@ void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, unsign
     body = buildhttpHeaderandBodyBME(&http, false, debug);
   }
   int httpResponseCode = http.POST(body);
-  if(httpResponseCode > 0) {
+  if (httpResponseCode > 0) {
     String response = http.getString();
     if (DEBUG_SERVER_SEND == 1) {
       Serial.println(httpResponseCode);
@@ -951,7 +951,7 @@ void sendData2http(const char* host, int sendwhat, unsigned int hvpulses, unsign
 void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff) {
   unsigned char ttnData[20];
   int cnt;
-  if(sendwhat == SEND_CPM) {
+  if (sendwhat == SEND_CPM) {
     // first the number of counts
     ttnData[0] = (GMC_counts_2send >> 24) & 0xFF;
     ttnData[1] = (GMC_counts_2send >> 16) & 0xFF;
@@ -969,7 +969,7 @@ void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff) {
     cnt = 10;
     lorawan_send(1, ttnData, cnt, false, NULL, NULL, NULL);
   };
-  if(sendwhat == SEND_BME) {
+  if (sendwhat == SEND_BME) {
     ttnData[0] = ((int)(bme_temperature * 10)) >> 8;
     ttnData[1] = ((int)(bme_temperature * 10)) & 0xFF;
     ttnData[2] = (int)(bme_humidity * 2);
