@@ -5,7 +5,8 @@ lineend=linux
 convert-tabs
 indent=spaces=2
 indent-preproc-cond
-
+pad-comma
+pad-oper
 # do not process these files, because they are ...
 # - bundled or bundled and modified 3rd party code:
 exclude=loraWan.h
