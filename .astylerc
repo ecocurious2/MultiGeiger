@@ -9,6 +9,7 @@ pad-comma
 pad-oper
 pad-header
 unpad-paren
+align-pointer=name
 
 # do not process these files, because they are ...
 # - bundled or bundled and modified 3rd party code:
