@@ -301,15 +301,19 @@ void IRAM_ATTR isr_GMC_count() {
 
 int log_level = DEBUG;  // messages at level >= log_level will be output
 
+// this is to differentiate our output from other esp32 output (e.g. wifi messages)
+#define LOG_PREFIX "GEIGER: "
+#define LOG_PREFIX_LEN 8  // 8 chars, without the terminating \0
+
 void log(int level, const char *format, ...) {
   if (level < log_level)
     return;
 
   va_list args;
   va_start(args, format);
-  char buf[vsnprintf(NULL, 0, format, args) + 1];
-  vsprintf(buf, format, args);
-  Serial.print("GEIGER: ");  // this is to differentiate our output from other esp32 output (e.g. wifi messages)
+  char buf[vsnprintf(NULL, 0, format, args) + 1 + LOG_PREFIX_LEN];
+  strcpy(buf, LOG_PREFIX);
+  vsprintf(buf + LOG_PREFIX_LEN, format, args);
   Serial.println(buf);
   va_end(args);
 }
