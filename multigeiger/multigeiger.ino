@@ -743,7 +743,7 @@ int gen_charge_pulses(int max_charge_pulses) {
   } while ((charge_pulses < max_charge_pulses) && !isr_GMC_cap_full); // either a timeout or a capacitor full interrupt stops this loop
   time2hvpulse = millis();                              // we just pulsed, so restart timer
   if ((charge_pulses == max_charge_pulses) && !isr_GMC_cap_full)
-    log(ERROR, "HV charging failed!");                  // pulsed a lot, but still the capacitor is not at desired voltage
+    log(CRITICAL, "HV charging failed!");               // pulsed a lot, but still the capacitor is not at desired voltage
   return charge_pulses;
 }
 
