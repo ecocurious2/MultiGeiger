@@ -7,10 +7,12 @@ matrix:
 
   - env:
       - TEST="Astyle Format"
+
     addons:
       apt:
         packages:
           - astyle
+
     script:
       - astyle --version
       - astyle --options=.astylerc 'multigeiger/*'
@@ -21,4 +23,23 @@ matrix:
           git diff
           exit -1
         fi
+
+  - env:
+      - TEST="PlatformIO builds"
+
+    language: python
+    python: 3.6
+
+    cache:
+      directories:
+        - "~/.platformio"
+
+    install:
+      - cp multigeiger/userdefines-example.h multigeiger/userdefines.h
+      - cp platformio-example.ini platformio.ini
+      - pip install -U platformio
+      - platformio update
+
+    script:
+      - platformio run --environment wifi --environment stick
 
