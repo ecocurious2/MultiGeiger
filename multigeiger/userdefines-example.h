@@ -19,6 +19,10 @@
 // #define TUBE_TYPE SBM19
 #define TUBE_TYPE Si22G
 
+// set the log_level that determines how much log output one gets on Serial/USB
+// DEBUG, INFO, WARNING, ERROR, CRITICAL, NOLOG
+#define DEFAULT_LOG_LEVEL DEBUG
+
 // ** select (uncomment) exactly one kind of debug level output to serial io (USB)
 // #define   SERIAL_DEBUG Serial_None            // No Serial Printout
 // #define   SERIAL_DEBUG Serial_Debug           // Only debug and error output

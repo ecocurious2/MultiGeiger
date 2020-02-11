@@ -70,6 +70,13 @@
 // STICK -> Heltec Wireless Stick (has LoRa on board)
 #define STICK 2
 
+// log levels
+#define DEBUG 0
+#define INFO 1
+#define WARNING 2
+#define ERROR 3
+#define CRITICAL 4
+#define NOLOG 999  // only to set log_level, so log() never creates output
 
 // Includes
 //====================================================================================================================================
@@ -294,12 +301,7 @@ void IRAM_ATTR isr_GMC_count() {
 //====================================================================================================================================
 // Logging
 
-#define DEBUG 0
-#define INFO 1
-#define WARNING 2
-#define ERROR 3
-
-int log_level = DEBUG;  // messages at level >= log_level will be output
+int log_level = DEFAULT_LOG_LEVEL;  // messages at level >= log_level will be output
 
 // this is to differentiate our output from other esp32 output (e.g. wifi messages)
 #define LOG_PREFIX "GEIGER: "
