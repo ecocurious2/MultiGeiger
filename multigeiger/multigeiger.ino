@@ -49,11 +49,11 @@
 
 // Fix Parameters
 // Values for Serial_Print_Mode to configure Serial (USB) output mode.  DON'T TOUCH!
-#define   Serial_None 0            // No Serial output
-#define   Serial_Debug 1           // Only debug and error messages
-#define   Serial_Logging 2         // Log measurements as a table
-#define   Serial_One_Minute_Log 3  // "One Minute logging"
-#define   Serial_Statistics_Log 4  // Logs time [us] between two events
+#define Serial_None 0            // No Serial output
+#define Serial_Debug 1           // Only debug and error messages
+#define Serial_Logging 2         // Log measurements as a table
+#define Serial_One_Minute_Log 3  // "One Minute logging"
+#define Serial_Statistics_Log 4  // Logs time [us] between two events
 //
 // At sensor.community predefined counter tubes:
 #define TUBE_UNKNOWN 0
@@ -65,9 +65,9 @@
 // Values for CPU (board types)
 // WIFI -> Heltec Wifi Kit 32
 #define WIFI 0
-// LORA  ->  Heltec Wifi Lora 32 (V2)
+// LORA -> Heltec Wifi Lora 32 (V2)
 #define LORA 1
-// STICK ->  Heltec Wireless Stick (has LoRa on board)
+// STICK -> Heltec Wireless Stick (has LoRa on board)
 #define STICK 2
 
 
@@ -98,23 +98,23 @@
 
 //====================================================================================================================================
 // IOs
-//  used for OLED_SDA            4
-//  used for OLED_SCL           15
-//  used for OLED_RST           16
+// used for OLED_SDA 4
+// used for OLED_SCL 15
+// used for OLED_RST 16
 //
-//  used for optional LoRa    SX1276 (pin) => ESP32 (pin)
-//  used for optional LoRa    ==========================
-//  used for optional LoRa    SCK  = GPIO5
-//  used for optional LoRa    MISO = GPIO19
-//  used for optional LoRa    MOSI = GPIO27
-//  used for optional LoRa    CS   = GPIO18
-//  used for optional LoRa    RESET = GPIO14
-//  used for optional LoRa    DIO0 (8) = GPIO26 (15)
-//  used for optional LoRa    DIO1 (9) = GPIO33 (13)
-//  used for optional LoRa    DIO2 (10) = GPIO32 (12)
+// used for optional LoRa    SX1276 (pin) => ESP32 (pin)
+// used for optional LoRa    ==========================
+// used for optional LoRa    SCK = GPIO5
+// used for optional LoRa    MISO = GPIO19
+// used for optional LoRa    MOSI = GPIO27
+// used for optional LoRa    CS = GPIO18
+// used for optional LoRa    RESET = GPIO14
+// used for optional LoRa    DIO0 (8) = GPIO26 (15)
+// used for optional LoRa    DIO1 (9) = GPIO33 (13)
+// used for optional LoRa    DIO2 (10) = GPIO32 (12)
 int PIN_HV_FET_OUTPUT = 23;
 int PIN_HV_CAP_FULL_INPUT = 22;  // !! has to be capable of "interrupt on change"
-int PIN_GMC_count_INPUT = 2;  // !! has to be capable of "interrupt on change"
+int PIN_GMC_count_INPUT = 2;     // !! has to be capable of "interrupt on change"
 int PIN_SPEAKER_OUTPUT_P = 12;
 int PIN_SPEAKER_OUTPUT_N = 0;
 
@@ -170,9 +170,9 @@ enum {SEND_CPM, SEND_BME};
 #define CONFIG_VERSION "012"
 
 typedef struct {
-  const char *type;                                         // type string for sensor.community
-  const char  nbr;                                          // number to be sent by LoRa
-  const float cps_to_uSvph;                                 // factor to convert counts per second to µSievert per hour
+  const char *type;          // type string for sensor.community
+  const char nbr;            // number to be sent by LoRa
+  const float cps_to_uSvph;  // factor to convert counts per second to µSievert per hour
 } TUBETYPE;
 
 TUBETYPE tubes[] = {
@@ -202,59 +202,59 @@ const unsigned long GMC_dead_time = 190;
 
 //====================================================================================================================================
 // Variables
-volatile bool          isr_GMC_cap_full = 0;
-volatile unsigned int  isr_GMC_counts = 0;
-volatile bool          isr_gotGMCpulse = 0;
+volatile bool isr_GMC_cap_full = 0;
+volatile unsigned int isr_GMC_counts = 0;
+volatile bool isr_gotGMCpulse = 0;
 volatile unsigned long isr_count_timestamp = millis();
 volatile unsigned long isr_count_time_between = micros();
-volatile unsigned int  isr_GMC_counts_2send = 0;
+volatile unsigned int isr_GMC_counts_2send = 0;
 volatile unsigned long isr_count_timestamp_2send = micros();
 
-unsigned int  GMC_counts = 0;
-unsigned int  GMC_counts_2send = 0;
-unsigned int  accumulated_GMC_counts = 0;
+unsigned int GMC_counts = 0;
+unsigned int GMC_counts_2send = 0;
+unsigned int accumulated_GMC_counts = 0;
 unsigned long count_timestamp = millis();
 unsigned long count_timestamp_2send = millis();
 unsigned long last_count_timestamp = millis();
 unsigned long last_count_timestamp_2send = millis();
 unsigned long accumulated_time = 0;
-unsigned int  last_GMC_counts = 0;
-unsigned int  hvpulsecnt2send = 0;
-float         Count_Rate = 0.0;
-float         Dose_Rate = 0.0;
-float         accumulated_Count_Rate = 0.0;
-float         accumulated_Dose_Rate = 0.0;
+unsigned int last_GMC_counts = 0;
+unsigned int hvpulsecnt2send = 0;
+float Count_Rate = 0.0;
+float Dose_Rate = 0.0;
+float accumulated_Count_Rate = 0.0;
+float accumulated_Dose_Rate = 0.0;
 unsigned long lastMinuteLog = millis();
-unsigned int  lastMinuteLogCounts = 0;
-unsigned int  current_cpm = 0;
+unsigned int lastMinuteLogCounts = 0;
+unsigned int current_cpm = 0;
 
 unsigned long toSendTime = millis();
 unsigned long afterStartTime = 0;
 unsigned long time2hvpulse = millis();
 unsigned long time2display = millis();
 
-bool          showDisplay = SHOW_DISPLAY;
-bool          speakerTick = SPEAKER_TICK;
-bool          ledTick = LED_TICK;
-bool          playSound = PLAY_SOUND;
-bool          displayIsClear = false;
-char          ssid[IOTWEBCONF_WORD_LEN];  // LEN == 33 (2020-01-13)
-int           haveBME280 = 0;
-float         bme_temperature = 0.0;
-float         bme_humidity = 0.0;
-float         bme_pressure = 0.0;
-float         GMC_factor_uSvph = 0.0;
-portMUX_TYPE  mux_cap_full = portMUX_INITIALIZER_UNLOCKED;
-portMUX_TYPE  mux_GMC_count = portMUX_INITIALIZER_UNLOCKED;
-const char   *Serial_Logging_Header = "GEIGER: %10s %15s %10s %9s %9s %8s %9s %9s %9s\r\n";
-const char   *Serial_Logging_Body = "GEIGER: %10d %15d %10f %9f %9d %8d %9d %9f %9f\r\n";
-const char   *Serial_One_Minute_Log_Header = "GEIGER: %4s %10s %29s\r\n";
-const char   *Serial_One_Minute_Log_Body = "GEIGER: %4d %10d %29d\r\n";
-const char   *Serial_Logging_Name = "GEIGER: Simple Multi-Geiger, Version ";
-char          revString[25];
-unsigned int  lora_software_version;
-const String  dashes = "GEIGER: -------------------------------------------------------------------------------------------------";
-int           Serial_Print_Mode = SERIAL_DEBUG;
+bool showDisplay = SHOW_DISPLAY;
+bool speakerTick = SPEAKER_TICK;
+bool ledTick = LED_TICK;
+bool playSound = PLAY_SOUND;
+bool displayIsClear = false;
+char ssid[IOTWEBCONF_WORD_LEN];  // LEN == 33 (2020-01-13)
+int haveBME280 = 0;
+float bme_temperature = 0.0;
+float bme_humidity = 0.0;
+float bme_pressure = 0.0;
+float GMC_factor_uSvph = 0.0;
+portMUX_TYPE mux_cap_full = portMUX_INITIALIZER_UNLOCKED;
+portMUX_TYPE mux_GMC_count = portMUX_INITIALIZER_UNLOCKED;
+const char *Serial_Logging_Header = "GEIGER: %10s %15s %10s %9s %9s %8s %9s %9s %9s\r\n";
+const char *Serial_Logging_Body = "GEIGER: %10d %15d %10f %9f %9d %8d %9d %9f %9f\r\n";
+const char *Serial_One_Minute_Log_Header = "GEIGER: %4s %10s %29s\r\n";
+const char *Serial_One_Minute_Log_Body = "GEIGER: %4d %10d %29d\r\n";
+const char *Serial_Logging_Name = "GEIGER: Simple Multi-Geiger, Version ";
+char revString[25];
+unsigned int lora_software_version;
+const String dashes = "GEIGER: -------------------------------------------------------------------------------------------------";
+int Serial_Print_Mode = SERIAL_DEBUG;
 
 //====================================================================================================================================
 // ISRs
@@ -272,17 +272,17 @@ void IRAM_ATTR isr_GMC_count() {
   static unsigned long isr_count_timestamp_us_prev_used;
   digitalWrite(TESTPIN, HIGH);
   isr_count_timestamp_us_prev = isr_count_timestamp_us;
-  isr_count_timestamp_us      = micros();
+  isr_count_timestamp_us = micros();
   if ((isr_count_timestamp_us - isr_count_timestamp_us_prev) > GMC_dead_time) {
     // the rest is only executed if GMC_dead_time is exceeded.
     // Reason: pulses occurring short after another pulse are false pulses generated by the rising edge on the PIN_GMC_count_INPUT.
     // This happens because we don't have an Schmitt-Trigger on this controller pin.
-    isr_GMC_counts++;                                  // count the pulse
+    isr_GMC_counts++;                                             // count the pulse
     isr_count_timestamp = isr_count_timestamp_2send = millis();   // notice (system) time of the pulse
     isr_GMC_counts_2send++;
     isr_gotGMCpulse = 1;
 
-    isr_count_time_between           = isr_count_timestamp_us - isr_count_timestamp_us_prev_used; // save for statistics debuging
+    isr_count_time_between = isr_count_timestamp_us - isr_count_timestamp_us_prev_used;  // save for statistics debuging
     isr_count_timestamp_us_prev_used = isr_count_timestamp_us;
   }
   digitalWrite(TESTPIN, LOW);
@@ -319,7 +319,7 @@ U8X8_SSD1306_64X32_NONAME_HW_I2C u8x8(/* reset=*/ 16, /* clock=*/ 15, /* data=*/
 
 // -- Initial password to connect to the Thing, when it creates an own Access Point.
 const char wifiInitialApPassword[] = "ESP32Geiger";
-const char *theName = buildSSID();                          // build SSID from ESP chip id
+const char *theName = buildSSID();  // build SSID from ESP chip id
 
 DNSServer dnsServer;
 WebServer server(80);
@@ -350,20 +350,20 @@ char *buildSSID() {
 }
 
 //====================================================================================================================================
-// *******  SETUP *******
+// ******* SETUP *******
 //====================================================================================================================================
 void setup() {
   // OLED-Display
   u8x8.begin();
 
   // set IO-Pins
-  pinMode(LED_BUILTIN,          OUTPUT);
-  pinMode(PIN_HV_FET_OUTPUT,    OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(PIN_HV_FET_OUTPUT, OUTPUT);
   pinMode(PIN_SPEAKER_OUTPUT_P, OUTPUT);
   pinMode(PIN_SPEAKER_OUTPUT_N, OUTPUT);
-  pinMode(PIN_GMC_count_INPUT,  INPUT);
+  pinMode(PIN_GMC_count_INPUT, INPUT);
 
-  pinMode(PIN_SWI_0, INPUT);      // These pins DON'T HAVE PULLUPS!
+  pinMode(PIN_SWI_0, INPUT);  // These pins DON'T HAVE PULLUPS!
   pinMode(PIN_SWI_1, INPUT);
   pinMode(PIN_SWI_2, INPUT);
   pinMode(PIN_SWI_3, INPUT);
@@ -475,8 +475,8 @@ void setup() {
   afterStartTime = AFTERSTART;
 
   // set interrupts (on pin change), attach interrupt handler
-  attachInterrupt(digitalPinToInterrupt(PIN_HV_CAP_FULL_INPUT), isr_GMC_capacitor_full, RISING);    // capacitor full
-  attachInterrupt(digitalPinToInterrupt(PIN_GMC_count_INPUT), isr_GMC_count, FALLING);              // GMC pulse detected
+  attachInterrupt(digitalPinToInterrupt(PIN_HV_CAP_FULL_INPUT), isr_GMC_capacitor_full, RISING);  // capacitor full
+  attachInterrupt(digitalPinToInterrupt(PIN_GMC_count_INPUT), isr_GMC_count, FALLING);            // GMC pulse detected
 
   // charge hv capacitor
   gen_charge_pulses(MAX_CHARGE_PULSES_INITIAL);
@@ -484,7 +484,7 @@ void setup() {
 }
 
 // ===================================================================================================================================
-// *************  LOOP  *************************
+// ************* LOOP *************************
 // ===================================================================================================================================
 
 #define DISPLAYREFRESH 10000
@@ -495,7 +495,7 @@ void loop() {
   unsigned long time_difference;
   unsigned int HV_pulse_count;
   char sw[4];
-  unsigned long current_ms = millis();                           // to save multiple calls to millis()
+  unsigned long current_ms = millis();  // to save multiple calls to millis()
   bool update_display;
 
   // Read Switches (active LOW!)
@@ -517,15 +517,15 @@ void loop() {
   // Pulse the high voltage if we got enough GMC pulses to update the display or at least every 1000ms.
   if (update_display || (current_ms - time2hvpulse) >= HVPULSE_MS) {
     HV_pulse_count = gen_charge_pulses(MAX_CHARGE_PULSES);   // charge HV capacitor - restarts time2hvpulse!
-    hvpulsecnt2send += HV_pulse_count;                      // count for sending
+    hvpulsecnt2send += HV_pulse_count;                       // count for sending
   }
 
   if (update_display) {
     time2display = current_ms;
-    time_difference = count_timestamp - last_count_timestamp; // calculate all derived values
-    last_count_timestamp = count_timestamp;                   // notice the old timestamp
-    accumulated_time += time_difference;                      // accumulate all the time
-    accumulated_GMC_counts += GMC_counts;                     // accumulate all the pulses
+    time_difference = count_timestamp - last_count_timestamp;  // calculate all derived values
+    last_count_timestamp = count_timestamp;                    // notice the old timestamp
+    accumulated_time += time_difference;                       // accumulate all the time
+    accumulated_GMC_counts += GMC_counts;                      // accumulate all the pulses
     lastMinuteLogCounts += GMC_counts;
 
     Count_Rate = 0.0;
@@ -533,7 +533,7 @@ void loop() {
       Count_Rate = (float)GMC_counts * 1000.0 / (float)time_difference; // calculate the current count rate
     }
 
-    Dose_Rate = Count_Rate * GMC_factor_uSvph;                       // ... and dose rate
+    Dose_Rate = Count_Rate * GMC_factor_uSvph;                          // ... and dose rate
 
     // calculate the radiation over the complete time from start
     accumulated_Count_Rate = 0.0;
@@ -561,7 +561,7 @@ void loop() {
                     accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate);
     }
 
-    if (Serial_Print_Mode == Serial_One_Minute_Log) {              // 1 Minute Log active?
+    if (Serial_Print_Mode == Serial_One_Minute_Log) {                // 1 Minute Log active?
       if (current_ms > (lastMinuteLog + 60000)) {                    // Time reached for next 1-Minute log?
         unsigned int lastMinuteLogCountRate = ((lastMinuteLogCounts * 60000) / (current_ms - lastMinuteLog));   // = *60 /1000
         if (((((lastMinuteLogCounts * 60000) % (current_ms - lastMinuteLog)) * 2) / (current_ms - lastMinuteLog)) >= 1) {
@@ -569,15 +569,15 @@ void loop() {
         }
         Serial.printf(Serial_One_Minute_Log_Body,
                       (current_ms / 1000),
-                      lastMinuteLogCountRate, // = *60 /1000 +0.5: to reduce rounding errors
+                      lastMinuteLogCountRate,  // = *60 /1000 +0.5: to reduce rounding errors
                       lastMinuteLogCounts);
         lastMinuteLogCounts = 0;
-        lastMinuteLog       = current_ms;
+        lastMinuteLog = current_ms;
       }
     }
   }
 
-  if ((Serial_Print_Mode == Serial_Statistics_Log) && isr_gotGMCpulse) {   // statistics log active?
+  if ((Serial_Print_Mode == Serial_Statistics_Log) && isr_gotGMCpulse) {  // statistics log active?
     unsigned int count_time_between;
     portENTER_CRITICAL(&mux_GMC_count);
     count_time_between = isr_count_time_between;
@@ -600,7 +600,7 @@ void loop() {
   if ((current_ms - toSendTime) >= (MEASUREMENT_INTERVAL * 1000)) {
     toSendTime = current_ms;
     portENTER_CRITICAL(&mux_GMC_count);
-    GMC_counts_2send      = isr_GMC_counts_2send;                    // copy values from ISR
+    GMC_counts_2send = isr_GMC_counts_2send;                    // copy values from ISR
     count_timestamp_2send = isr_count_timestamp_2send;
     isr_GMC_counts_2send = 0;
     portEXIT_CRITICAL(&mux_GMC_count);
@@ -731,9 +731,9 @@ void DisplayStartscreen(void) {
   u8x8.clear();
   #if CPU == STICK
   // Display is only 4 lines by 8 characters; lines counting from 2 to 5
-  u8x8.setFont(u8x8_font_5x8_f);                            // use really small font
+  u8x8.setFont(u8x8_font_5x8_f);        // use really small font
   for (int i = 2; i < 6; i++) {
-    u8x8.drawString(0, i, "        ");                      // clear all 4 lines
+    u8x8.drawString(0, i, "        ");  // clear all 4 lines
   }
   u8x8.drawString(0, 2, "Geiger-");
   u8x8.drawString(0, 3, " Counter");
@@ -758,16 +758,16 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPS) {
 
   #if CPU != STICK
   char output[80];
-  int TimeMin = TimeSec / 60;             // calculate number of minutes
-  if (TimeMin >= 999) TimeMin = 999;      // limit minutes to max. 999
+  int TimeMin = TimeSec / 60;         // calculate number of minutes
+  if (TimeMin >= 999) TimeMin = 999;  // limit minutes to max. 999
 
   // print the upper line including time and measured radation
   u8x8.setFont(u8x8_font_7x14_1x2_f);
 
-  if (TimeMin >= 1) {                     // >= 1 minute -> display in minutes
+  if (TimeMin >= 1) {                 // >= 1 minute -> display in minutes
     sprintf(output, "%3d", TimeMin);
     u8x8.print(output);
-  } else {                                // < 1 minute -> display in seconds, inverse
+  } else {                            // < 1 minute -> display in seconds, inverse
     sprintf(output, "%3d", TimeSec);
     u8x8.inverse();
     u8x8.print(output);
@@ -829,21 +829,21 @@ void SoundStartsound() {
   float freq_factor = 0.75;
   int time_factor = 85;
 
-  jbTone(1174659 * freq_factor,    2 * time_factor, 1); // D
-  delay(2 * time_factor);                               // ---
-  jbTone(1318510 * freq_factor,    2 * time_factor, 1); // E
-  delay(2 * time_factor);                               // ---
-  jbTone(1479978 * freq_factor,    2 * time_factor, 1); // Fis
-  delay(2 * time_factor);                               // ---
+  jbTone(1174659 * freq_factor, 2 * time_factor, 1); // D
+  delay(2 * time_factor);                            // ---
+  jbTone(1318510 * freq_factor, 2 * time_factor, 1); // E
+  delay(2 * time_factor);                            // ---
+  jbTone(1479978 * freq_factor, 2 * time_factor, 1); // Fis
+  delay(2 * time_factor);                            // ---
 
-  jbTone(1567982 * freq_factor,    4 * time_factor, 1); // G
-  jbTone(1174659 * freq_factor,    2 * time_factor, 1); // D
-  jbTone(1318510 * freq_factor,    2 * time_factor, 1); // E
-  jbTone(1174659 * freq_factor,    4 * time_factor, 1); // D
-  jbTone(987767 * freq_factor,     2 * time_factor, 1); // H
-  jbTone(1046502 * freq_factor,    2 * time_factor, 1); // C
-  jbTone(987767 * freq_factor,     4 * time_factor, 1); // H
-  jbTone(987767 * freq_factor,     4 * time_factor, 0); // H
+  jbTone(1567982 * freq_factor, 4 * time_factor, 1); // G
+  jbTone(1174659 * freq_factor, 2 * time_factor, 1); // D
+  jbTone(1318510 * freq_factor, 2 * time_factor, 1); // E
+  jbTone(1174659 * freq_factor, 4 * time_factor, 1); // D
+  jbTone(987767 * freq_factor, 2 * time_factor, 1);  // H
+  jbTone(1046502 * freq_factor, 2 * time_factor, 1); // C
+  jbTone(987767 * freq_factor, 4 * time_factor, 1);  // H
+  jbTone(987767 * freq_factor, 4 * time_factor, 0);  // H
 }
 
 
@@ -851,7 +851,7 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
   unsigned int  cycle_time_us, cycle_1_time_us, cycle_2_time_us;
   unsigned long count_timestamp_end;
 
-  cycle_time_us   = 1000000000 / frequency_mHz;
+  cycle_time_us = 1000000000 / frequency_mHz;
   cycle_1_time_us = cycle_time_us / 2;
   cycle_2_time_us = cycle_time_us - cycle_1_time_us;
   count_timestamp_end = millis() + time_ms;
@@ -1012,7 +1012,7 @@ void configSaved(void) {
 }
 
 char *nullFill(int n, int digits) {
-  static char erg[9];                          // max. 8 digits possible!
+  static char erg[9];  // max. 8 digits possible!
   if (digits > 8) {
     digits = 8;
   }
