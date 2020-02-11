@@ -9,6 +9,8 @@
 MultiGeiger Documentation
 =========================
 
+.. include:: ../../README-en.rst
+
 .. toctree::
    :maxdepth: 2
 
