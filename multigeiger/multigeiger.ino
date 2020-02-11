@@ -463,9 +463,9 @@ void setup() {
     log(INFO, "%s, Version %s", Serial_Logging_Name, revString);
     log(INFO, dashes);
     log(INFO, Serial_Logging_Header,
-              "GMC_counts", "Time_difference", "Count_Rate", "Dose_Rate", "HV Pulses", "Accu_GMC", "Accu_Time", "Accu_Rate", "Accu_Dose");
+        "GMC_counts", "Time_difference", "Count_Rate", "Dose_Rate", "HV Pulses", "Accu_GMC", "Accu_Time", "Accu_Rate", "Accu_Dose");
     log(INFO, Serial_Logging_Header,
-              "[Counts]",   "[ms]",            "[cps]",      "[uSv/h]",   "[-]",       "[Counts]", "[ms]",      "[cps]",     "[uSv/h]");
+        "[Counts]",   "[ms]",            "[cps]",      "[uSv/h]",   "[-]",       "[Counts]", "[ms]",      "[cps]",     "[uSv/h]");
     log(INFO, dashes);
   }
 
@@ -474,9 +474,9 @@ void setup() {
     log(INFO, "%s, Version %s", Serial_Logging_Name, revString);
     log(INFO, dashes);
     log(INFO, Serial_One_Minute_Log_Header,
-              "Time", "Count_Rate", "Counts");
+        "Time", "Count_Rate", "Counts");
     log(INFO, Serial_One_Minute_Log_Header,
-              "[s]",  "[cpm]",      "[Counts per last measurement]");
+        "[s]",  "[cpm]",      "[Counts per last measurement]");
     log(INFO, dashes);
   }
 
@@ -585,8 +585,8 @@ void loop() {
 
     if (Serial_Print_Mode == Serial_Logging) {                       // Report all
       log(INFO, Serial_Logging_Body,
-                GMC_counts, time_difference, Count_Rate, Dose_Rate, HV_pulse_count,
-                accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate);
+          GMC_counts, time_difference, Count_Rate, Dose_Rate, HV_pulse_count,
+          accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate);
     }
 
     if (Serial_Print_Mode == Serial_One_Minute_Log) {                // 1 Minute Log active?
@@ -596,9 +596,9 @@ void loop() {
           lastMinuteLogCountRate++;                              // Rounding
         }
         log(INFO, Serial_One_Minute_Log_Body,
-                  (current_ms / 1000),
-                  lastMinuteLogCountRate,  // = *60 /1000 +0.5: to reduce rounding errors
-                  lastMinuteLogCounts);
+            (current_ms / 1000),
+            lastMinuteLogCountRate,  // = *60 /1000 +0.5: to reduce rounding errors
+            lastMinuteLogCounts);
         lastMinuteLogCounts = 0;
         lastMinuteLog = current_ms;
       }
