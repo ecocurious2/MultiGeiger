@@ -316,8 +316,8 @@ void log(int level, const char *format, ...) {
   char buf[vsnprintf(NULL, 0, format, args) + 1 + LOG_PREFIX_LEN];
   strcpy(buf, LOG_PREFIX);
   vsprintf(buf + LOG_PREFIX_LEN, format, args);
-  Serial.println(buf);
   va_end(args);
+  Serial.println(buf);
 }
 
 
