@@ -12,6 +12,7 @@ matrix:
         packages:
           - astyle
     script:
+      - astyle --version
       - astyle --options=.astylerc 'multigeiger/*'
       - |
         if [[ -n $(git diff) ]]; then
