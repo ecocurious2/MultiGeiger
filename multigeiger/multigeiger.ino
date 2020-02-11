@@ -246,14 +246,14 @@ float bme_pressure = 0.0;
 float GMC_factor_uSvph = 0.0;
 portMUX_TYPE mux_cap_full = portMUX_INITIALIZER_UNLOCKED;
 portMUX_TYPE mux_GMC_count = portMUX_INITIALIZER_UNLOCKED;
-const char *Serial_Logging_Header = "GEIGER: %10s %15s %10s %9s %9s %8s %9s %9s %9s\r\n";
-const char *Serial_Logging_Body = "GEIGER: %10d %15d %10f %9f %9d %8d %9d %9f %9f\r\n";
-const char *Serial_One_Minute_Log_Header = "GEIGER: %4s %10s %29s\r\n";
-const char *Serial_One_Minute_Log_Body = "GEIGER: %4d %10d %29d\r\n";
-const char *Serial_Logging_Name = "GEIGER: Simple Multi-Geiger, Version ";
+const char *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s";
+const char *Serial_Logging_Body = "%10d %15d %10f %9f %9d %8d %9d %9f %9f";
+const char *Serial_One_Minute_Log_Header = "%4s %10s %29s";
+const char *Serial_One_Minute_Log_Body = "%4d %10d %29d";
+const char *Serial_Logging_Name = "Simple Multi-Geiger";
 char revString[25];
 unsigned int lora_software_version;
-const String dashes = "GEIGER: -------------------------------------------------------------------------------------------------";
+const char *dashes = "-------------------------------------------------------------------------------------------------";
 int Serial_Print_Mode = SERIAL_DEBUG;
 
 //====================================================================================================================================
@@ -287,6 +287,31 @@ void IRAM_ATTR isr_GMC_count() {
   }
   digitalWrite(TESTPIN, LOW);
   portEXIT_CRITICAL_ISR(&mux_GMC_count);
+}
+
+
+
+//====================================================================================================================================
+// Logging
+
+#define DEBUG 0
+#define INFO 1
+#define WARNING 2
+#define ERROR 3
+
+int log_level = DEBUG;  // messages at level >= log_level will be output
+
+void log(int level, const char *format, ...) {
+  if (level < log_level)
+    return;
+
+  va_list args;
+  va_start(args, format);
+  char buf[vsnprintf(NULL, 0, format, args) + 1];
+  vsprintf(buf, format, args);
+  Serial.print("GEIGER: ");  // this is to differentiate our output from other esp32 output (e.g. wifi messages)
+  Serial.println(buf);
+  va_end(args);
 }
 
 
@@ -337,8 +362,8 @@ unsigned long getESPchipID() {
   pid[0] = (uint8_t)pespid[5];
   pid[1] = (uint8_t)pespid[4];
   pid[2] = (uint8_t)pespid[3];
-  Serial.printf("ID: %08X\r\n", id);
-  Serial.printf("MAC: %04X%08X\r\n", (uint16_t)(espid >> 32), (uint32_t)espid);
+  log(INFO, "ID: %08X", id);
+  log(INFO, "MAC: %04X%08X", (uint16_t)(espid >> 32), (uint32_t)espid);
   return id;
 }
 
@@ -386,7 +411,7 @@ void setup() {
   }
 
   // just for fun
-  Serial.printf("Let's go!\r\n");
+  log(INFO, "Let's go!");
 
   // build revString
   sprintf(revString, "V%d.%d.%d %s", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_DATE);
@@ -400,7 +425,7 @@ void setup() {
   if (haveBME280 == 0) {
     haveBME280 = bme.begin(BME280_ADDRESS_ALTERNATE);
   }
-  Serial.printf("BME_Status: %d  ID:%0X\r\n", haveBME280, bme.sensorID());
+  log(INFO, "BME_Status: %d  ID:%0X", haveBME280, bme.sensorID());
 
   // Setup IoTWebConf
   iotWebConf.setConfigSavedCallback(&configSaved);
@@ -428,37 +453,34 @@ void setup() {
   // Write Header of Table, depending on the logging mode:
 
   if (Serial_Print_Mode == Serial_Logging) {
-    Serial.println(dashes);
-    Serial.print(Serial_Logging_Name);
-    Serial.println(revString);
-    Serial.println(dashes);
-    Serial.printf(Serial_Logging_Header,
-                  "GMC_counts", "Time_difference", "Count_Rate", "Dose_Rate", "HV Pulses", "Accu_GMC", "Accu_Time", "Accu_Rate", "Accu_Dose");
-    Serial.printf(Serial_Logging_Header,
-                  "[Counts]",   "[ms]",            "[cps]",      "[uSv/h]",   "[-]",       "[Counts]", "[ms]",      "[cps]",     "[uSv/h]");
-    Serial.println(dashes);
+    log(INFO, dashes);
+    log(INFO, "%s, Version %s", Serial_Logging_Name, revString);
+    log(INFO, dashes);
+    log(INFO, Serial_Logging_Header,
+              "GMC_counts", "Time_difference", "Count_Rate", "Dose_Rate", "HV Pulses", "Accu_GMC", "Accu_Time", "Accu_Rate", "Accu_Dose");
+    log(INFO, Serial_Logging_Header,
+              "[Counts]",   "[ms]",            "[cps]",      "[uSv/h]",   "[-]",       "[Counts]", "[ms]",      "[cps]",     "[uSv/h]");
+    log(INFO, dashes);
   }
 
   if (Serial_Print_Mode == Serial_One_Minute_Log) {
-    Serial.println(dashes);
-    Serial.print(Serial_Logging_Name);
-    Serial.println(revString);
-    Serial.println(dashes);
-    Serial.printf(Serial_One_Minute_Log_Header,
-                  "Time", "Count_Rate", "Counts");
-    Serial.printf(Serial_One_Minute_Log_Header,
-                  "[s]",  "[cpm]",      "[Counts per last measurement]");
-    Serial.println(dashes);
+    log(INFO, dashes);
+    log(INFO, "%s, Version %s", Serial_Logging_Name, revString);
+    log(INFO, dashes);
+    log(INFO, Serial_One_Minute_Log_Header,
+              "Time", "Count_Rate", "Counts");
+    log(INFO, Serial_One_Minute_Log_Header,
+              "[s]",  "[cpm]",      "[Counts per last measurement]");
+    log(INFO, dashes);
   }
 
   if (Serial_Print_Mode == Serial_Statistics_Log) {
-    Serial.println(dashes);
-    Serial.print(Serial_Logging_Name);
-    Serial.println(revString);
-    Serial.println(dashes);
-    Serial.println("GEIGER: Time between two impacts");
-    Serial.println("GEIGER: [usec]");
-    Serial.println(dashes);
+    log(INFO, dashes);
+    log(INFO, "%s, Version %s", Serial_Logging_Name, revString);
+    log(INFO, dashes);
+    log(INFO, "Time between two impacts");
+    log(INFO, "[usec]");
+    log(INFO, dashes);
   }
 
   #if SEND2LORA
@@ -556,9 +578,9 @@ void loop() {
     }
 
     if (Serial_Print_Mode == Serial_Logging) {                       // Report all
-      Serial.printf(Serial_Logging_Body,
-                    GMC_counts, time_difference, Count_Rate, Dose_Rate, HV_pulse_count,
-                    accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate);
+      log(INFO, Serial_Logging_Body,
+                GMC_counts, time_difference, Count_Rate, Dose_Rate, HV_pulse_count,
+                accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate);
     }
 
     if (Serial_Print_Mode == Serial_One_Minute_Log) {                // 1 Minute Log active?
@@ -567,10 +589,10 @@ void loop() {
         if (((((lastMinuteLogCounts * 60000) % (current_ms - lastMinuteLog)) * 2) / (current_ms - lastMinuteLog)) >= 1) {
           lastMinuteLogCountRate++;                              // Rounding
         }
-        Serial.printf(Serial_One_Minute_Log_Body,
-                      (current_ms / 1000),
-                      lastMinuteLogCountRate,  // = *60 /1000 +0.5: to reduce rounding errors
-                      lastMinuteLogCounts);
+        log(INFO, Serial_One_Minute_Log_Body,
+                  (current_ms / 1000),
+                  lastMinuteLogCountRate,  // = *60 /1000 +0.5: to reduce rounding errors
+                  lastMinuteLogCounts);
         lastMinuteLogCounts = 0;
         lastMinuteLog = current_ms;
       }
@@ -583,7 +605,7 @@ void loop() {
     count_time_between = isr_count_time_between;
     isr_gotGMCpulse = 0;
     portEXIT_CRITICAL(&mux_GMC_count);
-    Serial.printf("GEIGER: %d\r\n", count_time_between);
+    log(INFO, "%d", count_time_between);
   }
 
   // If there were no pulses after 3 secs after start,
@@ -618,16 +640,14 @@ void loop() {
       bme_temperature = bme.readTemperature();
       bme_humidity = bme.readHumidity();
       bme_pressure = bme.readPressure();
-      #if 0
-      Serial.printf("Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f\r\n", current_cpm, hvp, bme_temperature, bme_humidity, bme_pressure);
+      log(DEBUG, "Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f", current_cpm, hvp, bme_temperature, bme_humidity, bme_pressure);
     } else {
-      Serial.printf("Measured: cpm= %d HV=%d\r\n", current_cpm, hvp);
-      #endif
+      log(DEBUG, "Measured: cpm= %d HV=%d", current_cpm, hvp);
     }
 
     #if SEND2DUMMY
     displayStatusLine("Toilet");
-    Serial.println("SENDING TO TOILET");
+    log(INFO, "SENDING TO TOILET ...");
     sendData2http(TOILET, SEND_CPM, hvp, time_difference, true);
     if (haveBME280) {
       sendData2http(TOILET, SEND_BME, hvp, time_difference, true);
@@ -636,7 +656,7 @@ void loop() {
     #endif
 
     #if SEND2MADAVI
-    Serial.println("Sending to Madavi ...");
+    log(INFO, "Sending to Madavi ...");
     displayStatusLine("Madavi");
     sendData2http(MADAVI, SEND_CPM, hvp, time_difference, false);
     if (haveBME280) {
@@ -646,7 +666,7 @@ void loop() {
     #endif
 
     #if SEND2SENSORCOMMUNITY
-    Serial.println("Sending to sensor.community ...");
+    log(INFO, "Sending to sensor.community ...");
     displayStatusLine("sensor.community");
     sendData2http(SENSORCOMMUNITY, SEND_CPM, hvp, time_difference, false);
     if (haveBME280) {
@@ -656,7 +676,7 @@ void loop() {
     #endif
 
     #if SEND2LORA
-    Serial.println("Sending to TTN ...");
+    log(INFO, "Sending to TTN ...");
     displayStatusLine("TTN");
     sendData2TTN(SEND_CPM, hvp, time_difference);
     if (haveBME280) {
@@ -666,10 +686,8 @@ void loop() {
 
     displayStatusLine(" ");
 
-    #if 0
     // log state of switch
-    Serial.printf("SW0: %d  SW1: %d  SW2: %d  SW3: %d\r\n", sw[0], sw[1], sw[2], sw[3]);
-    #endif
+    log(DEBUG, "SW0: %d  SW1: %d  SW2: %d  SW3: %d", sw[0], sw[1], sw[2], sw[3]);
   }
 
   // make LED flicker and speaker tick
@@ -719,7 +737,7 @@ int gen_charge_pulses(int max_charge_pulses) {
   } while ((charge_pulses < max_charge_pulses) && !isr_GMC_cap_full); // either a timeout or a capacitor full interrupt stops this loop
   time2hvpulse = millis();                              // we just pulsed, so restart timer
   if ((charge_pulses == max_charge_pulses) && !isr_GMC_cap_full)
-    Serial.println("Error: HV charging failed!");       // pulsed a lot, but still the capacitor is not at desired voltage
+    log(ERROR, "HV charging failed!");                  // pulsed a lot, but still the capacitor is not at desired voltage
   return charge_pulses;
 }
 
@@ -888,7 +906,7 @@ String buildhttpHeaderandBodySBM(HTTPClient *head, unsigned int hvpulses, unsign
   body += ",{\"value_type\":\"sample_time_ms\",\"value\":\"" + String(timediff) + "\"}";
   body += "]}";
   if (DEBUG_SERVER_SEND == 1) {
-    Serial.println(body);
+    log(DEBUG, "body: %s", body.c_str());
   }
   return body;
 }
@@ -912,7 +930,7 @@ String buildhttpHeaderandBodyBME(HTTPClient *head, boolean addname, bool debug) 
 {\"value_type\":\"" + press + "\",\"value\":\"" + String(bme_pressure, 2) + "\"}\
 ]}";
   if (DEBUG_SERVER_SEND == 1) {
-    Serial.println(body);
+    log(DEBUG, "body: %s", body.c_str());
   }
   return body;
 }
@@ -931,12 +949,11 @@ void sendData2http(const char *host, int sendwhat, unsigned int hvpulses, unsign
   if (httpResponseCode > 0) {
     String response = http.getString();
     if (DEBUG_SERVER_SEND == 1) {
-      Serial.println(httpResponseCode);
-      Serial.println(response);
+      log(DEBUG, "http code: %d", httpResponseCode);
+      log(DEBUG, "http response: %s", response.c_str());
     }
   } else {
-    Serial.print("Error on sending POST: ");
-    Serial.println(httpResponseCode);
+    log(ERROR, "Error on sending POST: %d", httpResponseCode);
   }
   http.end();
 }
@@ -1008,7 +1025,7 @@ void handleRoot(void) {
 }
 
 void configSaved(void) {
-  Serial.println("Config saved");
+  log(INFO, "Config saved");
 }
 
 char *nullFill(int n, int digits) {
