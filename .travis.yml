@@ -1,0 +1,23 @@
+language: cpp
+dist: xenial
+os: linux
+
+matrix:
+  include:
+
+  - env:
+      - TEST="Astyle Format"
+    addons:
+      apt:
+        packages:
+          - astyle
+    script:
+      - astyle --options=.astylerc 'multigeiger/*'
+      - |
+        if [[ -n $(git diff) ]]; then
+          echo "astyle found the following issues - please fix them locally:"
+          echo ""
+          git diff
+          exit -1
+        fi
+
