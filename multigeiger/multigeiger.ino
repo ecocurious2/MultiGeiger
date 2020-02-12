@@ -38,15 +38,6 @@
 //
 //
 
-// Release version and date
-// To fit in 16bit for lora version number we have some limits here:
-// VERSION_MAJOR = 0..15, VERSION_MINOR = 0..255, VERSION_PATCH = 0..15.
-#define VERSION_MAJOR 1
-#define VERSION_MINOR 12
-#define VERSION_PATCH 0
-// Date is in format "YYYY-MM-DD".
-#define VERSION_DATE "2020-01-18"
-
 // Fix Parameters
 // Values for Serial_Print_Mode to configure Serial (USB) output mode.  DON'T TOUCH!
 #define Serial_None 0            // No Serial output
@@ -80,6 +71,7 @@
 
 // Includes
 //====================================================================================================================================
+#include "version.h"
 #include "userdefines.h"
 #include <Arduino.h>
 #include <U8x8lib.h>
@@ -258,7 +250,6 @@ const char *Serial_Logging_Body = "%10d %15d %10f %9f %9d %8d %9d %9f %9f";
 const char *Serial_One_Minute_Log_Header = "%4s %10s %29s";
 const char *Serial_One_Minute_Log_Body = "%4d %10d %29d";
 const char *Serial_Logging_Name = "Simple Multi-Geiger";
-char revString[25];
 unsigned int lora_software_version;
 const char *dashes = "-------------------------------------------------------------------------------------------------";
 int Serial_Print_Mode = SERIAL_DEBUG;
@@ -419,13 +410,12 @@ void setup() {
   // just for fun
   log(INFO, "Let's go!");
 
-  // build revString
-  sprintf(revString, "V%d.%d.%d %s", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_DATE);
-
   #if SEND2LORA
-  // build LoRa software version
-  lora_software_version = (VERSION_MAJOR << 12) + (VERSION_MINOR << 4) + VERSION_PATCH;
+  int major, minor, patch;
+  sscanf(VERSION_STR, "V%d.%d.%d", &major, &minor, &patch);
+  lora_software_version = (major << 12) + (minor << 4) + patch;
   #endif
+
   // Check, if we have a BME280 connected:
   haveBME280 = bme.begin(BME280_ADDRESS);
   if (haveBME280 == 0) {
@@ -460,7 +450,7 @@ void setup() {
 
   if (Serial_Print_Mode == Serial_Logging) {
     log(INFO, dashes);
-    log(INFO, "%s, Version %s", Serial_Logging_Name, revString);
+    log(INFO, "%s, Version %s", Serial_Logging_Name, VERSION_STR);
     log(INFO, dashes);
     log(INFO, Serial_Logging_Header,
         "GMC_counts", "Time_difference", "Count_Rate", "Dose_Rate", "HV Pulses", "Accu_GMC", "Accu_Time", "Accu_Rate", "Accu_Dose");
@@ -471,7 +461,7 @@ void setup() {
 
   if (Serial_Print_Mode == Serial_One_Minute_Log) {
     log(INFO, dashes);
-    log(INFO, "%s, Version %s", Serial_Logging_Name, revString);
+    log(INFO, "%s, Version %s", Serial_Logging_Name, VERSION_STR);
     log(INFO, dashes);
     log(INFO, Serial_One_Minute_Log_Header,
         "Time", "Count_Rate", "Counts");
@@ -482,7 +472,7 @@ void setup() {
 
   if (Serial_Print_Mode == Serial_Statistics_Log) {
     log(INFO, dashes);
-    log(INFO, "%s, Version %s", Serial_Logging_Name, revString);
+    log(INFO, "%s, Version %s", Serial_Logging_Name, VERSION_STR);
     log(INFO, dashes);
     log(INFO, "Time between two impacts");
     log(INFO, "[usec]");
@@ -762,13 +752,13 @@ void DisplayStartscreen(void) {
   u8x8.drawString(0, 2, "Geiger-");
   u8x8.drawString(0, 3, " Counter");
   u8x8.drawString(0, 4, "Version:");
-  sprintf(line, "%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
+  snprintf(line, 9, "%s", VERSION_STR);  // 8 chars + \0 termination
   u8x8.drawString(0, 5, line);
   #else
   u8x8.setFont(u8x8_font_7x14_1x2_f);
   u8x8.println("Geiger-Counter");
   u8x8.println("==============");
-  sprintf(line, "V%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
+  snprintf(line, 15, "%s", VERSION_STR);  // 14 chars + \0 termination
   u8x8.setCursor(7 - strlen(line) / 2, 4);
   u8x8.print(line);
   u8x8.setCursor(1, 6);
@@ -905,7 +895,7 @@ String buildhttpHeaderandBodySBM(HTTPClient *head, unsigned int hvpulses, unsign
   tubetype = tubetype.substring(10);
   String valuetype = (addname ? tubetype + "_" : "");
   valuetype += "counts_per_minute";
-  String body = "{\"software_version\":\"" + String(revString) + "\",\"sensordatavalues\":[";
+  String body = "{\"software_version\":\"" + String(VERSION_STR) + "\",\"sensordatavalues\":[";
   body += "{\"value_type\":\"" + valuetype + "\",\"value\":\"" + current_cpm + "\"}";
   body += ",{\"value_type\":\"hv_pulses\",\"value\":\"" + String(hvpulses) + "\"}";
   body += ",{\"value_type\":\"counts\",\"value\":\"" + String(GMC_counts_2send) + "\"}";
@@ -930,7 +920,7 @@ String buildhttpHeaderandBodyBME(HTTPClient *head, boolean addname, bool debug) 
   humi += "humidity";
   String press = (addname ? "BME280_" : "");
   press += "pressure";
-  String body = "{\"software_version\":\"" + String(revString) + "\",\"sensordatavalues\":[\
+  String body = "{\"software_version\":\"" + String(VERSION_STR) + "\",\"sensordatavalues\":[\
 {\"value_type\":\"" + temp + "\",\"value\":\"" + String(bme_temperature, 2) + "\"},\
 {\"value_type\":\"" + humi + "\",\"value\":\"" + String(bme_humidity, 2) + "\"},\
 {\"value_type\":\"" + press + "\",\"value\":\"" + String(bme_pressure, 2) + "\"}\
