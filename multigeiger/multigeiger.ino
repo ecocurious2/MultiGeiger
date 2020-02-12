@@ -78,6 +78,11 @@
 #define CRITICAL 4
 #define NOLOG 999  // only to set log_level, so log() never creates output
 
+// Sensor-PINS. These definitions ar for sensor.community. They decide the kind of the sensor using this number.
+#define RADIATION 19
+#define BME280 11
+
+
 // Includes
 //====================================================================================================================================
 #include "userdefines.h"
@@ -142,7 +147,7 @@ int PIN_SPEAKER_OUTPUT_N = 0;
 enum {SPEAKER_ON, DISPLAY_ON, LED_ON, UNUSED};
 
 // What to send to sensor.community etc.
-enum {SEND_CPM, SEND_BME};
+enum {SEND_CPM, SEND_BME, SEND_ALL};
 
 #define TESTPIN 13
 
@@ -205,7 +210,7 @@ const unsigned long GMC_dead_time = 190;
 // Hosts for data delivery
 #define MADAVI "http://api-rrd.madavi.de/data.php"
 #define SENSORCOMMUNITY "http://api.sensor.community/v1/push-sensor-data/"
-#define TOILET "http://ptsv2.com/t/enbwck3/post"
+#define TOILET "http://ptsv2.com/t/spr0m-1581455325/post"
 
 //====================================================================================================================================
 // Variables
@@ -329,9 +334,9 @@ void SoundStartsound();
 void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume);
 void DisplayStartscreen(void);
 void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff);
-void sendData2http(const char *host, int sendwhat, unsigned int hvpulses, unsigned int timediff, bool debug);
-String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bool addname);
-String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, unsigned int hvpulses, unsigned int timediff, bool addname);
+void sendData2http(const char *host, int sendwhat, unsigned int hvpulses, unsigned int timediff);
+static void add_Value2Json(String& res, const String& type, const String& value);
+String buildhttpHeaderandBody(HTTPClient *head, String ssid, unsigned int hvpulses, unsigned int timediff, int sendwhat);
 void displayStatusLine(String txt);
 void clearDisplayLine(int line);
 void handleRoot(void);
@@ -654,9 +659,10 @@ void loop() {
     #if SEND2DUMMY
     displayStatusLine("Toilet");
     log(INFO, "SENDING TO TOILET ...");
-    sendData2http(TOILET, SEND_CPM, hvp, time_difference, true);
+    sendData2http(TOILET, String(ssid), SEND_ALL, hvp, time_difference);
+    sendData2http(TOILET, String(ssid), SEND_CPM, hvp, time_difference);
     if (haveBME280) {
-      sendData2http(TOILET, SEND_BME, hvp, time_difference, true);
+      sendData2http(TOILET, String(ssid), SEND_BME, hvp, time_difference);
     }
     delay(300);
     #endif
@@ -664,19 +670,16 @@ void loop() {
     #if SEND2MADAVI
     log(INFO, "Sending to Madavi ...");
     displayStatusLine("Madavi");
-    sendData2http(MADAVI, SEND_CPM, hvp, time_difference, false);
-    if (haveBME280) {
-      sendData2http(MADAVI, SEND_BME, time_difference, hvp, false);
-    }
+    sendData2http(MADAVI, String(ssid), SEND_ALL, hvp, time_difference);
     delay(300);
     #endif
 
     #if SEND2SENSORCOMMUNITY
     log(INFO, "Sending to sensor.community ...");
     displayStatusLine("sensor.community");
-    sendData2http(SENSORCOMMUNITY, SEND_CPM, hvp, time_difference, false);
+    sendData2http(SENSORCOMMUNITY, String(ssid), SEND_CPM, hvp, time_difference);
     if (haveBME280) {
-      sendData2http(SENSORCOMMUNITY, SEND_BME, time_difference, hvp, false);
+      sendData2http(SENSORCOMMUNITY, String(ssid), SEND_BME, hvp, time_difference);
     }
     delay(300);
     #endif
@@ -894,22 +897,39 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
 // ===================================================================================================================================
 // Send to Server Subfunctions
 
-String buildhttpHeaderandBodySBM(HTTPClient *head, unsigned int hvpulses, unsigned int timediff, boolean addname, bool debug) {
+static void add_Value2Json(String& res, const String& type, const String& value) {
+	String s = F("{\"value_type\":\"{t}\",\"value\":\"{v}\"},");
+	s.replace("{t}", type);
+	s.replace("{v}", value);
+	res += s;
+}
+
+String buildhttpHeaderandBody(HTTPClient *head, String ssid, unsigned int hvpulses, unsigned int timediff, int sendwhat) {
   head->addHeader("Content-Type", "application/json; charset=UTF-8");
-  head->addHeader("X-PIN", "19");
-  String chipID = String(ssid);
-  chipID.replace("ESP32", "esp32");
-  head->addHeader("X-Sensor", chipID);
+  int pin = (sendwhat == SEND_CPM) ? RADIATION : (sendwhat == SEND_BME) ? BME280 : 0;
+  head->addHeader("X-PIN", String(pin));
+  ssid.toLowerCase();
+  head->addHeader("X-Sensor", ssid);
   head->addHeader("Connection", "close");
-  String tubetype = tubes[TUBE_TYPE].type;
-  tubetype = tubetype.substring(10);
-  String valuetype = (addname ? tubetype + "_" : "");
-  valuetype += "counts_per_minute";
+  String tube = String((tubes[TUBE_TYPE].type)).substring(10)+"_";
+  bool addname = (sendwhat == SEND_ALL);
   String body = "{\"software_version\":\"" + String(revString) + "\",\"sensordatavalues\":[";
-  body += "{\"value_type\":\"" + valuetype + "\",\"value\":\"" + current_cpm + "\"}";
-  body += ",{\"value_type\":\"hv_pulses\",\"value\":\"" + String(hvpulses) + "\"}";
-  body += ",{\"value_type\":\"counts\",\"value\":\"" + String(GMC_counts_2send) + "\"}";
-  body += ",{\"value_type\":\"sample_time_ms\",\"value\":\"" + String(timediff) + "\"}";
+  if ((sendwhat == SEND_CPM) || (sendwhat == SEND_ALL)) {
+    String counts_per_minute = (addname ? tube : "" ) + "counts_per_minute";
+    String hv_pulses = (addname ? tube : "" ) + "hv_pulses";
+    String counts = (addname ? tube : "" ) + "counts";
+    String sample_time_ms = (addname ? (tube + "_") : "" ) + "sample_time_ms";
+    add_Value2Json(body, counts_per_minute, String(current_cpm));
+    add_Value2Json(body, hv_pulses, String(hvpulses));
+    add_Value2Json(body, counts, String(GMC_counts_2send));
+    add_Value2Json(body, sample_time_ms, String(timediff));
+  }
+  if ((sendwhat == SEND_BME) || (sendwhat == SEND_ALL)) {
+    add_Value2Json(body, String((addname ? "BME280_" : "" )) + "temperature", String(bme_temperature,2));
+    add_Value2Json(body, String((addname ? "BME280_" : "" )) + "humidity", String(bme_humidity, 2));
+    add_Value2Json(body, String((addname ? "BME280_" : "" )) + "pressure", String(bme_pressure, 2));
+  }
+  body.remove(body.length()-1);
   body += "]}";
   if (DEBUG_SERVER_SEND == 1) {
     log(DEBUG, "body: %s", body.c_str());
@@ -917,40 +937,11 @@ String buildhttpHeaderandBodySBM(HTTPClient *head, unsigned int hvpulses, unsign
   return body;
 }
 
-String buildhttpHeaderandBodyBME(HTTPClient *head, boolean addname, bool debug) {
-  head->addHeader("Content-Type", "application/json; charset=UTF-8");
-  head->addHeader("X-PIN", "11");
-  String chipID = String(ssid);
-  chipID.replace("ESP32", "esp32");
-  head->addHeader("X-Sensor", chipID);
-  head->addHeader("Connection", "close");
-  String temp = (addname ? "BME280_" : "");
-  temp += "temperature";
-  String humi = (addname ? "BME280_" : "");
-  humi += "humidity";
-  String press = (addname ? "BME280_" : "");
-  press += "pressure";
-  String body = "{\"software_version\":\"" + String(revString) + "\",\"sensordatavalues\":[\
-{\"value_type\":\"" + temp + "\",\"value\":\"" + String(bme_temperature, 2) + "\"},\
-{\"value_type\":\"" + humi + "\",\"value\":\"" + String(bme_humidity, 2) + "\"},\
-{\"value_type\":\"" + press + "\",\"value\":\"" + String(bme_pressure, 2) + "\"}\
-]}";
-  if (DEBUG_SERVER_SEND == 1) {
-    log(DEBUG, "body: %s", body.c_str());
-  }
-  return body;
-}
-
-void sendData2http(const char *host, int sendwhat, unsigned int hvpulses, unsigned int timediff, bool debug) {
+void sendData2http(const char *host, String ssid, int sendwhat, unsigned int hvpulses, unsigned int timediff) {
   HTTPClient http;
   String body;
   http.begin(host);
-  if (sendwhat == SEND_CPM) {
-    body = buildhttpHeaderandBodySBM(&http, hvpulses, timediff, false, debug);
-  }
-  if (sendwhat == SEND_BME) {
-    body = buildhttpHeaderandBodyBME(&http, false, debug);
-  }
+  body = buildhttpHeaderandBody(&http, ssid, hvpulses, timediff, sendwhat);
   int httpResponseCode = http.POST(body);
   if (httpResponseCode > 0) {
     String response = http.getString();
