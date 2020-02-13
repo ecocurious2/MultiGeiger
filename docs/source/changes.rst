@@ -6,8 +6,25 @@ Changelog
 V1.13.0 (not released yet)
 --------------------------
 
-* ...
+* try both adresses of BME280
+* LoRa payload changes, e.g. to fulfill 'TTN Fair Access Policy'
+* send additional data to servers
+* new logging with DEFAULT_LOG_LEVEL configuration
+* integrated travis-ci:
 
+  - for compile checks (platformio, wifi and stick build)
+  - for style checks (using the "astyle" CPP checker)
+* style and other code cleanups
+* docs:
+
+  - https://multigeiger.readthedocs.io/ == the beginning of
+    new (sphinx / reST-markup based) online docs, #163
+  - add a basic, short README in English (also for online docs)
+  - moved changelog.md to docs/source/changes.rst
+  - updated/fixed development docs, #46
+  - update docs about new 5V power supply / cabling, #122
+  - description of LoRa Payload updated
+  - other docs improvements / fixes
 
 V1.12.0 2020-01-18
 ------------------
