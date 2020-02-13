@@ -37,7 +37,8 @@ Some guidance for contributors:
   - have a nice, clear, typo-free commit comment
   - if you fixed an issue, refer to it in your commit comment
 
-- make a pull request on github
+- make a pull request on github and check on the PR page
+  what ``travis-ci`` tells about the code in your PR
 
 - wait for review by other developers
 
@@ -50,9 +51,15 @@ TODO
 Automatic Code Formatter
 ------------------------
 
-Use this:
+We use astyle_ for automated code formatting / formatting checks.
 
-  astyle --options=.astylerc 'multigeiger/*'
+Run it like this:
+
+::
+
+  astyle --options=.astylerc 'multigeiger/\*'
+
+.. _astyle: http://astyle.sourceforge.net/
 
 
 Documentation
@@ -61,25 +68,32 @@ Documentation
 Building the docs with Sphinx
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The documentation (in reStructuredText format, .rst) is in docs/source/.
+The documentation (in reStructuredText format, .rst) is in ``docs/source/``,
+``index.rst`` is the starting point there.
 
-To build the html version of it, you need to have Sphinx installed.
+To build the docs, you need to have Sphinx_ installed and run:
 
-Now run::
+::
 
   cd docs/
   make html
 
-Then point a web browser at docs/build/html/index.html.
+Then point a web browser at ``docs/build/html/index.html``.
 
 The website is updated automatically by ReadTheDocs through GitHub web hooks on the
 main repository.
+
+.. _Sphinx: https://www.sphinx-doc.org/
 
 
 Creating binaries
 -----------------
 
-Adjust userdefines.h, then use e.g. Arduino IDE -> Sketch -> Export compiled binary.
+Adjust userdefines.h, then use e.g.:
+
+::
+
+  Arduino IDE -> Sketch -> Export compiled binary
 
 
 .. _releasing:
@@ -99,7 +113,9 @@ Checklist:
   - ``changes.rst``
   - ``docs/source/conf.py``
   - ``multigeiger/multigeiger.ino``
-- tag the release::
+- tag the release:
+
+  ::
 
     git tag -s -m "tagged/signed release Vx.y.z" Vx.y.z
 
