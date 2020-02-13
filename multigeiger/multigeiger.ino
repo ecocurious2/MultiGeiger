@@ -335,7 +335,7 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
 void DisplayStartscreen(void);
 void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff);
 void sendData2http(const char *host, int sendwhat, unsigned int hvpulses, unsigned int timediff);
-static void add_Value2Json(String& res, const String& type, const String& value);
+static void add_Value2Json(String &res, const String &type, const String &value);
 String buildhttpHeaderandBody(HTTPClient *head, String ssid, unsigned int hvpulses, unsigned int timediff, int sendwhat);
 void displayStatusLine(String txt);
 void clearDisplayLine(int line);
@@ -897,11 +897,11 @@ void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volu
 // ===================================================================================================================================
 // Send to Server Subfunctions
 
-static void add_Value2Json(String& res, const String& type, const String& value) {
-	String s = F("{\"value_type\":\"{t}\",\"value\":\"{v}\"},");
-	s.replace("{t}", type);
-	s.replace("{v}", value);
-	res += s;
+static void add_Value2Json(String &res, const String &type, const String &value) {
+  String s = F("{\"value_type\":\"{t}\",\"value\":\"{v}\"},");
+  s.replace("{t}", type);
+  s.replace("{v}", value);
+  res += s;
 }
 
 String buildhttpHeaderandBody(HTTPClient *head, String ssid, unsigned int hvpulses, unsigned int timediff, int sendwhat) {
@@ -911,25 +911,25 @@ String buildhttpHeaderandBody(HTTPClient *head, String ssid, unsigned int hvpuls
   ssid.toLowerCase();
   head->addHeader("X-Sensor", ssid);
   head->addHeader("Connection", "close");
-  String tube = String((tubes[TUBE_TYPE].type)).substring(10)+"_";
+  String tube = String((tubes[TUBE_TYPE].type)).substring(10) + "_";
   bool addname = (sendwhat == SEND_ALL);
   String body = "{\"software_version\":\"" + String(revString) + "\",\"sensordatavalues\":[";
   if ((sendwhat == SEND_CPM) || (sendwhat == SEND_ALL)) {
-    String counts_per_minute = (addname ? tube : "" ) + "counts_per_minute";
-    String hv_pulses = (addname ? tube : "" ) + "hv_pulses";
-    String counts = (addname ? tube : "" ) + "counts";
-    String sample_time_ms = (addname ? (tube + "_") : "" ) + "sample_time_ms";
+    String counts_per_minute = (addname ? tube : "") + "counts_per_minute";
+    String hv_pulses = (addname ? tube : "") + "hv_pulses";
+    String counts = (addname ? tube : "") + "counts";
+    String sample_time_ms = (addname ? (tube + "_") : "") + "sample_time_ms";
     add_Value2Json(body, counts_per_minute, String(current_cpm));
     add_Value2Json(body, hv_pulses, String(hvpulses));
     add_Value2Json(body, counts, String(GMC_counts_2send));
     add_Value2Json(body, sample_time_ms, String(timediff));
   }
   if ((sendwhat == SEND_BME) || (sendwhat == SEND_ALL)) {
-    add_Value2Json(body, String((addname ? "BME280_" : "" )) + "temperature", String(bme_temperature,2));
-    add_Value2Json(body, String((addname ? "BME280_" : "" )) + "humidity", String(bme_humidity, 2));
-    add_Value2Json(body, String((addname ? "BME280_" : "" )) + "pressure", String(bme_pressure, 2));
+    add_Value2Json(body, String((addname ? "BME280_" : "")) + "temperature", String(bme_temperature, 2));
+    add_Value2Json(body, String((addname ? "BME280_" : "")) + "humidity", String(bme_humidity, 2));
+    add_Value2Json(body, String((addname ? "BME280_" : "")) + "pressure", String(bme_pressure, 2));
   }
-  body.remove(body.length()-1);
+  body.remove(body.length() - 1);
   body += "]}";
   if (DEBUG_SERVER_SEND == 1) {
     log(DEBUG, "body: %s", body.c_str());
