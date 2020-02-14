@@ -3,8 +3,8 @@
 Changelog
 =========
 
-V1.13.0 (not released yet)
---------------------------
+V1.12.1-dev (not released yet)
+------------------
 
 * try both adresses of BME280
 * LoRa payload changes, e.g. to fulfill 'TTN Fair Access Policy'
