@@ -78,6 +78,7 @@
 #include <Adafruit_BME280.h>
 
 #include "tube.h"
+#include "switches.h"
 
 // Check if a CPU (board) with LoRa is selected. If not, deactivate SEND2LORA.
 #if !((CPU==LORA) || (CPU==STICK))
@@ -108,22 +109,6 @@
 // used for optional LoRa    DIO2 (10) = GPIO32 (12)
 int PIN_SPEAKER_OUTPUT_P = 12;
 int PIN_SPEAKER_OUTPUT_N = 0;
-
-// Inputs for the switches
-#if CPU == STICK
-#define PIN_SWI_0 36
-#define PIN_SWI_1 37
-#define PIN_SWI_2 38
-#define PIN_SWI_3 39
-#else
-#define PIN_SWI_0 39
-#define PIN_SWI_1 38
-#define PIN_SWI_2 37
-#define PIN_SWI_3 36
-#endif
-
-// What are the switches good for?
-enum {SPEAKER_ON, DISPLAY_ON, LED_ON, UNUSED};
 
 // What to send to sensor.community etc.
 enum {SEND_CPM, SEND_BME};
@@ -296,10 +281,7 @@ void setup() {
   pinMode(PIN_SPEAKER_OUTPUT_P, OUTPUT);
   pinMode(PIN_SPEAKER_OUTPUT_N, OUTPUT);
 
-  pinMode(PIN_SWI_0, INPUT);  // These pins DON'T HAVE PULLUPS!
-  pinMode(PIN_SWI_1, INPUT);
-  pinMode(PIN_SWI_2, INPUT);
-  pinMode(PIN_SWI_3, INPUT);
+  setup_switches();
 
   #if CPU == STICK
   pinMode(PIN_DISPLAY_ON, OUTPUT);
@@ -405,15 +387,11 @@ void setup() {
 void loop() {
   unsigned long time_difference;
   unsigned int HV_pulse_count;
-  char sw[4];
+  char *sw;
   unsigned long current_ms = millis();  // to save multiple calls to millis()
   bool update_display;
 
-  // Read Switches (active LOW!)
-  sw[0] = !digitalRead(PIN_SWI_0);
-  sw[1] = !digitalRead(PIN_SWI_1);
-  sw[2] = !digitalRead(PIN_SWI_2);
-  sw[3] = !digitalRead(PIN_SWI_3);
+  sw = read_switches();
 
   // copy values from ISR
   portENTER_CRITICAL(&mux_GMC_count);                            // enter critical section
@@ -574,9 +552,6 @@ void loop() {
     #endif
 
     displayStatusLine(" ");
-
-    // log state of switch
-    log(DEBUG, "SW0: %d  SW1: %d  SW2: %d  SW3: %d", sw[0], sw[1], sw[2], sw[3]);
   }
 
   // make LED flicker and speaker tick
