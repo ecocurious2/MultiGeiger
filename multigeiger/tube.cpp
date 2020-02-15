@@ -4,6 +4,8 @@
 
 #include <Arduino.h>
 
+#include "log.h"
+
 #define PIN_TEST_OUTPUT 13
 #define PIN_HV_FET_OUTPUT 23
 #define PIN_HV_CAP_FULL_INPUT 22  // !! has to be capable of "interrupt on change"
@@ -80,7 +82,7 @@ int gen_charge_pulses(bool setup) {
   } while ((charge_pulses < max_charge_pulses) && !isr_GMC_cap_full); // either a timeout or a capacitor full interrupt stops this loop
   hvpulse_timestamp = millis();
   if ((charge_pulses == max_charge_pulses) && !isr_GMC_cap_full)
-    return -1; // TODO log(CRITICAL, "HV charging failed!");               // pulsed a lot, but still the capacitor is not at desired voltage
+    log(CRITICAL, "HV charging failed!");               // pulsed a lot, but still the capacitor is not at desired voltage
   return charge_pulses;
 }
 
