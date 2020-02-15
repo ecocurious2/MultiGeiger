@@ -79,6 +79,7 @@
 
 #include "tube.h"
 #include "switches.h"
+#include "speaker.h"
 
 // Check if a CPU (board) with LoRa is selected. If not, deactivate SEND2LORA.
 #if !((CPU==LORA) || (CPU==STICK))
@@ -107,8 +108,6 @@
 // used for optional LoRa    DIO0 (8) = GPIO26 (15)
 // used for optional LoRa    DIO1 (9) = GPIO33 (13)
 // used for optional LoRa    DIO2 (10) = GPIO32 (12)
-int PIN_SPEAKER_OUTPUT_P = 12;
-int PIN_SPEAKER_OUTPUT_N = 0;
 
 // What to send to sensor.community etc.
 enum {SEND_CPM, SEND_BME};
@@ -187,9 +186,9 @@ unsigned long toSendTime = millis();
 unsigned long afterStartTime = 0;
 unsigned long time2display = millis();
 
-bool showDisplay = SHOW_DISPLAY;
 bool speakerTick = SPEAKER_TICK;
 bool ledTick = LED_TICK;
+bool showDisplay = SHOW_DISPLAY;
 bool playSound = PLAY_SOUND;
 bool displayIsClear = false;
 char ssid[IOTWEBCONF_WORD_LEN];  // LEN == 33 (2020-01-13)
@@ -212,8 +211,6 @@ int Serial_Print_Mode = SERIAL_DEBUG;
 // Function Prototypes
 
 void DisplayGMC(int TimeSec, int RadNSvph, int CPS);
-void SoundStartsound();
-void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume);
 void DisplayStartscreen(void);
 void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff);
 void sendData2http(const char *host, int sendwhat, unsigned int hvpulses, unsigned int timediff, bool debug);
@@ -276,20 +273,13 @@ void setup() {
   // OLED-Display
   u8x8.begin();
 
-  // set IO-Pins
-  pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(PIN_SPEAKER_OUTPUT_P, OUTPUT);
-  pinMode(PIN_SPEAKER_OUTPUT_N, OUTPUT);
-
+  setup_speaker();
   setup_switches();
 
   #if CPU == STICK
   pinMode(PIN_DISPLAY_ON, OUTPUT);
   digitalWrite(PIN_DISPLAY_ON, HIGH);
   #endif
-  // Initialize Pins
-  digitalWrite(PIN_SPEAKER_OUTPUT_P, HIGH);
-  digitalWrite(PIN_SPEAKER_OUTPUT_N, LOW);
 
   #if SEND2LORA
   int major, minor, patch;
@@ -368,9 +358,9 @@ void setup() {
   DisplayStartscreen();
   displayIsClear = false;
 
-  if (playSound) {
-    SoundStartsound();
-  }
+  if (playSound)
+    play_start_sound();
+
   afterStartTime = AFTERSTART;
 
   setup_tube();
@@ -554,28 +544,8 @@ void loop() {
     displayStatusLine(" ");
   }
 
-  // make LED flicker and speaker tick
   if (GMC_counts != last_GMC_counts) {
-    if (ledTick && sw[LED_ON]) {
-      digitalWrite(LED_BUILTIN, HIGH);    // switch on LED
-    }
-    if (speakerTick && sw[SPEAKER_ON]) {  // make "Tick" sound
-      for (int speaker_count = 0; speaker_count <= 3; speaker_count++) {
-        digitalWrite(PIN_SPEAKER_OUTPUT_P, LOW);
-        digitalWrite(PIN_SPEAKER_OUTPUT_N, HIGH);
-        delayMicroseconds(500);
-        digitalWrite(PIN_SPEAKER_OUTPUT_P, HIGH);
-        digitalWrite(PIN_SPEAKER_OUTPUT_N, LOW);
-        delayMicroseconds(500);
-      }
-    } else {
-      if (ledTick && sw[LED_ON]) {
-        delay(4);
-      }
-    }
-    if (ledTick && sw[LED_ON]) {
-      digitalWrite(LED_BUILTIN, LOW);     // switch off LED
-    }
+    tick(ledTick && sw[LED_ON], speakerTick && sw[SPEAKER_ON]);
     last_GMC_counts = GMC_counts;         // notice old value
   }
 
@@ -686,50 +656,6 @@ void displayStatusLine(String txt) {
   u8x8.drawString(0, 5, txt.c_str());
 }
 #endif
-
-// ===================================================================================================================================
-// Sound Subfunctions
-void SoundStartsound() {
-  float freq_factor = 0.75;
-  int time_factor = 85;
-
-  jbTone(1174659 * freq_factor, 2 * time_factor, 1); // D
-  delay(2 * time_factor);                            // ---
-  jbTone(1318510 * freq_factor, 2 * time_factor, 1); // E
-  delay(2 * time_factor);                            // ---
-  jbTone(1479978 * freq_factor, 2 * time_factor, 1); // Fis
-  delay(2 * time_factor);                            // ---
-
-  jbTone(1567982 * freq_factor, 4 * time_factor, 1); // G
-  jbTone(1174659 * freq_factor, 2 * time_factor, 1); // D
-  jbTone(1318510 * freq_factor, 2 * time_factor, 1); // E
-  jbTone(1174659 * freq_factor, 4 * time_factor, 1); // D
-  jbTone(987767 * freq_factor, 2 * time_factor, 1);  // H
-  jbTone(1046502 * freq_factor, 2 * time_factor, 1); // C
-  jbTone(987767 * freq_factor, 4 * time_factor, 1);  // H
-  jbTone(987767 * freq_factor, 4 * time_factor, 0);  // H
-}
-
-
-void jbTone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume) {
-  unsigned int  cycle_time_us, cycle_1_time_us, cycle_2_time_us;
-  unsigned long count_timestamp_end;
-
-  cycle_time_us = 1000000000 / frequency_mHz;
-  cycle_1_time_us = cycle_time_us / 2;
-  cycle_2_time_us = cycle_time_us - cycle_1_time_us;
-  count_timestamp_end = millis() + time_ms;
-
-  do {
-    digitalWrite(PIN_SPEAKER_OUTPUT_P, (volume == 1));
-    digitalWrite(PIN_SPEAKER_OUTPUT_N, LOW);
-    delayMicroseconds(cycle_1_time_us);
-    digitalWrite(PIN_SPEAKER_OUTPUT_P, LOW);
-    digitalWrite(PIN_SPEAKER_OUTPUT_N, HIGH);
-    delayMicroseconds(cycle_2_time_us);
-  } while (millis() < count_timestamp_end);
-  return;
-}
 
 // ===================================================================================================================================
 // Send to Server Subfunctions
