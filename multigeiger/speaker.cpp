@@ -20,47 +20,45 @@ void setup_speaker() {
   digitalWrite(PIN_SPEAKER_OUTPUT_N, LOW);
 }
 
+void cycle(int t1, int t2, int volume) {
+  // output one full cycle of the sound wave
+  // volume: 0: low, 1: high
+  digitalWrite(PIN_SPEAKER_OUTPUT_P, LOW);
+  digitalWrite(PIN_SPEAKER_OUTPUT_N, HIGH);
+  delayMicroseconds(t1);
+  digitalWrite(PIN_SPEAKER_OUTPUT_P, (volume == 1));
+  digitalWrite(PIN_SPEAKER_OUTPUT_N, LOW);
+  delayMicroseconds(t2);
+}
+
 void tick(int use_led, int use_speaker) {
   // make LED flicker and speaker tick
   if (use_led) {
     digitalWrite(LED_BUILTIN, HIGH);    // switch on LED
   }
-  if (use_speaker) {  // make "Tick" sound
-    for (int speaker_count = 0; speaker_count <= 3; speaker_count++) {
-      digitalWrite(PIN_SPEAKER_OUTPUT_P, LOW);
-      digitalWrite(PIN_SPEAKER_OUTPUT_N, HIGH);
-      delayMicroseconds(500);
-      digitalWrite(PIN_SPEAKER_OUTPUT_P, HIGH);
-      digitalWrite(PIN_SPEAKER_OUTPUT_N, LOW);
-      delayMicroseconds(500);
-    }
-  } else {
-    if (use_led) {
-      delay(4);
-    }
+  for (int t = 0; t < 4; t++) {
+    if (use_speaker)
+      cycle(500, 500, 1);  // takes 1ms
+    else if (use_led)
+      delay(1);            // also takes 1ms
   }
   if (use_led) {
     digitalWrite(LED_BUILTIN, LOW);     // switch off LED
   }
 }
 
-void tone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume) {
-  unsigned int cycle_time_us, cycle_1_time_us, cycle_2_time_us;
-  unsigned long count_timestamp_end;
+void tone(int frequency_mHz, int time_ms, int volume) {
+  int cycle_time_us, cycle_1_time_us, cycle_2_time_us;
+  unsigned long end_ms;
 
   cycle_time_us = 1000000000 / frequency_mHz;
   cycle_1_time_us = cycle_time_us / 2;
   cycle_2_time_us = cycle_time_us - cycle_1_time_us;
-  count_timestamp_end = millis() + time_ms;
 
+  end_ms = millis() + time_ms;
   do {
-    digitalWrite(PIN_SPEAKER_OUTPUT_P, (volume == 1));
-    digitalWrite(PIN_SPEAKER_OUTPUT_N, LOW);
-    delayMicroseconds(cycle_1_time_us);
-    digitalWrite(PIN_SPEAKER_OUTPUT_P, LOW);
-    digitalWrite(PIN_SPEAKER_OUTPUT_N, HIGH);
-    delayMicroseconds(cycle_2_time_us);
-  } while (millis() < count_timestamp_end);
+    cycle(cycle_1_time_us, cycle_2_time_us, volume);
+  } while (millis() < end_ms);
 }
 
 void play_start_sound() {

@@ -3,5 +3,5 @@
 
 void setup_speaker(void);
 void tick(int use_led, int use_speaker);
-void tone(unsigned int frequency_mHz, unsigned int time_ms, unsigned char volume);
-void play_start_sound();
+void tone(int frequency_mHz, int time_ms, int volume);
+void play_start_sound(void);
