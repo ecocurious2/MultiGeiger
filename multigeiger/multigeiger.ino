@@ -73,10 +73,7 @@
 #include "IotWebConf.h"
 #include <HTTPClient.h>
 
-// for use with BME280:
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BME280.h>
-
+#include "thp_sensor.h"
 #include "tube.h"
 #include "switches.h"
 #include "speaker.h"
@@ -192,10 +189,6 @@ bool showDisplay = SHOW_DISPLAY;
 bool playSound = PLAY_SOUND;
 bool displayIsClear = false;
 char ssid[IOTWEBCONF_WORD_LEN];  // LEN == 33 (2020-01-13)
-int haveBME280 = 0;
-float bme_temperature = 0.0;
-float bme_humidity = 0.0;
-float bme_pressure = 0.0;
 float GMC_factor_uSvph = 0.0;
 const char *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s";
 const char *Serial_Logging_Body = "%10d %15d %10f %9f %9d %8d %9d %9f %9f";
@@ -242,8 +235,6 @@ HTTPUpdateServer httpUpdater;
 
 IotWebConf iotWebConf(theName, &dnsServer, &server, wifiInitialApPassword, CONFIG_VERSION);
 
-Adafruit_BME280 bme;
-
 unsigned long getESPchipID() {
   uint64_t espid = ESP.getEfuseMac();
   uint8_t *pespid = (uint8_t *)&espid;
@@ -287,12 +278,7 @@ void setup() {
   lora_software_version = (major << 12) + (minor << 4) + patch;
   #endif
 
-  // Check, if we have a BME280 connected:
-  haveBME280 = bme.begin(BME280_ADDRESS);
-  if (haveBME280 == 0) {
-    haveBME280 = bme.begin(BME280_ADDRESS_ALTERNATE);
-  }
-  log(INFO, "BME_Status: %d  ID:%0X", haveBME280, bme.sensorID());
+  setup_thp_sensor();
 
   // Setup IoTWebConf
   iotWebConf.setConfigSavedCallback(&configSaved);
@@ -494,9 +480,7 @@ void loop() {
     }
 
     if (haveBME280) {                                       // read in the BME280 values
-      bme_temperature = bme.readTemperature();
-      bme_humidity = bme.readHumidity();
-      bme_pressure = bme.readPressure();
+      read_thp_sensor();
       log(DEBUG, "Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f", current_cpm, hvp, bme_temperature, bme_humidity, bme_pressure);
     } else {
       log(DEBUG, "Measured: cpm= %d HV=%d", current_cpm, hvp);
