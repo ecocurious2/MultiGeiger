@@ -8,7 +8,7 @@ extern volatile unsigned long isr_count_timestamp;
 extern volatile unsigned long isr_count_timestamp_2send;
 extern volatile unsigned long isr_count_time_between;
 
-extern unsigned long time2hvpulse;
+extern unsigned long hvpulse_timestamp;
 
 extern portMUX_TYPE mux_cap_full;
 extern portMUX_TYPE mux_GMC_count;

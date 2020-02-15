@@ -462,8 +462,8 @@ void loop() {
   portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
 
   // Pulse the high voltage if we got enough GMC pulses to update the display or at least every 1000ms.
-  if (update_display || (current_ms - time2hvpulse) >= HVPULSE_MS) {
-    HV_pulse_count = gen_charge_pulses(false);               // charge HV capacitor - restarts time2hvpulse!
+  if (update_display || (current_ms - hvpulse_timestamp) >= HVPULSE_MS) {
+    HV_pulse_count = gen_charge_pulses(false);               // charge HV capacitor - sets hvpulse_timestamp!
     hvpulsecnt2send += HV_pulse_count;                       // count for sending
   }
 

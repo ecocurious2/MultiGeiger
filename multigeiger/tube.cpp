@@ -21,7 +21,7 @@ volatile unsigned long isr_count_timestamp;
 volatile unsigned long isr_count_timestamp_2send;
 volatile unsigned long isr_count_time_between;
 
-unsigned long time2hvpulse;  // initialized via setup_tube -> gen_charge_pulses
+unsigned long hvpulse_timestamp;  // initialized via setup_tube -> gen_charge_pulses
 
 // MUX (mutexes used for mutual exclusive access to isr variables)
 portMUX_TYPE mux_cap_full = portMUX_INITIALIZER_UNLOCKED;
@@ -78,7 +78,7 @@ int gen_charge_pulses(bool setup) {
     delayMicroseconds(1000);
     charge_pulses++;
   } while ((charge_pulses < max_charge_pulses) && !isr_GMC_cap_full); // either a timeout or a capacitor full interrupt stops this loop
-  time2hvpulse = millis();                              // we just pulsed, so restart timer
+  hvpulse_timestamp = millis();
   if ((charge_pulses == max_charge_pulses) && !isr_GMC_cap_full)
     return -1; // TODO log(CRITICAL, "HV charging failed!");               // pulsed a lot, but still the capacitor is not at desired voltage
   return charge_pulses;
