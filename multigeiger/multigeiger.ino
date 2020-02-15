@@ -61,17 +61,11 @@
 // STICK -> Heltec Wireless Stick (has LoRa on board)
 #define STICK 2
 
-// log levels
-#define DEBUG 0
-#define INFO 1
-#define WARNING 2
-#define ERROR 3
-#define CRITICAL 4
-#define NOLOG 999  // only to set log_level, so log() never creates output
 
 // Includes
 //====================================================================================================================================
 #include "version.h"
+#include "log.h"
 #include "userdefines.h"
 #include <Arduino.h>
 #include <U8x8lib.h>
@@ -230,29 +224,6 @@ int Serial_Print_Mode = SERIAL_DEBUG;
 
 
 //====================================================================================================================================
-// Logging
-
-int log_level = DEFAULT_LOG_LEVEL;  // messages at level >= log_level will be output
-
-// this is to differentiate our output from other esp32 output (e.g. wifi messages)
-#define LOG_PREFIX "GEIGER: "
-#define LOG_PREFIX_LEN 8  // 8 chars, without the terminating \0
-
-void log(int level, const char *format, ...) {
-  if (level < log_level)
-    return;
-
-  va_list args;
-  va_start(args, format);
-  char buf[vsnprintf(NULL, 0, format, args) + 1 + LOG_PREFIX_LEN];
-  strcpy(buf, LOG_PREFIX);
-  vsprintf(buf + LOG_PREFIX_LEN, format, args);
-  va_end(args);
-  Serial.println(buf);
-}
-
-
-//====================================================================================================================================
 // Function Prototypes
 
 void DisplayGMC(int TimeSec, int RadNSvph, int CPS);
@@ -315,6 +286,8 @@ char *buildSSID() {
 // ******* SETUP *******
 //====================================================================================================================================
 void setup() {
+  setup_log(DEFAULT_LOG_LEVEL);
+
   // OLED-Display
   u8x8.begin();
 
@@ -335,15 +308,6 @@ void setup() {
   // Initialize Pins
   digitalWrite(PIN_SPEAKER_OUTPUT_P, HIGH);
   digitalWrite(PIN_SPEAKER_OUTPUT_N, LOW);
-
-  // set and init serial communication
-  if (Serial_Print_Mode != Serial_None) {
-    Serial.begin(115200);
-    while (!Serial) {};
-  }
-
-  // just for fun
-  log(INFO, "Let's go!");
 
   #if SEND2LORA
   int major, minor, patch;
