@@ -69,14 +69,13 @@
 #include "userdefines.h"
 #include <Arduino.h>
 #include <U8x8lib.h>
-
-#include "IotWebConf.h"
 #include <HTTPClient.h>
 
 #include "thp_sensor.h"
 #include "tube.h"
 #include "switches.h"
 #include "speaker.h"
+#include "webconf.h"
 
 // Check if a CPU (board) with LoRa is selected. If not, deactivate SEND2LORA.
 #if !((CPU==LORA) || (CPU==STICK))
@@ -126,9 +125,6 @@ enum {SEND_CPM, SEND_BME};
 
 // Dummy server for debugging
 #define SEND2DUMMY 0
-
-// Config version for IoTWebConfig
-#define CONFIG_VERSION "012"
 
 typedef struct {
   const char *type;          // type string for sensor.community
@@ -188,7 +184,6 @@ bool ledTick = LED_TICK;
 bool showDisplay = SHOW_DISPLAY;
 bool playSound = PLAY_SOUND;
 bool displayIsClear = false;
-char ssid[IOTWEBCONF_WORD_LEN];  // LEN == 33 (2020-01-13)
 float GMC_factor_uSvph = 0.0;
 const char *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s";
 const char *Serial_Logging_Body = "%10d %15d %10f %9f %9d %8d %9d %9f %9f";
@@ -211,11 +206,7 @@ String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bo
 String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, unsigned int hvpulses, unsigned int timediff, bool addname);
 void displayStatusLine(String txt);
 void clearDisplayLine(int line);
-void handleRoot(void);
-void configSaved(void);
 char *nullFill(int n, int digits);
-char *buildSSID();
-
 
 
 // Type of OLED display
@@ -224,36 +215,6 @@ U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(/* reset=*/ 16, /* clock=*/ 15, /* data=*
 #else
 U8X8_SSD1306_64X32_NONAME_HW_I2C u8x8(/* reset=*/ 16, /* clock=*/ 15, /* data=*/ 4);
 #endif
-
-// -- Initial password to connect to the Thing, when it creates an own Access Point.
-const char wifiInitialApPassword[] = "ESP32Geiger";
-const char *theName = buildSSID();  // build SSID from ESP chip id
-
-DNSServer dnsServer;
-WebServer server(80);
-HTTPUpdateServer httpUpdater;
-
-IotWebConf iotWebConf(theName, &dnsServer, &server, wifiInitialApPassword, CONFIG_VERSION);
-
-unsigned long getESPchipID() {
-  uint64_t espid = ESP.getEfuseMac();
-  uint8_t *pespid = (uint8_t *)&espid;
-  uint32_t id = 0;
-  uint8_t *pid = (uint8_t *)&id;
-  pid[0] = (uint8_t)pespid[5];
-  pid[1] = (uint8_t)pespid[4];
-  pid[2] = (uint8_t)pespid[3];
-  log(INFO, "ID: %08X", id);
-  log(INFO, "MAC: %04X%08X", (uint16_t)(espid >> 32), (uint32_t)espid);
-  return id;
-}
-
-// build SSID
-char *buildSSID() {
-  uint32_t xx = getESPchipID();
-  sprintf(ssid, "ESP32-%d", xx);
-  return ssid;
-}
 
 //====================================================================================================================================
 // ******* SETUP *******
@@ -279,29 +240,10 @@ void setup() {
   #endif
 
   setup_thp_sensor();
-
-  // Setup IoTWebConf
-  iotWebConf.setConfigSavedCallback(&configSaved);
-  iotWebConf.setupUpdateServer(&httpUpdater);
-
-  // override the confusing default labels of IotWebConf:
-  iotWebConf.getThingNameParameter()->label = "Geiger accesspoint SSID";
-  iotWebConf.getApPasswordParameter()->label = "Geiger accesspoint password";
-  iotWebConf.getWifiSsidParameter()->label = "WiFi client SSID";
-  iotWebConf.getWifiPasswordParameter()->label = "WiFi client password";
-
-  iotWebConf.init();
+  setup_webconf();
 
   // Set up conversion factor to uSv/h according to GM tube type:
   GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
-
-  // -- Set up required URL handlers on the web server.
-  server.on("/", handleRoot);
-  server.on("/config", [] { iotWebConf.handleConfig(); });
-  server.onNotFound([]() {
-    iotWebConf.handleNotFound();
-  });
-
 
   // Write Header of Table, depending on the logging mode:
 
@@ -534,7 +476,7 @@ void loop() {
   }
 
   // Loop for IoTWebConf
-  iotWebConf.doLoop();
+  iotWebConf.doLoop();  // see webconf.cpp
 }
 
 // ===================================================================================================================================
@@ -753,36 +695,6 @@ void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff) {
   }
 }
 #endif
-
-/**
- * Handle web requests to "/" path.
- */
-void handleRoot(void) {
-  // -- Let IotWebConf test and handle captive portal requests.
-  if (iotWebConf.handleCaptivePortal()) {
-    // -- Captive portal requests were already served.
-    return;
-  }
-  const char *index =
-    "<!DOCTYPE html>"
-    "<html lang='en'>"
-    "<head>"
-    "<meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />"
-    "<title>MultiGeiger Configuration</title>"
-    "</head>"
-    "<body>"
-    "<h1>Configuration</h1>"
-    "<p>"
-    "Go to the <a href='config'>configure page</a> to change settings or update firmware."
-    "</p>"
-    "</body>"
-    "</html>\n";
-  server.send(200, "text/html;charset=UTF-8", index);
-}
-
-void configSaved(void) {
-  log(INFO, "Config saved");
-}
 
 char *nullFill(int n, int digits) {
   static char erg[9];  // max. 8 digits possible!
