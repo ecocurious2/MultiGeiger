@@ -68,7 +68,6 @@
 #include "log.h"
 #include "userdefines.h"
 #include <Arduino.h>
-#include <U8x8lib.h>
 #include <HTTPClient.h>
 
 #include "thp_sensor.h"
@@ -76,6 +75,7 @@
 #include "switches.h"
 #include "speaker.h"
 #include "webconf.h"
+#include "display.h"
 
 // Check if a CPU (board) with LoRa is selected. If not, deactivate SEND2LORA.
 #if !((CPU==LORA) || (CPU==STICK))
@@ -90,10 +90,6 @@
 
 //====================================================================================================================================
 // IOs
-// used for OLED_SDA 4
-// used for OLED_SCL 15
-// used for OLED_RST 16
-//
 // used for optional LoRa    SX1276 (pin) => ESP32 (pin)
 // used for optional LoRa    ==========================
 // used for optional LoRa    SCK = GPIO5
@@ -107,10 +103,6 @@
 
 // What to send to sensor.community etc.
 enum {SEND_CPM, SEND_BME};
-
-#if CPU == STICK
-#define PIN_DISPLAY_ON 25
-#endif
 
 // Measurement interval (default 2.5min) [sec]
 #define MEASUREMENT_INTERVAL 150
@@ -183,7 +175,6 @@ bool speakerTick = SPEAKER_TICK;
 bool ledTick = LED_TICK;
 bool showDisplay = SHOW_DISPLAY;
 bool playSound = PLAY_SOUND;
-bool displayIsClear = false;
 float GMC_factor_uSvph = 0.0;
 const char *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s";
 const char *Serial_Logging_Body = "%10d %15d %10f %9f %9d %8d %9d %9f %9f";
@@ -198,40 +189,20 @@ int Serial_Print_Mode = SERIAL_DEBUG;
 //====================================================================================================================================
 // Function Prototypes
 
-void DisplayGMC(int TimeSec, int RadNSvph, int CPS);
-void DisplayStartscreen(void);
 void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff);
 void sendData2http(const char *host, int sendwhat, unsigned int hvpulses, unsigned int timediff, bool debug);
 String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bool addname);
 String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, unsigned int hvpulses, unsigned int timediff, bool addname);
-void displayStatusLine(String txt);
-void clearDisplayLine(int line);
-char *nullFill(int n, int digits);
 
-
-// Type of OLED display
-#if CPU != STICK
-U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(/* reset=*/ 16, /* clock=*/ 15, /* data=*/ 4);
-#else
-U8X8_SSD1306_64X32_NONAME_HW_I2C u8x8(/* reset=*/ 16, /* clock=*/ 15, /* data=*/ 4);
-#endif
 
 //====================================================================================================================================
 // ******* SETUP *******
 //====================================================================================================================================
 void setup() {
   setup_log(DEFAULT_LOG_LEVEL);
-
-  // OLED-Display
-  u8x8.begin();
-
+  setup_display();
   setup_speaker();
   setup_switches();
-
-  #if CPU == STICK
-  pinMode(PIN_DISPLAY_ON, OUTPUT);
-  digitalWrite(PIN_DISPLAY_ON, HIGH);
-  #endif
 
   #if SEND2LORA
   int major, minor, patch;
@@ -283,9 +254,6 @@ void setup() {
   lorawan_setup();
   #endif
 
-  DisplayStartscreen();
-  displayIsClear = false;
-
   if (playSound)
     play_start_sound();
 
@@ -308,6 +276,7 @@ void loop() {
   char *sw;
   unsigned long current_ms = millis();  // to save multiple calls to millis()
   bool update_display;
+  bool wifi_connected = false;
 
   sw = read_switches();
 
@@ -350,17 +319,8 @@ void loop() {
     accumulated_Dose_Rate = accumulated_Count_Rate * GMC_factor_uSvph;
 
     // ... and display it.
-    if (showDisplay && sw[DISPLAY_ON]) {
-      DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60));
-      displayIsClear = false;
-    } else {
-      if (!displayIsClear) {
-        u8x8.clear();
-        clearDisplayLine(4);
-        clearDisplayLine(5);
-        displayIsClear = true;
-      }
-    }
+    DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
+               (showDisplay && sw[DISPLAY_ON]), wifi_connected);
 
     if (Serial_Print_Mode == Serial_Logging) {                       // Report all
       log(INFO, Serial_Logging_Body,
@@ -397,10 +357,8 @@ void loop() {
   // clear display anyway and show 0 counts.
   if (afterStartTime && ((current_ms - toSendTime) >= afterStartTime)) {
     afterStartTime = 0;
-    if (showDisplay) {
-      DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60));
-      displayIsClear = false;
-    }
+    DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
+               (showDisplay && sw[DISPLAY_ON]), wifi_connected);
   }
 
   // Check, if we have to send to sensor.community etc.
@@ -477,111 +435,12 @@ void loop() {
 
   // Loop for IoTWebConf
   iotWebConf.doLoop();  // see webconf.cpp
+  wifi_connected = (iotWebConf.getState() == IOTWEBCONF_STATE_ONLINE);
 }
 
 // ===================================================================================================================================
 // ===================================================================================================================================
 // Subfunctions
-
-// ===================================================================================================================================
-// OLED sub functions
-void DisplayStartscreen(void) {
-  char line[20];
-
-  u8x8.clear();
-  #if CPU == STICK
-  // Display is only 4 lines by 8 characters; lines counting from 2 to 5
-  u8x8.setFont(u8x8_font_5x8_f);        // use really small font
-  for (int i = 2; i < 6; i++) {
-    u8x8.drawString(0, i, "        ");  // clear all 4 lines
-  }
-  u8x8.drawString(0, 2, "Geiger-");
-  u8x8.drawString(0, 3, " Counter");
-  u8x8.drawString(0, 4, "Version:");
-  snprintf(line, 9, "%s", VERSION_STR);  // 8 chars + \0 termination
-  u8x8.drawString(0, 5, line);
-  #else
-  u8x8.setFont(u8x8_font_7x14_1x2_f);
-  u8x8.println("Geiger-Counter");
-  u8x8.println("==============");
-  snprintf(line, 15, "%s", VERSION_STR);  // 14 chars + \0 termination
-  u8x8.setCursor(7 - strlen(line) / 2, 4);
-  u8x8.print(line);
-  u8x8.setCursor(1, 6);
-  u8x8.print("Info:boehri.de");
-  #endif
-};
-
-// ===================================================================================================================================
-void DisplayGMC(int TimeSec, int RadNSvph, int CPS) {
-  u8x8.clear();
-
-  #if CPU != STICK
-  char output[80];
-  int TimeMin = TimeSec / 60;         // calculate number of minutes
-  if (TimeMin >= 999) TimeMin = 999;  // limit minutes to max. 999
-
-  // print the upper line including time and measured radation
-  u8x8.setFont(u8x8_font_7x14_1x2_f);
-
-  if (TimeMin >= 1) {                 // >= 1 minute -> display in minutes
-    sprintf(output, "%3d", TimeMin);
-    u8x8.print(output);
-  } else {                            // < 1 minute -> display in seconds, inverse
-    sprintf(output, "%3d", TimeSec);
-    u8x8.inverse();
-    u8x8.print(output);
-    u8x8.noInverse();
-  }
-
-  sprintf(output, "%7d nSv/h", RadNSvph);
-  u8x8.print(output);
-  #endif
-
-  // print the lower line including time and CPM value
-  #if CPU != STICK
-  u8x8.setFont(u8x8_font_inb33_3x6_n);
-  u8x8.drawString(0, 2, nullFill(CPS, 5));
-  #else
-  u8x8.setFont(u8x8_font_5x8_f);
-  u8x8.drawString(0, 2, nullFill(RadNSvph, 8));
-  u8x8.draw2x2String(0, 3, nullFill(CPS, 4));
-  u8x8.drawString(0, 5, "     cpm");
-  #endif
-
-  #if CPU != STICK
-  // Print 'connecting...' as long as we aren't connected
-  if (iotWebConf.getState() != IOTWEBCONF_STATE_ONLINE) {
-    displayStatusLine("connecting...");
-  } else {
-    displayStatusLine(" ");
-  }
-  #endif
-};
-
-#if CPU != STICK
-void clearDisplayLine(int line) {
-  String blank = "                ";
-  u8x8.drawString(0, line, blank.c_str());
-}
-
-void displayStatusLine(String txt) {
-  u8x8.setFont(u8x8_font_5x8_f);
-  clearDisplayLine(7);
-  u8x8.drawString(0, 7, txt.c_str());
-}
-#else
-void clearDisplayLine(int line) {
-  String blank = "        ";
-  u8x8.drawString(0, line, blank.c_str());
-}
-
-void displayStatusLine(String txt) {
-  u8x8.setFont(u8x8_font_5x8_f);
-  clearDisplayLine(5);
-  u8x8.drawString(0, 5, txt.c_str());
-}
-#endif
 
 // ===================================================================================================================================
 // Send to Server Subfunctions
@@ -695,14 +554,3 @@ void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff) {
   }
 }
 #endif
-
-char *nullFill(int n, int digits) {
-  static char erg[9];  // max. 8 digits possible!
-  if (digits > 8) {
-    digits = 8;
-  }
-  char format[5];
-  sprintf(format, "%%%dd", digits);
-  sprintf(erg, format, n);
-  return erg;
-}
