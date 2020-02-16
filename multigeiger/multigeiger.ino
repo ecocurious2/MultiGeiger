@@ -39,12 +39,6 @@
 //
 
 // Fix Parameters
-// Values for Serial_Print_Mode to configure Serial (USB) output mode.  DON'T TOUCH!
-#define Serial_None 0            // No Serial output
-#define Serial_Debug 1           // Only debug and error messages
-#define Serial_Logging 2         // Log measurements as a table
-#define Serial_One_Minute_Log 3  // "One Minute logging"
-#define Serial_Statistics_Log 4  // Logs time [us] between two events
 //
 // At sensor.community predefined counter tubes:
 #define TUBE_UNKNOWN 0
@@ -66,6 +60,7 @@
 //====================================================================================================================================
 #include "version.h"
 #include "log.h"
+#include "log_data.h"
 #include "userdefines.h"
 #include <Arduino.h>
 #include <HTTPClient.h>
@@ -178,14 +173,7 @@ bool playSound = PLAY_SOUND;
 
 float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
-const char *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s";
-const char *Serial_Logging_Body = "%10d %15d %10f %9f %9d %8d %9d %9f %9f";
-const char *Serial_One_Minute_Log_Header = "%4s %10s %29s";
-const char *Serial_One_Minute_Log_Body = "%4d %10d %29d";
-const char *Serial_Logging_Name = "Simple Multi-Geiger";
 unsigned int lora_software_version;
-const char *dashes = "-------------------------------------------------------------------------------------------------";
-int Serial_Print_Mode = SERIAL_DEBUG;
 
 
 //====================================================================================================================================
@@ -215,44 +203,12 @@ void setup() {
   lorawan_setup();
   #endif
 
-  // Write Header of Table, depending on the logging mode:
-
-  if (Serial_Print_Mode == Serial_Logging) {
-    log(INFO, dashes);
-    log(INFO, "%s, Version %s", Serial_Logging_Name, VERSION_STR);
-    log(INFO, dashes);
-    log(INFO, Serial_Logging_Header,
-        "GMC_counts", "Time_difference", "Count_Rate", "Dose_Rate", "HV Pulses", "Accu_GMC", "Accu_Time", "Accu_Rate", "Accu_Dose");
-    log(INFO, Serial_Logging_Header,
-        "[Counts]",   "[ms]",            "[cps]",      "[uSv/h]",   "[-]",       "[Counts]", "[ms]",      "[cps]",     "[uSv/h]");
-    log(INFO, dashes);
-  }
-
-  if (Serial_Print_Mode == Serial_One_Minute_Log) {
-    log(INFO, dashes);
-    log(INFO, "%s, Version %s", Serial_Logging_Name, VERSION_STR);
-    log(INFO, dashes);
-    log(INFO, Serial_One_Minute_Log_Header,
-        "Time", "Count_Rate", "Counts");
-    log(INFO, Serial_One_Minute_Log_Header,
-        "[s]",  "[cpm]",      "[Counts per last measurement]");
-    log(INFO, dashes);
-  }
-
-  if (Serial_Print_Mode == Serial_Statistics_Log) {
-    log(INFO, dashes);
-    log(INFO, "%s, Version %s", Serial_Logging_Name, VERSION_STR);
-    log(INFO, dashes);
-    log(INFO, "Time between two impacts");
-    log(INFO, "[usec]");
-    log(INFO, dashes);
-  }
-
   if (playSound)
     play_start_sound();
 
   afterStartTime = AFTERSTART;
 
+  setup_log_data(SERIAL_DEBUG);
   setup_tube();
 }
 
@@ -317,21 +273,17 @@ void loop() {
                (showDisplay && sw[DISPLAY_ON]), wifi_connected);
 
     if (Serial_Print_Mode == Serial_Logging) {                       // Report all
-      log(INFO, Serial_Logging_Body,
-          GMC_counts, time_difference, Count_Rate, Dose_Rate, HV_pulse_count,
-          accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate);
+      log_data(GMC_counts, time_difference, Count_Rate, Dose_Rate, HV_pulse_count,
+               accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate);
     }
 
     if (Serial_Print_Mode == Serial_One_Minute_Log) {                // 1 Minute Log active?
       if (current_ms > (lastMinuteLog + 60000)) {                    // Time reached for next 1-Minute log?
-        unsigned int lastMinuteLogCountRate = ((lastMinuteLogCounts * 60000) / (current_ms - lastMinuteLog));   // = *60 /1000
+        unsigned int lastMinuteLogCountRate = ((lastMinuteLogCounts * 60000) / (current_ms - lastMinuteLog));   // = * 60 / 1000
         if (((((lastMinuteLogCounts * 60000) % (current_ms - lastMinuteLog)) * 2) / (current_ms - lastMinuteLog)) >= 1) {
-          lastMinuteLogCountRate++;                              // Rounding
+          lastMinuteLogCountRate++;                                  // Rounding + 0.5
         }
-        log(INFO, Serial_One_Minute_Log_Body,
-            (current_ms / 1000),
-            lastMinuteLogCountRate,  // = *60 /1000 +0.5: to reduce rounding errors
-            lastMinuteLogCounts);
+        log_data_one_minute((current_ms / 1000), lastMinuteLogCountRate, lastMinuteLogCounts);
         lastMinuteLogCounts = 0;
         lastMinuteLog = current_ms;
       }
@@ -344,7 +296,7 @@ void loop() {
     count_time_between = isr_count_time_between;
     isr_gotGMCpulse = 0;
     portEXIT_CRITICAL(&mux_GMC_count);
-    log(INFO, "%d", count_time_between);
+    log_data_statistics(count_time_between);
   }
 
   // If there were no pulses after 3 secs after start,
