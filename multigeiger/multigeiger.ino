@@ -175,7 +175,9 @@ bool speakerTick = SPEAKER_TICK;
 bool ledTick = LED_TICK;
 bool showDisplay = SHOW_DISPLAY;
 bool playSound = PLAY_SOUND;
-float GMC_factor_uSvph = 0.0;
+
+float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
+
 const char *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s";
 const char *Serial_Logging_Body = "%10d %15d %10f %9f %9d %8d %9d %9f %9f";
 const char *Serial_One_Minute_Log_Header = "%4s %10s %29s";
@@ -203,18 +205,15 @@ void setup() {
   setup_display();
   setup_speaker();
   setup_switches();
+  setup_thp_sensor();
+  setup_webconf();
 
   #if SEND2LORA
   int major, minor, patch;
   sscanf(VERSION_STR, "V%d.%d.%d", &major, &minor, &patch);
   lora_software_version = (major << 12) + (minor << 4) + patch;
+  lorawan_setup();
   #endif
-
-  setup_thp_sensor();
-  setup_webconf();
-
-  // Set up conversion factor to uSv/h according to GM tube type:
-  GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
   // Write Header of Table, depending on the logging mode:
 
@@ -248,11 +247,6 @@ void setup() {
     log(INFO, "[usec]");
     log(INFO, dashes);
   }
-
-  #if SEND2LORA
-  // init LoRa
-  lorawan_setup();
-  #endif
 
   if (playSound)
     play_start_sound();
@@ -438,9 +432,6 @@ void loop() {
   wifi_connected = (iotWebConf.getState() == IOTWEBCONF_STATE_ONLINE);
 }
 
-// ===================================================================================================================================
-// ===================================================================================================================================
-// Subfunctions
 
 // ===================================================================================================================================
 // Send to Server Subfunctions

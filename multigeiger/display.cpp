@@ -1,5 +1,5 @@
 // OLED display related code
- 
+
 #include <Arduino.h>
 #include <U8x8lib.h>
 
@@ -99,11 +99,11 @@ char *nullFill(int n, int digits) {
 
 void DisplayGMC(int TimeSec, int RadNSvph, int CPS, bool use_display, bool connected) {
   if (!use_display && !displayIsClear) {
-     u8x8.clear();
-     clearDisplayLine(4);
-     clearDisplayLine(5);
-     displayIsClear = true;
-     return;
+    u8x8.clear();
+    clearDisplayLine(4);
+    clearDisplayLine(5);
+    displayIsClear = true;
+    return;
   }
 
   u8x8.clear();
