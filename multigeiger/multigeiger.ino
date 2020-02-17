@@ -1,4 +1,3 @@
-//====================================================================================================================================
 // Project: Simple Multi-Geiger
 // (c) 2019,2020 by the authors, see AUTHORS file in toplevel directory.
 //
@@ -36,35 +35,24 @@
 //   - http://fambach.net/esp32-wifi-lora-433/
 //   - https://www.hackerspace-ffm.de/wiki/index.php?title=Heltec_Wifi_LoRa_32
 //
-//
 
-// Fix Parameters
-//
 // At sensor.community predefined counter tubes:
 #define TUBE_UNKNOWN 0
 #define SBM20 1
 #define SBM19 2
 #define Si22G 3
 
-
 // Values for CPU (board types)
-// WIFI -> Heltec Wifi Kit 32
-#define WIFI 0
-// LORA -> Heltec Wifi Lora 32 (V2)
-#define LORA 1
-// STICK -> Heltec Wireless Stick (has LoRa on board)
-#define STICK 2
+#define WIFI 0  // Heltec Wifi Kit 32
+#define LORA 1  // Heltec Wifi Lora 32 (V2)
+#define STICK 2  // Heltec Wireless Stick (has LoRa on board)
 
+#include <Arduino.h>
 
-// Includes
-//====================================================================================================================================
 #include "version.h"
 #include "log.h"
 #include "log_data.h"
 #include "userdefines.h"
-
-#include <Arduino.h>
-
 #include "thp_sensor.h"
 #include "tube.h"
 #include "switches.h"
@@ -104,9 +92,6 @@ TUBETYPE tubes[] = {
   {"Radiation Si22G", 22, 1 / 12.2792}
 };
 
-//====================================================================================================================================
-// Variables
-
 unsigned int GMC_counts = 0;
 unsigned int GMC_counts_2send = 0;
 unsigned int accumulated_GMC_counts = 0;
@@ -136,10 +121,6 @@ bool playSound = PLAY_SOUND;
 
 float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
-
-//====================================================================================================================================
-// ******* SETUP *******
-//====================================================================================================================================
 void setup() {
   setup_log(DEFAULT_LOG_LEVEL);
   setup_display();
@@ -157,10 +138,6 @@ void setup() {
   setup_log_data(SERIAL_DEBUG);
   setup_tube();
 }
-
-// ===================================================================================================================================
-// ************* LOOP *************************
-// ===================================================================================================================================
 
 #define DISPLAYREFRESH 10000
 #define MAXCOUNTS 100
@@ -287,7 +264,6 @@ void loop() {
     last_GMC_counts = GMC_counts;         // notice old value
   }
 
-  // Loop for IoTWebConf
   iotWebConf.doLoop();  // see webconf.cpp
   wifi_connected = (iotWebConf.getState() == IOTWEBCONF_STATE_ONLINE);
 }
