@@ -62,8 +62,8 @@
 #include "log.h"
 #include "log_data.h"
 #include "userdefines.h"
+
 #include <Arduino.h>
-#include <HTTPClient.h>
 
 #include "thp_sensor.h"
 #include "tube.h"
@@ -71,17 +71,7 @@
 #include "speaker.h"
 #include "webconf.h"
 #include "display.h"
-
-// Check if a CPU (board) with LoRa is selected. If not, deactivate SEND2LORA.
-#if !((CPU==LORA) || (CPU==STICK))
-#undef SEND2LORA
-#define SEND2LORA 0
-#endif
-
-// for LoRa
-#if SEND2LORA==1
-#include "loraWan.h"
-#endif
+#include "transmission.h"
 
 //====================================================================================================================================
 // IOs
@@ -96,9 +86,6 @@
 // used for optional LoRa    DIO1 (9) = GPIO33 (13)
 // used for optional LoRa    DIO2 (10) = GPIO32 (12)
 
-// What to send to sensor.community etc.
-enum {SEND_CPM, SEND_BME};
-
 // Measurement interval (default 2.5min) [sec]
 #define MEASUREMENT_INTERVAL 150
 
@@ -109,9 +96,6 @@ enum {SEND_CPM, SEND_BME};
 
 // Max time the greeting display will be on. [msec]
 #define AFTERSTART 5000
-
-// Dummy server for debugging
-#define SEND2DUMMY 0
 
 typedef struct {
   const char *type;          // type string for sensor.community
@@ -132,14 +116,6 @@ TUBETYPE tubes[] = {
   // So, to convert from cps to uSv/h, the calculation is: uSvh = cps * 3600 / 44205 = cps / 12.2792
   {"Radiation Si22G", 22, 1 / 12.2792}
 };
-
-//====================================================================================================================================
-// Constants
-
-// Hosts for data delivery
-#define MADAVI "http://api-rrd.madavi.de/data.php"
-#define SENSORCOMMUNITY "http://api.sensor.community/v1/push-sensor-data/"
-#define TOILET "http://ptsv2.com/t/enbwck3/post"
 
 //====================================================================================================================================
 // Variables
@@ -173,17 +149,6 @@ bool playSound = PLAY_SOUND;
 
 float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
-unsigned int lora_software_version;
-
-
-//====================================================================================================================================
-// Function Prototypes
-
-void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff);
-void sendData2http(const char *host, int sendwhat, unsigned int hvpulses, unsigned int timediff, bool debug);
-String buildhttpHeaderandBodyBME(HTTPClient *head, float t, float h, float p, bool addname);
-String buildhttpHeaderandBodySBM(HTTPClient *head, int radiation_cpm, unsigned int hvpulses, unsigned int timediff, bool addname);
-
 
 //====================================================================================================================================
 // ******* SETUP *******
@@ -195,13 +160,7 @@ void setup() {
   setup_switches();
   setup_thp_sensor();
   setup_webconf();
-
-  #if SEND2LORA
-  int major, minor, patch;
-  sscanf(VERSION_STR, "V%d.%d.%d", &major, &minor, &patch);
-  lora_software_version = (major << 12) + (minor << 4) + patch;
-  setup_lorawan();
-  #endif
+  setup_transmission(VERSION_STR, ssid);
 
   if (playSound)
     play_start_sound();
@@ -332,46 +291,8 @@ void loop() {
       log(DEBUG, "Measured: cpm= %d HV=%d", current_cpm, hvp);
     }
 
-    #if SEND2DUMMY
-    displayStatusLine("Toilet");
-    log(INFO, "SENDING TO TOILET ...");
-    sendData2http(TOILET, SEND_CPM, hvp, time_difference, true);
-    if (haveBME280) {
-      sendData2http(TOILET, SEND_BME, hvp, time_difference, true);
-    }
-    delay(300);
-    #endif
-
-    #if SEND2MADAVI
-    log(INFO, "Sending to Madavi ...");
-    displayStatusLine("Madavi");
-    sendData2http(MADAVI, SEND_CPM, hvp, time_difference, false);
-    if (haveBME280) {
-      sendData2http(MADAVI, SEND_BME, time_difference, hvp, false);
-    }
-    delay(300);
-    #endif
-
-    #if SEND2SENSORCOMMUNITY
-    log(INFO, "Sending to sensor.community ...");
-    displayStatusLine("sensor.community");
-    sendData2http(SENSORCOMMUNITY, SEND_CPM, hvp, time_difference, false);
-    if (haveBME280) {
-      sendData2http(SENSORCOMMUNITY, SEND_BME, time_difference, hvp, false);
-    }
-    delay(300);
-    #endif
-
-    #if SEND2LORA
-    log(INFO, "Sending to TTN ...");
-    displayStatusLine("TTN");
-    sendData2TTN(SEND_CPM, hvp, time_difference);
-    if (haveBME280) {
-      sendData2TTN(SEND_BME, hvp, time_difference);
-    }
-    #endif
-
-    displayStatusLine(" ");
+    transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, time_difference, hvp, GMC_counts_2send, current_cpm,
+                  haveBME280, bme_temperature, bme_humidity, bme_pressure);
   }
 
   if (GMC_counts != last_GMC_counts) {
@@ -384,116 +305,3 @@ void loop() {
   wifi_connected = (iotWebConf.getState() == IOTWEBCONF_STATE_ONLINE);
 }
 
-
-// ===================================================================================================================================
-// Send to Server Subfunctions
-
-String buildhttpHeaderandBodySBM(HTTPClient *head, unsigned int hvpulses, unsigned int timediff, boolean addname, bool debug) {
-  head->addHeader("Content-Type", "application/json; charset=UTF-8");
-  head->addHeader("X-PIN", "19");
-  String chipID = String(ssid);
-  chipID.replace("ESP32", "esp32");
-  head->addHeader("X-Sensor", chipID);
-  head->addHeader("Connection", "close");
-  String tubetype = tubes[TUBE_TYPE].type;
-  tubetype = tubetype.substring(10);
-  String valuetype = (addname ? tubetype + "_" : "");
-  valuetype += "counts_per_minute";
-  String body = "{\"software_version\":\"" + String(VERSION_STR) + "\",\"sensordatavalues\":[";
-  body += "{\"value_type\":\"" + valuetype + "\",\"value\":\"" + current_cpm + "\"}";
-  body += ",{\"value_type\":\"hv_pulses\",\"value\":\"" + String(hvpulses) + "\"}";
-  body += ",{\"value_type\":\"counts\",\"value\":\"" + String(GMC_counts_2send) + "\"}";
-  body += ",{\"value_type\":\"sample_time_ms\",\"value\":\"" + String(timediff) + "\"}";
-  body += "]}";
-  if (DEBUG_SERVER_SEND == 1) {
-    log(DEBUG, "body: %s", body.c_str());
-  }
-  return body;
-}
-
-String buildhttpHeaderandBodyBME(HTTPClient *head, boolean addname, bool debug) {
-  head->addHeader("Content-Type", "application/json; charset=UTF-8");
-  head->addHeader("X-PIN", "11");
-  String chipID = String(ssid);
-  chipID.replace("ESP32", "esp32");
-  head->addHeader("X-Sensor", chipID);
-  head->addHeader("Connection", "close");
-  String temp = (addname ? "BME280_" : "");
-  temp += "temperature";
-  String humi = (addname ? "BME280_" : "");
-  humi += "humidity";
-  String press = (addname ? "BME280_" : "");
-  press += "pressure";
-  String body = "{\"software_version\":\"" + String(VERSION_STR) + "\",\"sensordatavalues\":[\
-{\"value_type\":\"" + temp + "\",\"value\":\"" + String(bme_temperature, 2) + "\"},\
-{\"value_type\":\"" + humi + "\",\"value\":\"" + String(bme_humidity, 2) + "\"},\
-{\"value_type\":\"" + press + "\",\"value\":\"" + String(bme_pressure, 2) + "\"}\
-]}";
-  if (DEBUG_SERVER_SEND == 1) {
-    log(DEBUG, "body: %s", body.c_str());
-  }
-  return body;
-}
-
-void sendData2http(const char *host, int sendwhat, unsigned int hvpulses, unsigned int timediff, bool debug) {
-  HTTPClient http;
-  String body;
-  http.begin(host);
-  if (sendwhat == SEND_CPM) {
-    body = buildhttpHeaderandBodySBM(&http, hvpulses, timediff, false, debug);
-  }
-  if (sendwhat == SEND_BME) {
-    body = buildhttpHeaderandBodyBME(&http, false, debug);
-  }
-  int httpResponseCode = http.POST(body);
-  if (httpResponseCode > 0) {
-    String response = http.getString();
-    if (DEBUG_SERVER_SEND == 1) {
-      log(DEBUG, "http code: %d", httpResponseCode);
-      log(DEBUG, "http response: %s", response.c_str());
-    }
-  } else {
-    log(ERROR, "Error on sending POST: %d", httpResponseCode);
-  }
-  http.end();
-}
-
-#if SEND2LORA
-// LoRa payload:
-// To minimise airtime and follow the 'TTN Fair Access Policy', we only send necessary bytes.
-// We do NOT use Cayenne LPP.
-// The payload will be translated via http integration and a small program
-// to be compatible with sensor.community.
-// For byte definitions see ttn2luft.pdf in docs directory.
-void sendData2TTN(int sendwhat, unsigned int hvpulses, unsigned int timediff) {
-  unsigned char ttnData[20];
-  int cnt;
-  if (sendwhat == SEND_CPM) {
-    // first the number of counts
-    ttnData[0] = (GMC_counts_2send >> 24) & 0xFF;
-    ttnData[1] = (GMC_counts_2send >> 16) & 0xFF;
-    ttnData[2] = (GMC_counts_2send >> 8) & 0xFF;
-    ttnData[3] = GMC_counts_2send & 0xFF;
-    // now 3 bytes for the time in ms for this numer of counts (max ca. 4 hours)
-    ttnData[4] = (timediff >> 16) & 0xFF;
-    ttnData[5] = (timediff >> 8) & 0xFF;
-    ttnData[6] = timediff & 0xFF;
-    // next two bytes are software version
-    ttnData[7] = (lora_software_version >> 8) & 0xFF;
-    ttnData[8] = lora_software_version & 0xFF;
-    // next byte is the tube version
-    ttnData[9] = tubes[TUBE_TYPE].nbr;
-    cnt = 10;
-    lorawan_send(1, ttnData, cnt, false, NULL, NULL, NULL);
-  };
-  if (sendwhat == SEND_BME) {
-    ttnData[0] = ((int)(bme_temperature * 10)) >> 8;
-    ttnData[1] = ((int)(bme_temperature * 10)) & 0xFF;
-    ttnData[2] = (int)(bme_humidity * 2);
-    ttnData[3] = ((int)(bme_pressure / 10)) >> 8;
-    ttnData[4] = ((int)(bme_pressure / 10)) & 0xFF;
-    cnt = 5;
-    lorawan_send(2, ttnData, cnt, false, NULL, NULL, NULL);
-  }
-}
-#endif

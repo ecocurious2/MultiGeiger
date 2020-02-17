@@ -1,6 +1,12 @@
-#ifndef LORAWAN_H
-#define LORAWAN_H
+// loraWan hardware related code
+
 #include "userdefines.h"
+
+// Check if a CPU (board) with LoRa is selected. If not, deactivate SEND2LORA.
+#if !((CPU==LORA) || (CPU==STICK))
+#undef SEND2LORA
+#define SEND2LORA 0
+#endif
 
 #if SEND2LORA
 /*******************************************************************************
@@ -46,6 +52,7 @@
 #include <hal/hal.h>
 #include "hal/heltecv2.h"
 #include <SPI.h>
+
 #include "loraWan.h"
 #include "log.h"
 
@@ -292,11 +299,10 @@ transmissionStatus_t lorawan_send(uint8_t txPort, uint8_t * txBuffer, uint8_t tx
                 break;
           }
           if ( millis() - start > LORA_TIMEOUT_MS ) {
-            lorawan_setup();
+            setup_lorawan();
             return TX_STATUS_TIMEOUT;
           }
         }        
     }
 }
-#endif
 #endif
