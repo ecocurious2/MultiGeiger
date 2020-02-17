@@ -200,7 +200,7 @@ void setup() {
   int major, minor, patch;
   sscanf(VERSION_STR, "V%d.%d.%d", &major, &minor, &patch);
   lora_software_version = (major << 12) + (minor << 4) + patch;
-  lorawan_setup();
+  setup_lorawan();
   #endif
 
   if (playSound)

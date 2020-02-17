@@ -235,7 +235,7 @@ void onEvent (ev_t ev) {
 /**
  * Setup the LoRaWan stack for TTN Europe
  */
-void lorawan_setup() {
+void setup_lorawan() {
     txStatus = TX_STATUS_UNKNOWN;
     // LMIC init
     os_init();

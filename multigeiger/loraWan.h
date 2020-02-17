@@ -12,5 +12,5 @@ typedef enum {
 
 #define LORA_TIMEOUT_MS 30000L
 
-void lorawan_setup();
+void setup_lorawan();
 transmissionStatus_t lorawan_send(uint8_t txPort, uint8_t *txBuffer, uint8_t txSz, bool ack, uint8_t *rxPort, uint8_t *rxBuffer, uint8_t *rxSz);
