@@ -73,19 +73,6 @@
 #include "display.h"
 #include "transmission.h"
 
-//====================================================================================================================================
-// IOs
-// used for optional LoRa    SX1276 (pin) => ESP32 (pin)
-// used for optional LoRa    ==========================
-// used for optional LoRa    SCK = GPIO5
-// used for optional LoRa    MISO = GPIO19
-// used for optional LoRa    MOSI = GPIO27
-// used for optional LoRa    CS = GPIO18
-// used for optional LoRa    RESET = GPIO14
-// used for optional LoRa    DIO0 (8) = GPIO26 (15)
-// used for optional LoRa    DIO1 (9) = GPIO33 (13)
-// used for optional LoRa    DIO2 (10) = GPIO32 (12)
-
 // Measurement interval (default 2.5min) [sec]
 #define MEASUREMENT_INTERVAL 150
 

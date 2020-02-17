@@ -1,5 +1,18 @@
 // loraWan hardware related code
 
+// IOs for optional LoRa
+//
+// SX1276 (pin) => ESP32 (pin)
+// ===========================
+// SCK = GPIO5
+// MISO = GPIO19
+// MOSI = GPIO27
+// CS = GPIO18
+// RESET = GPIO14
+// DIO0 (8) = GPIO26 (15)
+// DIO1 (9) = GPIO33 (13)
+// DIO2 (10) = GPIO32 (12)
+
 #include "userdefines.h"
 
 // Check if a CPU (board) with LoRa is selected. If not, deactivate SEND2LORA.
