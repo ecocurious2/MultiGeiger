@@ -96,7 +96,7 @@ const lmic_pinmap lmic_pins = {
     .dio = {LORA_IRQ, LORA_IO1, LORA_IO2 },
 };
 
-static volatile transmitionStatus_t txStatus;
+static volatile transmissionStatus_t txStatus;
 static uint8_t * __rxPort;
 static uint8_t * __rxBuffer;
 static uint8_t * __rxSz;
@@ -268,7 +268,7 @@ void lorawan_setup() {
  * - rxBuffer : where the downlinked data will be stored
  * - rxSz : size of received data
  */
-transmitionStatus_t lorawan_send(uint8_t txPort, uint8_t * txBuffer, uint8_t txSz, bool ack, uint8_t * rxPort, uint8_t * rxBuffer, uint8_t * rxSz){
+transmissionStatus_t lorawan_send(uint8_t txPort, uint8_t * txBuffer, uint8_t txSz, bool ack, uint8_t * rxPort, uint8_t * rxBuffer, uint8_t * rxSz){
   // Check if there is not a current TX/RX job running
     if (LMIC.opmode & OP_TXRXPEND) {
         Serial.println(F("OP_TXRXPEND, not sending"));
