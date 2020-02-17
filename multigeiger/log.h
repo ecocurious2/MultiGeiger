@@ -1,5 +1,8 @@
 // low level log() call - outputs to serial/usb
 
+#ifndef _LOG_H_
+#define _LOG_H_
+
 // log levels
 #define DEBUG 0
 #define INFO 1
@@ -10,3 +13,5 @@
 
 void log(int level, const char *format, ...);
 void setup_log(int level);
+
+#endif // _LOG_H_

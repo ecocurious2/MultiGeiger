@@ -1,3 +1,6 @@
+#ifndef _LORAWAN_H_
+#define _LORAWAN_H_
+
 typedef enum {
   TX_STATUS_UNKNOWN = 0,
   TX_STATUS_JOINING,
@@ -14,3 +17,5 @@ typedef enum {
 
 void setup_lorawan();
 transmissionStatus_t lorawan_send(uint8_t txPort, uint8_t *txBuffer, uint8_t txSz, bool ack, uint8_t *rxPort, uint8_t *rxBuffer, uint8_t *rxSz);
+
+#endif // _LORAWAN_H_

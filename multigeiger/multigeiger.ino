@@ -36,17 +36,6 @@
 //   - https://www.hackerspace-ffm.de/wiki/index.php?title=Heltec_Wifi_LoRa_32
 //
 
-// At sensor.community predefined counter tubes:
-#define TUBE_UNKNOWN 0
-#define SBM20 1
-#define SBM19 2
-#define Si22G 3
-
-// Values for CPU (board types)
-#define WIFI 0  // Heltec Wifi Kit 32
-#define LORA 1  // Heltec Wifi Lora 32 (V2)
-#define STICK 2  // Heltec Wireless Stick (has LoRa on board)
-
 #include <Arduino.h>
 
 #include "version.h"
