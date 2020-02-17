@@ -45,13 +45,11 @@ void display_start_screen(void) {
   u8x8.drawString(0, 5, line);
   #else
   u8x8.setFont(u8x8_font_7x14_1x2_f);
-  u8x8.println("Geiger-Counter");
-  u8x8.println("==============");
+  u8x8.drawString(0, 0, "Geiger-Counter");
+  u8x8.drawString(0, 2, "==============");
   snprintf(line, 15, "%s", VERSION_STR);  // 14 chars + \0 termination
-  u8x8.setCursor(7 - strlen(line) / 2, 4);
-  u8x8.print(line);
-  u8x8.setCursor(1, 6);
-  u8x8.print("Info:boehri.de");
+  u8x8.drawString(0, 4, line);
+  u8x8.drawString(0, 6, "Info:boehri.de");
   #endif
 
   displayIsClear = false;
