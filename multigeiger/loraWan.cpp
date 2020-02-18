@@ -47,6 +47,7 @@
 #include "hal/heltecv2.h"
 #include <SPI.h>
 #include "loraWan.h"
+#include "log.h"
 
 //
 // For normal use, we require that you edit the sketch to replace FILLMEIN
@@ -101,54 +102,49 @@ static uint8_t * __rxPort;
 static uint8_t * __rxBuffer;
 static uint8_t * __rxSz;
 
+void event_log(const char *event){
+  log(DEBUG, "%s: %s", os_getTime(), event);
+}
 
-void onEvent (ev_t ev) {
-    Serial.print(os_getTime());
-    Serial.print(": ");
-    switch(ev) {
+void onEvent(ev_t ev) {
+    switch (ev) {
         case EV_SCAN_TIMEOUT:
-            Serial.println(F("EV_SCAN_TIMEOUT"));
             txStatus = TX_STATUS_ENDING_ERROR;
+            event_log(F("EV_SCAN_TIMEOUT"));
             break;
         case EV_BEACON_FOUND:
             txStatus = TX_STATUS_UNKNOWN;
-            Serial.println(F("EV_BEACON_FOUND"));
+            event_log(F("EV_BEACON_FOUND"));
             break;
         case EV_BEACON_MISSED:
             txStatus = TX_STATUS_UNKNOWN;
-            Serial.println(F("EV_BEACON_MISSED"));
+            event_log(F("EV_BEACON_MISSED"));
             break;
         case EV_BEACON_TRACKED:
             txStatus = TX_STATUS_UNKNOWN;
-            Serial.println(F("EV_BEACON_TRACKED"));
+            event_log(F("EV_BEACON_TRACKED"));
             break;
         case EV_JOINING:
             txStatus= TX_STATUS_JOINING;
-            Serial.println(F("EV_JOINING"));
+            event_log(F("EV_JOINING"));
             break;
         case EV_JOINED:
             txStatus= TX_STATUS_JOINED;
-            Serial.println(F("EV_JOINED"));
+            event_log(F("EV_JOINED"));
             {
               u4_t netid = 0;
               devaddr_t devaddr = 0;
               u1_t nwkKey[16];
               u1_t artKey[16];
               LMIC_getSessionKeys(&netid, &devaddr, nwkKey, artKey);
-              Serial.print("netid: ");
-              Serial.println(netid, DEC);
-              Serial.print("devaddr: ");
-              Serial.println(devaddr, HEX);
-              Serial.print("artKey: ");
-              for (int i=0; i<sizeof(artKey); ++i) {
-                Serial.print(artKey[i], HEX);
+              String ak, nk;
+              for (int i = 0; i < sizeof(artKey); ++i) {
+                ak += String(artKey[i], 16);
               }
-              Serial.println("");
-              Serial.print("nwkKey: ");
-              for (int i=0; i<sizeof(nwkKey); ++i) {
-                Serial.print(nwkKey[i], HEX);
+              for (int i = 0; i < sizeof(nwkKey); ++i) {
+                nk += String(nwkKey[i], 16);
               }
-              Serial.println("");
+              log(DEBUG, F("netid: %d devaddr: %x artKey: %s nwkKey: %s"), netid, devaddr, ak.c_str(), nk.c_str());
             }
             // Disable link check validation (automatically enabled
             // during join, but because slow data rates change max TX
@@ -160,28 +156,26 @@ void onEvent (ev_t ev) {
         || point in wasting codespace on it.
         ||
         || case EV_RFU1:
-        ||     Serial.println(F("EV_RFU1"));
+        ||     event_log(F("EV_RFU1"));
         ||     break;
         */
         case EV_JOIN_FAILED:
-            Serial.println(F("EV_JOIN_FAILED"));
             txStatus = TX_STATUS_ENDING_ERROR;
+            event_log(F("EV_JOIN_FAILED"));
             break;
         case EV_REJOIN_FAILED:
-            Serial.println(F("EV_REJOIN_FAILED"));
             txStatus = TX_STATUS_ENDING_ERROR;
+            event_log(F("EV_REJOIN_FAILED"));
             break;
         case EV_TXCOMPLETE:
-            Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
+            event_log(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
             txStatus =   TX_STATUS_UPLINK_SUCCESS;
             if (LMIC.txrxFlags & TXRX_ACK) {
               txStatus = TX_STATUS_UPLINK_ACKED;
-              Serial.println(F("Received ack"));
+              event_log(F("Received ack"));
             }
             if (LMIC.dataLen) {
-              Serial.print(F("Received "));
-              Serial.print(LMIC.dataLen);
-              Serial.println(F(" bytes of payload"));
+              log(DEBUG, F("Received %d bytes of payload"), LMIC.dataLen);
               if ( __rxPort != NULL) *__rxPort = LMIC.frame[LMIC.dataBeg-1];
               if ( __rxSz != NULL ) *__rxSz = LMIC.dataLen;
               if ( __rxBuffer != NULL ) memcpy(__rxBuffer,&LMIC.frame[LMIC.dataBeg],LMIC.dataLen);
@@ -191,42 +185,41 @@ void onEvent (ev_t ev) {
             //os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
             break;
         case EV_LOST_TSYNC:
-            Serial.println(F("EV_LOST_TSYNC"));
             txStatus = TX_STATUS_ENDING_ERROR;
+            event_log(F("EV_LOST_TSYNC"));
             break;
         case EV_RESET:
-            Serial.println(F("EV_RESET"));
             txStatus = TX_STATUS_ENDING_ERROR;
+            event_log(F("EV_RESET"));
             break;
         case EV_RXCOMPLETE:
             // data received in ping slot
-            Serial.println(F("EV_RXCOMPLETE"));
             txStatus = TX_STATUS_UNKNOWN;
+            event_log(F("EV_RXCOMPLETE"));
             break;
         case EV_LINK_DEAD:
-            Serial.println(F("EV_LINK_DEAD"));
             txStatus = TX_STATUS_ENDING_ERROR;
+            event_log(F("EV_LINK_DEAD"));
             break;
         case EV_LINK_ALIVE:
-            Serial.println(F("EV_LINK_ALIVE"));
             txStatus = TX_STATUS_UNKNOWN;
+            event_log(F("EV_LINK_ALIVE"));
             break;
         /*
         || This event is defined but not used in the code. No
         || point in wasting codespace on it.
         ||
         || case EV_SCAN_FOUND:
-        ||    Serial.println(F("EV_SCAN_FOUND"));
+        ||    event_log(F("EV_SCAN_FOUND"));
         ||    break;
         */
         case EV_TXSTART:
-            Serial.println(F("EV_TXSTART"));
             txStatus = TX_STATUS_UNKNOWN;
+            event_log(F("EV_TXSTART"));
             break;
         default:
-            Serial.print(F("Unknown event: "));
-            Serial.println((unsigned) ev);
             txStatus = TX_STATUS_UNKNOWN;
+            log(DEBUG, F("Unknown event: %u"), (unsigned int) ev);
             break;
     }
 }
@@ -271,7 +264,7 @@ void setup_lorawan() {
 transmissionStatus_t lorawan_send(uint8_t txPort, uint8_t * txBuffer, uint8_t txSz, bool ack, uint8_t * rxPort, uint8_t * rxBuffer, uint8_t * rxSz){
   // Check if there is not a current TX/RX job running
     if (LMIC.opmode & OP_TXRXPEND) {
-        Serial.println(F("OP_TXRXPEND, not sending"));
+        log(DEBUG, F("OP_TXRXPEND, not sending"));
         return TX_STATUS_ENDING_ERROR;
     } else {
         txStatus = TX_STATUS_UNKNOWN;
