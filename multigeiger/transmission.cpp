@@ -72,34 +72,54 @@ void send_http(HTTPClient *http, String body) {
 
 void send_http_geiger(const char *host, String tube_type, unsigned int timediff, unsigned int hv_pulses, unsigned int gm_counts, unsigned int cpm) {
   bool addname = false;
+  char body[1000];
   HTTPClient http;
   prepare_http(&http, host);
   http.addHeader("X-PIN", "19");
   tube_type = tube_type.substring(10);
-  String valuetype = (addname ? tube_type + "_" : "");
-  valuetype += "counts_per_minute";
-  String body = "{\"software_version\":\"" + http_software_version + "\",\"sensordatavalues\":[";
-  body += "{\"value_type\":\"" + valuetype + "\",\"value\":\"" + cpm + "\"}";
-  body += ",{\"value_type\":\"hv_pulses\",\"value\":\"" + String(hv_pulses) + "\"}";
-  body += ",{\"value_type\":\"counts\",\"value\":\"" + String(gm_counts) + "\"}";
-  body += ",{\"value_type\":\"sample_time_ms\",\"value\":\"" + String(timediff) + "\"}";
-  body += "]}";
+  String prefix = (addname ? tube_type + "_" : "");
+  const char *json_format = R"=====(
+{
+ "software_version": "%s",
+ "sensordatavalues": [
+  {"value_type": "%scounts_per_minute", "value": "%d"},
+  {"value_type": "hv_pulses", "value": "%d"},
+  {"value_type": "counts", "value": "%d"},
+  {"value_type": "sample_time_ms", "value": "%d"}
+ ]
+}
+)=====";
+  snprintf(body, 1000, json_format,
+           http_software_version.c_str(),
+           prefix.c_str(), cpm,
+           hv_pulses,
+           gm_counts,
+           timediff);
   send_http(&http, body);
 }
 
 void send_http_thp(const char *host, float temperature, float humidity, float pressure) {
   bool addname = false;
+  String prefix = (addname ? "BME280_" : "");
+  char body[1000];
   HTTPClient http;
   prepare_http(&http, host);
   http.addHeader("X-PIN", "11");
-  String temp = (addname ? "BME280_temperature" : "temperature");
-  String humi = (addname ? "BME280_humidity" : "humidity");
-  String press = (addname ? "BME280_pressure" : "pressure");
-  String body = "{\"software_version\":\"" + http_software_version + "\",\"sensordatavalues\":[\
-    {\"value_type\":\"" + temp + "\",\"value\":\"" + String(temperature, 2) + "\"},\
-    {\"value_type\":\"" + humi + "\",\"value\":\"" + String(humidity, 2) + "\"},\
-    {\"value_type\":\"" + press + "\",\"value\":\"" + String(pressure, 2) + "\"}\
-  ]}";
+  const char *json_format = R"=====(
+{
+ "software_version": "%s",
+ "sensordatavalues": [
+  {"value_type": "%stemperature", "value": "%.2f"},
+  {"value_type": "%shumidity", "value": "%.2f"},
+  {"value_type": "%spressure", "value": "%.2f"}
+ ]
+}
+)=====";
+  snprintf(body, 1000, json_format,
+           http_software_version.c_str(),
+           prefix.c_str(), temperature,
+           prefix.c_str(), humidity,
+           prefix.c_str(), pressure);
   send_http(&http, body);
 }
 
