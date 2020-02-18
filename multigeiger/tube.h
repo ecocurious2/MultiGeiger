@@ -3,6 +3,13 @@
 #ifndef _TUBE_H_
 #define _TUBE_H_
 
+typedef struct {
+  const char *type;          // type string for sensor.community
+  const char nbr;            // number to be sent by LoRa
+  const float cps_to_uSvph;  // factor to convert counts per second to µSievert per hour
+} TUBETYPE;
+
+extern TUBETYPE tubes[];
 extern volatile bool isr_GMC_cap_full;
 extern volatile bool isr_gotGMCpulse;
 extern volatile unsigned int isr_GMC_counts;

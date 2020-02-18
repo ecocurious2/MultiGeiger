@@ -61,26 +61,6 @@
 // Max time the greeting display will be on. [msec]
 #define AFTERSTART 5000
 
-typedef struct {
-  const char *type;          // type string for sensor.community
-  const char nbr;            // number to be sent by LoRa
-  const float cps_to_uSvph;  // factor to convert counts per second to µSievert per hour
-} TUBETYPE;
-
-TUBETYPE tubes[] = {
-  // use 0.0 conversion factor for unknown tubes, so it computes an "obviously-wrong" 0.0 uSv/h value rather than a confusing one.
-  {"Radiation unknown", 0, 0.0},
-  // The conversion factors for SBM-20 and SBM-19 are taken from the datasheets (according to Jürgen)
-  {"Radiation SBM-20", 20, 1 / 2.47},
-  {"Radiation SBM-19", 19, 1 / 9.81888},
-  // The Si22G conversion factor was determined by Juergen Boehringer like this:
-  // Set up a Si22G based MultiGeiger close to the official odlinfo.bfs.de measurement unit in Sindelfingen.
-  // Determine how many counts the Si22G gives within the same time the odlinfo unit needs for 1uSv.
-  // Result: 44205 counts on the Si22G for 1 uSv.
-  // So, to convert from cps to uSv/h, the calculation is: uSvh = cps * 3600 / 44205 = cps / 12.2792
-  {"Radiation Si22G", 22, 1 / 12.2792}
-};
-
 unsigned int GMC_counts = 0;
 unsigned int GMC_counts_2send = 0;
 unsigned int accumulated_GMC_counts = 0;
