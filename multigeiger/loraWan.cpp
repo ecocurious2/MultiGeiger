@@ -287,6 +287,9 @@ transmissionStatus_t lorawan_send(uint8_t txPort, uint8_t * txBuffer, uint8_t tx
             case TX_STATUS_UPLINK_ACKED_WITHDOWNLINK:
             case TX_STATUS_UPLINK_ACKED_WITHDOWNLINK_PENDING:
                 return txStatus;
+            case TX_STATUS_ENDING_ERROR:
+            case TX_STATUS_TIMEOUT:
+                break;
           }
           if ( millis() - start > LORA_TIMEOUT_MS ) {
             lorawan_setup();
