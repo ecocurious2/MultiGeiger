@@ -110,27 +110,27 @@ void onEvent(ev_t ev) {
     switch (ev) {
         case EV_SCAN_TIMEOUT:
             txStatus = TX_STATUS_ENDING_ERROR;
-            event_log(F("EV_SCAN_TIMEOUT"));
+            event_log("EV_SCAN_TIMEOUT");
             break;
         case EV_BEACON_FOUND:
             txStatus = TX_STATUS_UNKNOWN;
-            event_log(F("EV_BEACON_FOUND"));
+            event_log("EV_BEACON_FOUND");
             break;
         case EV_BEACON_MISSED:
             txStatus = TX_STATUS_UNKNOWN;
-            event_log(F("EV_BEACON_MISSED"));
+            event_log("EV_BEACON_MISSED");
             break;
         case EV_BEACON_TRACKED:
             txStatus = TX_STATUS_UNKNOWN;
-            event_log(F("EV_BEACON_TRACKED"));
+            event_log("EV_BEACON_TRACKED");
             break;
         case EV_JOINING:
             txStatus= TX_STATUS_JOINING;
-            event_log(F("EV_JOINING"));
+            event_log("EV_JOINING");
             break;
         case EV_JOINED:
             txStatus= TX_STATUS_JOINED;
-            event_log(F("EV_JOINED"));
+            event_log("EV_JOINED");
             {
               u4_t netid = 0;
               devaddr_t devaddr = 0;
@@ -144,7 +144,7 @@ void onEvent(ev_t ev) {
               for (int i = 0; i < sizeof(nwkKey); ++i) {
                 nk += String(nwkKey[i], 16);
               }
-              log(DEBUG, F("netid: %d devaddr: %x artKey: %s nwkKey: %s"), netid, devaddr, ak.c_str(), nk.c_str());
+              log(DEBUG, "netid: %d devaddr: %x artKey: %s nwkKey: %s", netid, devaddr, ak.c_str(), nk.c_str());
             }
             // Disable link check validation (automatically enabled
             // during join, but because slow data rates change max TX
@@ -156,26 +156,26 @@ void onEvent(ev_t ev) {
         || point in wasting codespace on it.
         ||
         || case EV_RFU1:
-        ||     event_log(F("EV_RFU1"));
+        ||     event_log("EV_RFU1");
         ||     break;
         */
         case EV_JOIN_FAILED:
             txStatus = TX_STATUS_ENDING_ERROR;
-            event_log(F("EV_JOIN_FAILED"));
+            event_log("EV_JOIN_FAILED");
             break;
         case EV_REJOIN_FAILED:
             txStatus = TX_STATUS_ENDING_ERROR;
-            event_log(F("EV_REJOIN_FAILED"));
+            event_log("EV_REJOIN_FAILED");
             break;
         case EV_TXCOMPLETE:
-            event_log(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
+            event_log("EV_TXCOMPLETE (includes waiting for RX windows)");
             txStatus =   TX_STATUS_UPLINK_SUCCESS;
             if (LMIC.txrxFlags & TXRX_ACK) {
               txStatus = TX_STATUS_UPLINK_ACKED;
-              event_log(F("Received ack"));
+              event_log("Received ack");
             }
             if (LMIC.dataLen) {
-              log(DEBUG, F("Received %d bytes of payload"), LMIC.dataLen);
+              log(DEBUG, "Received %d bytes of payload", LMIC.dataLen);
               if ( __rxPort != NULL) *__rxPort = LMIC.frame[LMIC.dataBeg-1];
               if ( __rxSz != NULL ) *__rxSz = LMIC.dataLen;
               if ( __rxBuffer != NULL ) memcpy(__rxBuffer,&LMIC.frame[LMIC.dataBeg],LMIC.dataLen);
@@ -186,40 +186,40 @@ void onEvent(ev_t ev) {
             break;
         case EV_LOST_TSYNC:
             txStatus = TX_STATUS_ENDING_ERROR;
-            event_log(F("EV_LOST_TSYNC"));
+            event_log("EV_LOST_TSYNC");
             break;
         case EV_RESET:
             txStatus = TX_STATUS_ENDING_ERROR;
-            event_log(F("EV_RESET"));
+            event_log("EV_RESET");
             break;
         case EV_RXCOMPLETE:
             // data received in ping slot
             txStatus = TX_STATUS_UNKNOWN;
-            event_log(F("EV_RXCOMPLETE"));
+            event_log("EV_RXCOMPLETE");
             break;
         case EV_LINK_DEAD:
             txStatus = TX_STATUS_ENDING_ERROR;
-            event_log(F("EV_LINK_DEAD"));
+            event_log("EV_LINK_DEAD");
             break;
         case EV_LINK_ALIVE:
             txStatus = TX_STATUS_UNKNOWN;
-            event_log(F("EV_LINK_ALIVE"));
+            event_log("EV_LINK_ALIVE");
             break;
         /*
         || This event is defined but not used in the code. No
         || point in wasting codespace on it.
         ||
         || case EV_SCAN_FOUND:
-        ||    event_log(F("EV_SCAN_FOUND"));
+        ||    event_log("EV_SCAN_FOUND");
         ||    break;
         */
         case EV_TXSTART:
             txStatus = TX_STATUS_UNKNOWN;
-            event_log(F("EV_TXSTART"));
+            event_log("EV_TXSTART");
             break;
         default:
             txStatus = TX_STATUS_UNKNOWN;
-            log(DEBUG, F("Unknown event: %u"), (unsigned int) ev);
+            log(DEBUG, "Unknown event: %u", (unsigned int) ev);
             break;
     }
 }
@@ -264,7 +264,7 @@ void setup_lorawan() {
 transmissionStatus_t lorawan_send(uint8_t txPort, uint8_t * txBuffer, uint8_t txSz, bool ack, uint8_t * rxPort, uint8_t * rxBuffer, uint8_t * rxSz){
   // Check if there is not a current TX/RX job running
     if (LMIC.opmode & OP_TXRXPEND) {
-        log(DEBUG, F("OP_TXRXPEND, not sending"));
+        log(DEBUG, "OP_TXRXPEND, not sending");
         return TX_STATUS_ENDING_ERROR;
     } else {
         txStatus = TX_STATUS_UNKNOWN;
