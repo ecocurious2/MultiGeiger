@@ -103,7 +103,7 @@ static uint8_t * __rxBuffer;
 static uint8_t * __rxSz;
 
 void event_log(const char *event){
-  log(DEBUG, "%s: %s", os_getTime(), event);
+  log(DEBUG, "%09d: %s", os_getTime(), event);
 }
 
 void onEvent(ev_t ev) {
