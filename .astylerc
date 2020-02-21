@@ -13,6 +13,5 @@ align-pointer=name
 
 # do not process these files, because they are ...
 # - bundled or bundled and modified 3rd party code:
-exclude=loraWan.h
-exclude=loraWan.cpp
+#exclude=somefile.ext
 
