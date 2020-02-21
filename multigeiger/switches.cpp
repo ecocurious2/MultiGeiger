@@ -24,18 +24,19 @@ void setup_switches() {
   pinMode(PIN_SWI_2, INPUT);
   pinMode(PIN_SWI_3, INPUT);
 
-  char *sw = read_switches();
-  log(DEBUG, "SW0: %d  SW1: %d  SW2: %d  SW3: %d", sw[0], sw[1], sw[2], sw[3]);
+  Switches s = read_switches();
+  log(DEBUG, "Switches: SW0 speaker_on %d,  SW1 display_on %d,  SW2 led_on: %d,  SW3 unused: %d",
+      s.speaker_on, s.display_on, s.led_on, s.unused);
 }
 
-char *read_switches() {
-  static char sw[4];
+Switches read_switches() {
+  Switches s;
 
   // Read Switches (active LOW!)
-  sw[0] = !digitalRead(PIN_SWI_0);
-  sw[1] = !digitalRead(PIN_SWI_1);
-  sw[2] = !digitalRead(PIN_SWI_2);
-  sw[3] = !digitalRead(PIN_SWI_3);
+  s.speaker_on = !digitalRead(PIN_SWI_0);
+  s.display_on = !digitalRead(PIN_SWI_1);
+  s.led_on = !digitalRead(PIN_SWI_2);
+  s.unused = !digitalRead(PIN_SWI_3);
 
-  return sw;
+  return s;
 }
