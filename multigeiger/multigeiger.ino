@@ -115,12 +115,12 @@ void setup() {
 void loop() {
   unsigned long time_difference;
   unsigned int HV_pulse_count;
-  char *sw;
+  Switches switches;
   unsigned long current_ms = millis();  // to save multiple calls to millis()
   bool update_display;
   bool wifi_connected = false;
 
-  sw = read_switches();
+  switches = read_switches();
 
   // copy values from ISR
   portENTER_CRITICAL(&mux_GMC_count);                            // enter critical section
@@ -162,7 +162,7 @@ void loop() {
 
     // ... and display it.
     DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
-               (showDisplay && sw[DISPLAY_ON]), wifi_connected);
+               (showDisplay && switches.display_on), wifi_connected);
 
     if (Serial_Print_Mode == Serial_Logging) {                       // Report all
       log_data(GMC_counts, time_difference, Count_Rate, Dose_Rate, HV_pulse_count,
@@ -196,7 +196,7 @@ void loop() {
   if (afterStartTime && ((current_ms - toSendTime) >= afterStartTime)) {
     afterStartTime = 0;
     DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
-               (showDisplay && sw[DISPLAY_ON]), wifi_connected);
+               (showDisplay && switches.display_on), wifi_connected);
   }
 
   // Check, if we have to send to sensor.community etc.
@@ -229,7 +229,7 @@ void loop() {
   }
 
   if (GMC_counts != last_GMC_counts) {
-    tick(ledTick && sw[LED_ON], speakerTick && sw[SPEAKER_ON]);
+    tick(ledTick && switches.led_on, speakerTick && switches.speaker_on);
     last_GMC_counts = GMC_counts;         // notice old value
   }
 
