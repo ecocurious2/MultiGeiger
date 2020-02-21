@@ -3,11 +3,11 @@
 #ifndef _THP_SENSOR_H_
 #define _THP_SENSOR_H_
 
-extern int haveBME280;
+extern int have_thp;
 
-extern float bme_temperature;
-extern float bme_humidity;
-extern float bme_pressure;
+extern float temperature;
+extern float humidity;
+extern float pressure;
 
 void setup_thp_sensor(void);
 void read_thp_sensor(void);

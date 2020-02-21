@@ -217,15 +217,15 @@ void loop() {
       current_cpm = (int)(GMC_counts_2send * 60000 / time_difference);
     }
 
-    if (haveBME280) {                                       // read in the BME280 values
+    if (have_thp) {  // temperature / humidity / pressure
       read_thp_sensor();
-      log(DEBUG, "Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f", current_cpm, hvp, bme_temperature, bme_humidity, bme_pressure);
+      log(DEBUG, "Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f", current_cpm, hvp, temperature, humidity, pressure);
     } else {
       log(DEBUG, "Measured: cpm= %d HV=%d", current_cpm, hvp);
     }
 
     transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, time_difference, hvp, GMC_counts_2send, current_cpm,
-                  haveBME280, bme_temperature, bme_humidity, bme_pressure);
+                  have_thp, temperature, humidity, pressure);
   }
 
   if (GMC_counts != last_GMC_counts) {
