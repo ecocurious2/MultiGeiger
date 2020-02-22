@@ -121,7 +121,7 @@ void loop() {
 
   if (update_display) {
     display_timestamp = current_ms;
-    unsigned long dt = count_timestamp - last_count_timestamp;
+    int dt = count_timestamp - last_count_timestamp;
     last_count_timestamp = count_timestamp;
     accumulated_time += dt;                                    // accumulate all the time
     accumulated_GMC_counts += GMC_counts;                      // accumulate all the pulses
@@ -187,7 +187,7 @@ void loop() {
     portEXIT_CRITICAL(&mux_GMC_count);
     unsigned int hvp = hvpulsecnt2send;
     hvpulsecnt2send = 0;
-    unsigned long dt = count_timestamp_2send - last_count_timestamp_2send;
+    int dt = count_timestamp_2send - last_count_timestamp_2send;
     last_count_timestamp_2send = count_timestamp_2send;
 
     unsigned int current_cpm;
