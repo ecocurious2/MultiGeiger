@@ -61,31 +61,6 @@
 // Max time the greeting display will be on. [msec]
 #define AFTERSTART 5000
 
-unsigned int GMC_counts;
-unsigned int GMC_counts_2send;
-unsigned int accumulated_GMC_counts = 0;
-unsigned long count_timestamp = millis();
-unsigned long count_timestamp_2send = millis();
-unsigned long last_count_timestamp = millis();
-unsigned long last_count_timestamp_2send = millis();
-unsigned long accumulated_time = 0;
-unsigned int last_GMC_counts = 0;
-unsigned int hvpulsecnt2send = 0;
-float Count_Rate = 0.0;
-float Dose_Rate = 0.0;
-float accumulated_Count_Rate = 0.0;
-float accumulated_Dose_Rate = 0.0;
-unsigned long lastMinuteLog = millis();
-unsigned int lastMinuteLogCounts = 0;
-unsigned int current_cpm;
-
-unsigned long toSendTime = millis();
-unsigned long afterStartTime = AFTERSTART;
-
-unsigned long display_timestamp = millis();
-
-float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
-
 void setup() {
   setup_log(DEFAULT_LOG_LEVEL);
   setup_display();
@@ -113,6 +88,28 @@ void loop() {
   unsigned long current_ms = millis();  // to save multiple calls to millis()
   bool update_display;
   bool wifi_connected = false;
+  
+  unsigned int GMC_counts;
+  unsigned long count_timestamp;
+  static unsigned long last_count_timestamp = millis();
+
+  static unsigned int accumulated_GMC_counts = 0;
+  static unsigned long accumulated_time = 0;
+
+  unsigned int GMC_counts_2send;
+  unsigned long count_timestamp_2send;
+  static unsigned long last_count_timestamp_2send = millis();
+  static unsigned long toSendTime = millis();
+
+  static unsigned int hvpulsecnt2send = 0;
+
+  static float Count_Rate = 0.0, Dose_Rate = 0.0;
+  static float accumulated_Count_Rate = 0.0, accumulated_Dose_Rate = 0.0;
+
+  static unsigned int lastMinuteLogCounts = 0;
+  static unsigned long lastMinuteLog = millis();
+
+  static unsigned long display_timestamp = millis();
 
   switches = read_switches();
 
@@ -139,6 +136,8 @@ void loop() {
     accumulated_time += time_difference;                       // accumulate all the time
     accumulated_GMC_counts += GMC_counts;                      // accumulate all the pulses
     lastMinuteLogCounts += GMC_counts;
+
+    float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
     // calculate the current count rate and dose rate
     if (time_difference != 0)
@@ -189,6 +188,7 @@ void loop() {
 
   // If there were no pulses after 3 secs after start,
   // clear display anyway and show 0 counts.
+  static unsigned long afterStartTime = AFTERSTART;
   if (afterStartTime && ((current_ms - toSendTime) >= afterStartTime)) {
     afterStartTime = 0;
     DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
@@ -208,6 +208,7 @@ void loop() {
     time_difference = count_timestamp_2send - last_count_timestamp_2send;
     last_count_timestamp_2send = count_timestamp_2send;
 
+    unsigned int current_cpm;
     if (time_difference != 0)
       current_cpm = (int)(GMC_counts_2send * 60000 / time_difference);
     else
@@ -224,9 +225,10 @@ void loop() {
                   have_thp, temperature, humidity, pressure);
   }
 
+  static unsigned int last_GMC_counts = 0;
   if (GMC_counts != last_GMC_counts) {
     tick(LED_TICK && switches.led_on, SPEAKER_TICK && switches.speaker_on);
-    last_GMC_counts = GMC_counts;         // notice old value
+    last_GMC_counts = GMC_counts;
   }
 
   iotWebConf.doLoop();  // see webconf.cpp
