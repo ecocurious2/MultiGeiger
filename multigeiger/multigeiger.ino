@@ -194,12 +194,13 @@ void loop() {
     unsigned int current_cpm;
     current_cpm = (dt != 0) ? (int)(GMC_counts_2send * 60000 / dt) : 0;
 
-    if (have_thp) {
-      read_thp_sensor();
+    bool have_thp;
+    float temperature, humidity, pressure;
+    have_thp = read_thp_sensor(&temperature, &humidity, &pressure);
+    if (have_thp)
       log(DEBUG, "Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f", current_cpm, hvp, temperature, humidity, pressure);
-    } else {
+    else
       log(DEBUG, "Measured: cpm= %d HV=%d", current_cpm, hvp);
-    }
 
     transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hvp, GMC_counts_2send, current_cpm,
                   have_thp, temperature, humidity, pressure);

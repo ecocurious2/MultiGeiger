@@ -8,26 +8,25 @@
 #include "log.h"
 #include "thp_sensor.h"
 
-int have_thp = 0;
-
-float temperature = 0.0;
-float humidity = 0.0;
-float pressure = 0.0;
+static bool have_thp = false;
 
 Adafruit_BME280 bme;
 
-void setup_thp_sensor() {
-  have_thp = bme.begin(BME280_ADDRESS);
+bool setup_thp_sensor(void) {
+  have_thp = (bool) bme.begin(BME280_ADDRESS);
   if (!have_thp)
-    have_thp = bme.begin(BME280_ADDRESS_ALTERNATE);
-  log(INFO, "BME_Status: %d  ID:%0X", have_thp, bme.sensorID());
+    have_thp = (bool) bme.begin(BME280_ADDRESS_ALTERNATE);
+  if (have_thp)
+    log(INFO, "BME_Status: %d  ID:%0X", (int) have_thp, bme.sensorID());
+  else
+    log(INFO, "BME_Status: %d  ID:None", (int) have_thp);
+  return have_thp;
 }
 
-void read_thp_sensor() {
-  if (have_thp) {
-    temperature = bme.readTemperature();
-    humidity = bme.readHumidity();
-    pressure = bme.readPressure();
-  }
+bool read_thp_sensor(float *temperature, float *humidity, float *pressure) {
+  *temperature = have_thp ? bme.readTemperature() : 0.0;
+  *humidity = have_thp ? bme.readHumidity() : 0.0;
+  *pressure = have_thp ? bme.readPressure() : 0.0;
+  return have_thp;
 }
 

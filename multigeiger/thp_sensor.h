@@ -3,13 +3,7 @@
 #ifndef _THP_SENSOR_H_
 #define _THP_SENSOR_H_
 
-extern int have_thp;
-
-extern float temperature;
-extern float humidity;
-extern float pressure;
-
-void setup_thp_sensor(void);
-void read_thp_sensor(void);
+bool setup_thp_sensor(void);
+bool read_thp_sensor(float *temperature, float *humidity, float *pressure);
 
 #endif // _THP_SENSOR_H_
