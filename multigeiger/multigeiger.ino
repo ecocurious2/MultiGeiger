@@ -82,7 +82,7 @@ unsigned int current_cpm = 0;
 unsigned long toSendTime = millis();
 unsigned long afterStartTime = AFTERSTART;
 
-unsigned long time2display = millis();
+unsigned long display_timestamp = millis();
 
 bool speakerTick = SPEAKER_TICK;
 bool ledTick = LED_TICK;
@@ -126,7 +126,7 @@ void loop() {
   GMC_counts = isr_GMC_counts;
   // Check if there are enough pulses detected or if enough time has elapsed.
   // If yes, then it is time to calculate the pulse rate, update the display and recharge the HV capacitor.
-  update_display = (GMC_counts >= MAXCOUNTS) || ((current_ms - time2display) >= DISPLAYREFRESH);
+  update_display = (GMC_counts >= MAXCOUNTS) || ((current_ms - display_timestamp) >= DISPLAYREFRESH);
   if (update_display) isr_GMC_counts = 0;
   count_timestamp = isr_count_timestamp;
   portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
@@ -138,7 +138,7 @@ void loop() {
   }
 
   if (update_display) {
-    time2display = current_ms;
+    display_timestamp = current_ms;
     time_difference = count_timestamp - last_count_timestamp;  // calculate all derived values
     last_count_timestamp = count_timestamp;                    // notice the old timestamp
     accumulated_time += time_difference;                       // accumulate all the time
