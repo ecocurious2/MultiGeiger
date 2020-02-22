@@ -99,7 +99,7 @@ void loop() {
   unsigned int GMC_counts_2send;
   unsigned long count_timestamp_2send;
   static unsigned long last_count_timestamp_2send = millis();
-  static unsigned long toSendTime = millis();
+  static unsigned long transmission_timestamp = millis();
 
   static unsigned int hvpulsecnt2send = 0;
 
@@ -189,15 +189,15 @@ void loop() {
   // If there were no pulses after 3 secs after start,
   // clear display anyway and show 0 counts.
   static unsigned long afterStartTime = AFTERSTART;
-  if (afterStartTime && ((current_ms - toSendTime) >= afterStartTime)) {
+  if (afterStartTime && ((current_ms - transmission_timestamp) >= afterStartTime)) {
     afterStartTime = 0;
     DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
                (SHOW_DISPLAY && switches.display_on), wifi_connected);
   }
 
   // Check, if we have to send to sensor.community etc.
-  if ((current_ms - toSendTime) >= (MEASUREMENT_INTERVAL * 1000)) {
-    toSendTime = current_ms;
+  if ((current_ms - transmission_timestamp) >= (MEASUREMENT_INTERVAL * 1000)) {
+    transmission_timestamp = current_ms;
     portENTER_CRITICAL(&mux_GMC_count);
     GMC_counts_2send = isr_GMC_counts_2send;                    // copy values from ISR
     count_timestamp_2send = isr_count_timestamp_2send;
