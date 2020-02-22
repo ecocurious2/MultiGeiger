@@ -140,18 +140,20 @@ void loop() {
     accumulated_GMC_counts += GMC_counts;                      // accumulate all the pulses
     lastMinuteLogCounts += GMC_counts;
 
-    Count_Rate = 0.0;
-    if (time_difference != 0) {
-      Count_Rate = (float)GMC_counts * 1000.0 / (float)time_difference; // calculate the current count rate
-    }
+    // calculate the current count rate and dose rate
+    if (time_difference != 0)
+      Count_Rate = (float)GMC_counts * 1000.0 / (float)time_difference;
+    else
+      Count_Rate = 0.0;  // avoid division by zero
 
     Dose_Rate = Count_Rate * GMC_factor_uSvph;                          // ... and dose rate
 
-    // calculate the radiation over the complete time from start
-    accumulated_Count_Rate = 0.0;
-    if (accumulated_time != 0) {
+    // calculate the count rate and dose rate over the complete time from start
+    if (accumulated_time != 0)
       accumulated_Count_Rate = (float)accumulated_GMC_counts * 1000.0 / (float)accumulated_time;
-    }
+    else
+      accumulated_Count_Rate = 0.0;  // avoid division by zero
+
     accumulated_Dose_Rate = accumulated_Count_Rate * GMC_factor_uSvph;
 
     // ... and display it.
@@ -206,10 +208,10 @@ void loop() {
     time_difference = count_timestamp_2send - last_count_timestamp_2send;
     last_count_timestamp_2send = count_timestamp_2send;
 
-    current_cpm = 0;
-    if (time_difference != 0) {
+    if (time_difference != 0)
       current_cpm = (int)(GMC_counts_2send * 60000 / time_difference);
-    }
+    else
+      current_cpm = 0;  // avoid division by zero
 
     if (have_thp) {  // temperature / humidity / pressure
       read_thp_sensor();
