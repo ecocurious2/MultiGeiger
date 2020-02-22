@@ -96,7 +96,7 @@ void loop() {
   static float Count_Rate = 0.0, Dose_Rate = 0.0;
   static float accumulated_Count_Rate = 0.0, accumulated_Dose_Rate = 0.0;
 
-  static unsigned int lastMinuteLogCounts = 0;
+  static unsigned int minute_log_counts = 0;
   static unsigned long minute_log_timestamp = millis();
 
   bool update_display;
@@ -126,7 +126,7 @@ void loop() {
     last_count_timestamp = count_timestamp;
     accumulated_time += dt;                                    // accumulate all the time
     accumulated_GMC_counts += GMC_counts;                      // accumulate all the pulses
-    lastMinuteLogCounts += GMC_counts;
+    minute_log_counts += GMC_counts;
 
     float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
@@ -150,12 +150,12 @@ void loop() {
     if (Serial_Print_Mode == Serial_One_Minute_Log) {
       int dt = current_ms - minute_log_timestamp;
       if (dt >= 60000) {
-        unsigned int lastMinuteLogCountRate = (lastMinuteLogCounts * 60000) / dt;
-        if (((((lastMinuteLogCounts * 60000) % dt) * 2) / dt) >= 1) {
-          lastMinuteLogCountRate++;  // Rounding + 0.5
+        unsigned int minute_log_count_rate = (minute_log_counts * 60000) / dt;
+        if (((((minute_log_counts * 60000) % dt) * 2) / dt) >= 1) {
+          minute_log_count_rate++;  // Rounding + 0.5
         }
-        log_data_one_minute((current_ms / 1000), lastMinuteLogCountRate, lastMinuteLogCounts);
-        lastMinuteLogCounts = 0;
+        log_data_one_minute((current_ms / 1000), minute_log_count_rate, minute_log_counts);
+        minute_log_counts = 0;
         minute_log_timestamp = current_ms;
       }
     }
