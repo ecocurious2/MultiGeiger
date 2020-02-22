@@ -24,7 +24,7 @@
 // Hosts for data delivery
 #define MADAVI "http://api-rrd.madavi.de/data.php"
 #define SENSORCOMMUNITY "http://api.sensor.community/v1/push-sensor-data/"
-#define TOILET "http://ptsv2.com/t/enbwck3/post"
+#define TOILET "http://ptsv2.com/t/rk9pr-1582220446/post"
 
 static String http_software_version;
 #if SEND2LORA
@@ -46,11 +46,12 @@ void setup_transmission(const char *version, char *ssid) {
   #endif
 }
 
-void prepare_http(HTTPClient *http, const char *host) {
+void prepare_http(HTTPClient *http, const char *host, int xpin) {
   http->begin(host);
   http->addHeader("Content-Type", "application/json; charset=UTF-8");
   http->addHeader("Connection", "close");
   http->addHeader("X-Sensor", chipID);
+  http->addHeader("X-PIN", String(xpin));
 }
 
 void send_http(HTTPClient *http, String body) {
@@ -70,58 +71,88 @@ void send_http(HTTPClient *http, String body) {
   http->end();
 }
 
-void send_http_geiger(const char *host, String tube_type, unsigned int timediff, unsigned int hv_pulses, unsigned int gm_counts, unsigned int cpm) {
-  bool addname = false;
+void send_http_geiger(const char *host, String tube_type, unsigned int timediff, unsigned int hv_pulses, 
+  unsigned int gm_counts, unsigned int cpm, bool addname, int xpin) {
   char body[1000];
   HTTPClient http;
-  prepare_http(&http, host);
-  http.addHeader("X-PIN", "19");
+  prepare_http(&http, host, xpin);
   tube_type = tube_type.substring(10);
-  String prefix = (addname ? tube_type + "_" : "");
+  String prefix = addname ? tube_type + "_" : "";
   const char *json_format = R"=====(
 {
  "software_version": "%s",
  "sensordatavalues": [
   {"value_type": "%scounts_per_minute", "value": "%d"},
-  {"value_type": "hv_pulses", "value": "%d"},
-  {"value_type": "counts", "value": "%d"},
-  {"value_type": "sample_time_ms", "value": "%d"}
+  {"value_type": "%shv_pulses", "value": "%d"},
+  {"value_type": "%scounts", "value": "%d"},
+  {"value_type": "%ssample_time_ms", "value": "%d"}
  ]
 }
 )=====";
   snprintf(body, 1000, json_format,
            http_software_version.c_str(),
            prefix.c_str(), cpm,
-           hv_pulses,
-           gm_counts,
-           timediff);
+           prefix.c_str(), hv_pulses,
+           prefix.c_str(), gm_counts,
+           prefix.c_str(), timediff);
   send_http(&http, body);
 }
 
-void send_http_thp(const char *host, float temperature, float humidity, float pressure) {
-  bool addname = false;
-  String prefix = (addname ? "BME280_" : "");
+void send_http_thp(const char *host, float temperature, float humidity, float pressure, int xpin) {
   char body[1000];
   HTTPClient http;
-  prepare_http(&http, host);
-  http.addHeader("X-PIN", "11");
+  prepare_http(&http, host, xpin);
   const char *json_format = R"=====(
 {
  "software_version": "%s",
  "sensordatavalues": [
-  {"value_type": "%stemperature", "value": "%.2f"},
-  {"value_type": "%shumidity", "value": "%.2f"},
-  {"value_type": "%spressure", "value": "%.2f"}
+  {"value_type": "temperature", "value": "%.2f"},
+  {"value_type": "humidity", "value": "%.2f"},
+  {"value_type": "pressure", "value": "%.2f"}
  ]
 }
 )=====";
   snprintf(body, 1000, json_format,
            http_software_version.c_str(),
-           prefix.c_str(), temperature,
-           prefix.c_str(), humidity,
-           prefix.c_str(), pressure);
+           temperature,
+           humidity,
+           pressure);
   send_http(&http, body);
 }
+
+void send_http_geiger_and_thp(const char *host, String tube_type, unsigned int timediff, 
+  unsigned int hv_pulses, unsigned int gm_counts, unsigned int cpm,
+  float temperature, float humidity, float pressure) {
+  char body[1000];
+  HTTPClient http;
+  prepare_http(&http, host, 0);
+  tube_type = tube_type.substring(10);
+  const char *json_format = R"=====(
+{
+ "software_version": "%s",
+ "sensordatavalues": [
+  {"value_type": "%s_counts_per_minute", "value": "%d"},
+  {"value_type": "%s_hv_pulses", "value": "%d"},
+  {"value_type": "%s_counts", "value": "%d"},
+  {"value_type": "%s_sample_time_ms", "value": "%d"},
+  {"value_type": "BME280_temperature", "value": "%.2f"},
+  {"value_type": "BME280_humidity", "value": "%.2f"},
+  {"value_type": "BME280_pressure", "value": "%.2f"}
+ ]
+}
+)=====";
+  snprintf(body, 1000, json_format,
+           http_software_version.c_str(),
+           tube_type.c_str(), cpm,
+           tube_type.c_str(), hv_pulses,
+           tube_type.c_str(), gm_counts,
+           tube_type.c_str(), timediff,
+           temperature,
+           humidity,
+           pressure);
+  send_http(&http, body);
+}
+
 
 #if SEND2LORA
 // LoRa payload:
@@ -165,27 +196,30 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
   #if SEND2DUMMY
   displayStatusLine("Toilet");
   log(INFO, "SENDING TO TOILET ...");
-  send_http_geiger(TOILET, tube_type, dt, hv_pulses, gm_counts, cpm);
+  send_http_geiger(TOILET, tube_type, dt, hv_pulses, gm_counts, cpm, true, XPIN_RADIATION);
   if (have_thp)
-    send_http_thp(TOILET, temperature, humidity, pressure);
+    send_http_thp(TOILET, temperature, humidity, pressure, XPIN_BME280);
   delay(300);
   #endif
 
   #if SEND2MADAVI
   log(INFO, "Sending to Madavi ...");
   displayStatusLine("Madavi");
-  send_http_geiger(MADAVI, tube_type, dt, hv_pulses, gm_counts, cpm);
-  if (have_thp)
-    send_http_thp(MADAVI, temperature, humidity, pressure);
+  if (have_thp) {
+    // send both infos in one request to MADAVI to keep the server load lower
+    send_http_geiger_and_thp(MADAVI, tube_type, dt, hv_pulses, gm_counts, cpm, temperature, humidity, pressure);
+  } else {
+    send_http_geiger(MADAVI, tube_type, dt, hv_pulses, gm_counts, cpm, true, 0);
+  }
   delay(300);
   #endif
 
   #if SEND2SENSORCOMMUNITY
   log(INFO, "Sending to sensor.community ...");
   displayStatusLine("sensor.community");
-  send_http_geiger(SENSORCOMMUNITY, tube_type, dt, hv_pulses, gm_counts, cpm);
+  send_http_geiger(SENSORCOMMUNITY, tube_type, dt, hv_pulses, gm_counts, cpm, false, XPIN_RADIATION);
   if (have_thp)
-    send_http_thp(SENSORCOMMUNITY, temperature, humidity, pressure);
+    send_http_thp(SENSORCOMMUNITY, temperature, humidity, pressure, XPIN_BME280);
   delay(300);
   #endif
 
