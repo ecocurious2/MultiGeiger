@@ -61,6 +61,15 @@
 // Max time the greeting display will be on. [msec]
 #define AFTERSTART 5000
 
+// In which intervals the OLED display is updated. [msec]
+#define DISPLAYREFRESH 10000
+
+// Minimum amount of GM pulses required to early-update the display.
+#define MINCOUNTS 100
+
+// Interval for unconditional HV charge pulse generation. [msec]
+#define HVPULSE_MS 1000
+
 void setup() {
   setup_log(DEFAULT_LOG_LEVEL);
   setup_display();
@@ -76,10 +85,6 @@ void setup() {
   setup_log_data(SERIAL_DEBUG);
   setup_tube();
 }
-
-#define DISPLAYREFRESH 10000
-#define MAXCOUNTS 100
-#define HVPULSE_MS 1000
 
 void loop() {
   unsigned long time_difference;
@@ -118,7 +123,7 @@ void loop() {
   GMC_counts = isr_GMC_counts;
   // Check if there are enough pulses detected or if enough time has elapsed.
   // If yes, then it is time to calculate the pulse rate, update the display and recharge the HV capacitor.
-  update_display = (GMC_counts >= MAXCOUNTS) || ((current_ms - display_timestamp) >= DISPLAYREFRESH);
+  update_display = (GMC_counts >= MINCOUNTS) || ((current_ms - display_timestamp) >= DISPLAYREFRESH);
   if (update_display) isr_GMC_counts = 0;
   count_timestamp = isr_count_timestamp;
   portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
