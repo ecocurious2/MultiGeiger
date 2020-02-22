@@ -87,11 +87,8 @@ void setup() {
 }
 
 void loop() {
-  unsigned int HV_pulse_count;
-  Switches switches;
-  unsigned long current_ms = millis();  // to save multiple calls to millis()
-  bool update_display;
   bool wifi_connected = false;
+  unsigned long current_ms = millis();  // to save multiple calls to millis()
   
   unsigned int GMC_counts;
   unsigned long count_timestamp;
@@ -105,6 +102,7 @@ void loop() {
   static unsigned long last_count_timestamp_2send = millis();
   static unsigned long transmission_timestamp = millis();
 
+  unsigned int HV_pulse_count;
   static unsigned int hvpulsecnt2send = 0;
 
   static float Count_Rate = 0.0, Dose_Rate = 0.0;
@@ -113,9 +111,10 @@ void loop() {
   static unsigned int lastMinuteLogCounts = 0;
   static unsigned long minute_log_timestamp = millis();
 
+  bool update_display;
   static unsigned long display_timestamp = millis();
 
-  switches = read_switches();
+  Switches switches = read_switches();
 
   // copy values from ISR
   portENTER_CRITICAL(&mux_GMC_count);                            // enter critical section
