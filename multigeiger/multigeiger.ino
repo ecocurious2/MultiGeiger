@@ -107,7 +107,7 @@ void loop() {
   static float accumulated_Count_Rate = 0.0, accumulated_Dose_Rate = 0.0;
 
   static unsigned int lastMinuteLogCounts = 0;
-  static unsigned long lastMinuteLog = millis();
+  static unsigned long minute_log_timestamp = millis();
 
   static unsigned long display_timestamp = millis();
 
@@ -165,14 +165,14 @@ void loop() {
     }
 
     if (Serial_Print_Mode == Serial_One_Minute_Log) {                // 1 Minute Log active?
-      if (current_ms > (lastMinuteLog + 60000)) {                    // Time reached for next 1-Minute log?
-        unsigned int lastMinuteLogCountRate = ((lastMinuteLogCounts * 60000) / (current_ms - lastMinuteLog));   // = * 60 / 1000
-        if (((((lastMinuteLogCounts * 60000) % (current_ms - lastMinuteLog)) * 2) / (current_ms - lastMinuteLog)) >= 1) {
+      if (current_ms - minute_log_timestamp > 60000) {               // Time reached for next 1-Minute log?
+        unsigned int lastMinuteLogCountRate = ((lastMinuteLogCounts * 60000) / (current_ms - minute_log_timestamp));   // = * 60 / 1000
+        if (((((lastMinuteLogCounts * 60000) % (current_ms - minute_log_timestamp)) * 2) / (current_ms - minute_log_timestamp)) >= 1) {
           lastMinuteLogCountRate++;                                  // Rounding + 0.5
         }
         log_data_one_minute((current_ms / 1000), lastMinuteLogCountRate, lastMinuteLogCounts);
         lastMinuteLogCounts = 0;
-        lastMinuteLog = current_ms;
+        minute_log_timestamp = current_ms;
       }
     }
   }
