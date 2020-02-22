@@ -76,7 +76,8 @@ void setup() {
 void loop() {
   bool wifi_connected = false;
   unsigned long current_ms = millis();  // to save multiple calls to millis()
-  
+  static unsigned long boot_timestamp = millis();
+
   unsigned int GMC_counts;
   unsigned long count_timestamp;
   static unsigned long last_count_timestamp = millis();
@@ -169,9 +170,9 @@ void loop() {
     log_data_statistics(count_time_between);
   }
 
-  // If there were no pulses after 3 secs after start, clear display anyway and show 0 counts.
+  // If there were no pulses after AFTERSTART msecs after boot, clear display anyway and show 0 counts.
   static unsigned long afterStartTime = AFTERSTART;
-  if (afterStartTime && ((current_ms - transmission_timestamp) >= afterStartTime)) {
+  if (afterStartTime && ((current_ms - boot_timestamp) >= afterStartTime)) {
     afterStartTime = 0;
     DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
                (SHOW_DISPLAY && switches.display_on), wifi_connected);
