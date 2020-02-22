@@ -71,8 +71,8 @@ void send_http(HTTPClient *http, String body) {
   http->end();
 }
 
-void send_http_geiger(const char *host, String tube_type, unsigned int timediff, unsigned int hv_pulses, 
-  unsigned int gm_counts, unsigned int cpm, bool addname, int xpin) {
+void send_http_geiger(const char *host, String tube_type, unsigned int timediff, unsigned int hv_pulses,
+                      unsigned int gm_counts, unsigned int cpm, bool addname, int xpin) {
   char body[1000];
   HTTPClient http;
   prepare_http(&http, host, xpin);
