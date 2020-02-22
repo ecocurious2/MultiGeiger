@@ -61,8 +61,8 @@
 // Max time the greeting display will be on. [msec]
 #define AFTERSTART 5000
 
-unsigned int GMC_counts = 0;
-unsigned int GMC_counts_2send = 0;
+unsigned int GMC_counts;
+unsigned int GMC_counts_2send;
 unsigned int accumulated_GMC_counts = 0;
 unsigned long count_timestamp = millis();
 unsigned long count_timestamp_2send = millis();
@@ -77,7 +77,7 @@ float accumulated_Count_Rate = 0.0;
 float accumulated_Dose_Rate = 0.0;
 unsigned long lastMinuteLog = millis();
 unsigned int lastMinuteLogCounts = 0;
-unsigned int current_cpm = 0;
+unsigned int current_cpm;
 
 unsigned long toSendTime = millis();
 unsigned long afterStartTime = AFTERSTART;
