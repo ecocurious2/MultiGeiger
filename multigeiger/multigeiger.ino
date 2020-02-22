@@ -54,9 +54,6 @@
 // Minimum amount of GM pulses required to early-update the display.
 #define MINCOUNTS 100
 
-// Interval for unconditional HV charge pulse generation. [msec]
-#define HVPULSE_MS 1000
-
 void setup() {
   setup_log(DEFAULT_LOG_LEVEL);
   setup_display();
@@ -114,11 +111,8 @@ void loop() {
   count_timestamp = isr_count_timestamp;
   portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
 
-  // Pulse the high voltage if we got enough GMC pulses to update the display or at least every 1000ms.
-  if (update_display || (current_ms - hvpulse_timestamp) >= HVPULSE_MS) {
-    HV_pulse_count = gen_charge_pulses(false);               // charge HV capacitor - sets hvpulse_timestamp!
-    hvpulsecnt2send += HV_pulse_count;                       // count for sending
-  }
+  HV_pulse_count = charge_hv(update_display, current_ms);
+  hvpulsecnt2send += HV_pulse_count;
 
   if (update_display) {
     display_timestamp = current_ms;
