@@ -165,9 +165,10 @@ void loop() {
     }
 
     if (Serial_Print_Mode == Serial_One_Minute_Log) {                // 1 Minute Log active?
-      if (current_ms - minute_log_timestamp > 60000) {               // Time reached for next 1-Minute log?
-        unsigned int lastMinuteLogCountRate = ((lastMinuteLogCounts * 60000) / (current_ms - minute_log_timestamp));   // = * 60 / 1000
-        if (((((lastMinuteLogCounts * 60000) % (current_ms - minute_log_timestamp)) * 2) / (current_ms - minute_log_timestamp)) >= 1) {
+      int dt = current_ms - minute_log_timestamp;
+      if (dt > 60000) {                                              // Time reached for next 1-Minute log?
+        unsigned int lastMinuteLogCountRate = (lastMinuteLogCounts * 60000) / dt;
+        if (((((lastMinuteLogCounts * 60000) % dt) * 2) / dt) >= 1) {
           lastMinuteLogCountRate++;                                  // Rounding + 0.5
         }
         log_data_one_minute((current_ms / 1000), lastMinuteLogCountRate, lastMinuteLogCounts);
