@@ -80,7 +80,8 @@ unsigned int lastMinuteLogCounts = 0;
 unsigned int current_cpm = 0;
 
 unsigned long toSendTime = millis();
-unsigned long afterStartTime = 0;
+unsigned long afterStartTime = AFTERSTART;
+
 unsigned long time2display = millis();
 
 bool speakerTick = SPEAKER_TICK;
@@ -101,8 +102,6 @@ void setup() {
 
   if (playSound)
     play_start_sound();
-
-  afterStartTime = AFTERSTART;
 
   setup_log_data(SERIAL_DEBUG);
   setup_tube();
