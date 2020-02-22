@@ -143,19 +143,11 @@ void loop() {
     float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
     // calculate the current count rate and dose rate
-    if (dt != 0)
-      Count_Rate = (float)GMC_counts * 1000.0 / (float)dt;
-    else
-      Count_Rate = 0.0;  // avoid division by zero
-
+    Count_Rate = (dt != 0) ? (float)GMC_counts * 1000.0 / (float)dt : 0.0;  // avoid division by zero
     Dose_Rate = Count_Rate * GMC_factor_uSvph;                          // ... and dose rate
 
     // calculate the count rate and dose rate over the complete time from start
-    if (accumulated_time != 0)
-      accumulated_Count_Rate = (float)accumulated_GMC_counts * 1000.0 / (float)accumulated_time;
-    else
-      accumulated_Count_Rate = 0.0;  // avoid division by zero
-
+    accumulated_Count_Rate = (accumulated_time != 0) ? (float)accumulated_GMC_counts * 1000.0 / (float)accumulated_time : 0.0;
     accumulated_Dose_Rate = accumulated_Count_Rate * GMC_factor_uSvph;
 
     // ... and display it.
@@ -213,10 +205,7 @@ void loop() {
     last_count_timestamp_2send = count_timestamp_2send;
 
     unsigned int current_cpm;
-    if (dt != 0)
-      current_cpm = (int)(GMC_counts_2send * 60000 / dt);
-    else
-      current_cpm = 0;  // avoid division by zero
+    current_cpm = (dt != 0) ? (int)(GMC_counts_2send * 60000 / dt) : 0;  // avoid division by zero
 
     if (have_thp) {  // temperature / humidity / pressure
       read_thp_sensor();
