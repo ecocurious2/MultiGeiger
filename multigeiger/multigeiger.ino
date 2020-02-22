@@ -87,7 +87,6 @@ void setup() {
 }
 
 void loop() {
-  unsigned long time_difference;
   unsigned int HV_pulse_count;
   Switches switches;
   unsigned long current_ms = millis();  // to save multiple calls to millis()
@@ -136,17 +135,17 @@ void loop() {
 
   if (update_display) {
     display_timestamp = current_ms;
-    time_difference = count_timestamp - last_count_timestamp;  // calculate all derived values
+    unsigned long dt = count_timestamp - last_count_timestamp;  // calculate all derived values
     last_count_timestamp = count_timestamp;                    // notice the old timestamp
-    accumulated_time += time_difference;                       // accumulate all the time
+    accumulated_time += dt;                                    // accumulate all the time
     accumulated_GMC_counts += GMC_counts;                      // accumulate all the pulses
     lastMinuteLogCounts += GMC_counts;
 
     float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
     // calculate the current count rate and dose rate
-    if (time_difference != 0)
-      Count_Rate = (float)GMC_counts * 1000.0 / (float)time_difference;
+    if (dt != 0)
+      Count_Rate = (float)GMC_counts * 1000.0 / (float)dt;
     else
       Count_Rate = 0.0;  // avoid division by zero
 
@@ -165,7 +164,7 @@ void loop() {
                (SHOW_DISPLAY && switches.display_on), wifi_connected);
 
     if (Serial_Print_Mode == Serial_Logging) {                       // Report all
-      log_data(GMC_counts, time_difference, Count_Rate, Dose_Rate, HV_pulse_count,
+      log_data(GMC_counts, dt, Count_Rate, Dose_Rate, HV_pulse_count,
                accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate);
     }
 
@@ -211,12 +210,12 @@ void loop() {
     portEXIT_CRITICAL(&mux_GMC_count);
     unsigned int hvp = hvpulsecnt2send;
     hvpulsecnt2send = 0;
-    time_difference = count_timestamp_2send - last_count_timestamp_2send;
+    unsigned long dt = count_timestamp_2send - last_count_timestamp_2send;
     last_count_timestamp_2send = count_timestamp_2send;
 
     unsigned int current_cpm;
-    if (time_difference != 0)
-      current_cpm = (int)(GMC_counts_2send * 60000 / time_difference);
+    if (dt != 0)
+      current_cpm = (int)(GMC_counts_2send * 60000 / dt);
     else
       current_cpm = 0;  // avoid division by zero
 
@@ -227,7 +226,7 @@ void loop() {
       log(DEBUG, "Measured: cpm= %d HV=%d", current_cpm, hvp);
     }
 
-    transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, time_difference, hvp, GMC_counts_2send, current_cpm,
+    transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hvp, GMC_counts_2send, current_cpm,
                   have_thp, temperature, humidity, pressure);
   }
 
