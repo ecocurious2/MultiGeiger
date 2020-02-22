@@ -134,8 +134,8 @@ void loop() {
 
   if (update_display) {
     display_timestamp = current_ms;
-    unsigned long dt = count_timestamp - last_count_timestamp;  // calculate all derived values
-    last_count_timestamp = count_timestamp;                    // notice the old timestamp
+    unsigned long dt = count_timestamp - last_count_timestamp;
+    last_count_timestamp = count_timestamp;
     accumulated_time += dt;                                    // accumulate all the time
     accumulated_GMC_counts += GMC_counts;                      // accumulate all the pulses
     lastMinuteLogCounts += GMC_counts;
@@ -143,28 +143,28 @@ void loop() {
     float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
     // calculate the current count rate and dose rate
-    Count_Rate = (dt != 0) ? (float)GMC_counts * 1000.0 / (float)dt : 0.0;  // avoid division by zero
-    Dose_Rate = Count_Rate * GMC_factor_uSvph;                          // ... and dose rate
+    Count_Rate = (dt != 0) ? (float)GMC_counts * 1000.0 / (float)dt : 0.0;
+    Dose_Rate = Count_Rate * GMC_factor_uSvph;
 
     // calculate the count rate and dose rate over the complete time from start
     accumulated_Count_Rate = (accumulated_time != 0) ? (float)accumulated_GMC_counts * 1000.0 / (float)accumulated_time : 0.0;
     accumulated_Dose_Rate = accumulated_Count_Rate * GMC_factor_uSvph;
 
-    // ... and display it.
+    // ... and display them.
     DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
                (SHOW_DISPLAY && switches.display_on), wifi_connected);
 
-    if (Serial_Print_Mode == Serial_Logging) {                       // Report all
+    if (Serial_Print_Mode == Serial_Logging) {
       log_data(GMC_counts, dt, Count_Rate, Dose_Rate, HV_pulse_count,
                accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate);
     }
 
-    if (Serial_Print_Mode == Serial_One_Minute_Log) {                // 1 Minute Log active?
+    if (Serial_Print_Mode == Serial_One_Minute_Log) {
       int dt = current_ms - minute_log_timestamp;
-      if (dt >= 60000) {                                             // Time reached for next 1-Minute log?
+      if (dt >= 60000) {
         unsigned int lastMinuteLogCountRate = (lastMinuteLogCounts * 60000) / dt;
         if (((((lastMinuteLogCounts * 60000) % dt) * 2) / dt) >= 1) {
-          lastMinuteLogCountRate++;                                  // Rounding + 0.5
+          lastMinuteLogCountRate++;  // Rounding + 0.5
         }
         log_data_one_minute((current_ms / 1000), lastMinuteLogCountRate, lastMinuteLogCounts);
         lastMinuteLogCounts = 0;
@@ -173,7 +173,7 @@ void loop() {
     }
   }
 
-  if ((Serial_Print_Mode == Serial_Statistics_Log) && isr_gotGMCpulse) {  // statistics log active?
+  if ((Serial_Print_Mode == Serial_Statistics_Log) && isr_gotGMCpulse) {
     unsigned int count_time_between;
     portENTER_CRITICAL(&mux_GMC_count);
     count_time_between = isr_count_time_between;
@@ -182,8 +182,7 @@ void loop() {
     log_data_statistics(count_time_between);
   }
 
-  // If there were no pulses after 3 secs after start,
-  // clear display anyway and show 0 counts.
+  // If there were no pulses after 3 secs after start, clear display anyway and show 0 counts.
   static unsigned long afterStartTime = AFTERSTART;
   if (afterStartTime && ((current_ms - transmission_timestamp) >= afterStartTime)) {
     afterStartTime = 0;
@@ -205,9 +204,9 @@ void loop() {
     last_count_timestamp_2send = count_timestamp_2send;
 
     unsigned int current_cpm;
-    current_cpm = (dt != 0) ? (int)(GMC_counts_2send * 60000 / dt) : 0;  // avoid division by zero
+    current_cpm = (dt != 0) ? (int)(GMC_counts_2send * 60000 / dt) : 0;
 
-    if (have_thp) {  // temperature / humidity / pressure
+    if (have_thp) {
       read_thp_sensor();
       log(DEBUG, "Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f", current_cpm, hvp, temperature, humidity, pressure);
     } else {
