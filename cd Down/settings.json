@@ -1,6 +1,0 @@
-{
-    "terminal.integrated.env.osx": {
-        "PATH": "/Users/rxf/.platformio/penv/bin:/Users/rxf/.platformio/penv:/Users/rxf/esp/xtensa-esp32-elf/bin:/Users/rxf/anaconda3/bin:/Users/rxf/anaconda3/condabin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/usr/local/MacGPG2/bin:/Applications/Wireshark.app/Contents/MacOS",
-        "PLATFORMIO_CALLER": "vscode"
-    }
-}
