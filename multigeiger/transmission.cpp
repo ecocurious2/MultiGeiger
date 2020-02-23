@@ -75,7 +75,7 @@ void send_http_geiger(const char *host, unsigned int timediff, unsigned int hv_p
   char body[1000];
   HTTPClient http;
   prepare_http(&http, host);
-  if(xpin != XPIN_NO_XPIN) {
+  if (xpin != XPIN_NO_XPIN) {
     http.addHeader("X-PIN", String(xpin));
   }
   const char *json_format = R"=====(
