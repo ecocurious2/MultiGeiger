@@ -9,6 +9,7 @@
 // They are called PIN, because in the first days of Feinstaub sensor they were
 // really the CPU-Pins. Now they are 'virtual' pins to distinguish different sensors.
 // Since we send to sensor.community, we have to use their numbers.
+#define XPIN_NO_XPIN 0
 #define XPIN_RADIATION 19
 #define XPIN_BME280 11
 
