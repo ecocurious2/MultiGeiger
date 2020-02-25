@@ -123,7 +123,7 @@ void send_http_thp(const char *host, float temperature, float humidity, float pr
   send_http(&http, body);
 }
 
-// two extra functiions for MADAVI, because MADAVI needs the sensorname in value_type to recignise the sensors
+// two extra functions for MADAVI, because MADAVI needs the sensorname in value_type to recognize the sensors
 void send_http_geiger_2_madavi(String tube_type, unsigned int timediff, unsigned int hv_pulses,
                       unsigned int gm_counts, unsigned int cpm) {
   char body[1000];
