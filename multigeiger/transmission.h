@@ -10,7 +10,7 @@
 // really the CPU-Pins. Now they are 'virtual' pins to distinguish different sensors.
 // Since we send to sensor.community, we have to use their numbers.
 // PIN number 0 doesn't exist, so we use it to disable the X-PIN header.
-#define XPIN_NO_XPIN 0            
+#define XPIN_NO_XPIN 0
 #define XPIN_RADIATION 19
 #define XPIN_BME280 11
 
