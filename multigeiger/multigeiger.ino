@@ -1,19 +1,6 @@
 // Project: Simple Multi-Geiger
 // (c) 2019,2020 by the authors, see AUTHORS file in toplevel directory.
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program. If not, see <http://www.gnu.org/licenses/>.
-// (see LICENSE file in toplevel directory)
+// Licensed under the GPL v3 (or later), see LICENSE file in toplevel directory.
 //
 // Description: With minimal external components you are able to build a Geiger Counter that:
 //   - is precise
@@ -61,34 +48,14 @@
 // Max time the greeting display will be on. [msec]
 #define AFTERSTART 5000
 
-unsigned int GMC_counts = 0;
-unsigned int GMC_counts_2send = 0;
-unsigned int accumulated_GMC_counts = 0;
-unsigned long count_timestamp = millis();
-unsigned long count_timestamp_2send = millis();
-unsigned long last_count_timestamp = millis();
-unsigned long last_count_timestamp_2send = millis();
-unsigned long accumulated_time = 0;
-unsigned int last_GMC_counts = 0;
-unsigned int hvpulsecnt2send = 0;
-float Count_Rate = 0.0;
-float Dose_Rate = 0.0;
-float accumulated_Count_Rate = 0.0;
-float accumulated_Dose_Rate = 0.0;
-unsigned long lastMinuteLog = millis();
-unsigned int lastMinuteLogCounts = 0;
-unsigned int current_cpm = 0;
+// In which intervals the OLED display is updated. [msec]
+#define DISPLAYREFRESH 10000
 
-unsigned long toSendTime = millis();
-unsigned long afterStartTime = 0;
-unsigned long time2display = millis();
+// Minimum amount of GM pulses required to early-update the display.
+#define MINCOUNTS 100
 
-bool speakerTick = SPEAKER_TICK;
-bool ledTick = LED_TICK;
-bool showDisplay = SHOW_DISPLAY;
-bool playSound = PLAY_SOUND;
-
-float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
+// Interval for unconditional HV charge pulse generation. [msec]
+#define HVPULSE_MS 1000
 
 void setup() {
   setup_log(DEFAULT_LOG_LEVEL);
@@ -99,35 +66,50 @@ void setup() {
   setup_webconf();
   setup_transmission(VERSION_STR, ssid);
 
-  if (playSound)
+  if (PLAY_SOUND)
     play_start_sound();
-
-  afterStartTime = AFTERSTART;
 
   setup_log_data(SERIAL_DEBUG);
   setup_tube();
 }
 
-#define DISPLAYREFRESH 10000
-#define MAXCOUNTS 100
-#define HVPULSE_MS 1000
-
 void loop() {
-  unsigned long time_difference;
-  unsigned int HV_pulse_count;
-  Switches switches;
-  unsigned long current_ms = millis();  // to save multiple calls to millis()
-  bool update_display;
   bool wifi_connected = false;
+  unsigned long current_ms = millis();  // to save multiple calls to millis()
+  static unsigned long boot_timestamp = millis();
 
-  switches = read_switches();
+  unsigned int GMC_counts;
+  unsigned long count_timestamp;
+  static unsigned long last_count_timestamp = millis();
+
+  static unsigned int accumulated_GMC_counts = 0;
+  static unsigned long accumulated_time = 0;
+
+  unsigned int GMC_counts_2send;
+  unsigned long count_timestamp_2send;
+  static unsigned long last_count_timestamp_2send = millis();
+  static unsigned long transmission_timestamp = millis();
+
+  unsigned int HV_pulse_count;
+  static unsigned int hvpulsecnt2send = 0;
+
+  static float Count_Rate = 0.0, Dose_Rate = 0.0;
+  static float accumulated_Count_Rate = 0.0, accumulated_Dose_Rate = 0.0;
+
+  static unsigned int minute_log_counts = 0;
+  static unsigned long minute_log_timestamp = millis();
+
+  bool update_display;
+  static unsigned long display_timestamp = millis();
+
+  Switches switches = read_switches();
 
   // copy values from ISR
   portENTER_CRITICAL(&mux_GMC_count);                            // enter critical section
   GMC_counts = isr_GMC_counts;
   // Check if there are enough pulses detected or if enough time has elapsed.
   // If yes, then it is time to calculate the pulse rate, update the display and recharge the HV capacitor.
-  update_display = (GMC_counts >= MAXCOUNTS) || ((current_ms - time2display) >= DISPLAYREFRESH);
+  update_display = (GMC_counts >= MINCOUNTS) || ((current_ms - display_timestamp) >= DISPLAYREFRESH);
   if (update_display) isr_GMC_counts = 0;
   count_timestamp = isr_count_timestamp;
   portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
@@ -139,50 +121,47 @@ void loop() {
   }
 
   if (update_display) {
-    time2display = current_ms;
-    time_difference = count_timestamp - last_count_timestamp;  // calculate all derived values
-    last_count_timestamp = count_timestamp;                    // notice the old timestamp
-    accumulated_time += time_difference;                       // accumulate all the time
+    display_timestamp = current_ms;
+    int dt = count_timestamp - last_count_timestamp;
+    last_count_timestamp = count_timestamp;
+    accumulated_time += dt;                                    // accumulate all the time
     accumulated_GMC_counts += GMC_counts;                      // accumulate all the pulses
-    lastMinuteLogCounts += GMC_counts;
+    minute_log_counts += GMC_counts;
 
-    Count_Rate = 0.0;
-    if (time_difference != 0) {
-      Count_Rate = (float)GMC_counts * 1000.0 / (float)time_difference; // calculate the current count rate
-    }
+    float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
-    Dose_Rate = Count_Rate * GMC_factor_uSvph;                          // ... and dose rate
+    // calculate the current count rate and dose rate
+    Count_Rate = (dt != 0) ? (float)GMC_counts * 1000.0 / (float)dt : 0.0;
+    Dose_Rate = Count_Rate * GMC_factor_uSvph;
 
-    // calculate the radiation over the complete time from start
-    accumulated_Count_Rate = 0.0;
-    if (accumulated_time != 0) {
-      accumulated_Count_Rate = (float)accumulated_GMC_counts * 1000.0 / (float)accumulated_time;
-    }
+    // calculate the count rate and dose rate over the complete time from start
+    accumulated_Count_Rate = (accumulated_time != 0) ? (float)accumulated_GMC_counts * 1000.0 / (float)accumulated_time : 0.0;
     accumulated_Dose_Rate = accumulated_Count_Rate * GMC_factor_uSvph;
 
-    // ... and display it.
+    // ... and display them.
     DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
-               (showDisplay && switches.display_on), wifi_connected);
+               (SHOW_DISPLAY && switches.display_on), wifi_connected);
 
-    if (Serial_Print_Mode == Serial_Logging) {                       // Report all
-      log_data(GMC_counts, time_difference, Count_Rate, Dose_Rate, HV_pulse_count,
+    if (Serial_Print_Mode == Serial_Logging) {
+      log_data(GMC_counts, dt, Count_Rate, Dose_Rate, HV_pulse_count,
                accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate);
     }
 
-    if (Serial_Print_Mode == Serial_One_Minute_Log) {                // 1 Minute Log active?
-      if (current_ms > (lastMinuteLog + 60000)) {                    // Time reached for next 1-Minute log?
-        unsigned int lastMinuteLogCountRate = ((lastMinuteLogCounts * 60000) / (current_ms - lastMinuteLog));   // = * 60 / 1000
-        if (((((lastMinuteLogCounts * 60000) % (current_ms - lastMinuteLog)) * 2) / (current_ms - lastMinuteLog)) >= 1) {
-          lastMinuteLogCountRate++;                                  // Rounding + 0.5
+    if (Serial_Print_Mode == Serial_One_Minute_Log) {
+      int dt = current_ms - minute_log_timestamp;
+      if (dt >= 60000) {
+        unsigned int minute_log_count_rate = (minute_log_counts * 60000) / dt;
+        if (((((minute_log_counts * 60000) % dt) * 2) / dt) >= 1) {
+          minute_log_count_rate++;  // Rounding + 0.5
         }
-        log_data_one_minute((current_ms / 1000), lastMinuteLogCountRate, lastMinuteLogCounts);
-        lastMinuteLogCounts = 0;
-        lastMinuteLog = current_ms;
+        log_data_one_minute((current_ms / 1000), minute_log_count_rate, minute_log_counts);
+        minute_log_counts = 0;
+        minute_log_timestamp = current_ms;
       }
     }
   }
 
-  if ((Serial_Print_Mode == Serial_Statistics_Log) && isr_gotGMCpulse) {  // statistics log active?
+  if ((Serial_Print_Mode == Serial_Statistics_Log) && isr_gotGMCpulse) {
     unsigned int count_time_between;
     portENTER_CRITICAL(&mux_GMC_count);
     count_time_between = isr_count_time_between;
@@ -191,17 +170,17 @@ void loop() {
     log_data_statistics(count_time_between);
   }
 
-  // If there were no pulses after 3 secs after start,
-  // clear display anyway and show 0 counts.
-  if (afterStartTime && ((current_ms - toSendTime) >= afterStartTime)) {
+  // If there were no pulses after AFTERSTART msecs after boot, clear display anyway and show 0 counts.
+  static unsigned long afterStartTime = AFTERSTART;
+  if (afterStartTime && ((current_ms - boot_timestamp) >= afterStartTime)) {
     afterStartTime = 0;
     DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
-               (showDisplay && switches.display_on), wifi_connected);
+               (SHOW_DISPLAY && switches.display_on), wifi_connected);
   }
 
   // Check, if we have to send to sensor.community etc.
-  if ((current_ms - toSendTime) >= (MEASUREMENT_INTERVAL * 1000)) {
-    toSendTime = current_ms;
+  if ((current_ms - transmission_timestamp) >= (MEASUREMENT_INTERVAL * 1000)) {
+    transmission_timestamp = current_ms;
     portENTER_CRITICAL(&mux_GMC_count);
     GMC_counts_2send = isr_GMC_counts_2send;                    // copy values from ISR
     count_timestamp_2send = isr_count_timestamp_2send;
@@ -209,28 +188,27 @@ void loop() {
     portEXIT_CRITICAL(&mux_GMC_count);
     unsigned int hvp = hvpulsecnt2send;
     hvpulsecnt2send = 0;
-    time_difference = count_timestamp_2send - last_count_timestamp_2send;
+    int dt = count_timestamp_2send - last_count_timestamp_2send;
     last_count_timestamp_2send = count_timestamp_2send;
 
-    current_cpm = 0;
-    if (time_difference != 0) {
-      current_cpm = (int)(GMC_counts_2send * 60000 / time_difference);
-    }
+    unsigned int current_cpm;
+    current_cpm = (dt != 0) ? (int)(GMC_counts_2send * 60000 / dt) : 0;
 
-    if (have_thp) {  // temperature / humidity / pressure
+    if (have_thp) {
       read_thp_sensor();
       log(DEBUG, "Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f", current_cpm, hvp, temperature, humidity, pressure);
     } else {
       log(DEBUG, "Measured: cpm= %d HV=%d", current_cpm, hvp);
     }
 
-    transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, time_difference, hvp, GMC_counts_2send, current_cpm,
+    transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hvp, GMC_counts_2send, current_cpm,
                   have_thp, temperature, humidity, pressure);
   }
 
+  static unsigned int last_GMC_counts = 0;
   if (GMC_counts != last_GMC_counts) {
-    tick(ledTick && switches.led_on, speakerTick && switches.speaker_on);
-    last_GMC_counts = GMC_counts;         // notice old value
+    tick(LED_TICK && switches.led_on, SPEAKER_TICK && switches.speaker_on);
+    last_GMC_counts = GMC_counts;
   }
 
   iotWebConf.doLoop();  // see webconf.cpp
