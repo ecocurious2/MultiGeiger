@@ -1,3 +1,6 @@
+// Compile this only if we have a LoRa capable hardware
+#if CPU==STICK
+
 // loraWan hardware related code
 // code based on free-to-use / do-anything-what-you-want-with-it example code
 // by Thomas Telkamp, Matthijs Kooijman and Terry Moore, MCCI.
@@ -17,13 +20,6 @@
 
 #include "userdefines.h"
 
-// Check if a CPU (board) with LoRa is selected. If not, deactivate SEND2LORA.
-#if !((CPU==LORA) || (CPU==STICK))
-#undef SEND2LORA
-#define SEND2LORA 0
-#endif
-
-#if SEND2LORA
 // Send a valid LoRaWAN packet using frequency and encryption settings matching
 // those of the The Things Network.
 //
@@ -48,9 +44,13 @@
 #include <hal/hal.h>
 #include "hal/heltecv2.h"
 #include <SPI.h>
+#include "webconf.h"
 
 #include "loraWan.h"
 #include "log.h"
+
+// Prototype
+int hex2data(unsigned char *data, const char *hexstring, unsigned int len, bool reverse);
 
 // For normal use, we require that you edit the sketch to replace FILLMEIN
 // with values assigned by the TTN console. However, for regression tests,
@@ -64,29 +64,19 @@
 # define FILLMEIN (#dont edit this, edit the lines that use FILLMEIN)
 #endif
 
-// This EUI must be in little-endian format, so least-significant-byte
-// first. When copying an EUI from ttnctl output, this means to reverse
-// the bytes. For TTN issued EUIs the last bytes should be 0xD5, 0xB3, 0x70.
-// static const u1_t PROGMEM APPEUI[8]={ 0x45, 0xB6, 0x01, 0xD0, 0x7E, 0xD5, 0xB3, 0x70};
-static const u1_t PROGMEM APPEUI[8] = { 0x98, 0x7A, 0x01, 0xD0, 0x7E, 0xD5, 0xB3, 0x70 };
+
+// All these 3 LoRa parameters (DEVEUI, APPEUI and APPKEY) may be copied literally from the TTN console window.
+// The necessary reversal on DEVEUI and APPEUI is done by hex2data.
 void os_getArtEui(u1_t *buf) {
-  memcpy_P(buf, APPEUI, 8);
+  (void) hex2data(buf, (const char *) appeui, 8, true);
 }
 
-// This should also be in little endian format, see above.
-//static const u1_t PROGMEM DEVEUI[8]={ 0x00, 0x02, 0x25, 0xB0, 0x03, 0xCC, 0x10, 0x03 };
-static const u1_t PROGMEM DEVEUI[8] = { 0xE8, 0x7C, 0x19, 0xC3, 0x00, 0xC0, 0xD0, 0x00 };
 void os_getDevEui(u1_t *buf) {
-  memcpy_P(buf, DEVEUI, 8);
+  (void) hex2data(buf, (const char *) deveui, 8, true);
 }
 
-// This key should be in big endian format (or, since it is not really a
-// number but a block of memory, endianness does not really apply). In
-// practice, a key taken from ttnctl can be copied as-is.
-//static const u1_t PROGMEM APPKEY[16] = { 0x16, 0x77, 0xD0, 0x1A, 0xEB, 0x57, 0xE5, 0x28, 0x84, 0x23, 0x19, 0x12, 0x70, 0xEC, 0xEF, 0xF0 };
-static const u1_t PROGMEM APPKEY[16] = { 0x6F, 0xA9, 0x57, 0x78, 0xF0, 0x9E, 0xC1, 0xC5, 0xB6, 0xAF, 0x88, 0x74, 0x35, 0x58, 0xF1, 0x87 };
 void os_getDevKey(u1_t *buf) {
-  memcpy_P(buf, APPKEY, 16);
+  (void) hex2data(buf, (const char *) appkey, 16, false);
 }
 
 static osjob_t sendjob;
@@ -293,4 +283,38 @@ transmissionStatus_t lorawan_send(uint8_t txPort, uint8_t *txBuffer, uint8_t txS
     }
   }
 }
+
+//convert hexstring to len bytes of data
+//returns 0 on success, -1 on error
+//data is a buffer of at least len bytes
+//hexstring is upper or lower case hexadecimal, NOT prepended with "0x"
+int hex2data(unsigned char *data, const char *hexstring, unsigned int len, bool reverse) {
+  const char *pos = hexstring;
+  char *endptr;
+  size_t count = 0;
+  if ((hexstring[0] == '\0') || (strlen(hexstring) % 2)) {
+    //hexstring contains no data
+    //or hexstring has an odd length
+    return -1;
+  }
+  for (count = 0; count < len; count++) {
+    char buf[5] = {'0', 'x', pos[0], pos[1], 0};
+    data[count] = strtol(buf, &endptr, 0);
+    pos += 2 * sizeof(char);
+    if (endptr[0] != '\0') {
+      //non-hexadecimal character encountered
+      return -1;
+    }
+  }
+  if (reverse) {
+    char temp;
+    for (int i = 0; i < len / 2; i++) {
+      temp = data[i];
+      data[i] = data[len - i - 1];
+      data[len - i - 1] = temp;
+    }
+  }
+  return 0;
+}
+
 #endif

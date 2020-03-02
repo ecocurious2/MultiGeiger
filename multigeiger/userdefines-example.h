@@ -46,31 +46,3 @@
 
 // Time for configuration via local access point [sec]
 #define WAIT_4_CONFIG 180
-
-// Speaker Ticks with every pulse?  1-> on,  0-> off
-#define SPEAKER_TICK 1
-
-// White LED on uC board flashing with every pulse?
-#define LED_TICK  1
-
-// Enable display?
-#define SHOW_DISPLAY 1
-
-// Play a start sound at boot/reboot time?
-#define PLAY_SOUND 1
-
-// Send to servers:
-// Send data to Madavi server?
-// Madavi should be used to see values in real time.
-#define SEND2MADAVI 1
-
-// Send data to sensor.community server?
-// Should always be 1 so that the data is archived there. Standard server for devices without LoRa.
-#define SEND2SENSORCOMMUNITY 1
-
-// Send data via LoRa to TTN?
-// Only for devices with LoRa, automatically deactivated for devices without LoRa.
-// If this is set to 1, sending to Madavi and sensor.community should be deactivated!
-// Note: The TTN configuration needs to be done in lorawan.cpp (starting at line 65).
-#define SEND2LORA 0
-
