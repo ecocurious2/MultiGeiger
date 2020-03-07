@@ -32,7 +32,7 @@ char sendToMadavi[2] = "1";
 IotWebConfSeparator sep0 = IotWebConfSeparator("Tick settings");
 IotWebConfParameter startSoundParam = IotWebConfParameter("Start sound (1=ON)", "startSound", startSound, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
 IotWebConfParameter speakerTickParam = IotWebConfParameter("Speaker tick (1=ON)", "speakerTick", speakerTick, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
-IotWebConfParameter ledTickParam = IotWebConfParameter("LED ticker (1=ON)", "ledTick", ledTick, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
+IotWebConfParameter ledTickParam = IotWebConfParameter("LED tick (1=ON)", "ledTick", ledTick, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
 IotWebConfParameter showDisplayParam = IotWebConfParameter("Show display (1=ON)", "showDisplay", showDisplay, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
 IotWebConfSeparator sep1 = IotWebConfSeparator("Server settings");
 IotWebConfParameter sendToCommunityParam = IotWebConfParameter("Send to sensors.community (1=ON)", "send2Community", sendToCommunity, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
@@ -122,7 +122,6 @@ void setup_webconf() {
 
   // add the setting parameter
   iotWebConf.addParameter(&sep0);
-  //iotWebConf.addParameter(&startSoundParam1);
   iotWebConf.addParameter(&startSoundParam);
   iotWebConf.addParameter(&speakerTickParam);
   iotWebConf.addParameter(&ledTickParam);
