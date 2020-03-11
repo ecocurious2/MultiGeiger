@@ -19,6 +19,8 @@
 // DIO2 (10) = GPIO32 (12)
 
 #include "userdefines.h"
+#include "webconf.h"
+#include "utils.h";
 
 // Send a valid LoRaWAN packet using frequency and encryption settings matching
 // those of the The Things Network.
@@ -282,39 +284,6 @@ transmissionStatus_t lorawan_send(uint8_t txPort, uint8_t *txBuffer, uint8_t txS
       }
     }
   }
-}
-
-//convert hexstring to len bytes of data
-//returns 0 on success, -1 on error
-//data is a buffer of at least len bytes
-//hexstring is upper or lower case hexadecimal, NOT prepended with "0x"
-int hex2data(unsigned char *data, const char *hexstring, unsigned int len, bool reverse) {
-  const char *pos = hexstring;
-  char *endptr;
-  size_t count = 0;
-  if ((hexstring[0] == '\0') || (strlen(hexstring) % 2)) {
-    //hexstring contains no data
-    //or hexstring has an odd length
-    return -1;
-  }
-  for (count = 0; count < len; count++) {
-    char buf[5] = {'0', 'x', pos[0], pos[1], 0};
-    data[count] = strtol(buf, &endptr, 0);
-    pos += 2 * sizeof(char);
-    if (endptr[0] != '\0') {
-      //non-hexadecimal character encountered
-      return -1;
-    }
-  }
-  if (reverse) {
-    char temp;
-    for (int i = 0; i < len / 2; i++) {
-      temp = data[i];
-      data[i] = data[len - i - 1];
-      data[len - i - 1] = temp;
-    }
-  }
-  return 0;
 }
 
 #endif

@@ -66,7 +66,7 @@ void setup() {
   setup_webconf();
   setup_transmission(VERSION_STR, ssid);
 
-  if (parameterTrue(startSound))
+  if (playSound)
     play_start_sound();
 
   setup_log_data(SERIAL_DEBUG);
@@ -140,7 +140,7 @@ void loop() {
 
     // ... and display them.
     DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
-               (parameterTrue(showDisplay) && switches.display_on), wifi_connected);
+               (showDisplay && switches.display_on), wifi_connected);
 
     if (Serial_Print_Mode == Serial_Logging) {
       log_data(GMC_counts, dt, Count_Rate, Dose_Rate, HV_pulse_count,
@@ -175,7 +175,7 @@ void loop() {
   if (afterStartTime && ((current_ms - boot_timestamp) >= afterStartTime)) {
     afterStartTime = 0;
     DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
-               (parameterTrue(showDisplay) && switches.display_on), wifi_connected);
+               (showDisplay && switches.display_on), wifi_connected);
   }
 
   // Check, if we have to send to sensor.community etc.
@@ -207,7 +207,7 @@ void loop() {
 
   static unsigned int last_GMC_counts = 0;
   if (GMC_counts != last_GMC_counts) {
-    tick(parameterTrue(ledTick) && switches.led_on, parameterTrue(speakerTick) && switches.speaker_on);
+    tick(ledTick && switches.led_on, speakerTick && switches.speaker_on);
     last_GMC_counts = GMC_counts;
   }
 

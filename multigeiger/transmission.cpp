@@ -216,7 +216,7 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
   delay(300);
   #endif
 
-  if(parameterTrue(sendToMadavi)) {
+  if(sendToMadavi) {
     log(INFO, "Sending to Madavi ...");
     displayStatusLine("Madavi");
     send_http_geiger_2_madavi(tube_type, dt, hv_pulses, gm_counts, cpm);
@@ -226,7 +226,7 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
     delay(300);
   }
 
-  if(parameterTrue(sendToCommunity)) {
+  if(sendToCommunity) {
     log(INFO, "Sending to sensor.community ...");
     displayStatusLine("sensor.community");
     send_http_geiger(SENSORCOMMUNITY, dt, hv_pulses, gm_counts, cpm, XPIN_RADIATION)  ;
@@ -237,7 +237,7 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
   }
 
   #if CPU==STICK
-  if(parameterTrue(sendToLora) && (strcmp(appeui,"") != 0)) { // send only, if we have LoRa credentials
+  if(sendToLora && (strcmp(appeui,"") != 0)) { // send only, if we have LoRa credentials
     log(INFO, "Sending to TTN ...");
     displayStatusLine("TTN");
     send_ttn_geiger(tube_nbr, dt, gm_counts);

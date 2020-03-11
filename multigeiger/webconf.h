@@ -6,14 +6,15 @@
 
 #include "IotWebConf.h"
 
-extern char startSound[];
-extern char speakerTick[];
-extern char ledTick[];
-extern char showDisplay[];
-extern char sendToCommunity[];
-extern char sendToMadavi[];
+extern bool speakerTick;
+extern bool playSound;
+extern bool ledTick;
+extern bool showDisplay;
+extern bool sendToCommunity;
+extern bool sendToMadavi;
+extern bool sendToLora;
+
 #if CPU==STICK
-extern char sendToLora[];
 extern char appeui[];
 extern char deveui[];
 extern char appkey[];

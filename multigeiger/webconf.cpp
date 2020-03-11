@@ -7,41 +7,40 @@
 #include <HTTPClient.h>
 #include "userdefines.h"
 
-// All these flags are ON (=1) at startup
-// They all can be changed at any time using the web interface
-char speakerTick[2] = "1";
-char startSound[2] = "1";
-char ledTick[2] = "1";
-char showDisplay[2] = "1";
+bool speakerTick = (SPEAKER_TICK == 1);
+bool playSound = (PLAY_SOUND == 1);
+bool ledTick = (LED_TICK == 1);
+bool showDisplay = (SHOW_DISPLAY == 1);
+bool sendToCommunity = (SEND2SENSORCOMMUNITY == 1);
+bool sendToMadavi = (SEND2MADAVI == 1);
+bool sendToLora = (SEND2LORA == 1);
+char speakerTick_c[2];
+char playSound_c[2];
+char ledTick_c[2];
+char showDisplay_c[2];
+char sendToCommunity_c[2];
+char sendToMadavi_c[2];
+char sendToLora_c[2];
+
 #if CPU==STICK
-// this is LoRa hardware: don't send to WiFi servers by default
-char sendToCommunity[2] = "0";
-char sendToMadavi[2] = "0";
-// send to LoRa by default
-char sendToLora[2] = "1";
 char appeui[17] = "";
 char deveui[17] = "";
 char appkey[IOTWEBCONF_WORD_LEN] = "";
-#else
-// WiFi hardware: send to wifi servers and not to LoRa
-char sendToLora[2] = "0";
-char sendToCommunity[2] = "1";
-char sendToMadavi[2] = "1";
 #endif
 
 IotWebConfSeparator sep0 = IotWebConfSeparator("Tick settings");
-IotWebConfParameter startSoundParam = IotWebConfParameter("Start sound (1=ON)", "startSound", startSound, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
-IotWebConfParameter speakerTickParam = IotWebConfParameter("Speaker tick (1=ON)", "speakerTick", speakerTick, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
-IotWebConfParameter ledTickParam = IotWebConfParameter("LED tick (1=ON)", "ledTick", ledTick, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
-IotWebConfParameter showDisplayParam = IotWebConfParameter("Show display (1=ON)", "showDisplay", showDisplay, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
+IotWebConfParameter startSoundParam = IotWebConfParameter("Start sound (1=ON)", "startSound", playSound_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
+IotWebConfParameter speakerTickParam = IotWebConfParameter("Speaker tick (1=ON)", "speakerTick", speakerTick_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
+IotWebConfParameter ledTickParam = IotWebConfParameter("LED tick (1=ON)", "ledTick", ledTick_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
+IotWebConfParameter showDisplayParam = IotWebConfParameter("Show display (1=ON)", "showDisplay", showDisplay_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
 IotWebConfSeparator sep1 = IotWebConfSeparator("Server settings");
-IotWebConfParameter sendToCommunityParam = IotWebConfParameter("Send to sensors.community (1=ON)", "send2Community", sendToCommunity, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
-IotWebConfParameter sendToMadaviParam = IotWebConfParameter("Send to madavi.de (1=ON)", "send2Madavi", sendToMadavi, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
+IotWebConfParameter sendToCommunityParam = IotWebConfParameter("Send to sensors.community (1=ON)", "send2Community", sendToCommunity_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
+IotWebConfParameter sendToMadaviParam = IotWebConfParameter("Send to madavi.de (1=ON)", "send2Madavi", sendToMadavi_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
 #if CPU==STICK
 IotWebConfSeparator sep3 = IotWebConfSeparator("LoRa settings");
-IotWebConfParameter sendToLoraParam = IotWebConfParameter("Send to LoRa (=>TTN) (1=ON)", "send2lora", sendToLora, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
-IotWebConfParameter appeuiParam = IotWebConfParameter("APPEUI", "appeui", appeui, 17);
+IotWebConfParameter sendToLoraParam = IotWebConfParameter("Send to LoRa (=>TTN) (1=ON)", "send2lora", sendToLora_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
 IotWebConfParameter deveuiParam = IotWebConfParameter("DEVEUI", "deveui", deveui, 17);
+IotWebConfParameter appeuiParam = IotWebConfParameter("APPEUI", "appeui", appeui, 17);
 IotWebConfParameter appkeyParam = IotWebConfParameter("APPKEY", "appkey", appkey, 33);
 #endif
 
@@ -105,9 +104,38 @@ void handleRoot(void) {  // Handle web requests to "/" path.
   server.send(200, "text/html;charset=UTF-8", index);
 }
 
+static char lastWiFiSSID[IOTWEBCONF_WORD_LEN] = "";
+
+void loadConfigVariables(void) {
+  // check if WiFi SSID has changed. If so, restart cpu. Otherwise, the program will not use the new SSID
+  if ((strcmp(lastWiFiSSID, "") != 0) && (strcmp(lastWiFiSSID, iotWebConf.getWifiSsidParameter()->valueBuffer) != 0)) {
+    log(INFO, "Doing restart...");
+    ESP.restart();
+  }
+  strcpy(lastWiFiSSID, iotWebConf.getWifiSsidParameter()->valueBuffer);
+
+  speakerTick = strcmp(speakerTick_c, "1") == 0;
+  playSound = strcmp(playSound_c, "1") == 0;
+  ledTick = strcmp(ledTick_c, "1") == 0;
+  showDisplay = strcmp(showDisplay_c, "1") == 0;
+  sendToCommunity = strcmp(sendToCommunity_c, "1") == 0;
+  sendToMadavi = strcmp(sendToMadavi_c, "1") == 0;
+  sendToLora = strcmp(sendToLora_c, "1") == 0;
+}
+
 void configSaved(void) {
-  log(INFO, "Config saved .. restarting");
-  ESP.restart();
+  log(INFO, "Config saved. ");
+  loadConfigVariables();
+}
+
+void initConfigVariables(void) {
+  strncpy(speakerTick_c, speakerTick ? "1" : "0", 2);
+  strncpy(playSound_c, playSound ? "1" : "0", 2);
+  strncpy(ledTick_c, ledTick ? "1" : "0", 2);
+  strncpy(showDisplay_c, showDisplay ? "1" : "0", 2);
+  strncpy(sendToCommunity_c, sendToCommunity ? "1" : "0", 2);
+  strncpy(sendToMadavi_c, sendToMadavi ? "1" : "0", 2);
+  strncpy(sendToLora_c, sendToLora ? "1" : "0", 2);
 }
 
 void setup_webconf() {
@@ -119,6 +147,9 @@ void setup_webconf() {
   iotWebConf.getApPasswordParameter()->label = "Geiger accesspoint password";
   iotWebConf.getWifiSsidParameter()->label = "WiFi client SSID";
   iotWebConf.getWifiPasswordParameter()->label = "WiFi client password";
+
+  // fill parameters with userdefines.h values
+  initConfigVariables();
 
   // add the setting parameter
   iotWebConf.addParameter(&sep0);
@@ -132,13 +163,19 @@ void setup_webconf() {
   #if CPU==STICK
   iotWebConf.addParameter(&sep3);
   iotWebConf.addParameter(&sendToLoraParam);
-  iotWebConf.addParameter(&appeuiParam);
   iotWebConf.addParameter(&deveuiParam);
+  iotWebConf.addParameter(&appeuiParam);
   iotWebConf.addParameter(&appkeyParam);
   #endif
 
+  // if we don't have LoRa hardware, do not send to LoRa
+  #if CPU==WIFI
+  sendToLora = false;
+  #endif
 
   iotWebConf.init();
+
+  loadConfigVariables();
 
   // -- Set up required URL handlers on the web server.
   server.on("/", handleRoot);
@@ -146,11 +183,6 @@ void setup_webconf() {
   server.onNotFound([]() {
     iotWebConf.handleNotFound();
   });
-}
-
-// Check value of settings parameters
-boolean parameterTrue(char *parameter) {
-  return (strcmp(parameter, "1") == 0);
 }
 
 
