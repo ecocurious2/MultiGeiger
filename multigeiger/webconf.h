@@ -24,6 +24,5 @@ extern char ssid[];
 extern IotWebConf iotWebConf;
 
 void setup_webconf(void);
-boolean parameterTrue(char *parameter);
 
 #endif // _WEBCONF_H_

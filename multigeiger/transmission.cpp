@@ -237,7 +237,7 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
   }
 
   #if CPU==STICK
-  if(sendToLora && (strcmp(appeui,"") != 0)) { // send only, if we have LoRa credentials
+  if(sendToLora && (strcmp(appeui, "") != 0)) {    // send only, if we have LoRa credentials
     log(INFO, "Sending to TTN ...");
     displayStatusLine("TTN");
     send_ttn_geiger(tube_nbr, dt, gm_counts);

@@ -1,3 +1,6 @@
+// to have CPU defined:
+#include "userdefines.h"
+
 // Compile this only if we have a LoRa capable hardware
 #if CPU==STICK
 
@@ -17,10 +20,6 @@
 // DIO0 (8) = GPIO26 (15)
 // DIO1 (9) = GPIO33 (13)
 // DIO2 (10) = GPIO32 (12)
-
-#include "userdefines.h"
-#include "webconf.h"
-#include "utils.h";
 
 // Send a valid LoRaWAN packet using frequency and encryption settings matching
 // those of the The Things Network.
@@ -47,12 +46,9 @@
 #include "hal/heltecv2.h"
 #include <SPI.h>
 #include "webconf.h"
-
+#include "utils.h"
 #include "loraWan.h"
 #include "log.h"
-
-// Prototype
-int hex2data(unsigned char *data, const char *hexstring, unsigned int len, bool reverse);
 
 // For normal use, we require that you edit the sketch to replace FILLMEIN
 // with values assigned by the TTN console. However, for regression tests,
@@ -70,15 +66,17 @@ int hex2data(unsigned char *data, const char *hexstring, unsigned int len, bool 
 // All these 3 LoRa parameters (DEVEUI, APPEUI and APPKEY) may be copied literally from the TTN console window.
 // The necessary reversal on DEVEUI and APPEUI is done by hex2data.
 void os_getArtEui(u1_t *buf) {
-  (void) hex2data(buf, (const char *) appeui, 8, true);
+  (void) hex2data(buf, (const char *) appeui, 8);
+  reverseByteArray(buf, 8);
 }
 
 void os_getDevEui(u1_t *buf) {
-  (void) hex2data(buf, (const char *) deveui, 8, true);
+  (void) hex2data(buf, (const char *) deveui, 8);
+  reverseByteArray(buf, 8);
 }
 
 void os_getDevKey(u1_t *buf) {
-  (void) hex2data(buf, (const char *) appkey, 16, false);
+  (void) hex2data(buf, (const char *) appkey, 16);
 }
 
 static osjob_t sendjob;
