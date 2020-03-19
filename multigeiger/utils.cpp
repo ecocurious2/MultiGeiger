@@ -18,8 +18,8 @@ int hex2data(unsigned char *data, const char *hexstring, unsigned int len) {
   char *endptr;
   size_t count = 0;
   if ((hexstring[0] == '\0') || (strlen(hexstring) % 2)) {
-    //hexstring contains no data
-    //or hexstring has an odd length
+    // hexstring contains no data
+    // or hexstring has an odd length
     return -1;
   }
   for (count = 0; count < len; count++) {
@@ -27,7 +27,7 @@ int hex2data(unsigned char *data, const char *hexstring, unsigned int len) {
     data[count] = strtol(buf, &endptr, 0);
     pos += 2 * sizeof(char);
     if (endptr[0] != '\0') {
-      //non-hexadecimal character encountered
+      // non-hexadecimal character encountered
       return -1;
     }
   }

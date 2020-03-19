@@ -229,7 +229,7 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
   if(sendToCommunity) {
     log(INFO, "Sending to sensor.community ...");
     displayStatusLine("sensor.community");
-    send_http_geiger(SENSORCOMMUNITY, dt, hv_pulses, gm_counts, cpm, XPIN_RADIATION)  ;
+    send_http_geiger(SENSORCOMMUNITY, dt, hv_pulses, gm_counts, cpm, XPIN_RADIATION);
     if (have_thp) {
       send_http_thp(SENSORCOMMUNITY, temperature, humidity, pressure, XPIN_BME280);
     }
