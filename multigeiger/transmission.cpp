@@ -8,14 +8,9 @@
 #include "log.h"
 #include "display.h"
 #include "userdefines.h"
+#include "webconf.h"
 
-// Check if a CPU (board) with LoRa is selected. If not, deactivate SEND2LORA.
-#if !((CPU==LORA) || (CPU==STICK))
-#undef SEND2LORA
-#define SEND2LORA 0
-#endif
-
-#if SEND2LORA==1
+#if CPU==STICK
 #include "loraWan.h"
 #endif
 
@@ -27,7 +22,7 @@
 #define TOILET "http://ptsv2.com/t/rk9pr-1582220446/post"
 
 static String http_software_version;
-#if SEND2LORA
+#if CPU==STICK
 static unsigned int lora_software_version;
 #endif
 static String chipID;
@@ -38,7 +33,7 @@ void setup_transmission(const char *version, char *ssid) {
 
   http_software_version = String(version);
 
-  #if SEND2LORA
+  #if CPU==STICK
   int major, minor, patch;
   sscanf(version, "V%d.%d.%d", &major, &minor, &patch);
   lora_software_version = (major << 12) + (minor << 4) + patch;
@@ -172,7 +167,7 @@ void send_http_thp_2_madavi(float temperature, float humidity, float pressure) {
   send_http(&http, body);
 }
 
-#if SEND2LORA
+#if CPU==STICK
 // LoRa payload:
 // To minimise airtime and follow the 'TTN Fair Access Policy', we only send necessary bytes.
 // We do NOT use Cayenne LPP.
@@ -221,32 +216,34 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
   delay(300);
   #endif
 
-  #if SEND2MADAVI
-  log(INFO, "Sending to Madavi ...");
-  displayStatusLine("Madavi");
-  send_http_geiger_2_madavi(tube_type, dt, hv_pulses, gm_counts, cpm);
-  if (have_thp) {
-    send_http_thp_2_madavi(temperature, humidity, pressure);
+  if(sendToMadavi) {
+    log(INFO, "Sending to Madavi ...");
+    displayStatusLine("Madavi");
+    send_http_geiger_2_madavi(tube_type, dt, hv_pulses, gm_counts, cpm);
+    if (have_thp) {
+      send_http_thp_2_madavi(temperature, humidity, pressure);
+    }
+    delay(300);
   }
-  delay(300);
-  #endif
 
-  #if SEND2SENSORCOMMUNITY
-  log(INFO, "Sending to sensor.community ...");
-  displayStatusLine("sensor.community");
-  send_http_geiger(SENSORCOMMUNITY, dt, hv_pulses, gm_counts, cpm, XPIN_RADIATION);
-  if (have_thp) {
-    send_http_thp(SENSORCOMMUNITY, temperature, humidity, pressure, XPIN_BME280);
+  if(sendToCommunity) {
+    log(INFO, "Sending to sensor.community ...");
+    displayStatusLine("sensor.community");
+    send_http_geiger(SENSORCOMMUNITY, dt, hv_pulses, gm_counts, cpm, XPIN_RADIATION);
+    if (have_thp) {
+      send_http_thp(SENSORCOMMUNITY, temperature, humidity, pressure, XPIN_BME280);
+    }
+    delay(300);
   }
-  delay(300);
-  #endif
 
-  #if SEND2LORA
-  log(INFO, "Sending to TTN ...");
-  displayStatusLine("TTN");
-  send_ttn_geiger(tube_nbr, dt, gm_counts);
-  if (have_thp)
-    send_ttn_thp(temperature, humidity, pressure);
+  #if CPU==STICK
+  if(sendToLora && (strcmp(appeui, "") != 0)) {    // send only, if we have LoRa credentials
+    log(INFO, "Sending to TTN ...");
+    displayStatusLine("TTN");
+    send_ttn_geiger(tube_nbr, dt, gm_counts);
+    if (have_thp)
+      send_ttn_thp(temperature, humidity, pressure);
+  }
   #endif
 
   displayStatusLine(" ");
