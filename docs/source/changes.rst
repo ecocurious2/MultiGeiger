@@ -6,20 +6,25 @@ Changelog
 V1.12.1-dev (not released yet)
 ------------------
 
+* use config web page for more values (userdefines.h has the defaults), #140
 * try both adresses of BME280
 * LoRa payload changes, e.g. to fulfill 'TTN Fair Access Policy'
 * send additional data to servers
+* send to MADAVI in one single request both geiger and thp data
 * new logging with DEFAULT_LOG_LEVEL configuration
 * integrated travis-ci:
 
   - for compile checks (platformio, wifi and stick build)
   - for style checks (using the "astyle" CPP checker)
-* style and other code cleanups
+* source: modularization, cleanups, less globals, ...
+  (quite huge internal changes, please help testing!)
+* use bump2version tool for project version bumps, #169
 * docs:
 
   - https://multigeiger.readthedocs.io/ == the beginning of
     new (sphinx / reST-markup based) online docs, #163
   - add a basic, short README in English (also for online docs)
+  - include infos about project name, #121
   - moved changelog.md to docs/source/changes.rst
   - updated/fixed development docs, #46
   - update docs about new 5V power supply / cabling, #122
