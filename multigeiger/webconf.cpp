@@ -7,13 +7,13 @@
 #include <HTTPClient.h>
 #include "userdefines.h"
 
-bool speakerTick = (SPEAKER_TICK == 1);
-bool playSound = (PLAY_SOUND == 1);
-bool ledTick = (LED_TICK == 1);
-bool showDisplay = (SHOW_DISPLAY == 1);
-bool sendToCommunity = (SEND2SENSORCOMMUNITY == 1);
-bool sendToMadavi = (SEND2MADAVI == 1);
-bool sendToLora = (SEND2LORA == 1);
+bool speakerTick = SPEAKER_TICK;
+bool playSound = PLAY_SOUND;
+bool ledTick = LED_TICK;
+bool showDisplay = SHOW_DISPLAY;
+bool sendToCommunity = SEND2SENSORCOMMUNITY;
+bool sendToMadavi = SEND2MADAVI;
+bool sendToLora = SEND2LORA;
 char speakerTick_c[2];
 char playSound_c[2];
 char ledTick_c[2];

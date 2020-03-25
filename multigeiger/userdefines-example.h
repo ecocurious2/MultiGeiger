@@ -38,8 +38,8 @@
 #define SERIAL_DEBUG Serial_Logging
 
 // Server transmission debugging:
-// if set to 1, print debug info on serial (USB) interface while sending to servers (madavi or sensor.community)
-#define DEBUG_SERVER_SEND 0
+// if set to true, print debug info on serial (USB) interface while sending to servers (madavi or sensor.community)
+#define DEBUG_SERVER_SEND true
 
 // Time to try to connect to saved WiFi [sec]
 #define CONNECT_TIMEOUT 30
@@ -47,30 +47,30 @@
 // Time for configuration via local access point [sec]
 #define WAIT_4_CONFIG 180
 
-// Speaker Ticks with every pulse?  1-> on,  0-> off
-#define SPEAKER_TICK 1
+// Speaker Ticks with every pulse?
+#define SPEAKER_TICK true
 
 // White LED on uC board flashing with every pulse?
-#define LED_TICK  1
+#define LED_TICK true
 
 // Enable display?
-#define SHOW_DISPLAY 1
+#define SHOW_DISPLAY true
 
 // Play a start sound at boot/reboot time?
-#define PLAY_SOUND 1
+#define PLAY_SOUND true
 
 // Send to servers:
 // Send data to Madavi server?
 // Madavi should be used to see values in real time.
-#define SEND2MADAVI 1
+#define SEND2MADAVI true
 
 // Send data to sensor.community server?
-// Should always be 1 so that the data is archived there. Standard server for devices without LoRa.
-#define SEND2SENSORCOMMUNITY 1
+// Should always be true so that the data is archived there. Standard server for devices without LoRa.
+#define SEND2SENSORCOMMUNITY true
 
 // Send data via LoRa to TTN?
 // Only for devices with LoRa, automatically deactivated for devices without LoRa.
-// If this is set to 1, sending to Madavi and sensor.community should be deactivated!
+// If this is set to true, sending to Madavi and sensor.community should be deactivated!
 // Note: The TTN configuration needs to be done in lorawan.cpp (starting at line 65).
-#define SEND2LORA 0
+#define SEND2LORA false
 
