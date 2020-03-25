@@ -14,6 +14,7 @@ bool showDisplay = SHOW_DISPLAY;
 bool sendToCommunity = SEND2SENSORCOMMUNITY;
 bool sendToMadavi = SEND2MADAVI;
 bool sendToLora = SEND2LORA;
+
 char speakerTick_c[2];
 char playSound_c[2];
 char ledTick_c[2];
@@ -28,17 +29,21 @@ char deveui[17] = "";
 char appkey[IOTWEBCONF_WORD_LEN] = "";
 #endif
 
+#define BOOL_PARAM(label, id, var) IotWebConfParameter(label " (1 == true, 0 == false)", id, var, 2, "number", "0/1", NULL, "min='0' max='1' step='1'")
+
 IotWebConfSeparator sep0 = IotWebConfSeparator("Misc. settings");
-IotWebConfParameter startSoundParam = IotWebConfParameter("Start sound (1=ON)", "startSound", playSound_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
-IotWebConfParameter speakerTickParam = IotWebConfParameter("Speaker tick (1=ON)", "speakerTick", speakerTick_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
-IotWebConfParameter ledTickParam = IotWebConfParameter("LED tick (1=ON)", "ledTick", ledTick_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
-IotWebConfParameter showDisplayParam = IotWebConfParameter("Show display (1=ON)", "showDisplay", showDisplay_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
+IotWebConfParameter startSoundParam = BOOL_PARAM("Start sound", "startSound", playSound_c);
+IotWebConfParameter speakerTickParam = BOOL_PARAM("Speaker tick", "speakerTick", speakerTick_c);
+IotWebConfParameter ledTickParam = BOOL_PARAM("LED tick", "ledTick", ledTick_c);
+IotWebConfParameter showDisplayParam = BOOL_PARAM("Show display", "showDisplay", showDisplay_c);
+
 IotWebConfSeparator sep1 = IotWebConfSeparator("Transmission settings");
-IotWebConfParameter sendToCommunityParam = IotWebConfParameter("Send to sensors.community (1=ON)", "send2Community", sendToCommunity_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
-IotWebConfParameter sendToMadaviParam = IotWebConfParameter("Send to madavi.de (1=ON)", "send2Madavi", sendToMadavi_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
+IotWebConfParameter sendToCommunityParam = BOOL_PARAM("Send to sensors.community", "send2Community", sendToCommunity_c);
+IotWebConfParameter sendToMadaviParam = BOOL_PARAM("Send to madavi.de", "send2Madavi", sendToMadavi_c);
+
 #if CPU==STICK
 IotWebConfSeparator sep2 = IotWebConfSeparator("LoRa settings");
-IotWebConfParameter sendToLoraParam = IotWebConfParameter("Send to LoRa (=>TTN) (1=ON)", "send2lora", sendToLora_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
+IotWebConfParameter sendToLoraParam = BOOL_PARAM("Send to LoRa (=>TTN)", "send2lora", sendToLora_c);
 IotWebConfParameter deveuiParam = IotWebConfParameter("DEVEUI", "deveui", deveui, 17);
 IotWebConfParameter appeuiParam = IotWebConfParameter("APPEUI", "appeui", appeui, 17);
 IotWebConfParameter appkeyParam = IotWebConfParameter("APPKEY", "appkey", appkey, 33);
