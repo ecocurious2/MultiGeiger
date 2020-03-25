@@ -54,9 +54,6 @@
 // Minimum amount of GM pulses required to early-update the display.
 #define MINCOUNTS 100
 
-// Interval for unconditional HV charge pulse generation. [msec]
-#define HVPULSE_MS 1000
-
 void setup() {
   setup_log(DEFAULT_LOG_LEVEL);
   setup_display();
@@ -114,11 +111,8 @@ void loop() {
   count_timestamp = isr_count_timestamp;
   portEXIT_CRITICAL(&mux_GMC_count);                             // leave critical section
 
-  // Pulse the high voltage if we got enough GMC pulses to update the display or at least every 1000ms.
-  if (update_display || (current_ms - hvpulse_timestamp) >= HVPULSE_MS) {
-    HV_pulse_count = gen_charge_pulses(false);               // charge HV capacitor - sets hvpulse_timestamp!
-    hvpulsecnt2send += HV_pulse_count;                       // count for sending
-  }
+  HV_pulse_count = charge_hv(update_display, current_ms);
+  hvpulsecnt2send += HV_pulse_count;
 
   if (update_display) {
     display_timestamp = current_ms;
@@ -194,12 +188,13 @@ void loop() {
     unsigned int current_cpm;
     current_cpm = (dt != 0) ? (int)(GMC_counts_2send * 60000 / dt) : 0;
 
-    if (have_thp) {
-      read_thp_sensor();
+    bool have_thp;
+    float temperature, humidity, pressure;
+    have_thp = read_thp_sensor(&temperature, &humidity, &pressure);
+    if (have_thp)
       log(DEBUG, "Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f", current_cpm, hvp, temperature, humidity, pressure);
-    } else {
+    else
       log(DEBUG, "Measured: cpm= %d HV=%d", current_cpm, hvp);
-    }
 
     transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hvp, GMC_counts_2send, current_cpm,
                   have_thp, temperature, humidity, pressure);

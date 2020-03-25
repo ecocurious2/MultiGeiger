@@ -38,7 +38,7 @@ volatile unsigned long isr_count_timestamp;
 volatile unsigned long isr_count_timestamp_2send;
 volatile unsigned long isr_count_time_between;
 
-unsigned long hvpulse_timestamp;  // initialized via setup_tube -> gen_charge_pulses
+static unsigned long hvpulse_timestamp;  // initialized via setup_tube -> gen_charge_pulses
 
 // MUX (mutexes used for mutual exclusive access to isr variables)
 portMUX_TYPE mux_cap_full = portMUX_INITIALIZER_UNLOCKED;
@@ -84,7 +84,19 @@ void IRAM_ATTR isr_GMC_count() {
 // for the call in setup(). Not timing critical and capacitor is empty.
 #define MAX_CHARGE_PULSES_INITIAL 3333
 
+// Interval for unconditional HV charge pulse generation. [msec]
+#define HVPULSE_MS 1000
+
+int charge_hv(bool forced, unsigned long current_ms) {
+  // Charge the HV capacitor if it is forced or every HVPULSE_MS.
+  int HV_pulse_count = 0;
+  if (forced || (current_ms - hvpulse_timestamp) >= HVPULSE_MS)
+    HV_pulse_count = gen_charge_pulses(false);
+  return HV_pulse_count;
+}
+
 int gen_charge_pulses(bool setup) {
+  // charge HV capacitor
   int max_charge_pulses = setup ? MAX_CHARGE_PULSES_INITIAL : MAX_CHARGE_PULSES;
   int charge_pulses = 0;
   isr_GMC_cap_full = 0;
@@ -101,7 +113,7 @@ int gen_charge_pulses(bool setup) {
   return charge_pulses;
 }
 
-void setup_tube() {
+void setup_tube(void) {
   pinMode(PIN_TEST_OUTPUT, OUTPUT);
   pinMode(PIN_HV_FET_OUTPUT, OUTPUT);
   pinMode(PIN_HV_CAP_FULL_INPUT, INPUT);

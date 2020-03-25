@@ -18,12 +18,11 @@ extern volatile unsigned long isr_count_timestamp;
 extern volatile unsigned long isr_count_timestamp_2send;
 extern volatile unsigned long isr_count_time_between;
 
-extern unsigned long hvpulse_timestamp;
-
 extern portMUX_TYPE mux_cap_full;
 extern portMUX_TYPE mux_GMC_count;
 
+int charge_hv(bool forced, unsigned long current_ms);
 int gen_charge_pulses(bool setup);
-void setup_tube();
+void setup_tube(void);
 
 #endif // _TUBE_H_
