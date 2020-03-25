@@ -28,12 +28,12 @@ char deveui[17] = "";
 char appkey[IOTWEBCONF_WORD_LEN] = "";
 #endif
 
-IotWebConfSeparator sep0 = IotWebConfSeparator("Tick settings");
+IotWebConfSeparator sep0 = IotWebConfSeparator("Misc. settings");
 IotWebConfParameter startSoundParam = IotWebConfParameter("Start sound (1=ON)", "startSound", playSound_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
 IotWebConfParameter speakerTickParam = IotWebConfParameter("Speaker tick (1=ON)", "speakerTick", speakerTick_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
 IotWebConfParameter ledTickParam = IotWebConfParameter("LED tick (1=ON)", "ledTick", ledTick_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
 IotWebConfParameter showDisplayParam = IotWebConfParameter("Show display (1=ON)", "showDisplay", showDisplay_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
-IotWebConfSeparator sep1 = IotWebConfSeparator("Server settings");
+IotWebConfSeparator sep1 = IotWebConfSeparator("Transmission settings");
 IotWebConfParameter sendToCommunityParam = IotWebConfParameter("Send to sensors.community (1=ON)", "send2Community", sendToCommunity_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
 IotWebConfParameter sendToMadaviParam = IotWebConfParameter("Send to madavi.de (1=ON)", "send2Madavi", sendToMadavi_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
 #if CPU==STICK
