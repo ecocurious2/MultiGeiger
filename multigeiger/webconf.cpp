@@ -37,7 +37,7 @@ IotWebConfSeparator sep1 = IotWebConfSeparator("Server settings");
 IotWebConfParameter sendToCommunityParam = IotWebConfParameter("Send to sensors.community (1=ON)", "send2Community", sendToCommunity_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
 IotWebConfParameter sendToMadaviParam = IotWebConfParameter("Send to madavi.de (1=ON)", "send2Madavi", sendToMadavi_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
 #if CPU==STICK
-IotWebConfSeparator sep3 = IotWebConfSeparator("LoRa settings");
+IotWebConfSeparator sep2 = IotWebConfSeparator("LoRa settings");
 IotWebConfParameter sendToLoraParam = IotWebConfParameter("Send to LoRa (=>TTN) (1=ON)", "send2lora", sendToLora_c, 2, "number", "0/1", NULL, "min='0' max='1' step='1'");
 IotWebConfParameter deveuiParam = IotWebConfParameter("DEVEUI", "deveui", deveui, 17);
 IotWebConfParameter appeuiParam = IotWebConfParameter("APPEUI", "appeui", appeui, 17);
@@ -161,7 +161,7 @@ void setup_webconf() {
   iotWebConf.addParameter(&sendToCommunityParam);
   iotWebConf.addParameter(&sendToMadaviParam);
   #if CPU==STICK
-  iotWebConf.addParameter(&sep3);
+  iotWebConf.addParameter(&sep2);
   iotWebConf.addParameter(&sendToLoraParam);
   iotWebConf.addParameter(&deveuiParam);
   iotWebConf.addParameter(&appeuiParam);
