@@ -49,6 +49,22 @@ IotWebConfParameter appeuiParam = IotWebConfParameter("APPEUI", "appeui", appeui
 IotWebConfParameter appkeyParam = IotWebConfParameter("APPKEY", "appkey", appkey, 33);
 #endif
 
+bool parse_bool(char *text, bool *value) {
+  if (!strcmp(text, "0")) {
+    *value = false;
+    return true;
+  }
+  if (!strcmp(text, "1")) {
+    *value = true;
+    return true;
+  }
+  return false;  // invalid
+}
+
+void format_bool(bool *value, char *text) {
+  strcpy(text, *value ? "1" : "0");
+}
+
 #define CONFIG_VERSION "013"  // for IoTWebConfig
 
 DNSServer dnsServer;
@@ -119,13 +135,13 @@ void loadConfigVariables(void) {
   }
   strcpy(lastWiFiSSID, iotWebConf.getWifiSsidParameter()->valueBuffer);
 
-  speakerTick = strcmp(speakerTick_c, "1") == 0;
-  playSound = strcmp(playSound_c, "1") == 0;
-  ledTick = strcmp(ledTick_c, "1") == 0;
-  showDisplay = strcmp(showDisplay_c, "1") == 0;
-  sendToCommunity = strcmp(sendToCommunity_c, "1") == 0;
-  sendToMadavi = strcmp(sendToMadavi_c, "1") == 0;
-  sendToLora = strcmp(sendToLora_c, "1") == 0;
+  parse_bool(speakerTick_c, &speakerTick);
+  parse_bool(playSound_c, &playSound);
+  parse_bool(ledTick_c, &ledTick);
+  parse_bool(showDisplay_c, &showDisplay);
+  parse_bool(sendToCommunity_c, &sendToCommunity);
+  parse_bool(sendToMadavi_c, &sendToMadavi);
+  parse_bool(sendToLora_c, &sendToLora);
 }
 
 void configSaved(void) {
@@ -134,13 +150,13 @@ void configSaved(void) {
 }
 
 void initConfigVariables(void) {
-  strncpy(speakerTick_c, speakerTick ? "1" : "0", 2);
-  strncpy(playSound_c, playSound ? "1" : "0", 2);
-  strncpy(ledTick_c, ledTick ? "1" : "0", 2);
-  strncpy(showDisplay_c, showDisplay ? "1" : "0", 2);
-  strncpy(sendToCommunity_c, sendToCommunity ? "1" : "0", 2);
-  strncpy(sendToMadavi_c, sendToMadavi ? "1" : "0", 2);
-  strncpy(sendToLora_c, sendToLora ? "1" : "0", 2);
+  format_bool(&speakerTick, speakerTick_c);
+  format_bool(&playSound, playSound_c);
+  format_bool(&ledTick, ledTick_c);
+  format_bool(&showDisplay, showDisplay_c);
+  format_bool(&sendToCommunity, sendToCommunity_c);
+  format_bool(&sendToMadavi, sendToMadavi_c);
+  format_bool(&sendToLora, sendToLora_c);
 }
 
 void setup_webconf() {
