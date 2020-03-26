@@ -49,13 +49,13 @@ void prepare_http(HTTPClient *http, const char *host) {
 }
 
 void send_http(HTTPClient *http, String body) {
-  if (DEBUG_SERVER_SEND == 1)
+  if (DEBUG_SERVER_SEND)
     log(DEBUG, "http request body: %s", body.c_str());
 
   int httpResponseCode = http->POST(body);
   if (httpResponseCode > 0) {
     String response = http->getString();
-    if (DEBUG_SERVER_SEND == 1) {
+    if (DEBUG_SERVER_SEND) {
       log(DEBUG, "http code: %d", httpResponseCode);
       log(DEBUG, "http response: %s", response.c_str());
     }
