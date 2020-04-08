@@ -2,7 +2,6 @@
 #include "userdefines.h"
 
 // Compile this only if we have a LoRa capable hardware
-#if CPU==STICK
 
 // loraWan hardware related code
 // code based on free-to-use / do-anything-what-you-want-with-it example code
@@ -283,5 +282,3 @@ transmissionStatus_t lorawan_send(uint8_t txPort, uint8_t *txBuffer, uint8_t txS
     }
   }
 }
-
-#endif

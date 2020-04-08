@@ -4,18 +4,6 @@
 // and then edit userdefines.h as appropriate for your use case / hardware.
 
 
-// CPU values (board types, DO NOT CHANGE):
-#define WIFI 0  // Heltec Wifi Kit 32
-#define LORA 1  // Heltec Wifi Lora 32 (V2)
-#define STICK 2  // Heltec Wireless Stick (has LoRa on board)
-
-// your CPU (board type)
-// if you use platformio, CPU is defined in platformio.ini and you don't need to change the definition of CPU.
-// Arduino IDE users *must* define CPU here.
-#ifndef CPU
-#define CPU WIFI
-#endif
-
 // TUBE_TYPE values (predefined at sensor.community, DO NOT CHANGE):
 #define TUBE_UNKNOWN 0 // this can be used for experimenting with other GM tubes and has a 0 CPM to uSv/h conversion factor.
 #define SBM20 1

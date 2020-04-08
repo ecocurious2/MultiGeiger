@@ -23,11 +23,10 @@ char sendToCommunity_c[2];
 char sendToMadavi_c[2];
 char sendToLora_c[2];
 
-#if CPU==STICK
 char appeui[17] = "";
 char deveui[17] = "";
 char appkey[IOTWEBCONF_WORD_LEN] = "";
-#endif
+static bool isLoraBoard;
 
 #define BOOL_PARAM(label, id, var) IotWebConfParameter(label " (1 == true, 0 == false)", id, var, 2, "number", "0/1", NULL, "min='0' max='1' step='1'")
 
@@ -41,13 +40,11 @@ IotWebConfSeparator sep1 = IotWebConfSeparator("Transmission settings");
 IotWebConfParameter sendToCommunityParam = BOOL_PARAM("Send to sensors.community", "send2Community", sendToCommunity_c);
 IotWebConfParameter sendToMadaviParam = BOOL_PARAM("Send to madavi.de", "send2Madavi", sendToMadavi_c);
 
-#if CPU==STICK
 IotWebConfSeparator sep2 = IotWebConfSeparator("LoRa settings");
 IotWebConfParameter sendToLoraParam = BOOL_PARAM("Send to LoRa (=>TTN)", "send2lora", sendToLora_c);
 IotWebConfParameter deveuiParam = IotWebConfParameter("DEVEUI", "deveui", deveui, 17);
 IotWebConfParameter appeuiParam = IotWebConfParameter("APPEUI", "appeui", appeui, 17);
 IotWebConfParameter appkeyParam = IotWebConfParameter("APPKEY", "appkey", appkey, 33);
-#endif
 
 bool parse_bool(char *text, bool *value) {
   if (!strcmp(text, "0")) {
@@ -159,7 +156,8 @@ void initConfigVariables(void) {
   format_bool(&sendToLora, sendToLora_c);
 }
 
-void setup_webconf() {
+void setup_webconf(bool loraHardware) {
+  isLoraBoard = loraHardware;
   iotWebConf.setConfigSavedCallback(&configSaved);
   iotWebConf.setupUpdateServer(&httpUpdater);
 
@@ -181,13 +179,13 @@ void setup_webconf() {
   iotWebConf.addParameter(&sep1);
   iotWebConf.addParameter(&sendToCommunityParam);
   iotWebConf.addParameter(&sendToMadaviParam);
-  #if CPU==STICK
-  iotWebConf.addParameter(&sep2);
-  iotWebConf.addParameter(&sendToLoraParam);
-  iotWebConf.addParameter(&deveuiParam);
-  iotWebConf.addParameter(&appeuiParam);
-  iotWebConf.addParameter(&appkeyParam);
-  #endif
+  if (isLoraBoard) {
+    iotWebConf.addParameter(&sep2);
+    iotWebConf.addParameter(&sendToLoraParam);
+    iotWebConf.addParameter(&deveuiParam);
+    iotWebConf.addParameter(&appeuiParam);
+    iotWebConf.addParameter(&appkeyParam);
+  }
 
   // if we don't have LoRa hardware, do not send to LoRa
   #if CPU==WIFI

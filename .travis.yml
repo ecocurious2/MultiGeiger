@@ -25,7 +25,7 @@ matrix:
         fi
 
   - env:
-      - TEST="PlatformIO builds"
+      - TEST="PlatformIO build"
 
     language: python
     python: 3.6
@@ -41,5 +41,5 @@ matrix:
       - platformio update
 
     script:
-      - platformio run --environment wifi --environment stick
+      - platformio run --environment geiger
 

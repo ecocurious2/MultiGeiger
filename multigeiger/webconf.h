@@ -14,15 +14,13 @@ extern bool sendToCommunity;
 extern bool sendToMadavi;
 extern bool sendToLora;
 
-#if CPU==STICK
 extern char appeui[];
 extern char deveui[];
 extern char appkey[];
-#endif
 
 extern char ssid[];
 extern IotWebConf iotWebConf;
 
-void setup_webconf(void);
+void setup_webconf(bool loraHardware);
 
 #endif // _WEBCONF_H_

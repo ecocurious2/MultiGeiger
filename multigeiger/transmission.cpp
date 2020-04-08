@@ -9,10 +9,7 @@
 #include "display.h"
 #include "userdefines.h"
 #include "webconf.h"
-
-#if CPU==STICK
 #include "loraWan.h"
-#endif
 
 #include "transmission.h"
 
@@ -22,23 +19,23 @@
 #define TOILET "http://ptsv2.com/t/rk9pr-1582220446/post"
 
 static String http_software_version;
-#if CPU==STICK
 static unsigned int lora_software_version;
-#endif
 static String chipID;
+static bool isLoraBoard;
 
-void setup_transmission(const char *version, char *ssid) {
+void setup_transmission(const char *version, char *ssid, bool loraHardware) {
   chipID = String(ssid);
   chipID.replace("ESP32", "esp32");
+  isLoraBoard = loraHardware;
 
   http_software_version = String(version);
 
-  #if CPU==STICK
-  int major, minor, patch;
-  sscanf(version, "V%d.%d.%d", &major, &minor, &patch);
-  lora_software_version = (major << 12) + (minor << 4) + patch;
-  setup_lorawan();
-  #endif
+  if (isLoraBoard) {
+    int major, minor, patch;
+    sscanf(version, "V%d.%d.%d", &major, &minor, &patch);
+    lora_software_version = (major << 12) + (minor << 4) + patch;
+    setup_lorawan();
+  }
 }
 
 void prepare_http(HTTPClient *http, const char *host) {
@@ -167,7 +164,6 @@ void send_http_thp_2_madavi(float temperature, float humidity, float pressure) {
   send_http(&http, body);
 }
 
-#if CPU==STICK
 // LoRa payload:
 // To minimise airtime and follow the 'TTN Fair Access Policy', we only send necessary bytes.
 // We do NOT use Cayenne LPP.
@@ -201,7 +197,6 @@ void send_ttn_thp(float temperature, float humidity, float pressure) {
   ttnData[4] = ((int)(pressure / 10)) & 0xFF;
   lorawan_send(2, ttnData, 5, false, NULL, NULL, NULL);
 }
-#endif
 
 void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int hv_pulses, unsigned int gm_counts, unsigned int cpm,
                    int have_thp, float temperature, float humidity, float pressure) {
@@ -236,15 +231,15 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
     delay(300);
   }
 
-  #if CPU==STICK
-  if(sendToLora && (strcmp(appeui, "") != 0)) {    // send only, if we have LoRa credentials
+
+  if(isLoraBoard && sendToLora && (strcmp(appeui, "") != 0)) {    // send only, if we have LoRa credentials
     log(INFO, "Sending to TTN ...");
     displayStatusLine("TTN");
     send_ttn_geiger(tube_nbr, dt, gm_counts);
     if (have_thp)
       send_ttn_thp(temperature, humidity, pressure);
   }
-  #endif
+
 
   displayStatusLine(" ");
 }

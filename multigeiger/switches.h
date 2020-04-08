@@ -11,7 +11,8 @@ typedef struct switches {
   unsigned int unused: 1;  // SW3
 } Switches;
 
-void setup_switches(void);
+
+void setup_switches(bool isLoraBoard);
 Switches read_switches(void);
 
 #endif // _SWITCHES_H_

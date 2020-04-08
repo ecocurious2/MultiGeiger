@@ -36,6 +36,7 @@
 #include "webconf.h"
 #include "display.h"
 #include "transmission.h"
+#include "chkhardware.h"
 
 // Measurement interval (default 2.5min) [sec]
 #define MEASUREMENT_INTERVAL 150
@@ -55,13 +56,14 @@
 #define MINCOUNTS 100
 
 void setup() {
+  bool isLoraBoard = init_hwtest();
   setup_log(DEFAULT_LOG_LEVEL);
-  setup_display();
+  setup_display(isLoraBoard);
   setup_speaker();
-  setup_switches();
+  setup_switches(isLoraBoard);
   setup_thp_sensor();
-  setup_webconf();
-  setup_transmission(VERSION_STR, ssid);
+  setup_webconf(isLoraBoard);
+  setup_transmission(VERSION_STR, ssid, isLoraBoard);
 
   if (playSound)
     play_start_sound();
@@ -71,7 +73,7 @@ void setup() {
 }
 
 void loop() {
-  bool wifi_connected = false;
+  static bool wifi_connected = false;
   unsigned long current_ms = millis();  // to save multiple calls to millis()
   static unsigned long boot_timestamp = millis();
 
