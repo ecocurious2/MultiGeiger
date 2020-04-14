@@ -68,7 +68,19 @@ Als externe Libraries werden benötigt:
  * Adafruit Unified Sensor, Version 1.02
  * IotWebConf, Version 2.3.0
  * MCCI LoRaWAN LMIC library, Version >= 2.3.2  
-
+ **Achtung:** Wenn die Arduino-IDE verwendet wird, dann bitte prüfen, dass in der Datei  project_config/lmic_project_config.h (in der obersten Ebene in dieser Library) unbedingt
+die richtigen Configs eingestellt sind. Die Datei muss folgendermassen aussehen:
+```
+// project-specific definitions
+#define CFG_eu868 1
+//#define CFG_us915 1
+//#define CFG_au921 1
+//#define CFG_as923 1
+// #define LMIC_COUNTRY_CODE LMIC_COUNTRY_CODE_JP	/* for as923-JP */
+//#define CFG_in866 1
+#define CFG_sx1276_radio 1
+//#define LMIC_USE_INTERRUPTS
+```
 Falls der Compiler andere Libraries anmahnt, diese bitte in der Arduino IDE per *Sketch -> Include Library -> Manage Libraries ..* installieren.
 
 ## Ablauf nach dem Start
@@ -113,7 +125,7 @@ Weiter können über die Einstell-Seite einige verschiedene Definitionen festgel
 * Senden zu sensor.community oder/und zu madavi.de
 * bei LoRa-Hardware können hier auch die LoRa-Kenngrößen (DEVEUI, APPEUI und APPKEY) eingegeben werden.
 
-Am Ende derEinstellungsseite gibt es einen Link __Firmware update__ - hiermit kann man die Software auf dem MultiGeiger aktualisieren.
+Am Ende der Einstellungsseite gibt es einen Link __Firmware update__ - hiermit kann man die Software auf dem MultiGeiger aktualisieren.
 Man braucht dazu die .bin-Datei, wählt diese dann über **Browse...** aus und klickt zum Aktualisieren auf **Update**.
 Danach dauert es ca. 30s für das Hochladen und Flashen der Datei.
 
@@ -124,7 +136,7 @@ Erscheint **Update error: ...**, dann hat das Update nicht geklappt - es ist dan
 
 ### Aufruf aus dem WLAN ###
 Die Einstellseite kann zu jeder Zeit aus dem eigenen WLAN heraus aufgerufen werden. Dazu 
-wird in der Adresszeile des Browsers http://esp32-xxxxxxx eingegeben. Hier ist xxxxxxx wieder die Chip-ID (siehe oben, Beispiel: **http//esp32-51564452**). Sollte es mit diesem Hostnamen nicht klappen, dann muss die IP-Adresse des Geigerzählers verwendet werden, diese kann aus dem Router ausgelesen werden.
+wird in der Adresszeile des Browsers http://esp32-xxxxxxx eingegeben. Hier ist xxxxxxx wieder die Chip-ID (siehe oben, Beispiel: **http://esp32-51564452**). Sollte es mit diesem Hostnamen nicht klappen, dann muss die IP-Adresse des Geigerzählers verwendet werden, diese kann aus dem Router ausgelesen werden.
 Es erscheint zunächt eine Login-Seite. Hier ist als Username **admin** und als Passwort **ESP32Geiger** einzugeben. Dann erscheint die gleiche
 Einstellseite wie oben beschrieben.
 
