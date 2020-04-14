@@ -13,6 +13,8 @@
 
 #include "transmission.h"
 
+#include "ca_certs.h"
+
 // Hosts for data delivery
 #define MADAVI "http://api-rrd.madavi.de/data.php"
 #define SENSORCOMMUNITY "http://api.sensor.community/v1/push-sensor-data/"
