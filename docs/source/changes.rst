@@ -6,6 +6,7 @@ Changelog
 V1.12.1-dev (not released yet)
 ------------------
 
+* auto-detect hardware (STICK vs. WIFI) by hardware pin
 * use config web page for more values (userdefines.h has the defaults), #140
 * try both adresses of BME280
 * LoRa payload changes, e.g. to fulfill 'TTN Fair Access Policy'
@@ -18,9 +19,14 @@ V1.12.1-dev (not released yet)
   - for style checks (using the "astyle" CPP checker)
 * source: modularization, cleanups, less globals, ...
   (quite huge internal changes, please help testing!)
+* building:
+
+  - platformio-based build: suppress lmic_project_config.h usage
+  - arduino-ide-based build: you still need to edit that file
 * use bump2version tool for project version bumps, #169
 * docs:
 
+  - added upgrade hints for 1.13 in README on github
   - https://multigeiger.readthedocs.io/ == the beginning of
     new (sphinx / reST-markup based) online docs, #163
   - add a basic, short README in English (also for online docs)
