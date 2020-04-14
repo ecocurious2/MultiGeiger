@@ -3,7 +3,7 @@
 Changelog
 =========
 
-V1.12.1-dev (not released yet)
+V1.13.0 2020-04-14
 ------------------
 
 * auto-detect hardware (STICK vs. WIFI) by hardware pin
