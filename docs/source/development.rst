@@ -116,6 +116,8 @@ Checklist:
 - make sure all issues for this milestone are closed or moved to the
   next milestone
 - check if there are any pending fixes for severe issues
+- check whether some CA certificate (see ``ca_certs.h``) will expire soon and
+  whether we already can add their next valid cert.
 - find and fix any low hanging fruit left on the issue tracker
 - close release milestone on Github
 - update ``docs/source/changes.rst``, based on ``git log $PREVIOUS_RELEASE..``
