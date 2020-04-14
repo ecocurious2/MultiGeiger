@@ -48,17 +48,15 @@ Die Software kann via Netzwerk Daten zu verschiedenen Services senden.
  * **Heltec WiFi Kit 32**
 Diese MCU hat ein großes Display und WiFi.
 Auf dem Board wird dieser Baustein in die längeren Buchsenleisten gesteckt.
-Für die Arduino-IDE ist als Board der **Heltec WiFi Kit 32** einzustellen.
 
  * **Heltec Wireless Stick**
 Diese MCU hat ein sehr kleines Display, dafür aber zusätzlich zu WiFi noch LoRa.
 Es wird in die kürzeren Buchsenleisten gesteckt.
-Für die Arduino-IDE muss als Board **Heltec Wireless Stick** eingestellt werden.
 
 Um die Heltec-Boards in der Arduino IDE auswählen zu können, muss https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json in den Preferences unter Additional Boards Manager URLs hinzugefügt werden. Danach können unter Tools->Board->Boards Manager die Heltec Boards (Name "Heltec ESP32...")
-installiert und anschließend unter Tools->Board ausgewählt werden.
+installiert und anschließend unter Tools->Board ausgewählt werden. Für **beide** Boards muss hier der **Heltec wireless Stick** ausgewählt werden. Die Software erkennt selbstständig, welches Board bestückt ist.
 
-Die Hard- und Software-Einstellungen muss man über diese Dateien machen (siehe Kommentare dort):
+Diverse Software-Einstellungen kann man über folgende Dateien machen (siehe Kommentare dort):
 
  * **./multigeiger/userdefines.h** (immer notwendig, ein Beispiel hierzu wird in userdefines-example.h mitgeliefert)
  * **./platformio.ini** (nur bei platformio, ein Beispiel hierzu wird in platformio-example.ini mitgeliefert)
@@ -69,10 +67,8 @@ Als externe Libraries werden benötigt:
  * Adafruit BME280 Library, Version 1.0.7
  * Adafruit Unified Sensor, Version 1.02
  * IotWebConf, Version 2.3.0
-
-Für LoRa zusätzlich:
  * MCCI LoRaWAN LMIC library, Version >= 2.3.2  
-**Achtung:** Bitte prüfen, dass in der Datei  project_config/lmic_project_config.h (in der obersten Ebene in dieser Library) unbedingt
+ **Achtung:** Wenn die Arduino-IDE verwendet wird, dann bitte prüfen, dass in der Datei  project_config/lmic_project_config.h (in der obersten Ebene in dieser Library) unbedingt
 die richtigen Configs eingestellt sind. Die Datei muss folgendermassen aussehen:
 ```
 // project-specific definitions
@@ -85,7 +81,6 @@ die richtigen Configs eingestellt sind. Die Datei muss folgendermassen aussehen:
 #define CFG_sx1276_radio 1
 //#define LMIC_USE_INTERRUPTS
 ```
-
 Falls der Compiler andere Libraries anmahnt, diese bitte in der Arduino IDE per *Sketch -> Include Library -> Manage Libraries ..* installieren.
 
 ## Ablauf nach dem Start
@@ -121,14 +116,30 @@ Es wird empfohlen, beim WLAN das Gastnetz zu verwenden (falls ein solches existi
 
 Ist alles eingegeben, kann man auf **Apply** drücken. Nun werden die eingestellten Daten übernommen und in das interne EEPROM gespeichert. Nun bitte **unbedingt** über **Abbrechen** diese Seite verlassen! Nur dann verlässt das Programm den Config-Mode und verbindet sich mit dem heimischen WLAN. Wenn es kein **Abbrechen** gibt, dann wieder zurück in die WLAN-Einstellungen des Gerätes gehen und da dann das normale Heim-Netzwerk wieder einstellen.
 
-Auf der Einstellungsseite gibt es auch einen Link __Firmware update__ - hiermit kann man die Software auf dem MultiGeiger aktualisieren.
-Man braucht dazu die zum Gerät passende .bin-Datei, wählt diese dann über **Browse...** aus und klickt zum Aktualisieren auf **Update**.
+**ACHTUNG ACHTUNG**  
+**Beim Update auf die Version 1.13 müssen die WLAN-Daten noch einmal neu eingegeben werden**. Bei zukünftigen Versionen wird das nicht mehr nötig sein.
+
+Weiter können über die Einstell-Seite einige verschiedene Definitionen festgelegt werden:
+
+* Start-Melodie, Lautsprecher-Tick, LED-Tick und Anzeige jeweils an oder aus
+* Senden zu sensor.community oder/und zu madavi.de
+* bei LoRa-Hardware können hier auch die LoRa-Kenngrößen (DEVEUI, APPEUI und APPKEY) eingegeben werden.
+
+Am Ende der Einstellungsseite gibt es einen Link __Firmware update__ - hiermit kann man die Software auf dem MultiGeiger aktualisieren.
+Man braucht dazu die .bin-Datei, wählt diese dann über **Browse...** aus und klickt zum Aktualisieren auf **Update**.
 Danach dauert es ca. 30s für das Hochladen und Flashen der Datei.
 
 Der Browser zeigt dann (hoffentlich) **Update Success! Rebooting...** an, der MultiGeiger startet dann neu und ab dann ist die neue
 Firmware aktiv.
 
 Erscheint **Update error: ...**, dann hat das Update nicht geklappt - es ist dann die seitherige Firmware weiter aktiv.
+
+### Aufruf aus dem WLAN ###
+Die Einstellseite kann zu jeder Zeit aus dem eigenen WLAN heraus aufgerufen werden. Dazu 
+wird in der Adresszeile des Browsers http://esp32-xxxxxxx eingegeben. Hier ist xxxxxxx wieder die Chip-ID (siehe oben, Beispiel: **http://esp32-51564452**). Sollte es mit diesem Hostnamen nicht klappen, dann muss die IP-Adresse des Geigerzählers verwendet werden, diese kann aus dem Router ausgelesen werden.
+Es erscheint zunächt eine Login-Seite. Hier ist als Username **admin** und als Passwort **ESP32Geiger** einzugeben. Dann erscheint die gleiche
+Einstellseite wie oben beschrieben.
+
 
 ## Server
 Es werden jeweils einen Messzyklus lang die Impulse gezählt und dann die "Counts per Minute" (cpm) berechnet.
