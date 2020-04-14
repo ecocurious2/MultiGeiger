@@ -43,7 +43,7 @@ void setup_transmission(const char *version, char *ssid, bool loraHardware) {
 void prepare_http(HTTPClient *http, const char *host) {
   http->begin(host);
   http->addHeader("Content-Type", "application/json; charset=UTF-8");
-  http->addHeader("Connection", "close");
+  http->addHeader("Connection", "keep-alive");
   http->addHeader("X-Sensor", chipID);
 }
 
