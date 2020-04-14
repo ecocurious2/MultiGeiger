@@ -17,9 +17,9 @@
 #include "ca_certs.h"
 
 // Hosts for data delivery
-#define MADAVI "http://api-rrd.madavi.de/data.php"
-#define SENSORCOMMUNITY "http://api.sensor.community/v1/push-sensor-data/"
-#define TOILET "http://ptsv2.com/t/rk9pr-1582220446/post"
+#define MADAVI "https://api-rrd.madavi.de/data.php"
+#define SENSORCOMMUNITY "https://api.sensor.community/v1/push-sensor-data/"
+#define TOILET "https://ptsv2.com/t/rk9pr-1582220446/post"
 
 static String http_software_version;
 static unsigned int lora_software_version;
