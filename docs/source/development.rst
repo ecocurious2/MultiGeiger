@@ -86,14 +86,24 @@ main repository.
 .. _Sphinx: https://www.sphinx-doc.org/
 
 
-Creating binaries
------------------
+Flashing devices / creating binaries
+------------------------------------
 
-Adjust userdefines.h, then use e.g.:
+Arduino IDE:
 
-::
+- do a git checkout of the wanted release, e.g. ``git checkout V1.13.0``
+- use the default userdefines.h (available as userdefines-example.h)
+- IDE settings:
 
-  Arduino IDE -> Sketch -> Export compiled binary
+  - Device: Heltec WiFi Stick  (always use this, even if you have a WiFi Kit 32)
+  - Flash size: 4MB (32Mb)
+  - Partition scheme: minimal SPIFFS (large APPS with OTA) - this fits onto 4MB devices.
+- ``Arduino IDE -> Sketch -> Upload``
+
+  This is to test whether the compiled code actually works after USB-flashing to your device.
+- ``Arduino IDE -> Sketch -> Export compiled binary``
+
+  This creates a .bin file for OTA updating. Test whether OTA updating using that file works.
 
 
 .. _releasing:
@@ -107,24 +117,16 @@ Checklist:
   next milestone
 - check if there are any pending fixes for severe issues
 - find and fix any low hanging fruit left on the issue tracker
-- update ``changes.rst``, based on ``git log $PREVIOUS_RELEASE..``
-- check version number in:
-
-  - ``changes.rst``
-  - ``docs/source/conf.py``
-  - ``multigeiger/multigeiger.ino``
-- tag the release:
-
-  ::
-
-    git tag -s -m "tagged/signed release Vx.y.z" Vx.y.z
-
-- create binaries (see above), practically try the binaries
-
 - close release milestone on Github
+- update ``docs/source/changes.rst``, based on ``git log $PREVIOUS_RELEASE..``
+- ``bump2version --new-version 1.23.0 release`` - this will:
 
-- create a Github release, include:
+  - update versions everywhere
+  - auto-create a git tag
+  - auto-create a git commit
+- review the automatically generated changeset
+- create a github release for this tag:
 
-  * binaries
-  * a link to ``changes.rst``
+  - create a binary (see above) and attach to the github release
+  - add a link to the relevant ``changes.rst`` section to the github release
 
