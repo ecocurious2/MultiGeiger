@@ -106,8 +106,9 @@ Dort findet man einen Link zur __configure page__ - dort drauf klicken und man k
 Diese hat die folgenden Zeilen:
  * Geiger accesspoint SSID  
  Dies ist die SSID des eingebauten APs und kann zwar geändert werden, sollte aber nicht! Der Sensor wird mit dieser Nummer bei sensor.community (früher: luftdaten.info) angemeldet. Wird sie geändert, muss eine neue Anmeldung erfolgen.
- * Geiger accesspoint password
- Dies ist das Passwort für den eingebauten AP. Dieses **MUSS** beim ersten Mal geändert werden. Es kann natürlich auch das gleiche Passwort wieder verwendet werden - wichtig ist nur, dass da was reingeschrieben wird und dass man das **nicht vergessen** darf.
+ * Geiger accesspoint password  
+ Dies ist das Passwort für den eingebauten AP.  
+ Dieses **MUSS** beim ersten Mal geändert werden. Es kann natürlich auch das gleiche Passwort **ESP32Geiger** wieder verwendet werden - wichtig ist nur, dass da was reingeschrieben wird und dass man das **nicht vergessen** darf.
  * WiFi client SSID  
  Hier muss die SSID des WLANs für den Netzwerk/Internet-Zugang eingegeben werden.
  * WiFi client password  
@@ -138,8 +139,8 @@ Erscheint **Update error: ...**, dann hat das Update nicht geklappt - es ist dan
 ### Aufruf aus dem WLAN ###
 Die Einstellseite kann zu jeder Zeit aus dem eigenen WLAN heraus aufgerufen werden. Dazu 
 wird in der Adresszeile des Browsers http://esp32-xxxxxxx eingegeben. Hier ist xxxxxxx wieder die Chip-ID (siehe oben, Beispiel: **http://esp32-51564452**). Sollte es mit diesem Hostnamen nicht klappen, dann muss die IP-Adresse des Geigerzählers verwendet werden, diese kann aus dem Router ausgelesen werden.
-Es erscheint zunächt eine Login-Seite. Hier ist als Username **admin** und als Passwort **ESP32Geiger** einzugeben. Dann erscheint die gleiche
-Einstellseite wie oben beschrieben.
+Es erscheint zunächt eine Login-Seite.
+Hier ist als Username **admin** und als Passwort das **(Geiger accesspoint password)** von oben einzugeben. Dann erscheint die gleiche Einstellseite wie oben beschrieben.
 
 
 ## Server
