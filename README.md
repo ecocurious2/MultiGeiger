@@ -53,8 +53,9 @@ Auf dem Board wird dieser Baustein in die längeren Buchsenleisten gesteckt.
 Diese MCU hat ein sehr kleines Display, dafür aber zusätzlich zu WiFi noch LoRa.
 Es wird in die kürzeren Buchsenleisten gesteckt.
 
-Um die Heltec-Boards in der Arduino IDE auswählen zu können, muss https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json in den Preferences unter Additional Boards Manager URLs hinzugefügt werden. Danach können unter Tools->Board->Boards Manager die Heltec Boards (Name "Heltec ESP32...")
-installiert und anschließend unter Tools->Board ausgewählt werden. Für **beide** Boards muss hier der **Heltec wireless Stick** ausgewählt werden. Die Software erkennt selbstständig, welches Board bestückt ist.
+Um die Heltec-Boards in der Arduino IDE auswählen zu können, muss https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json in den Preferences unter Additional Boards Manager URLs hinzugefügt werden. Danach können unter Tools->Board->Boards Manager die ESP32 Boards (Name "esp32 by Espressif Systems")
+installiert und anschließend unter Tools->Board das Heltec Board ausgewählt werden. Für **beide** Boards muss hier der **Heltec wireless Stick** ausgewählt werden. Die Software erkennt selbstständig, welches Board bestückt ist. Unter Tools muss noch **Flash size: "4MB(32Mb)"** und  **Partition Scheme: "Minimal SPIFFS (Large APPS with OTA)"** eingestellt werden.
+
 
 Diverse Software-Einstellungen kann man über folgende Dateien machen (siehe Kommentare dort):
 
