@@ -160,7 +160,19 @@ void statistics_log(unsigned long current_counts, unsigned int time_between) {
   }
 }
 
-void transmit(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses) {
+void read_THP(unsigned long current_ms,
+              bool *have_thp, float *temperature, float *humidity, float *pressure) {
+  static unsigned long last_timestamp = 0;
+  if ((current_ms - last_timestamp) >= (MEASUREMENT_INTERVAL * 1000)) {
+    last_timestamp = current_ms;
+    *have_thp = read_thp_sensor(temperature, humidity, pressure);
+    if (*have_thp)
+      log(DEBUG, "Measured THP: T=%.2f H=%.f P=%.f", *temperature, *humidity, *pressure);
+  }
+}
+
+void transmit(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses,
+              bool have_thp, float temperature, float humidity, float pressure) {
   static unsigned long last_counts = 0;
   static unsigned long last_hv_pulses = 0;
   static unsigned long last_timestamp = millis();
@@ -177,13 +189,7 @@ void transmit(unsigned long current_ms, unsigned long current_counts, unsigned l
     int hv_pulses = current_hv_pulses - last_hv_pulses;
     last_hv_pulses = current_hv_pulses;
 
-    bool have_thp;
-    float temperature, humidity, pressure;
-    have_thp = read_thp_sensor(&temperature, &humidity, &pressure);
-    if (have_thp)
-      log(DEBUG, "Measured: cpm= %d HV=%d T=%.2f H=%.f P=%.f", current_cpm, hv_pulses, temperature, humidity, pressure);
-    else
-      log(DEBUG, "Measured: cpm= %d HV=%d", current_cpm, hv_pulses);
+    log(DEBUG, "Measured GM: cpm= %d HV=%d", current_cpm, hv_pulses);
 
     transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hv_pulses, counts, current_cpm,
                   have_thp, temperature, humidity, pressure);
@@ -200,6 +206,10 @@ void tick_blink(unsigned long current_counts) {
 
 void loop() {
   static bool wifi_connected = false;
+
+  static bool have_thp = false;
+  static float temperature = 0.0, humidity = 0.0, pressure = 0.0;
+
   unsigned long current_ms = millis();  // to save multiple calls to millis()
 
   // this is the always increasing HV pulse master counter.
@@ -223,6 +233,8 @@ void loop() {
 
   read_GMC(&gm_counts, &gm_count_timestamp, &gm_count_time_between);
 
+  read_THP(current_ms, &have_thp, &temperature, &humidity, &pressure);
+
   hv_pulses += charge_hv(gm_counts, current_ms);
 
   display(current_ms, gm_counts, gm_count_timestamp, hv_pulses, wifi_connected);
@@ -233,7 +245,7 @@ void loop() {
   if (Serial_Print_Mode == Serial_Statistics_Log)
     statistics_log(gm_counts, gm_count_time_between);
 
-  transmit(current_ms, gm_counts, gm_count_timestamp, hv_pulses);
+  transmit(current_ms, gm_counts, gm_count_timestamp, hv_pulses, have_thp, temperature, humidity, pressure);
 
   tick_blink(gm_counts);
 
