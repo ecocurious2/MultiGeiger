@@ -55,12 +55,17 @@
 // Minimum amount of GM pulses required to early-update the display.
 #define MINCOUNTS 100
 
+// DIP switches
+static Switches switches;
+
+
 void setup() {
   bool isLoraBoard = init_hwtest();
   setup_log(DEFAULT_LOG_LEVEL);
   setup_display(isLoraBoard);
   setup_speaker();
   setup_switches(isLoraBoard);
+  switches = read_switches();  // only read DIP switches once at boot time
   setup_thp_sensor();
   setup_webconf(isLoraBoard);
   setup_transmission(VERSION_STR, ssid, isLoraBoard);
@@ -100,8 +105,6 @@ void loop() {
 
   bool update_display;
   static unsigned long display_timestamp = millis();
-
-  Switches switches = read_switches();
 
   // copy values from ISR
   portENTER_CRITICAL(&mux_GMC_count);                            // enter critical section
