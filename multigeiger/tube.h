@@ -11,7 +11,7 @@ typedef struct {
 
 extern TUBETYPE tubes[];
 
-int charge_hv(bool forced, unsigned long current_ms);
+int charge_hv(unsigned long current_counts, unsigned long current_ms);
 int gen_charge_pulses(bool setup);
 void setup_tube(void);
 void read_GMC(unsigned long *counts, unsigned long *timestamp, unsigned int *between);

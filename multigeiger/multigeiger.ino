@@ -83,69 +83,33 @@ void setup() {
   setup_tube();
 }
 
-void loop() {
-  static bool wifi_connected = false;
-  unsigned long current_ms = millis();  // to save multiple calls to millis()
-  static unsigned long boot_timestamp = millis();
-
-  // this is the always increasing HV pulse master counter.
-  // main program: all other hv pulse counter values shall be derived from it.
-  static unsigned long HV_pulses_master = 0;
-
-  // this is the always increasing geiger mueller master counter.
-  // main program: all other counter values for misc. purposes shall be derived from it.
-  // ISR code: counters and other values there should be only short-lived and only be
-  //           used to update values in main program.
-  static unsigned long GMC_counts_master = 0;
-
-  // this is the master timestamp of the last geiger mueller event [ms]
-  // main program: all other timestamp bookkeeping values shall be derived from it.
-  // ISR code: only one timestamp shall be kept/updated there with the only purpose
-  //           of being used to update the master timestamp.
-  static unsigned long GMC_count_timestamp_master = 0;
-  
-  // time between last 2 geiger mueller events [us]
-  unsigned int GMC_count_time_between;
-
+void display(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses,
+             bool wifi_connected) {
+  static unsigned long last_timestamp = millis();
+  static unsigned long last_counts = 0;
+  static unsigned long last_hv_pulses = 0;
+  static unsigned long last_count_timestamp = millis();
   static unsigned int accumulated_GMC_counts = 0;
   static unsigned long accumulated_time = 0;
-
-  static float Count_Rate = 0.0, Dose_Rate = 0.0;
   static float accumulated_Count_Rate = 0.0, accumulated_Dose_Rate = 0.0;
 
-  bool update_display;
-
-  read_GMC(&GMC_counts_master, &GMC_count_timestamp_master, &GMC_count_time_between);
-
-  static unsigned long last_display_timestamp = millis();
-  static unsigned long last_display_counts = 0;
-  static unsigned long last_display_hv_pulses = 0;
-  static unsigned long last_count_timestamp = millis();
-
-  // Check if there are enough pulses detected or if enough time has elapsed.
-  // If yes, then it is time to calculate the pulse rate, update the display and recharge the HV capacitor.
-  update_display = ((GMC_counts_master - last_display_counts) >= MINCOUNTS) || ((current_ms - last_display_timestamp) >= DISPLAYREFRESH);
-
-  // TODO: give GMC_counts_master instead of update_display to charge_hv (so it can compare against inner state and decide when to recharge)
-  HV_pulses_master += charge_hv(update_display, current_ms);
-
-  if (update_display) {
-    last_display_timestamp = current_ms;
-    int hv_pulses = HV_pulses_master - last_display_hv_pulses;
-    last_display_hv_pulses = HV_pulses_master;
-    int counts = GMC_counts_master - last_display_counts;
-    last_display_counts = GMC_counts_master;
-    int dt = GMC_count_timestamp_master - last_count_timestamp;
-    last_count_timestamp = GMC_count_timestamp_master;
+  if (((current_counts - last_counts) >= MINCOUNTS) || ((current_ms - last_timestamp) >= DISPLAYREFRESH)) {
+    last_timestamp = current_ms;
+    int hv_pulses = current_hv_pulses - last_hv_pulses;
+    last_hv_pulses = current_hv_pulses;
+    int counts = current_counts - last_counts;
+    last_counts = current_counts;
+    int dt = gm_count_timestamp - last_count_timestamp;
+    last_count_timestamp = gm_count_timestamp;
 
     accumulated_time += dt;
-    accumulated_GMC_counts = GMC_counts_master;
+    accumulated_GMC_counts = current_counts;
 
     float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
     // calculate the current count rate and dose rate
-    Count_Rate = (dt != 0) ? (float)counts * 1000.0 / (float)dt : 0.0;
-    Dose_Rate = Count_Rate * GMC_factor_uSvph;
+    float Count_Rate = (dt != 0) ? (float)counts * 1000.0 / (float)dt : 0.0;
+    float Dose_Rate = Count_Rate * GMC_factor_uSvph;
 
     // calculate the count rate and dose rate over the complete time from start
     accumulated_Count_Rate = (accumulated_time != 0) ? (float)accumulated_GMC_counts * 1000.0 / (float)accumulated_time : 0.0;
@@ -160,57 +124,58 @@ void loop() {
                accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate);
     }
   }
-
-  if (Serial_Print_Mode == Serial_One_Minute_Log) {
-    static unsigned int last_minute_log_counts = 0;
-    static unsigned long last_minute_log_timestamp = millis();
-    int dt = current_ms - last_minute_log_timestamp;
-    if (dt >= 60000) {
-      unsigned long counts = GMC_counts_master - last_minute_log_counts;
-      unsigned int count_rate = (counts * 60000) / dt;
-      if (((((counts * 60000) % dt) * 2) / dt) >= 1) {
-        count_rate++;  // Rounding + 0.5
-      }
-      log_data_one_minute((current_ms / 1000), count_rate, counts);
-      last_minute_log_timestamp = current_ms;
-      last_minute_log_counts = GMC_counts_master;
+  else {
+    // If there were no pulses after AFTERSTART msecs after boot, clear display anyway and show 0 counts.
+    static unsigned long boot_timestamp = millis();
+    static unsigned long afterStartTime = AFTERSTART;
+    if (afterStartTime && ((current_ms - boot_timestamp) >= afterStartTime)) {
+      afterStartTime = 0;
+      DisplayGMC(0, 0, 0,
+                 (showDisplay && switches.display_on), wifi_connected);
     }
   }
+}
 
-  if (Serial_Print_Mode == Serial_Statistics_Log) {
-    static unsigned long last_statistics_log_counts = 0;
-    if (GMC_counts_master != last_statistics_log_counts) {
-      last_statistics_log_counts = GMC_counts_master;
-      log_data_statistics(GMC_count_time_between);
+void one_minute_log(unsigned long current_ms, unsigned long current_counts) {
+  static unsigned int last_counts = 0;
+  static unsigned long last_timestamp = millis();
+  int dt = current_ms - last_timestamp;
+  if (dt >= 60000) {
+    unsigned long counts = current_counts - last_counts;
+    unsigned int count_rate = (counts * 60000) / dt;
+    if (((((counts * 60000) % dt) * 2) / dt) >= 1) {
+      count_rate++;  // Rounding + 0.5
     }
+    log_data_one_minute((current_ms / 1000), count_rate, counts);
+    last_timestamp = current_ms;
+    last_counts = current_counts;
   }
+}
 
-  // If there were no pulses after AFTERSTART msecs after boot, clear display anyway and show 0 counts.
-  static unsigned long afterStartTime = AFTERSTART;
-  if (afterStartTime && ((current_ms - boot_timestamp) >= afterStartTime)) {
-    afterStartTime = 0;
-    DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
-               (showDisplay && switches.display_on), wifi_connected);
+void statistics_log(unsigned long current_counts, unsigned int time_between) {
+  static unsigned long last_counts = 0;
+  if (current_counts != last_counts) {
+    log_data_statistics(time_between);
+    last_counts = current_counts;
   }
+}
 
-  // Check, if we have to send to sensor.community etc.
-  static unsigned long last_transmission_counts = 0;
-  static unsigned long last_transmission_hv_pulses = 0;
-  static unsigned long last_transmission_timestamp = millis();
-  static unsigned long last_count_timestamp_2send = millis();
-  if ((current_ms - last_transmission_timestamp) >= (MEASUREMENT_INTERVAL * 1000)) {
-    last_transmission_timestamp = current_ms;
-    unsigned long counts = GMC_counts_master - last_transmission_counts;
-    last_transmission_counts = GMC_counts_master;
-
-    int dt = GMC_count_timestamp_master - last_count_timestamp_2send;
-    last_count_timestamp_2send = GMC_count_timestamp_master;
-
+void transmit(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses) {
+  static unsigned long last_counts = 0;
+  static unsigned long last_hv_pulses = 0;
+  static unsigned long last_timestamp = millis();
+  static unsigned long last_count_timestamp = millis();
+  if ((current_ms - last_timestamp) >= (MEASUREMENT_INTERVAL * 1000)) {
+    last_timestamp = current_ms;
+    unsigned long counts = current_counts - last_counts;
+    last_counts = current_counts;
+    int dt = gm_count_timestamp - last_count_timestamp;
+    last_count_timestamp = gm_count_timestamp;
     unsigned int current_cpm;
     current_cpm = (dt != 0) ? (int)(counts * 60000 / dt) : 0;
 
-    int hv_pulses = HV_pulses_master - last_transmission_hv_pulses;
-    last_transmission_hv_pulses = HV_pulses_master;
+    int hv_pulses = current_hv_pulses - last_hv_pulses;
+    last_hv_pulses = current_hv_pulses;
 
     bool have_thp;
     float temperature, humidity, pressure;
@@ -223,12 +188,54 @@ void loop() {
     transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hv_pulses, counts, current_cpm,
                   have_thp, temperature, humidity, pressure);
   }
+}
 
-  static unsigned int last_tick_counts = 0;
-  if (GMC_counts_master != last_tick_counts) {
+void tick_blink(unsigned long current_counts) {
+  static unsigned int last_counts = 0;
+  if (current_counts != last_counts) {
     tick(ledTick && switches.led_on, speakerTick && switches.speaker_on);
-    last_tick_counts = GMC_counts_master;
+    last_counts = current_counts;
   }
+}
+
+void loop() {
+  static bool wifi_connected = false;
+  unsigned long current_ms = millis();  // to save multiple calls to millis()
+
+  // this is the always increasing HV pulse master counter.
+  // main program: all other hv pulse counter values shall be derived from it.
+  static unsigned long hv_pulses = 0;
+
+  // this is the always increasing geiger mueller master counter.
+  // main program: all other counter values for misc. purposes shall be derived from it.
+  // ISR code: counters and other values there should be only short-lived and only be
+  //           used to update values in main program.
+  static unsigned long gm_counts = 0;
+
+  // this is the master timestamp of the last geiger mueller event [ms]
+  // main program: all other timestamp bookkeeping values shall be derived from it.
+  // ISR code: only one timestamp shall be kept/updated there with the only purpose
+  //           of being used to update the master timestamp.
+  static unsigned long gm_count_timestamp = 0;
+  
+  // time between last 2 geiger mueller events [us]
+  unsigned int gm_count_time_between;
+
+  read_GMC(&gm_counts, &gm_count_timestamp, &gm_count_time_between);
+
+  hv_pulses += charge_hv(gm_counts, current_ms);
+
+  display(current_ms, gm_counts, gm_count_timestamp, hv_pulses, wifi_connected);
+
+  if (Serial_Print_Mode == Serial_One_Minute_Log)
+    one_minute_log(current_ms, gm_counts);
+
+  if (Serial_Print_Mode == Serial_Statistics_Log)
+    statistics_log(gm_counts, gm_count_time_between);
+
+  transmit(current_ms, gm_counts, gm_count_timestamp, hv_pulses);
+
+  tick_blink(gm_counts);
 
   long loop_duration;
   loop_duration = millis() - current_ms;

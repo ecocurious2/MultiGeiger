@@ -95,11 +95,17 @@ void read_GMC(unsigned long *counts, unsigned long *timestamp, unsigned int *bet
 // Interval for unconditional HV charge pulse generation. [msec]
 #define HVPULSE_MS 1000
 
-int charge_hv(bool forced, unsigned long current_ms) {
-  // Charge the HV capacitor if it is forced or every HVPULSE_MS.
+// After this many GM counts, we want to recharge the HV capacitor, too.
+#define HVPULSE_COUNTS 100
+
+int charge_hv(unsigned long current_counts, unsigned long current_ms) {
+  // Charge the HV capacitor every HVPULSE_COUNTS or HVPULSE_MS.
+  static unsigned long last_counts = 0;
   int HV_pulse_count = 0;
-  if (forced || (current_ms - hvpulse_timestamp) >= HVPULSE_MS)
+  if (((current_counts - last_counts) >= HVPULSE_COUNTS) || ((current_ms - hvpulse_timestamp) >= HVPULSE_MS)) {
     HV_pulse_count = gen_charge_pulses(false);
+    last_counts = current_counts;
+  }
   return HV_pulse_count;
 }
 
