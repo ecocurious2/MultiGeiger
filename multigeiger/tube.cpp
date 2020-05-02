@@ -7,7 +7,10 @@
 #include "log.h"
 #include "tube.h"
 
-#define PIN_TEST_OUTPUT 13
+// The test pin, if enabled, is high while isr_GMC_count is active.
+// -1 == disabled, otherwise pin 13 might be an option.
+#define PIN_TEST_OUTPUT -1
+
 #define PIN_HV_FET_OUTPUT 23
 #define PIN_HV_CAP_FULL_INPUT 22  // !! has to be capable of "interrupt on change"
 #define PIN_GMC_COUNT_INPUT 2     // !! has to be capable of "interrupt on change"
@@ -55,7 +58,9 @@ void IRAM_ATTR isr_GMC_count() {
   static unsigned long isr_count_timestamp_us;
   static unsigned long isr_count_timestamp_us_prev;
   static unsigned long isr_count_timestamp_us_prev_used;
+  #if PIN_TEST_OUTPUT >= 0
   digitalWrite(PIN_TEST_OUTPUT, HIGH);
+  #endif
   isr_count_timestamp_us_prev = isr_count_timestamp_us;
   isr_count_timestamp_us = micros();
   if ((isr_count_timestamp_us - isr_count_timestamp_us_prev) > GMC_DEAD_TIME) {
@@ -70,7 +75,9 @@ void IRAM_ATTR isr_GMC_count() {
     isr_count_time_between = isr_count_timestamp_us - isr_count_timestamp_us_prev_used;  // save for statistics debuging
     isr_count_timestamp_us_prev_used = isr_count_timestamp_us;
   }
+  #if PIN_TEST_OUTPUT >= 0
   digitalWrite(PIN_TEST_OUTPUT, LOW);
+  #endif
   portEXIT_CRITICAL_ISR(&mux_GMC_count);
 }
 
