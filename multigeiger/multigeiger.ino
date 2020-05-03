@@ -123,8 +123,7 @@ void display(unsigned long current_ms, unsigned long current_counts, unsigned lo
       log_data(counts, dt, Count_Rate, Dose_Rate, hv_pulses,
                accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate);
     }
-  }
-  else {
+  } else {
     // If there were no pulses after AFTERSTART msecs after boot, clear display anyway and show 0 counts.
     static unsigned long boot_timestamp = millis();
     static unsigned long afterStartTime = AFTERSTART;
@@ -227,7 +226,7 @@ void loop() {
   // ISR code: only one timestamp shall be kept/updated there with the only purpose
   //           of being used to update the master timestamp.
   static unsigned long gm_count_timestamp = 0;
-  
+
   // time between last 2 geiger mueller events [us]
   unsigned int gm_count_time_between;
 
