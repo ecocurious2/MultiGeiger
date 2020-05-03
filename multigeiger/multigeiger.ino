@@ -55,6 +55,12 @@
 // Minimum amount of GM pulses required to early-update the display.
 #define MINCOUNTS 100
 
+// Target loop duration [ms]
+// slow down the arduino main loop so it spins about once per LOOP_DURATION -
+// this is more than enough, but still less than once per 1-2ms (without delay).
+// it should not be too slow because the speaker/LED tick is done in main loop.
+#define LOOP_DURATION 5
+
 // DIP switches
 static Switches switches;
 
@@ -211,7 +217,10 @@ void loop() {
     last_GMC_counts = GMC_counts;
   }
 
-  iotWebConf.doLoop();  // see webconf.cpp
+  long loop_duration;
+  loop_duration = millis() - current_ms;
+  iotWebConf.delay((loop_duration < LOOP_DURATION) ? (LOOP_DURATION - loop_duration) : 0);
+
   wifi_connected = (iotWebConf.getState() == IOTWEBCONF_STATE_ONLINE);
 }
 
