@@ -49,19 +49,6 @@
 #include "loraWan.h"
 #include "log.h"
 
-// For normal use, we require that you edit the sketch to replace FILLMEIN
-// with values assigned by the TTN console. However, for regression tests,
-// we want to be able to compile these scripts. The regression tests define
-// COMPILE_REGRESSION_TEST, and in that case we define FILLMEIN to a non-
-// working but innocuous value.
-#ifdef COMPILE_REGRESSION_TEST
-# define FILLMEIN 0
-#else
-# warning "You must replace the values marked FILLMEIN with real values from the TTN control panel!"
-# define FILLMEIN (#dont edit this, edit the lines that use FILLMEIN)
-#endif
-
-
 // All these 3 LoRa parameters (DEVEUI, APPEUI and APPKEY) may be copied literally from the TTN console window.
 // The necessary reversal on DEVEUI and APPEUI is done by hex2data.
 void os_getArtEui(u1_t *buf) {
@@ -77,8 +64,6 @@ void os_getDevEui(u1_t *buf) {
 void os_getDevKey(u1_t *buf) {
   (void) hex2data(buf, (const char *) appkey, 16);
 }
-
-static osjob_t sendjob;
 
 // Schedule TX every this many seconds (might become longer due to duty cycle limitations).
 const unsigned TX_INTERVAL = 10;
@@ -172,8 +157,6 @@ void onEvent(ev_t ev) {
       if (__rxBuffer != NULL) memcpy(__rxBuffer, &LMIC.frame[LMIC.dataBeg], LMIC.dataLen);
       txStatus = TX_STATUS_UPLINK_ACKED_WITHDOWNLINK;
     }
-    // Schedule next transmission
-    //os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
     break;
   case EV_LOST_TSYNC:
     txStatus = TX_STATUS_ENDING_ERROR;
