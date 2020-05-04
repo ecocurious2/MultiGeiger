@@ -82,6 +82,7 @@ die richtigen Configs eingestellt sind. Die Datei muss folgendermassen aussehen:
 #define CFG_sx1276_radio 1
 //#define LMIC_USE_INTERRUPTS
 ```
+Die angegebenen Versionen der Libraries sind die Mindestanforderungen. Wir testen immer auch mit den neuesten Versionen, deshalb bitte immer die aktuellen Versionen installieren und verwenden.\
 Falls der Compiler andere Libraries anmahnt, diese bitte in der Arduino IDE per *Sketch -> Include Library -> Manage Libraries ..* installieren.
 
 ## Ablauf nach dem Start
