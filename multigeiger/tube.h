@@ -10,19 +10,10 @@ typedef struct {
 } TUBETYPE;
 
 extern TUBETYPE tubes[];
-extern volatile bool isr_GMC_cap_full;
-extern volatile bool isr_gotGMCpulse;
-extern volatile unsigned int isr_GMC_counts;
-extern volatile unsigned int isr_GMC_counts_2send;
-extern volatile unsigned long isr_count_timestamp;
-extern volatile unsigned long isr_count_timestamp_2send;
-extern volatile unsigned long isr_count_time_between;
 
-extern portMUX_TYPE mux_cap_full;
-extern portMUX_TYPE mux_GMC_count;
-
-int charge_hv(bool forced, unsigned long current_ms);
+int charge_hv(unsigned long current_counts, unsigned long current_ms);
 int gen_charge_pulses(bool setup);
 void setup_tube(void);
+void read_GMC(unsigned long *counts, unsigned long *timestamp, unsigned int *between);
 
 #endif // _TUBE_H_
