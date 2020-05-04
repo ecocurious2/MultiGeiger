@@ -64,10 +64,10 @@ Diverse Software-Einstellungen kann man über folgende Dateien machen (siehe Kom
 
 Als externe Libraries werden benötigt:
 
- * U8g2 von Oliver, Version 2.26.14
- * Adafruit BME280 Library, Version 1.0.7
- * Adafruit Unified Sensor, Version 1.02
- * IotWebConf, Version 2.3.0
+ * U8g2 von Oliver, Version >=2.26.14
+ * Adafruit BME280 Library, Version >=2.0.0
+ * Adafruit Unified Sensor, Version >=1.0.3
+ * IotWebConf, Version >=2.3.0
  * MCCI LoRaWAN LMIC library, Version >= 2.3.2  
  **Achtung:** Wenn die Arduino-IDE verwendet wird, dann bitte prüfen, dass in der Datei  project_config/lmic_project_config.h (in der obersten Ebene in dieser Library) unbedingt
 die richtigen Configs eingestellt sind. Die Datei muss folgendermassen aussehen:
@@ -140,7 +140,7 @@ Erscheint **Update error: ...**, dann hat das Update nicht geklappt - es ist dan
 Die Einstellseite kann zu jeder Zeit aus dem eigenen WLAN heraus aufgerufen werden. Dazu 
 wird in der Adresszeile des Browsers http://esp32-xxxxxxx eingegeben. Hier ist xxxxxxx wieder die Chip-ID (siehe oben, Beispiel: **http://esp32-51564452**). Sollte es mit diesem Hostnamen nicht klappen, dann muss die IP-Adresse des Geigerzählers verwendet werden, diese kann aus dem Router ausgelesen werden.
 Es erscheint zunächt eine Login-Seite.
-Hier ist als Username **admin** und als Passwort das **(Geiger accesspoint password)** von oben einzugeben. Dann erscheint die gleiche Einstellseite wie oben beschrieben.
+Hier ist als Username **admin** und als Passwort das **Geiger accesspoint password** von oben einzugeben. Dann erscheint die gleiche Einstellseite wie oben beschrieben.
 
 
 ## Server
