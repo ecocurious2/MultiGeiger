@@ -112,7 +112,6 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display, bool conne
     pu8x8->setFont(u8x8_font_open_iconic_embedded_1x1);
     sprintf(output, "%c", 0x4A);
     if (ble_active) pu8x8->print(output);
-    
     pu8x8->setFont(u8x8_font_7x14_1x2_f);
 
     if (TimeSec < 60)    {    // < 1 minute -> display in seconds
