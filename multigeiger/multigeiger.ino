@@ -218,6 +218,7 @@ void tick_blink(unsigned long current_counts) {
 
 void loop() {
   static bool wifi_connected = false;
+  static bool hv_error = false;  // TODO: display this somewhere
 
   static bool have_thp = false;
   static float temperature = 0.0, humidity = 0.0, pressure = 0.0;
@@ -247,7 +248,7 @@ void loop() {
 
   read_THP(current_ms, &have_thp, &temperature, &humidity, &pressure);
 
-  hv_pulses += charge_hv(gm_counts, current_ms);
+  read_hv(&hv_error, &hv_pulses);
 
   display(current_ms, gm_counts, gm_count_timestamp, hv_pulses, wifi_connected);
 
