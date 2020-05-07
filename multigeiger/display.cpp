@@ -110,7 +110,7 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display, bool conne
 
     // print the upper line including time and measured radation
     pu8x8->setFont(u8x8_font_open_iconic_embedded_1x1);
-    pu8x8->print(ble_active ? '\x4A' : '\x20');
+    pu8x8->print(ble_active ? '\x4A' : ' '); // 0x4A corresponds to Bluetooth symbol in selected font.
     pu8x8->setFont(u8x8_font_7x14_1x2_f);
 
     if (TimeSec < 60)    {    // < 1 minute -> display in seconds

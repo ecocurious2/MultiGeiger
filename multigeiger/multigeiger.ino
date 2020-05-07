@@ -92,7 +92,7 @@ void display(unsigned long current_ms, unsigned long current_counts, unsigned lo
   static unsigned int accumulated_GMC_counts = 0;
   static unsigned long accumulated_time = 0;
   static float accumulated_Count_Rate = 0.0, accumulated_Dose_Rate = 0.0;
-  static bool ble_connected = false;
+  static bool ble_connected = false;  // ble_connected in preparation for future BLE connectivity, currently not implemented -> false
 
   if (((current_counts - last_counts) >= MINCOUNTS) || ((current_ms - last_timestamp) >= DISPLAYREFRESH)) {
     last_timestamp = current_ms;
@@ -118,7 +118,7 @@ void display(unsigned long current_ms, unsigned long current_counts, unsigned lo
 
     // ... and display them.
     DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
-               (showDisplay && switches.display_on), wifi_connected, ble_connected); // ble_connected in preparation for future BLE connectivity
+               (showDisplay && switches.display_on), wifi_connected, ble_connected);
 
     if (Serial_Print_Mode == Serial_Logging) {
       log_data(counts, dt, Count_Rate, Dose_Rate, hv_pulses,
@@ -131,7 +131,7 @@ void display(unsigned long current_ms, unsigned long current_counts, unsigned lo
     if (afterStartTime && ((current_ms - boot_timestamp) >= afterStartTime)) {
       afterStartTime = 0;
       DisplayGMC(0, 0, 0,
-                 (showDisplay && switches.display_on), wifi_connected, ble_connected); // ble_connected in preparation for future BLE connectivity
+                 (showDisplay && switches.display_on), wifi_connected, ble_connected);
     }
   }
 }
