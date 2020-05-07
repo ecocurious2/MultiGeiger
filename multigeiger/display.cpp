@@ -74,7 +74,7 @@ void clearDisplayLine(int line) {
 
 void displayStatusLine(String txt) {
   int line = isLoraBoard ? 5 : 7;
-  pu8x8->setFont(u8x8_font_5x8_f);
+  pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
   clearDisplayLine(line);
   pu8x8->drawString(0, line, txt.c_str());
 }
@@ -90,7 +90,7 @@ char *nullFill(int n, int digits) {
   return erg;
 }
 
-void DisplayGMC(int TimeSec, int RadNSvph, int CPS, bool use_display, bool connected) {
+void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display, bool connected, bool ble_active) {
   if (!use_display) {
     if (!displayIsClear) {
       pu8x8->clear();
@@ -106,28 +106,28 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPS, bool use_display, bool conne
   if (!isLoraBoard) {
     char output[80];
     int TimeMin = TimeSec / 60;         // calculate number of minutes
-    if (TimeMin >= 999) TimeMin = 999;  // limit minutes to max. 999
+    TimeMin = TimeMin % 1000;  // limit minutes to max. 999, roll over
 
     // print the upper line including time and measured radation
+    pu8x8->setFont(u8x8_font_open_iconic_embedded_1x1);
+    pu8x8->print(ble_active ? '\x4A' : ' '); // 0x4A corresponds to Bluetooth symbol in selected font.
     pu8x8->setFont(u8x8_font_7x14_1x2_f);
 
-    if (TimeMin >= 1) {                 // >= 1 minute -> display in minutes
+    if (TimeSec < 60)    {    // < 1 minute -> display in seconds
+      sprintf(output, "%2ds", TimeSec);
+      pu8x8->print(output);
+    } else {                  // >= 1 minute -> display in minutes
       sprintf(output, "%3d", TimeMin);
       pu8x8->print(output);
-    } else {                            // < 1 minute -> display in seconds, inverse
-      sprintf(output, "%3d", TimeSec);
-      pu8x8->inverse();
-      pu8x8->print(output);
-      pu8x8->noInverse();
     }
-    sprintf(output, "%7d nSv/h", RadNSvph);
+    sprintf(output, "%6d nSv/h", RadNSvph);
     pu8x8->print(output);
     pu8x8->setFont(u8x8_font_inb33_3x6_n);
-    pu8x8->drawString(0, 2, nullFill(CPS, 5));
+    pu8x8->drawString(0, 2, nullFill(CPM, 5));
   } else {
     pu8x8->setFont(u8x8_font_5x8_f);
     pu8x8->drawString(0, 2, nullFill(RadNSvph, 8));
-    pu8x8->draw2x2String(0, 3, nullFill(CPS, 4));
+    pu8x8->draw2x2String(0, 3, nullFill(CPM, 4));
     pu8x8->drawString(0, 5, "     cpm");
   }
   displayStatusLine(connected ? " " : "connecting...");
