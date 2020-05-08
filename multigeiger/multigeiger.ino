@@ -36,6 +36,7 @@
 #include "webconf.h"
 #include "display.h"
 #include "transmission.h"
+#include "ble.h"
 #include "chkhardware.h"
 #include "clock.h"
 
@@ -69,6 +70,7 @@ void setup() {
   setup_webconf(isLoraBoard);
   setup_speaker(playSound, ledTick && switches.led_on, speakerTick && switches.speaker_on);
   setup_transmission(VERSION_STR, ssid, isLoraBoard);
+  setup_ble(ssid, sendToBle);
 
   // a bug in arduino-esp32 1.0.4 crashes the esp32 if the wifi is not
   // configured yet and one tries to configure for NTP:
@@ -104,7 +106,16 @@ int update_wifi_status(void) {
   return st;
 }
 
-void display(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses) {
+int update_ble_status(void) {  // currently no error detection
+  int st = ST_BT_OFF;
+  if (get_status(STATUS_BT) != ST_BT_OFF) {
+    st = is_ble_connected() ? ST_BT_CONNECTED : ST_BT_CONNECTABLE;
+    set_status(STATUS_BT, st);
+  }
+  return st;
+}
+
+void publish(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses) {
   static unsigned long last_timestamp = millis();
   static unsigned long last_counts = 0;
   static unsigned long last_hv_pulses = 0;
@@ -140,7 +151,8 @@ void display(unsigned long current_ms, unsigned long current_counts, unsigned lo
     accumulated_Count_Rate = (accumulated_time != 0) ? (float)accumulated_GMC_counts * 1000.0 / (float)accumulated_time : 0.0;
     accumulated_Dose_Rate = accumulated_Count_Rate * GMC_factor_uSvph;
 
-    // ... and display them.
+    // ... and update the data on display, notify via BLE
+    update_bledata((unsigned int)(Count_Rate * 60));
     display_GMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
                 (showDisplay && switches.display_on));
 
@@ -154,6 +166,7 @@ void display(unsigned long current_ms, unsigned long current_counts, unsigned lo
     static unsigned long afterStartTime = AFTERSTART;
     if (afterStartTime && ((current_ms - boot_timestamp) >= afterStartTime)) {
       afterStartTime = 0;
+      update_bledata(0);
       display_GMC(0, 0, 0, (showDisplay && switches.display_on));
     }
   }
@@ -260,8 +273,9 @@ void loop() {
   set_status(STATUS_HV, hv_error ? ST_HV_ERROR : ST_HV_OK);
 
   int wifi_status = update_wifi_status();
+  update_ble_status();
 
-  display(current_ms, gm_counts, gm_count_timestamp, hv_pulses);
+  publish(current_ms, gm_counts, gm_count_timestamp, hv_pulses);
 
   if (Serial_Print_Mode == Serial_One_Minute_Log)
     one_minute_log(current_ms, gm_counts);

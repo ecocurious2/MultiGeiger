@@ -15,6 +15,7 @@ bool showDisplay = SHOW_DISPLAY;
 bool sendToCommunity = SEND2SENSORCOMMUNITY;
 bool sendToMadavi = SEND2MADAVI;
 bool sendToLora = SEND2LORA;
+bool sendToBle = SEND2BLE;
 
 char speakerTick_c[2];
 char playSound_c[2];
@@ -23,6 +24,7 @@ char showDisplay_c[2];
 char sendToCommunity_c[2];
 char sendToMadavi_c[2];
 char sendToLora_c[2];
+char sendToBle_c[2];
 
 char appeui[17] = "";
 char deveui[17] = "";
@@ -40,6 +42,7 @@ IotWebConfParameter showDisplayParam = BOOL_PARAM("Show display", "showDisplay",
 IotWebConfSeparator sep1 = IotWebConfSeparator("Transmission settings");
 IotWebConfParameter sendToCommunityParam = BOOL_PARAM("Send to sensors.community", "send2Community", sendToCommunity_c);
 IotWebConfParameter sendToMadaviParam = BOOL_PARAM("Send to madavi.de", "send2Madavi", sendToMadavi_c);
+IotWebConfParameter sendToBleParam = BOOL_PARAM("Send to BLE (Reboot required!)", "send2ble", sendToBle_c);
 
 IotWebConfSeparator sep2 = IotWebConfSeparator("LoRa settings");
 IotWebConfParameter sendToLoraParam = BOOL_PARAM("Send to LoRa (=>TTN)", "send2lora", sendToLora_c);
@@ -145,6 +148,7 @@ void loadConfigVariables(void) {
   parse_bool(showDisplay_c, &showDisplay);
   parse_bool(sendToCommunity_c, &sendToCommunity);
   parse_bool(sendToMadavi_c, &sendToMadavi);
+  parse_bool(sendToBle_c, &sendToBle);
   parse_bool(sendToLora_c, &sendToLora);
 }
 
@@ -161,6 +165,7 @@ void initConfigVariables(void) {
   format_bool(&showDisplay, showDisplay_c);
   format_bool(&sendToCommunity, sendToCommunity_c);
   format_bool(&sendToMadavi, sendToMadavi_c);
+  format_bool(&sendToBle, sendToBle_c);
   format_bool(&sendToLora, sendToLora_c);
 }
 
@@ -187,6 +192,7 @@ void setup_webconf(bool loraHardware) {
   iotWebConf.addParameter(&sep1);
   iotWebConf.addParameter(&sendToCommunityParam);
   iotWebConf.addParameter(&sendToMadaviParam);
+  iotWebConf.addParameter(&sendToBleParam);
   if (isLoraBoard) {
     iotWebConf.addParameter(&sep2);
     iotWebConf.addParameter(&sendToLoraParam);
