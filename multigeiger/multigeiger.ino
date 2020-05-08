@@ -37,6 +37,7 @@
 #include "display.h"
 #include "transmission.h"
 #include "chkhardware.h"
+#include "clock.h"
 
 // Measurement interval (default 2.5min) [sec]
 #define MEASUREMENT_INTERVAL 150
@@ -78,6 +79,16 @@ void setup() {
 
   if (playSound)
     play_start_sound();
+
+  // a bug in arduino-esp32 1.0.4 crashes the esp32 if the wifi is not
+  // configured yet and one tries to configure for NTP:
+  while (iotWebConf.getState() <= IOTWEBCONF_STATE_NOT_CONFIGURED) {
+    iotWebConf.delay(200);
+  }
+  setup_clock(0);  // 0 == do NTP!
+  // please note that time is not necessarily NTP-correct below here.
+  // it might some minutes until we have the correct time.
+  // if we do not have a connection to NTP servers, it will just count up from 1970.
 
   setup_log_data(SERIAL_DEBUG);
   setup_tube();
@@ -189,6 +200,7 @@ void transmit(unsigned long current_ms, unsigned long current_counts, unsigned l
     int hv_pulses = current_hv_pulses - last_hv_pulses;
     last_hv_pulses = current_hv_pulses;
 
+    log(DEBUG, "current time: %s", utctime());
     log(DEBUG, "Measured GM: cpm= %d HV=%d", current_cpm, hv_pulses);
 
     transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hv_pulses, counts, current_cpm,
