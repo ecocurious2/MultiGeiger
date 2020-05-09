@@ -28,7 +28,7 @@ void display_start_screen(void) {
   pu8x8->clear();
   if (isLoraBoard) {
     // Display is only 4 lines by 8 characters; lines counting from 2 to 5
-    pu8x8->setFont(u8x8_font_5x8_f);        // use really small font
+    pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);        // u8x8 can handle only 8x8, smaller font has no advantage
     for (int i = 2; i < 6; i++) {
       pu8x8->drawString(0, i, "        ");  // clear all 4 lines
     }
@@ -41,7 +41,7 @@ void display_start_screen(void) {
     snprintf(line, 9, "%s", VERSION_STR);  // 8 chars + \0 termination
     pu8x8->drawString(0, 5, line);
   } else {
-    pu8x8->setFont(u8x8_font_7x14_1x2_f);
+    pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
     pu8x8->drawString(0, 0, "Geiger-Counter");
     pu8x8->drawString(0, 2, "==============");
     snprintf(line, 15, "%s", VERSION_STR);  // 14 chars + \0 termination
@@ -73,6 +73,8 @@ void clearDisplayLine(int line) {
 }
 
 void displayStatusLine(String txt) {
+  if (txt.length() == 0)
+    return;
   int line = isLoraBoard ? 5 : 7;
   pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
   clearDisplayLine(line);
@@ -125,11 +127,16 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display, bool conne
     pu8x8->setFont(u8x8_font_inb33_3x6_n);
     pu8x8->drawString(0, 2, nullFill(CPM, 5));
   } else {
-    pu8x8->setFont(u8x8_font_5x8_f);
-    pu8x8->drawString(0, 2, nullFill(RadNSvph, 8));
-    pu8x8->draw2x2String(0, 3, nullFill(CPM, 4));
+    // print the upper line including BLE symbol in case of connection and measured radation
+    pu8x8->setFont(u8x8_font_open_iconic_embedded_1x1);
+    pu8x8->drawString(0, 2, ble_active ? "\x4A" : " "); // 0x4A corresponds to Bluetooth symbol in selected font.
+    pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
+    pu8x8->drawString(1, 2, nullFill(RadNSvph, 7));
+    pu8x8->setFont(u8x8_font_px437wyse700b_2x2_f ); 
+    pu8x8->drawString(0, 3, nullFill(CPM, 4));
+    pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
     pu8x8->drawString(0, 5, "     cpm");
   }
-  displayStatusLine(connected ? " " : "connecting...");
+  displayStatusLine(connected ? "" : "connecting...");
   displayIsClear = false;
 };
