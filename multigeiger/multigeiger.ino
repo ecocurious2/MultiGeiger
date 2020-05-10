@@ -94,8 +94,27 @@ void setup() {
   setup_tube();
 }
 
-void display(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses,
-             bool wifi_connected) {
+int update_wifi_status(void) {
+  int st;
+  switch (iotWebConf.getState()) {
+  case IOTWEBCONF_STATE_CONNECTING:
+    st = ST_WIFI_CONNECTING;
+    break;
+  case IOTWEBCONF_STATE_ONLINE:
+    st = ST_WIFI_CONNECTED;
+    break;
+  case IOTWEBCONF_STATE_AP_MODE:
+    st = ST_WIFI_AP;
+    break;
+  default:
+    st = ST_WIFI_OFF;
+    break;
+  }
+  set_status(STATUS_WIFI, st);
+  return st;
+}
+
+void display(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses) {
   static unsigned long last_timestamp = millis();
   static unsigned long last_counts = 0;
   static unsigned long last_hv_pulses = 0;
@@ -103,7 +122,6 @@ void display(unsigned long current_ms, unsigned long current_counts, unsigned lo
   static unsigned int accumulated_GMC_counts = 0;
   static unsigned long accumulated_time = 0;
   static float accumulated_Count_Rate = 0.0, accumulated_Dose_Rate = 0.0;
-  static bool ble_connected = false;  // ble_connected in preparation for future BLE connectivity, currently not implemented -> false
 
   if (((current_counts - last_counts) >= MINCOUNTS) || ((current_ms - last_timestamp) >= DISPLAYREFRESH)) {
     last_timestamp = current_ms;
@@ -129,7 +147,7 @@ void display(unsigned long current_ms, unsigned long current_counts, unsigned lo
 
     // ... and display them.
     DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
-               (showDisplay && switches.display_on), wifi_connected, ble_connected);
+               (showDisplay && switches.display_on));
 
     if (Serial_Print_Mode == Serial_Logging) {
       log_data(counts, dt, Count_Rate, Dose_Rate, hv_pulses,
@@ -141,8 +159,7 @@ void display(unsigned long current_ms, unsigned long current_counts, unsigned lo
     static unsigned long afterStartTime = AFTERSTART;
     if (afterStartTime && ((current_ms - boot_timestamp) >= afterStartTime)) {
       afterStartTime = 0;
-      DisplayGMC(0, 0, 0,
-                 (showDisplay && switches.display_on), wifi_connected, ble_connected);
+      DisplayGMC(0, 0, 0, (showDisplay && switches.display_on));
     }
   }
 }
@@ -217,8 +234,7 @@ void tick_blink(unsigned long current_counts) {
 }
 
 void loop() {
-  static bool wifi_connected = false;
-  static bool hv_error = false;  // TODO: display this somewhere
+  static bool hv_error = false;  // true means a HV capacitor charging issue
 
   static bool have_thp = false;
   static float temperature = 0.0, humidity = 0.0, pressure = 0.0;
@@ -250,7 +266,7 @@ void loop() {
 
   read_hv(&hv_error, &hv_pulses);
 
-  display(current_ms, gm_counts, gm_count_timestamp, hv_pulses, wifi_connected);
+  display(current_ms, gm_counts, gm_count_timestamp, hv_pulses);
 
   if (Serial_Print_Mode == Serial_One_Minute_Log)
     one_minute_log(current_ms, gm_counts);
@@ -266,6 +282,14 @@ void loop() {
   loop_duration = millis() - current_ms;
   iotWebConf.delay((loop_duration < LOOP_DURATION) ? (LOOP_DURATION - loop_duration) : 0);
 
-  wifi_connected = (iotWebConf.getState() == IOTWEBCONF_STATE_ONLINE);
-}
+  int wifi_status = update_wifi_status();
 
+  set_status(STATUS_SCOMM, ((wifi_status == ST_WIFI_CONNECTED) && sendToCommunity) ? ST_SCOMM_IDLE : ST_SCOMM_OFF);
+  set_status(STATUS_MADAVI, ((wifi_status == ST_WIFI_CONNECTED) && sendToMadavi) ? ST_MADAVI_IDLE : ST_MADAVI_OFF);
+
+  set_status(STATUS_TTN, sendToLora ? ST_TTN_IDLE : ST_TTN_OFF);
+
+  set_status(STATUS_BT, ST_NODISPLAY);  // TODO
+
+  set_status(STATUS_HV, hv_error ? ST_HV_ERROR : ST_HV_OK);
+}

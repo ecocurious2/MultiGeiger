@@ -79,6 +79,54 @@ void displayStatusLine(String txt) {
   pu8x8->drawString(0, line, txt.c_str());
 }
 
+static int status[STATUS_MAX] = {ST_NODISPLAY, ST_NODISPLAY, ST_NODISPLAY, ST_NODISPLAY,
+                                 ST_NODISPLAY, ST_NODISPLAY, ST_NODISPLAY, ST_NODISPLAY
+                                };  // current status of misc. subsystems
+
+static const char *status_chars[STATUS_MAX] = {
+  // group WiFi and transmission to internet servers
+  ".W0wA", // ST_WIFI_OFF, ST_WIFI_CONNECTED, ST_WIFI_ERROR, ST_WIFI_CONNECTING, ST_WIFI_AP
+  ".s1S",  // ST_SCOMM_OFF, ST_SCOMM_IDLE, ST_SCOMM_ERROR, ST_SCOMM_SENDING
+  ".m2M",  // ST_MADAVI_OFF, ST_MADAVI_IDLE, ST_MADAVI_ERROR, ST_MADAVI_SENDING
+  // group TTN (LoRa WAN)
+  ".t3T",  // ST_TTN_OFF, ST_TTN_IDLE, ST_TTN_ERROR, ST_TTN_SENDING
+  // group BlueTooth
+  ".B4b",  // ST_BT_OFF, ST_BT_CONNECTED, ST_BT_ERROR, ST_BT_CONNECTING
+  // group other
+  ".",     // ST_NODISPLAY
+  ".",     // ST_NODISPLAY
+  ".H7",   // ST_NODISPLAY, ST_HV_OK, ST_HV_ERROR
+};
+
+void set_status(int index, int value) {
+  if ((index >= 0) && (index < STATUS_MAX))
+    status[index] = value;
+  else
+    log(ERROR, "invalid parameters: set_status(%d, %d)", index, value);
+}
+
+char get_status_char(int index) {
+  if ((index >= 0) && (index < STATUS_MAX)) {
+    int idx = status[index];
+    if (idx < strlen(status_chars[index]))
+      return status_chars[index][idx];
+    else
+      log(ERROR, "string status_chars[%d] is too short, no char at index %d", index, idx);
+  } else
+    log(ERROR, "invalid parameters: get_status_char(%d)", index);
+  return '?';  // some error happened
+}
+
+void displayStatus(void) {
+  char output[17];  // max. 16 chars wide display + \0 terminator
+  const char *format = isLoraBoard ? "%c%c%c%c%c%c%c%c" : "%c %c %c %c %c %c %c %c";  // 8 or 16 chars wide
+  snprintf(output, 17, format,
+           get_status_char(0), get_status_char(1), get_status_char(2), get_status_char(3),
+           get_status_char(4), get_status_char(5), get_status_char(6), get_status_char(7)
+          );
+  displayStatusLine(output);
+}
+
 char *nullFill(int n, int digits) {
   static char erg[9];  // max. 8 digits possible!
   if (digits > 8) {
@@ -90,7 +138,7 @@ char *nullFill(int n, int digits) {
   return erg;
 }
 
-void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display, bool connected, bool ble_active) {
+void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display) {
   if (!use_display) {
     if (!displayIsClear) {
       pu8x8->clear();
@@ -107,12 +155,7 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display, bool conne
     char output[80];
     int TimeMin = TimeSec / 60;         // calculate number of minutes
     TimeMin = TimeMin % 1000;  // limit minutes to max. 999, roll over
-
-    // print the upper line including time and measured radation
-    pu8x8->setFont(u8x8_font_open_iconic_embedded_1x1);
-    pu8x8->print(ble_active ? '\x4A' : ' '); // 0x4A corresponds to Bluetooth symbol in selected font.
     pu8x8->setFont(u8x8_font_7x14_1x2_f);
-
     if (TimeSec < 60)    {    // < 1 minute -> display in seconds
       sprintf(output, "%2ds", TimeSec);
       pu8x8->print(output);
@@ -120,14 +163,11 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display, bool conne
       sprintf(output, "%3d", TimeMin);
       pu8x8->print(output);
     }
-    sprintf(output, "%6d nSv/h", RadNSvph);
+    sprintf(output, "%7d nSv/h", RadNSvph);
     pu8x8->print(output);
     pu8x8->setFont(u8x8_font_inb33_3x6_n);
     pu8x8->drawString(0, 2, nullFill(CPM, 5));
   } else {
-    // print the upper line including BLE symbol in case of connection and measured radation
-    pu8x8->setFont(u8x8_font_open_iconic_embedded_1x1);
-    pu8x8->drawString(0, 2, ble_active ? "\x4A" : " "); // 0x4A corresponds to Bluetooth symbol in selected font.
     pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
     pu8x8->drawString(1, 2, nullFill(RadNSvph, 7));
     pu8x8->setFont(u8x8_font_px437wyse700b_2x2_f);
@@ -135,6 +175,6 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display, bool conne
     pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
     pu8x8->drawString(0, 5, "     cpm");
   }
-  displayStatusLine(connected ? "" : "connecting...");
+  displayStatus();
   displayIsClear = false;
 };
