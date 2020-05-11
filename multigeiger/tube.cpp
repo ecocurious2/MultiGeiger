@@ -205,11 +205,10 @@ void setup_tube(void) {
   digitalWrite(PIN_HV_FET_OUTPUT, LOW);
 
   unsigned long now_ms = millis();
-  unsigned long now_us = micros();
 
   // note: we do not need to get the portMUX here as we did not yet enable interrupts.
   isr_count_timestamp = now_ms;
-  isr_count_time_between = now_us;
+  isr_count_time_between = 0;
   isr_GMC_cap_full = 0;
   isr_GMC_counts = 0;
   isr_hv_pulses = 0;
