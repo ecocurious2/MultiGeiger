@@ -65,11 +65,9 @@ void setup_display(bool loraHardware) {
 }
 
 void clearDisplayLine(int line) {
-  char blank[17] = "                ";
-  if (isLoraBoard) {
-    blank[9] = '\0';
-  }
-  pu8x8->drawString(0, line, blank);
+  const char *blanks;
+  blanks = isLoraBoard ? "        " : "                "; // 8 / 16
+  pu8x8->drawString(0, line, blanks);
 }
 
 void displayStatusLine(String txt) {
