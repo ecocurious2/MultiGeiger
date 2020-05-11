@@ -6,7 +6,33 @@ Changelog
 V1.13.1-dev (not released yet)
 ------------------------------
 
-* TBD
+New features:
+
+* TLS support
+
+  - add clock module, use NTP to set the clock
+  - use persistent per-server HTTPClient instances
+  - use connection: keep-alive for web requests
+  - add https support for sending data
+  - use https: URLs
+
+Fixes:
+
+* fixed GM pulse debouncing, #248
+
+Other changes:
+
+* dip switches: only read once at boot time, #207
+* new font (u8x8 uses 8px width anyway)
+* slow down main loop
+* refactor/simplify pulse counting ISR, bookkeeping in main loop, #220
+* refactor big main loop into smaller functions with local bookkeeping.
+* loraWan: removed unused/not needed code, #212, #234
+* docs:
+
+  - README improvements (board name, flash size, partition scheme, passwords)
+  - update development/release docs (create/test binaries, IDE settings, ...)
+
 
 V1.13.0 2020-04-14
 ------------------
