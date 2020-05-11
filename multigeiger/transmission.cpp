@@ -220,45 +220,49 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
                    int have_thp, float temperature, float humidity, float pressure) {
 
   #if SEND2DUMMY
-  displayStatusLine("Toilet");
   log(INFO, "SENDING TO TOILET ...");
   send_http_geiger(&c_toilet, TOILET, dt, hv_pulses, gm_counts, cpm, XPIN_NO_XPIN);
   if (have_thp) {
     send_http_thp(&c_toilet, TOILET, temperature, humidity, pressure, XPIN_NO_XPIN);
   }
-  delay(300);
   #endif
 
   if(sendToMadavi) {
     log(INFO, "Sending to Madavi ...");
-    displayStatusLine("Madavi");
+    set_status(STATUS_MADAVI, ST_MADAVI_SENDING);
+    displayStatus();
     send_http_geiger_2_madavi(&c_madavi, tube_type, dt, hv_pulses, gm_counts, cpm);
     if (have_thp) {
       send_http_thp_2_madavi(&c_madavi, temperature, humidity, pressure);
     }
     delay(300);
+    set_status(STATUS_MADAVI, ST_MADAVI_IDLE);
+    displayStatus();
   }
 
   if(sendToCommunity) {
     log(INFO, "Sending to sensor.community ...");
-    displayStatusLine("sensor.community");
+    set_status(STATUS_SCOMM, ST_SCOMM_SENDING);
+    displayStatus();
     send_http_geiger(&c_sensorc, SENSORCOMMUNITY, dt, hv_pulses, gm_counts, cpm, XPIN_RADIATION);
     if (have_thp) {
       send_http_thp(&c_sensorc, SENSORCOMMUNITY, temperature, humidity, pressure, XPIN_BME280);
     }
     delay(300);
+    set_status(STATUS_SCOMM, ST_SCOMM_IDLE);
+    displayStatus();
   }
 
 
   if(isLoraBoard && sendToLora && (strcmp(appeui, "") != 0)) {    // send only, if we have LoRa credentials
     log(INFO, "Sending to TTN ...");
-    displayStatusLine("TTN");
+    set_status(STATUS_TTN, ST_TTN_SENDING);
+    displayStatus();
     send_ttn_geiger(tube_nbr, dt, gm_counts);
     if (have_thp)
       send_ttn_thp(temperature, humidity, pressure);
+    set_status(STATUS_TTN, ST_TTN_IDLE);
+    displayStatus();
   }
-
-
-  displayStatusLine(" ");
 }
 
