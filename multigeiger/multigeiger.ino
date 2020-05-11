@@ -190,7 +190,7 @@ void read_THP(unsigned long current_ms,
     last_timestamp = current_ms;
     *have_thp = read_thp_sensor(temperature, humidity, pressure);
     if (*have_thp)
-      log(DEBUG, "Measured THP: T=%.2f H=%.f P=%.f", *temperature, *humidity, *pressure);
+      log(INFO, "Measured THP: T=%.2f H=%.f P=%.f", *temperature, *humidity, *pressure);
   }
 }
 

@@ -62,16 +62,19 @@ Diverse Software-Einstellungen kann man über folgende Dateien machen (siehe Kom
  * **./multigeiger/userdefines.h** (immer notwendig, ein Beispiel hierzu wird in userdefines-example.h mitgeliefert)
  * **./platformio.ini** (nur bei platformio, ein Beispiel hierzu wird in platformio-example.ini mitgeliefert)
 
-Als externe Libraries werden benötigt:
-
- * U8g2 von Oliver, Version >=2.26.14
- * Adafruit BME280 Library, Version >=2.0.0
- * Adafruit Unified Sensor, Version >=1.0.3
- * IotWebConf, Version >=2.3.0
- * MCCI LoRaWAN LMIC library, Version >= 2.3.2\
- **Achtung:** Wenn die Arduino-IDE verwendet wird, dann bitte prüfen, dass in der Datei project_config/lmic_project_config.h (in der obersten Ebene in dieser Library) unbedingt
-die richtigen Configs eingestellt sind. Die Datei muss folgendermassen aussehen:
+Es werden alle externen Libraries benötigt, die in der Datei 
 ```
+platformio-example.ini
+```
+unter dem Abschnitt 
+```
+lib-deps =
+```
+aufgelistet sind. Bitte jeweils die aktuellste Version über platform.io / Libraries installieren.
+
+ **Achtung:** Wenn die Arduino-IDE verwendet wird, dann bitte prüfen, dass in der Datei project_config/lmic_project_config.h (in der obersten Ebene in dieser Library) unbedingt
+```
+die richtigen Configs eingestellt sind. Die Datei muss folgendermassen aussehen:
 // project-specific definitions
 #define CFG_eu868 1
 //#define CFG_us915 1
