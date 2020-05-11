@@ -67,7 +67,7 @@ void prepare_http(HttpsClient *client, const char *host) {
   client->hc->addHeader("X-Sensor", chipID);
 }
 
-void send_http(HttpsClient *client, String body) {
+int send_http(HttpsClient *client, String body) {
   if (DEBUG_SERVER_SEND)
     log(DEBUG, "http request body: %s", body.c_str());
 
@@ -82,10 +82,11 @@ void send_http(HttpsClient *client, String body) {
     log(ERROR, "Error on sending POST: %d", httpResponseCode);
   }
   client->hc->end();
+  return httpResponseCode;
 }
 
-void send_http_geiger(HttpsClient *client, const char *host, unsigned int timediff, unsigned int hv_pulses,
-                      unsigned int gm_counts, unsigned int cpm, int xpin) {
+int send_http_geiger(HttpsClient *client, const char *host, unsigned int timediff, unsigned int hv_pulses,
+                     unsigned int gm_counts, unsigned int cpm, int xpin) {
   char body[1000];
   prepare_http(client, host);
   if (xpin != XPIN_NO_XPIN) {
@@ -108,10 +109,10 @@ void send_http_geiger(HttpsClient *client, const char *host, unsigned int timedi
            hv_pulses,
            gm_counts,
            timediff);
-  send_http(client, body);
+  return send_http(client, body);
 }
 
-void send_http_thp(HttpsClient *client, const char *host, float temperature, float humidity, float pressure, int xpin) {
+int send_http_thp(HttpsClient *client, const char *host, float temperature, float humidity, float pressure, int xpin) {
   char body[1000];
   prepare_http(client, host);
   if(xpin != XPIN_NO_XPIN) {
@@ -132,11 +133,11 @@ void send_http_thp(HttpsClient *client, const char *host, float temperature, flo
            temperature,
            humidity,
            pressure);
-  send_http(client, body);
+  return send_http(client, body);
 }
 
 // two extra functions for MADAVI, because MADAVI needs the sensorname in value_type to recognize the sensors
-void send_http_geiger_2_madavi(HttpsClient *client, String tube_type, unsigned int timediff, unsigned int hv_pulses,
+int send_http_geiger_2_madavi(HttpsClient *client, String tube_type, unsigned int timediff, unsigned int hv_pulses,
                                unsigned int gm_counts, unsigned int cpm) {
   char body[1000];
   prepare_http(client, MADAVI);
@@ -158,10 +159,10 @@ void send_http_geiger_2_madavi(HttpsClient *client, String tube_type, unsigned i
            tube_type.c_str(), hv_pulses,
            tube_type.c_str(), gm_counts,
            tube_type.c_str(), timediff);
-  send_http(client, body);
+  return send_http(client, body);
 }
 
-void send_http_thp_2_madavi(HttpsClient *client, float temperature, float humidity, float pressure) {
+int send_http_thp_2_madavi(HttpsClient *client, float temperature, float humidity, float pressure) {
   char body[1000];
   prepare_http(client, MADAVI);
   const char *json_format = R"=====(
@@ -179,7 +180,7 @@ void send_http_thp_2_madavi(HttpsClient *client, float temperature, float humidi
            temperature,
            humidity,
            pressure);
-  send_http(client, body);
+  return send_http(client, body);
 }
 
 // LoRa payload:
@@ -218,41 +219,44 @@ void send_ttn_thp(float temperature, float humidity, float pressure) {
 
 void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int hv_pulses, unsigned int gm_counts, unsigned int cpm,
                    int have_thp, float temperature, float humidity, float pressure) {
+  int rc1, rc2;
 
   #if SEND2DUMMY
+  bool toilet_ok;
   log(INFO, "SENDING TO TOILET ...");
-  send_http_geiger(&c_toilet, TOILET, dt, hv_pulses, gm_counts, cpm, XPIN_NO_XPIN);
-  if (have_thp) {
-    send_http_thp(&c_toilet, TOILET, temperature, humidity, pressure, XPIN_NO_XPIN);
-  }
+  rc1 = send_http_geiger(&c_toilet, TOILET, dt, hv_pulses, gm_counts, cpm, XPIN_NO_XPIN);
+  rc2 = have_thp ? send_http_thp(&c_toilet, TOILET, temperature, humidity, pressure, XPIN_NO_XPIN) : 200;
+  toilet_ok = (rc1 == 200) && (rc2 == 200);
+  log(INFO, "SENT TO TOILET, status: %s, http: %d %d", toilet_ok ? "ok" : "error", rc1, rc2);
   #endif
 
   if(sendToMadavi) {
+    bool madavi_ok;
     log(INFO, "Sending to Madavi ...");
     set_status(STATUS_MADAVI, ST_MADAVI_SENDING);
     displayStatus();
-    send_http_geiger_2_madavi(&c_madavi, tube_type, dt, hv_pulses, gm_counts, cpm);
-    if (have_thp) {
-      send_http_thp_2_madavi(&c_madavi, temperature, humidity, pressure);
-    }
+    rc1 = send_http_geiger_2_madavi(&c_madavi, tube_type, dt, hv_pulses, gm_counts, cpm);
+    rc2 = have_thp ? send_http_thp_2_madavi(&c_madavi, temperature, humidity, pressure) : 200;
     delay(300);
-    set_status(STATUS_MADAVI, ST_MADAVI_IDLE);
+    madavi_ok = (rc1 == 200) && (rc2 == 200);
+    log(INFO, "Sent to Madavi, status: %s, http: %d %d", madavi_ok ? "ok" : "error", rc1, rc2);
+    set_status(STATUS_MADAVI, madavi_ok ? ST_MADAVI_IDLE : ST_MADAVI_ERROR);
     displayStatus();
   }
 
   if(sendToCommunity) {
+    bool scomm_ok;
     log(INFO, "Sending to sensor.community ...");
     set_status(STATUS_SCOMM, ST_SCOMM_SENDING);
     displayStatus();
-    send_http_geiger(&c_sensorc, SENSORCOMMUNITY, dt, hv_pulses, gm_counts, cpm, XPIN_RADIATION);
-    if (have_thp) {
-      send_http_thp(&c_sensorc, SENSORCOMMUNITY, temperature, humidity, pressure, XPIN_BME280);
-    }
+    rc1 = send_http_geiger(&c_sensorc, SENSORCOMMUNITY, dt, hv_pulses, gm_counts, cpm, XPIN_RADIATION);
+    rc2 = have_thp ? send_http_thp(&c_sensorc, SENSORCOMMUNITY, temperature, humidity, pressure, XPIN_BME280) : 201;
     delay(300);
-    set_status(STATUS_SCOMM, ST_SCOMM_IDLE);
+    scomm_ok = (rc1 == 201) && (rc2 == 201);
+    log(INFO, "Sent to sensor.community, status: %s, http: %d %d", scomm_ok ? "ok" : "error", rc1, rc2);
+    set_status(STATUS_SCOMM, scomm_ok ? ST_SCOMM_IDLE : ST_SCOMM_ERROR);
     displayStatus();
   }
-
 
   if(isLoraBoard && sendToLora && (strcmp(appeui, "") != 0)) {    // send only, if we have LoRa credentials
     log(INFO, "Sending to TTN ...");
