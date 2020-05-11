@@ -178,10 +178,10 @@ Dann das Formular ausfüllen:
  Nun mit *Einstellungen speichern* das Ganze beenden. Dann auf der Übersichts-Seite bei diesem Sensor auf *Daten* klicken. Nun steht hinter *Sensor ID* die ID des Sensors. Diese bitte merken: sie wird für die Abfrage bei sensor.community bzw. bei der Anzeige auf https://multigeiger.citysensor.de benötigt.
  
 ## LoRa-Interface
-Um den Multigeiger in das TTN-Netz zu bekommen, sind ein paar vorbereitende Schritte durchzuführen:
+Um den Multigeiger an TTN ("The Things Network") anzubinden, sind ein paar vorbereitende Schritte durchzuführen:
 
 * Anlegen des TTN-Devices bei *The Things Network*
-* Übernehmen der Konstanten in den Multigeiger
+* Übernehmen der Parameter in den Multigeiger
 * Anmelden bei *sensor.community* (ehemals luftdaten.info)
 * HTTP-Integration
 
@@ -220,11 +220,11 @@ Bleibt so stehen
 
 Nun rechts unten auf **Register**. Nun ist auch das Device angelegt.
 
-### Übernahme der LoRa-Konstanten 
-Die LoRa-Konstanten müssen noch in das Programm übernommen werden.\
-Dazu muss die Konfigurations-Webseite des Geigerzählers aufgerufen werden. Weiter oben ist erklärt, wie die Konfiguartions-Seite zu erreichen ist (*Einstellung des WLAN* und *Aufruf aus dem WLAN*))
+### Übernahme der LoRa-Parameter 
+Die LoRa-Parameter müssen noch in das Programm übernommen werden.\
+Dazu muss die Konfigurations-Webseite des Geigerzählers aufgerufen werden. Weiter oben ist erklärt, wie die Konfigurations-Seite zu erreichen ist (*Einstellung des WLAN* und *Aufruf aus dem WLAN*))
 
-Nun auf der Konfigurations-Seite durch die Konfiguration gehen bis die Einstellung der LoRa-Konstanten angezeigt wird. Nun die 3 Werte (**APPEUI, DEVEUI, APPKEY**) aus der TTN-Console (siehe oben) entnehmen und hier dann eintragen. In der TTN-Console auf das Device gehen, das oben angelegt wurde. Hier sind die 3 Werte zu finden. Es müssen die HEX-Werte **ohne** Leerzeichen eingegeben werden, und zwar so, wie sie in der TTN-Console erscheinen.
+Nun auf der Konfigurations-Seite durch die Konfiguration gehen bis die Einstellung der LoRa-Parameter angezeigt wird. Nun die 3 Werte (**APPEUI, DEVEUI, APPKEY**) aus der TTN-Console (siehe oben) entnehmen und hier dann eintragen. In der TTN-Console auf das Device gehen, das oben angelegt wurde. Hier sind die 3 Werte zu finden. Es müssen die HEX-Werte **ohne** Leerzeichen eingegeben werden, und zwar so, wie sie in der TTN-Console erscheinen.
 Beispiel:\
 in der TTN-Console steht
 
@@ -238,9 +238,9 @@ Dann muss folgendes eingeben werden:
 ```
 Dies gilt genauso ebenso für die **APPEUI** und den **APPKEY** .
 
-### Anmelden bei sensor.community(ehem. luftdaten.info)
-Wenn der Multigeiger seine Daten über TTN auch an *sensor.community* weitergeben, soll muss er dort angemeldet werden.
-Die Anmeldung ist ziemlich so, wie oben schon beschrieben. Hier werden nur die Änderungen erläutert (gesamten Ablauf bitte oben nachlesen).
+### Anmelden bei sensor.community (ehem. luftdaten.info)
+Wenn der Multigeiger seine Daten über TTN auch an *sensor.community* weitergeben soll, muss er dort angemeldet werden.
+Die Anmeldung ist ziemlich ähnlich wie oben schon beschrieben. Hier werden nur die Änderungen erläutert (gesamten Ablauf bitte oben nachlesen).
 
  * Sensor ID:\
  Hier den hinteren Teil der DEVEUI eingeben (wenn also - siehe oben - die DEVEUI *00 D0 C0 00 C3 19 7C E8* heißt, sind die hinteren 4 Byte ( also *C3197CE8*) in dezimal umgerechnet ( also hier 3273227496 ) einzugeben.
