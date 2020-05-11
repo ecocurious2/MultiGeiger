@@ -193,24 +193,24 @@ Das Gerät muss bei TTN (The Things Network) angemeldet werden. Dazu muss zuerst
 Über <https://account.thethingsnetwork.org/register> auf die Webseite zum Account anlegen gehen. Hier dann einen **USERNAME** vergeben, die **EMAIL ADRESSE** eintragen und auch ein **PASSWORD** vergeben. Dann rechts unten über **Create account** den Account anlegen. Danach kann man sich mit den neuen Daten an der Console anmelden (<https://account.thethingsnetwork.org/users/login>).
 
 #### Applikation anlegen
-Ist man eingelogged, wird über **APPLICATIONS** und **add applications** die neue Apllikation angelegt. Folgende Felder müssen ausgefüllt werden:
+Ist man eingelogged, wird über **APPLICATIONS** und **add applications** die neue Applikation angelegt. Folgende Felder müssen ausgefüllt werden:
 
 * **Application ID:**\
 Eine beliebige Bezeichnung für diese Applikation, die darf es aber in dem Netzwerk noch nicht geben (also z.B.: geiger_20200205)
 * **Description:**\
-Hier kann eine beliebige Beschreibung der Apllikation eingegeben werden
+Hier kann eine beliebige Beschreibung der Apllikation eingegeben werden.
 * **Application EUI:**\
-Bleibt frei, die Nummer wird vom TTN-System erzeugt
+Bleibt frei, die Nummer wird vom TTN-System erzeugt.
 * **Handler registration:**\
 Der vorausgefüllte Wert (ttn-handler-eu) ist schon richtig und bleibt stehen.
 
 Nun mit **Add application** rechts unten die Apllikation hinzufügen.
 
 #### Device anlegen
-Zuletzt muss noch das device angelegt werden. Dazu in der Übersicht der Applikationen die gerade neu angelegte Applikation auswählen (klicken). Hier dann im mittleren Bereich bei **DEVICES** das Anlegen eines neuen Devices über **register device** starten. Folgende Felder müssen ausgefüllt werden:
+Zuletzt muss noch das Device angelegt werden. Dazu in der Übersicht der Applikationen die gerade neu angelegte Applikation auswählen (klicken). Hier dann im mittleren Bereich bei **DEVICES** das Anlegen eines neuen Devices über **register device** starten. Folgende Felder müssen ausgefüllt werden:
 
 * **Device ID:**\
-Ein beliebiger Name für das Devive. Er muss innerhalb der Applikation eindeutig sein (also z.B.: geiger_01) und nur aus Kleinbuchstaben bestehen.
+Ein beliebiger Name für das Device. Er muss innerhalb der Applikation eindeutig sein (also z.B.: geiger_01) und nur aus Kleinbuchstaben bestehen.
 * **Device EUI:**\
 Einmal auf das Symbol ganz links an der Zeile klicken, dann erscheint der Text, dass diese Nummer vom System erzeugt wird. Wir müssen sonst nichts weiter eingeben.
 * **App Key:**\
@@ -236,7 +236,7 @@ Dann muss folgendes eingeben werden:
 ```
 00D0C000C3197CE8
 ```
-Dies gilt genauso ebenso für die **APPEUI** und **APPKEY** .
+Dies gilt genauso ebenso für die **APPEUI** und den **APPKEY** .
 
 ### Anmelden bei sensor.community(ehem. luftdaten.info)
 Wenn der Multigeiger seine Daten über TTN auch an *sensor.community* weitergeben, soll muss er dort angemeldet werden.
@@ -270,7 +270,7 @@ Nun die angezeigten Felder ausfüllen:\
 
 Dann rechts unten auf **Add integration** klicken. Das war's dann.\
 Und so etwa sieht das dann ausgefüllt aus:\
-!["HTTP-Integration filled"](file:///Users/rxf/Desktop/http_integration_filled.png)
+!["HTTP-Integration filled"](images/http_integration_filled.png)
 
 ### TTN-Payload (Beispiel)
 Um in der TTN-Console nicht nur die Datenbytes sondern lesbare Werte zu sehen, kann ein kleines Script als payload-Decoder eingefügt werden.\
