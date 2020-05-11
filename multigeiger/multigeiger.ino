@@ -200,7 +200,10 @@ void read_THP(unsigned long current_ms,
 }
 
 void transmit(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses,
-              bool have_thp, float temperature, float humidity, float pressure) {
+              bool have_thp, float temperature, float humidity, float pressure, bool wificonnected) {
+  if( !wificonnected) {
+    return;
+  }
   static unsigned long last_counts = 0;
   static unsigned long last_hv_pulses = 0;
   static unsigned long last_timestamp = millis();
@@ -274,15 +277,15 @@ void loop() {
   if (Serial_Print_Mode == Serial_Statistics_Log)
     statistics_log(gm_counts, gm_count_time_between);
 
-  transmit(current_ms, gm_counts, gm_count_timestamp, hv_pulses, have_thp, temperature, humidity, pressure);
+  int wifi_status = update_wifi_status();
+
+  transmit(current_ms, gm_counts, gm_count_timestamp, hv_pulses, have_thp, temperature, humidity, pressure, (wifi_status == ST_WIFI_CONNECTED));
 
   tick_blink(gm_counts);
 
   long loop_duration;
   loop_duration = millis() - current_ms;
   iotWebConf.delay((loop_duration < LOOP_DURATION) ? (LOOP_DURATION - loop_duration) : 0);
-
-  int wifi_status = update_wifi_status();
 
   set_status(STATUS_SCOMM, ((wifi_status == ST_WIFI_CONNECTED) && sendToCommunity) ? ST_SCOMM_IDLE : ST_SCOMM_OFF);
   set_status(STATUS_MADAVI, ((wifi_status == ST_WIFI_CONNECTED) && sendToMadavi) ? ST_MADAVI_IDLE : ST_MADAVI_OFF);
