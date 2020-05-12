@@ -58,9 +58,7 @@
 
 // Target loop duration [ms]
 // slow down the arduino main loop so it spins about once per LOOP_DURATION -
-// this is more than enough, but still less than once per 1-2ms (without delay).
-// it should not be too slow because the speaker/LED tick is done in main loop.
-#define LOOP_DURATION 5
+#define LOOP_DURATION 1000
 
 // DIP switches
 static Switches switches;
@@ -70,15 +68,12 @@ void setup() {
   bool isLoraBoard = init_hwtest();
   setup_log(DEFAULT_LOG_LEVEL);
   setup_display(isLoraBoard);
-  setup_speaker();
   setup_switches(isLoraBoard);
   switches = read_switches();  // only read DIP switches once at boot time
   setup_thp_sensor();
   setup_webconf(isLoraBoard);
+  setup_speaker(playSound, ledTick && switches.led_on, speakerTick && switches.speaker_on);
   setup_transmission(VERSION_STR, ssid, isLoraBoard);
-
-  if (playSound)
-    play_start_sound();
 
   // a bug in arduino-esp32 1.0.4 crashes the esp32 if the wifi is not
   // configured yet and one tries to configure for NTP:
@@ -225,14 +220,6 @@ void transmit(unsigned long current_ms, unsigned long current_counts, unsigned l
   }
 }
 
-void tick_blink(unsigned long current_counts) {
-  static unsigned int last_counts = 0;
-  if (current_counts != last_counts) {
-    tick(ledTick && switches.led_on, speakerTick && switches.speaker_on);
-    last_counts = current_counts;
-  }
-}
-
 void loop() {
   static bool hv_error = false;  // true means a HV capacitor charging issue
 
@@ -275,8 +262,6 @@ void loop() {
     statistics_log(gm_counts, gm_count_time_between);
 
   transmit(current_ms, gm_counts, gm_count_timestamp, hv_pulses, have_thp, temperature, humidity, pressure);
-
-  tick_blink(gm_counts);
 
   long loop_duration;
   loop_duration = millis() - current_ms;

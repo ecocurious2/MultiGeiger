@@ -5,6 +5,7 @@
 #include <Arduino.h>
 
 #include "log.h"
+#include "speaker.h"
 #include "timers.h"
 #include "tube.h"
 
@@ -186,6 +187,7 @@ void IRAM_ATTR isr_GMC_count() {
   digitalWrite(PIN_TEST_OUTPUT, LOW);
   #endif
   portEXIT_CRITICAL_ISR(&mux_GMC_count);
+  tick(true);  // tick
 }
 
 void read_GMC(unsigned long *counts, unsigned long *timestamp, unsigned int *between) {

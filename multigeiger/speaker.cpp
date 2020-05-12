@@ -2,83 +2,184 @@
 // also handles the onboard LED, which lights up while speaker ticks.
 
 #include <Arduino.h>
+#include <driver/mcpwm.h>
 
 #include "speaker.h"
+#include "timers.h"
 
 #define PIN_SPEAKER_OUTPUT_P 12
 #define PIN_SPEAKER_OUTPUT_N 0
 
-void setup_speaker() {
+// MUX (mutexes used for mutual exclusive access to isr variables)
+portMUX_TYPE mux_audio = portMUX_INITIALIZER_UNLOCKED;
+
+volatile int *isr_audio_sequence = NULL;
+volatile int *isr_tick_sequence = NULL;
+volatile int *isr_sequence = NULL;  // currently played sequence
+
+static int tick_sequence[8], tock_sequence[8];
+
+// hw timer period and microseconds -> periods conversion
+#define PERIOD_DURATION_US 1000
+#define PERIODS(us) ((us) / PERIOD_DURATION_US)
+
+void IRAM_ATTR isr_audio() {
+  // this code is periodically called by a timer hw interrupt, always same period.
+  // we need to decide internally whether we actually want to do something.
+  //
+  // note: this is implemented like it is because dynamically reprogramming the hw timer
+  // to a different period would require us to call library functions like timerAlarmWrite
+  // which are **not** in IRAM (but in flash) and doing that can lead to spurious fatal
+  // exceptions like "Cache disabled but cached memory region accessed".
+  static unsigned int current = 0;  // current period counter
+  static unsigned int next = PERIODS(1000);  // periods to next sequencer execution
+  if (++current < next)
+    return;  // nothing to do yet
+
+  // we reached "next", so we execute the sequencer:
+  current = 0;
+
+  // tone and tick generation, also led blinking
+  int frequency_mHz, volume, led, duration_ms;
+  static bool playing_audio = false, playing_tick = false;
+
+  // fetch next tone / next led state
+  portENTER_CRITICAL_ISR(&mux_audio);
+  if (!isr_sequence) {
+    if (isr_audio_sequence) {
+      isr_sequence = isr_audio_sequence;
+      playing_audio = true;
+    } else if (isr_tick_sequence) {
+      isr_sequence = isr_tick_sequence;
+      playing_tick = true;
+    }
+  }
+  if (isr_sequence) {
+    volatile int *p = isr_sequence;
+    frequency_mHz = *p++;
+    volume = *p++;
+    led = *p++;
+    duration_ms = *p++;
+    isr_sequence = p;
+  }
+  portEXIT_CRITICAL_ISR(&mux_audio);
+
+  if (!isr_sequence)
+    return;  // nothing to do
+
+  // note: by all means, **AVOID** mcpwm_set_duty() in ISR, causes floating point coprocessor troubles!
+  //       when just calling mcpwm_set_duty_**type**(), it will reuse a previously set duty cycle.
+  if (frequency_mHz > 0) {
+    // enable sound output
+    if (volume >= 1) {
+      // high volume - MCPWM A/B outputs generate inverted signals
+      mcpwm_set_duty_type(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, MCPWM_DUTY_MODE_0);
+      mcpwm_set_duty_type(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_B, MCPWM_DUTY_MODE_1);
+    } else {
+      // low volume - do MCPWM on A, keep B permanently low
+      mcpwm_set_duty_type(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, MCPWM_DUTY_MODE_0);
+      mcpwm_set_signal_low(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_B);
+    }
+    // set frequency
+    mcpwm_set_frequency(MCPWM_UNIT_0, MCPWM_TIMER_0, frequency_mHz / 1000);
+    // start outputting PWM signal(s)
+    mcpwm_start(MCPWM_UNIT_0, MCPWM_TIMER_0);
+  } else {
+    // frequency_mHz == 0 -> disable sound output
+    // stop any PWM signals
+    mcpwm_stop(MCPWM_UNIT_0, MCPWM_TIMER_0);
+    // keep A high and B low (we have a piezo, no current flowing)
+    mcpwm_set_signal_high(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A);
+    mcpwm_set_signal_low(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_B);
+  }
+
+  if (led >= 0)  // led == -1 can be used as "don't touch LED"
+    digitalWrite(LED_BUILTIN, led ? HIGH : LOW);
+
+  if (duration_ms > 0) {
+    next = PERIODS(duration_ms * 1000);
+  } else {
+    // duration == 0 marks the end of the sequence to play
+    portENTER_CRITICAL_ISR(&mux_audio);
+    isr_sequence = NULL;
+    if (playing_tick)
+      isr_tick_sequence = NULL;
+    else if (playing_audio)
+      isr_audio_sequence = NULL;
+    portEXIT_CRITICAL_ISR(&mux_audio);
+    next = PERIODS(1000);
+  }
+}
+
+void IRAM_ATTR tick(bool tick) {
+  // make speaker tick and LED blink (or tock, no LED), called from ISR!
+  portENTER_CRITICAL_ISR(&mux_audio);
+  isr_tick_sequence = tick ? tick_sequence : tock_sequence;
+  portEXIT_CRITICAL_ISR(&mux_audio);
+}
+
+void play(int *sequence) {
+  // play a tone sequence, called from normal code (not ISR)
+  portENTER_CRITICAL(&mux_audio);
+  isr_audio_sequence = sequence;
+  portEXIT_CRITICAL(&mux_audio);
+}
+
+void init_tick_sequence(int *sequence, bool tick, bool use_led, bool use_speaker) {
+  // tick: 5000Hz, 4ms, led
+  // tock: 1000Hz, 4ms, no led
+  sequence[0] = use_speaker ? (tick ? 5000000 : 1000000) : 0;  // frequency_mHz
+  sequence[1] = 1;  // volume
+  sequence[2] = use_led ? (tick ? 1 : -1) : -1;  // led
+  sequence[3] = 4;  // duration_ms
+
+  sequence[4] = 0;  // silence
+  sequence[5] = 0;
+  sequence[6] = use_led ? (tick ? 0 : -1) : -1;  // led
+  sequence[7] = 0;  // END
+}
+
+#define TONE(f, v, led, t) {int(f * 0.75), v, led, int(t * 85)}
+
+void setup_speaker(bool playSound, bool use_led, bool use_speaker) {
   pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(PIN_SPEAKER_OUTPUT_P, OUTPUT);
-  pinMode(PIN_SPEAKER_OUTPUT_N, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);  // LED off
 
-  // LED off
-  digitalWrite(LED_BUILTIN, LOW);
-  // note: piezo beeper, thus no current is flowing after capacitive charge up:
-  digitalWrite(PIN_SPEAKER_OUTPUT_P, HIGH);
-  digitalWrite(PIN_SPEAKER_OUTPUT_N, LOW);
-}
+  init_tick_sequence(tick_sequence, true, use_led, use_speaker);
+  init_tick_sequence(tock_sequence, false, use_led, use_speaker);
 
-void cycle(int t1, int t2, int volume) {
-  // output one full cycle of the sound wave
-  // volume: 0: low, 1: high
-  digitalWrite(PIN_SPEAKER_OUTPUT_P, LOW);
-  digitalWrite(PIN_SPEAKER_OUTPUT_N, HIGH);
-  delayMicroseconds(t1);
-  digitalWrite(PIN_SPEAKER_OUTPUT_P, (volume == 1));
-  digitalWrite(PIN_SPEAKER_OUTPUT_N, LOW);
-  delayMicroseconds(t2);
-}
+  mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, PIN_SPEAKER_OUTPUT_P);
+  mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0B, PIN_SPEAKER_OUTPUT_N);
 
-void tick(int use_led, int use_speaker) {
-  // make LED flicker and speaker tick
-  if (use_led) {
-    digitalWrite(LED_BUILTIN, HIGH);    // switch on LED
+  mcpwm_config_t pwm_config;
+  pwm_config.frequency = 1000;
+  // set duty cycles to 50% (and never modify them again!)
+  pwm_config.cmpr_a = 50.0;
+  pwm_config.cmpr_b = 50.0;
+  pwm_config.counter_mode = MCPWM_UP_COUNTER;
+  mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_0, &pwm_config);
+
+  setup_audio_timer(isr_audio, PERIOD_DURATION_US);
+
+  if (playSound) {
+    static int sequence[][4] = {
+      TONE(1174659, 1, -1, 2),  // D
+      TONE(0, 0, 0, 2),         // ---
+      TONE(1318510, 1, -1, 2),  // E
+      TONE(0, 0, 0, 2),         // ---
+      TONE(1479978, 1, -1, 2),  // Fis
+      TONE(0, 0, 0, 2),         // ---
+      TONE(1567982, 1, -1, 4),  // G
+      TONE(1174659, 1, -1, 2),  // D
+      TONE(1318510, 1, -1, 2),  // E
+      TONE(1174659, 1, -1, 4),  // D
+      TONE(987767, 1, -1, 2),   // H
+      TONE(1046502, 1, -1, 2),  // C
+      TONE(987767, 1, -1, 4),   // H
+      TONE(987767, 0, -1, 4),   // H
+      TONE(0, 0, 0, 2),         // ---
+      TONE(0, 0, -1, 0),        // speaker off, end
+    };
+    play((int *)sequence);
   }
-  for (int t = 0; t < 4; t++) {
-    if (use_speaker)
-      cycle(500, 500, 1);  // takes 1ms
-    else if (use_led)
-      delay(1);            // also takes 1ms
-  }
-  if (use_led) {
-    digitalWrite(LED_BUILTIN, LOW);     // switch off LED
-  }
 }
-
-void tone(int frequency_mHz, int time_ms, int volume) {
-  int cycle_time_us, cycle_1_time_us, cycle_2_time_us;
-  unsigned long end_ms;
-
-  cycle_time_us = 1000000000 / frequency_mHz;
-  cycle_1_time_us = cycle_time_us / 2;
-  cycle_2_time_us = cycle_time_us - cycle_1_time_us;
-
-  end_ms = millis() + time_ms;
-  do {
-    cycle(cycle_1_time_us, cycle_2_time_us, volume);
-  } while (millis() < end_ms);
-}
-
-void play_start_sound() {
-  float freq_factor = 0.75;
-  int time_factor = 85;
-
-  tone(1174659 * freq_factor, 2 * time_factor, 1); // D
-  delay(2 * time_factor);                          // ---
-  tone(1318510 * freq_factor, 2 * time_factor, 1); // E
-  delay(2 * time_factor);                          // ---
-  tone(1479978 * freq_factor, 2 * time_factor, 1); // Fis
-  delay(2 * time_factor);                          // ---
-
-  tone(1567982 * freq_factor, 4 * time_factor, 1); // G
-  tone(1174659 * freq_factor, 2 * time_factor, 1); // D
-  tone(1318510 * freq_factor, 2 * time_factor, 1); // E
-  tone(1174659 * freq_factor, 4 * time_factor, 1); // D
-  tone(987767 * freq_factor, 2 * time_factor, 1);  // H
-  tone(1046502 * freq_factor, 2 * time_factor, 1); // C
-  tone(987767 * freq_factor, 4 * time_factor, 1);  // H
-  tone(987767 * freq_factor, 4 * time_factor, 0);  // H
-}
-
