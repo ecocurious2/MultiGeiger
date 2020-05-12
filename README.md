@@ -68,8 +68,8 @@ Als externe Libraries werden benötigt:
  * Adafruit BME280 Library, Version >=2.0.0
  * Adafruit Unified Sensor, Version >=1.0.3
  * IotWebConf, Version >=2.3.0
- * MCCI LoRaWAN LMIC library, Version >= 2.3.2  
- **Achtung:** Wenn die Arduino-IDE verwendet wird, dann bitte prüfen, dass in der Datei  project_config/lmic_project_config.h (in der obersten Ebene in dieser Library) unbedingt
+ * MCCI LoRaWAN LMIC library, Version >= 2.3.2\
+ **Achtung:** Wenn die Arduino-IDE verwendet wird, dann bitte prüfen, dass in der Datei project_config/lmic_project_config.h (in der obersten Ebene in dieser Library) unbedingt
 die richtigen Configs eingestellt sind. Die Datei muss folgendermassen aussehen:
 ```
 // project-specific definitions
@@ -105,21 +105,21 @@ Dort findet man einen Link zur __configure page__ - dort drauf klicken und man k
 
 
 Diese hat die folgenden Zeilen:
- * Geiger accesspoint SSID  
+ * Geiger accesspoint SSID\
  Dies ist die SSID des eingebauten APs und kann zwar geändert werden, sollte aber nicht! Der Sensor wird mit dieser Nummer bei sensor.community (früher: luftdaten.info) angemeldet. Wird sie geändert, muss eine neue Anmeldung erfolgen.
- * Geiger accesspoint password  
- Dies ist das Passwort für den eingebauten AP.  
+ * Geiger accesspoint password\
+ Dies ist das Passwort für den eingebauten AP.\
  Dieses **MUSS** beim ersten Mal geändert werden. Es kann natürlich auch das gleiche Passwort **ESP32Geiger** wieder verwendet werden - wichtig ist nur, dass da was reingeschrieben wird und dass man das **nicht vergessen** darf.
- * WiFi client SSID  
+ * WiFi client SSID\
  Hier muss die SSID des WLANs für den Netzwerk/Internet-Zugang eingegeben werden.
- * WiFi client password  
+ * WiFi client password\
  Und hier das zugehörige Passwort.
 
 Es wird empfohlen, beim WLAN das Gastnetz zu verwenden (falls ein solches existiert). Normalerweise wird das Gastnetz im Router vom normalen Netz abgeschottet und ist damit sicherer.
 
 Ist alles eingegeben, kann man auf **Apply** drücken. Nun werden die eingestellten Daten übernommen und in das interne EEPROM gespeichert. Nun bitte **unbedingt** über **Abbrechen** diese Seite verlassen! Nur dann verlässt das Programm den Config-Mode und verbindet sich mit dem heimischen WLAN. Wenn es kein **Abbrechen** gibt, dann wieder zurück in die WLAN-Einstellungen des Gerätes gehen und da dann das normale Heim-Netzwerk wieder einstellen.
 
-**ACHTUNG ACHTUNG**  
+**ACHTUNG ACHTUNG**\
 **Beim Update auf die Version 1.13 müssen die WLAN-Daten noch einmal neu eingegeben werden**. Bei zukünftigen Versionen wird das nicht mehr nötig sein.
 
 Weiter können über die Einstell-Seite einige verschiedene Definitionen festgelegt werden:
@@ -162,18 +162,137 @@ Während der Übertragung der Daten zu den Servern wird in der Statuszeile (unte
 Damit die Daten, die der Sensor nach sensor.community schickt, von dem Server auch angenommen werden, muss man sich dort anmelden. Das geschieht über die Seite https://meine.luftdaten.info.
 Zuerst über den *Registrieren*-Knopf einen Account anlegen. Dann damit über *Login* einloggen und *Neuen Sensor registrieren* anklicken.
 Dann das Formular ausfüllen:
- * Erste Zeile, Sensor ID:
+ * Erste Zeile, Sensor ID:\
  Hier die Nummer (nur die Zahlen) der SSID des Sensors eingeben (z.B. bei dem Sensor ESP-51564452 also dann nur 51564452 eingeben)
- * Zweite Zeile, Sensor Board:
+ * Zweite Zeile, Sensor Board:\
  Hier *esp32* auswählen (über die kleinen Pfeile rechts)
- * Basisinformation:
+ * Basisinformation:\
  Hier die Adresse eingeben (mit dem Land!). Der interne Name des Sensors kann beliebig vergeben werden, muss aber eingegeben werden. Bitte den Haken bei **Indoor-Sensor** setzen, so lange der Sensor wirklich innen ist.
- * Zusätzliche Informationen:
+ * Zusätzliche Informationen:\
  Kann freigelassen werden, darf aber auch ausgefüllt werden.
- * Hardware-Konfiguration:
+ * Hardware-Konfiguration:\
  Hier als Sensor-Typ den Eintrag **Radiation Si22G** (oder ggf. entsprechend) auswählen. Für den zweiten Sensor kann DHT22 stehen bleiben, das ist für uns irrelevant.
- * Position
+ * Position\
  Hier bitte die Koordinaten eingeben, so genau wie möglich (oder über den rechten Knopf die Koordinaten rechnen lassen). Dies wird benötigt, um den Sensor später auf der Karte anzeigen zu können.
 
- Nun mit *Einstellungen speichern* das Ganze beenden. Dann auf der Übersichts-Seite bei diesem Sensor auf *Daten* klicken. Nun steht hinter *Sensor ID* die ID des Sensors. Diese bitte merken: sie wird für die Abfrage bei sensor.community bzw. bei der Anzeige auf https://multigeiger.citysensor.de benötigt (zur Zeit ist das noch laufend in Arbeit - kann/wird also ab und zu ausfallen :wink: ).
+ Nun mit *Einstellungen speichern* das Ganze beenden. Dann auf der Übersichts-Seite bei diesem Sensor auf *Daten* klicken. Nun steht hinter *Sensor ID* die ID des Sensors. Diese bitte merken: sie wird für die Abfrage bei sensor.community bzw. bei der Anzeige auf https://multigeiger.citysensor.de benötigt.
+ 
+## LoRa-Interface
+Um den Multigeiger an TTN ("The Things Network") anzubinden, sind ein paar vorbereitende Schritte durchzuführen:
 
+* Anlegen des TTN-Devices bei *The Things Network*
+* Übernehmen der Parameter in den Multigeiger
+* Anmelden bei *sensor.community* (ehemals luftdaten.info)
+* HTTP-Integration
+
+
+### Anlegen eines TTN-Devices
+Das Gerät muss bei TTN (The Things Network) angemeldet werden. Dazu muss zuerst (falls noch nicht vorhanden) ein Account bei TTN amgelegt werden.
+
+#### Account anlegen
+Über <https://account.thethingsnetwork.org/register> auf die Webseite zum Account anlegen gehen. Hier dann einen **USERNAME** vergeben, die **EMAIL ADRESSE** eintragen und auch ein **PASSWORD** vergeben. Dann rechts unten über **Create account** den Account anlegen. Danach kann man sich mit den neuen Daten an der Console anmelden (<https://account.thethingsnetwork.org/users/login>).
+
+#### Applikation anlegen
+Ist man eingelogged, wird über **APPLICATIONS** und **add applications** die neue Applikation angelegt. Folgende Felder müssen ausgefüllt werden:
+
+* **Application ID:**\
+Eine beliebige Bezeichnung für diese Applikation, die darf es aber in dem Netzwerk noch nicht geben (also z.B.: geiger_20200205)
+* **Description:**\
+Hier kann eine beliebige Beschreibung der Apllikation eingegeben werden.
+* **Application EUI:**\
+Bleibt frei, die Nummer wird vom TTN-System erzeugt.
+* **Handler registration:**\
+Der vorausgefüllte Wert (ttn-handler-eu) ist schon richtig und bleibt stehen.
+
+Nun mit **Add application** rechts unten die Apllikation hinzufügen.
+
+#### Device anlegen
+Zuletzt muss noch das Device angelegt werden. Dazu in der Übersicht der Applikationen die gerade neu angelegte Applikation auswählen (klicken). Hier dann im mittleren Bereich bei **DEVICES** das Anlegen eines neuen Devices über **register device** starten. Folgende Felder müssen ausgefüllt werden:
+
+* **Device ID:**\
+Ein beliebiger Name für das Device. Er muss innerhalb der Applikation eindeutig sein (also z.B.: geiger_01) und nur aus Kleinbuchstaben bestehen.
+* **Device EUI:**\
+Einmal auf das Symbol ganz links an der Zeile klicken, dann erscheint der Text, dass diese Nummer vom System erzeugt wird. Wir müssen sonst nichts weiter eingeben.
+* **App Key:**\
+Keine Eingabe nötig
+* **App EUI:**\
+Bleibt so stehen
+
+Nun rechts unten auf **Register**. Nun ist auch das Device angelegt.
+
+### Übernahme der LoRa-Parameter 
+Die LoRa-Parameter müssen noch in das Programm übernommen werden.\
+Dazu muss die Konfigurations-Webseite des Geigerzählers aufgerufen werden. Weiter oben ist erklärt, wie die Konfigurations-Seite zu erreichen ist (*Einstellung des WLAN* und *Aufruf aus dem WLAN*))
+
+Nun auf der Konfigurations-Seite durch die Konfiguration gehen bis die Einstellung der LoRa-Parameter angezeigt wird. Nun die 3 Werte (**APPEUI, DEVEUI, APPKEY**) aus der TTN-Console (siehe oben) entnehmen und hier dann eintragen. In der TTN-Console auf das Device gehen, das oben angelegt wurde. Hier sind die 3 Werte zu finden. Es müssen die HEX-Werte **ohne** Leerzeichen eingegeben werden, und zwar so, wie sie in der TTN-Console erscheinen.
+Beispiel:\
+in der TTN-Console steht
+
+```
+Device EUI  00 D0 C0 00 C3 19 7C E8
+```
+Dann muss folgendes eingeben werden:
+
+```
+00D0C000C3197CE8
+```
+Dies gilt genauso ebenso für die **APPEUI** und den **APPKEY** .
+
+### Anmelden bei sensor.community (ehem. luftdaten.info)
+Wenn der Multigeiger seine Daten über TTN auch an *sensor.community* weitergeben soll, muss er dort angemeldet werden.
+Die Anmeldung ist ziemlich ähnlich wie oben schon beschrieben. Hier werden nur die Änderungen erläutert (gesamten Ablauf bitte oben nachlesen).
+
+ * Sensor ID:\
+ Hier den hinteren Teil der DEVEUI eingeben (wenn also - siehe oben - die DEVEUI *00 D0 C0 00 C3 19 7C E8* heißt, sind die hinteren 4 Byte ( also *C3197CE8*) in dezimal umgerechnet ( also hier 3273227496 ) einzugeben.
+ * Sensor Board:\
+ Hier **TTN** auswählen (über die kleinen Pfeile rechts).
+ 
+
+### HTTP-Integration
+Um die Daten von TTN an *sensor.community* zu bekommen, muss noch die HTTP-Integration bei TTN eingestellt werden.\
+In der TTN-Console *Applications* anklicken und dann die Applikation des Geigerzählers (z.B. *geiger_20200205*) anklicken. Dann rechts oben in der Leiste mit *Overview*, *Devices*, *Payload Formats*, *Integrations*, *Data*, *Settings* das **Integrations** anklicken. Hier dann über **add integration** die **HTTP Integration** auswählen.
+
+Nun die angezeigten Felder ausfüllen:\
+ **Process ID:**\
+ 	Hier einen beliebigen Namen für diese Integration vergeben\
+ **Access Key:**\
+ 	Hier einmal rein klicken und den *default key* auswählen\
+ **URL:**\
+ 	Hier nun die URL zum ttn2luft-Programm eingeben: <https://ttn2luft.citysensor.de>\
+ **Method:**\
+ 	da steht schon *POST*, das lassen\
+ **Authorization:**\
+ 	bleibt leer\
+ **Custom Header Name:**\
+ 	hier kommt der Text **X-SSID** rein\
+ **Custom Header value:**\
+ 	und da dann die SSID des Sensors (also die Nummer, die man bei der Anmeldung bei sensor.community erhalten hat, *NICHT* die Chip-ID).
+
+Dann rechts unten auf **Add integration** klicken. Das war's dann.\
+Und so etwa sieht das dann ausgefüllt aus:\
+!["HTTP-Integration filled"](images/http_integration_filled.png)
+
+### TTN-Payload (Beispiel)
+Um in der TTN-Console nicht nur die Datenbytes sondern lesbare Werte zu sehen, kann ein kleines Script als payload-Decoder eingefügt werden.\
+Auf der *The Things Network* Webseite einloggen, über **Applications** die oben angelegte Application suchen und dann anklicken. Hier in der Menü-Zeile den Tab **Payload Formats** auswählen. Dann den folgenden Code in das Feld einfügen (den vorhandenen Code überschreiben):
+
+```
+function Decoder(bytes, port) {
+  // Decode an uplink message from a buffer
+  // (array) of bytes to an object of fields.
+  var decoded = {};
+  if(port == 1) {
+  decoded.counts = ((bytes[0]*256 + bytes[1]) * 256 + bytes[2]) * 256  + bytes[3];
+  decoded.sample_time = (bytes[4] * 256 + bytes[5]) * 256 + bytes[6];
+  decoded.tube = bytes[9];
+  var minor = (bytes[7]&0xF)+(bytes[8]>>4) ;
+  decoded.sw_version="" + (bytes[7]>>4) + "." + minor + "." + (bytes[8]&0xF);
+  }
+  if (port === 2) {
+    decoded.temp = ((bytes[0] * 256 + bytes[1]) / 10) + "°C";
+    decoded.humi = bytes[2] / 2 + "%";
+    decoded.press = ((bytes[3] * 256 + bytes[4]) / 10) + "hPa";
+  }
+  return decoded;
+}
+```
