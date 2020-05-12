@@ -33,7 +33,7 @@ void IRAM_ATTR isr_audio() {
   // exceptions like "Cache disabled but cached memory region accessed".
   static unsigned int current = 0;  // current period counter
   static unsigned int next = PERIODS(1000);  // periods to next sequencer execution
-  if (current++ < next)
+  if (++current < next)
     return;  // nothing to do yet
 
   // we reached "next", so we execute the sequencer:
@@ -54,8 +54,8 @@ void IRAM_ATTR isr_audio() {
       playing_tick = true;
     }
   }
-  volatile int *p = isr_sequence;
-  if (p) {
+  if (isr_sequence) {
+    volatile int *p = isr_sequence;
     frequency_mHz = *p++;
     volume = *p++;
     led = *p++;
@@ -64,7 +64,7 @@ void IRAM_ATTR isr_audio() {
   }
   portEXIT_CRITICAL_ISR(&mux_audio);
 
-  if (!p)
+  if (!isr_sequence)
     return;  // nothing to do
 
   // note: by all means, **AVOID** mcpwm_set_duty() in ISR, causes floating point coprocessor troubles!
@@ -177,6 +177,7 @@ void setup_speaker(bool playSound, bool use_led, bool use_speaker) {
       TONE(1046502, 1, -1, 2),  // C
       TONE(987767, 1, -1, 4),   // H
       TONE(987767, 0, -1, 4),   // H
+      TONE(0, 0, 0, 2),         // ---
       TONE(0, 0, -1, 0),        // speaker off, end
     };
     play((int *)sequence);
