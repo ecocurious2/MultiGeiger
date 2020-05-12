@@ -187,7 +187,7 @@ Um den Multigeiger an TTN ("The Things Network") anzubinden, sind ein paar vorbe
 
 
 ### Anlegen eines TTN-Devices
-Das Gerät muss bei TTN (The Things Network) angemeldet werden. Dazu muss zuerst (falls noch nicht vorhanden) ein Account bei TTN amgelegt werden.
+Das Gerät muss bei TTN (The Things Network) angemeldet werden. Dazu muss zuerst (falls noch nicht vorhanden) ein Account bei TTN angelegt werden.
 
 #### Account anlegen
 Über <https://account.thethingsnetwork.org/register> auf die Webseite zum Account anlegen gehen. Hier dann einen **USERNAME** vergeben, die **EMAIL ADRESSE** eintragen und auch ein **PASSWORD** vergeben. Dann rechts unten über **Create account** den Account anlegen. Danach kann man sich mit den neuen Daten an der Console anmelden (<https://account.thethingsnetwork.org/users/login>).
