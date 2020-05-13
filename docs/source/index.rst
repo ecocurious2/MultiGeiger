@@ -15,6 +15,7 @@ MultiGeiger Documentation
    :maxdepth: 2
 
    changes
+   usage
    faq
    resources
    development
