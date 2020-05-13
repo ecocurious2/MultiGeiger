@@ -6,10 +6,7 @@
 #include "switches.h"
 
 // Inputs for the switches
-static unsigned int PIN_SWI_0 = 39;
-static unsigned int PIN_SWI_1 = 38;
-static unsigned int PIN_SWI_2 = 37;
-static unsigned int PIN_SWI_3 = 36;
+static unsigned int PIN_SWI_0, PIN_SWI_1, PIN_SWI_2, PIN_SWI_3;
 
 void setup_switches(bool isLoraBoard) {
   if (isLoraBoard) {
@@ -17,7 +14,12 @@ void setup_switches(bool isLoraBoard) {
     PIN_SWI_1 = 37;
     PIN_SWI_2 = 38;
     PIN_SWI_3 = 39;
-  }
+  } else {
+    PIN_SWI_0 = 39;
+    PIN_SWI_1 = 38;
+    PIN_SWI_2 = 37;
+    PIN_SWI_3 = 36;
+  };
   pinMode(PIN_SWI_0, INPUT);  // These pins DON'T HAVE PULLUPS!
   pinMode(PIN_SWI_1, INPUT);
   pinMode(PIN_SWI_2, INPUT);
