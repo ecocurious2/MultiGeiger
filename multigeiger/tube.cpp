@@ -67,7 +67,7 @@ void IRAM_ATTR isr_recharge() {
   static unsigned int current = 0;  // current period counter
   static unsigned int next_state = 0;  // periods to next state machine execution
   static unsigned int next_charge = PERIODS(1000000);  // periods between recharges, initially 1s
-  if (current++ < next_state)
+  if (++current < next_state)
     return;  // nothing to do yet
 
   // we reached "next_state", so we execute the state machine:
