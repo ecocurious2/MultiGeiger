@@ -11,7 +11,7 @@ OLED display
 Top line
 --------
 
-Left: Time in Seconds / Minutes since power-on.
+Left: Time in Seconds / Minutes since power-on (not shown on small displays).
 
 Right: Overall average radiation since power-on.
 
