@@ -17,9 +17,19 @@
 #include "ca_certs.h"
 
 // Hosts for data delivery
-#define MADAVI "https://api-rrd.madavi.de/data.php"
-#define SENSORCOMMUNITY "https://api.sensor.community/v1/push-sensor-data/"
-#define TOILET "https://ptsv2.com/t/rk9pr-1582220446/post"
+
+// use http for now, could we use https?
+#define MADAVI "http://api-rrd.madavi.de/data.php"
+
+// use http for now, server operator tells there are performance issues with https.
+#define SENSORCOMMUNITY "http://api.sensor.community/v1/push-sensor-data/"
+
+// Send http(s) post requests to a custom server
+// Note: Custom toilet URLs from https://ptsv2.com/ can be used for debugging
+// and work with https and http.
+#define CUSTOMSRV "https://ptsv2.com/t/xxxxx-yyyyyyyyyy/post"
+// Get your own toilet URL and put it here before setting this to true.
+#define SEND2CUSTOMSRV false
 
 static String http_software_version;
 static unsigned int lora_software_version;
@@ -31,7 +41,7 @@ typedef struct https_client {
   HTTPClient *hc;
 } HttpsClient;
 
-static HttpsClient c_madavi, c_sensorc, c_toilet;
+static HttpsClient c_madavi, c_sensorc, c_customsrv;
 
 void setup_transmission(const char *version, char *ssid, bool loraHardware) {
   chipID = String(ssid);
@@ -55,9 +65,9 @@ void setup_transmission(const char *version, char *ssid, bool loraHardware) {
   c_sensorc.wc->setCACert(ca_certs);
   c_sensorc.hc = new HTTPClient;
 
-  c_toilet.wc = new WiFiClientSecure;
-  c_toilet.wc->setCACert(ca_certs);
-  c_toilet.hc = new HTTPClient;
+  c_customsrv.wc = new WiFiClientSecure;
+  c_customsrv.wc->setCACert(ca_certs);
+  c_customsrv.hc = new HTTPClient;
 }
 
 void prepare_http(HttpsClient *client, const char *host) {
@@ -224,13 +234,13 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
                    int have_thp, float temperature, float humidity, float pressure) {
   int rc1, rc2;
 
-  #if SEND2DUMMY
-  bool toilet_ok;
-  log(INFO, "SENDING TO TOILET ...");
-  rc1 = send_http_geiger(&c_toilet, TOILET, dt, hv_pulses, gm_counts, cpm, XPIN_NO_XPIN);
-  rc2 = have_thp ? send_http_thp(&c_toilet, TOILET, temperature, humidity, pressure, XPIN_NO_XPIN) : 200;
-  toilet_ok = (rc1 == 200) && (rc2 == 200);
-  log(INFO, "SENT TO TOILET, status: %s, http: %d %d", toilet_ok ? "ok" : "error", rc1, rc2);
+  #if SEND2CUSTOMSRV
+  bool customsrv_ok;
+  log(INFO, "Sending to CUSTOMSRV ...");
+  rc1 = send_http_geiger(&c_customsrv, CUSTOMSRV, dt, hv_pulses, gm_counts, cpm, XPIN_NO_XPIN);
+  rc2 = have_thp ? send_http_thp(&c_customsrv, CUSTOMSRV, temperature, humidity, pressure, XPIN_NO_XPIN) : 200;
+  customsrv_ok = (rc1 == 200) && (rc2 == 200);
+  log(INFO, "Sent to CUSTOMSRV, status: %s, http: %d %d", customsrv_ok ? "ok" : "error", rc1, rc2);
   #endif
 
   if(sendToMadavi) {
