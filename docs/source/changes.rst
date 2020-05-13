@@ -8,7 +8,7 @@ V1.13.1-dev (not released yet)
 
 New features:
 
-* implement status line on OLED display, #257
+* implement status line on OLED display (see docs), #257
 * also support BME680 sensor for temperature, humidity, pressure
 * TLS support
 
@@ -29,6 +29,7 @@ Other changes:
 * dip switches: only read once at boot time, #207
 * new font (u8x8 uses 8px width anyway)
 * slow down main loop
+* toilet -> custom server, add comments about toilet usage, #214
 * refactor/simplify pulse counting ISR, bookkeeping in main loop, #220
 * refactor big main loop into smaller functions with local bookkeeping.
 * loraWan: removed unused/not needed code, #212, #234
