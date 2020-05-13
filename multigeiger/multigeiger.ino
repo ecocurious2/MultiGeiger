@@ -113,12 +113,17 @@ void display(unsigned long current_ms, unsigned long current_counts, unsigned lo
   static unsigned long last_timestamp = millis();
   static unsigned long last_counts = 0;
   static unsigned long last_hv_pulses = 0;
-  static unsigned long last_count_timestamp = millis();
+  static unsigned long last_count_timestamp = 0;
   static unsigned int accumulated_GMC_counts = 0;
   static unsigned long accumulated_time = 0;
   static float accumulated_Count_Rate = 0.0, accumulated_Dose_Rate = 0.0;
 
   if (((current_counts - last_counts) >= MINCOUNTS) || ((current_ms - last_timestamp) >= DISPLAYREFRESH)) {
+    if ((gm_count_timestamp == 0) && (last_count_timestamp == 0)) {
+      // seems like there was no GM pulse yet and everything is still in initial state.
+      // get out of here, we can't do anything useful now.
+      return;
+    }
     last_timestamp = current_ms;
     int hv_pulses = current_hv_pulses - last_hv_pulses;
     last_hv_pulses = current_hv_pulses;
@@ -199,8 +204,13 @@ void transmit(unsigned long current_ms, unsigned long current_counts, unsigned l
   static unsigned long last_counts = 0;
   static unsigned long last_hv_pulses = 0;
   static unsigned long last_timestamp = millis();
-  static unsigned long last_count_timestamp = millis();
+  static unsigned long last_count_timestamp = 0;
   if ((current_ms - last_timestamp) >= (MEASUREMENT_INTERVAL * 1000)) {
+    if ((gm_count_timestamp == 0) && (last_count_timestamp == 0)) {
+      // seems like there was no GM pulse yet and everything is still in initial state.
+      // get out of here, we can't do anything useful now.
+      return;
+    }
     last_timestamp = current_ms;
     unsigned long counts = current_counts - last_counts;
     last_counts = current_counts;
@@ -242,7 +252,7 @@ void loop() {
   // main program: all other timestamp bookkeeping values shall be derived from it.
   // ISR code: only one timestamp shall be kept/updated there with the only purpose
   //           of being used to update the master timestamp.
-  static unsigned long gm_count_timestamp = 0;
+  static unsigned long gm_count_timestamp;
 
   // time between last 2 geiger mueller events [us]
   unsigned int gm_count_time_between;
