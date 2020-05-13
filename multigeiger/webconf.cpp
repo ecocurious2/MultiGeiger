@@ -188,9 +188,8 @@ void setup_webconf(bool loraHardware) {
   }
 
   // if we don't have LoRa hardware, do not send to LoRa
-  #if CPU==WIFI
-  sendToLora = false;
-  #endif
+  if (!isLoraBoard)
+    sendToLora = false;
 
   iotWebConf.init();
 
