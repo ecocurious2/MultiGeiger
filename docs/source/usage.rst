@@ -42,21 +42,21 @@ Positions:
 - 1: sensors.community transmission
 
   - ``.``: off (not configured / enabled)
-  - ``s``: idle
   - ``S``: sending
-  - ``1``: transmission failed
+  - ``s``: idle (shown after successful sending)
+  - ``1``: sending failed (shown after trying to send)
 - 2: madavi transmission
 
   - ``.``: off (not configured / enabled)
-  - ``m``: idle
   - ``M``: sending
-  - ``2``: transmission failed
+  - ``m``: idle (shown after successful sending)
+  - ``2``: sending failed (shown after trying to send)
 - 3: TTN ("The Things Network")
 
-  - ``.``: off (no LoRa hardware, not configured, not enabled)
-  - ``t``: idle
+  - ``.``: off (not configured, not enabled, no LoRa hardware)
   - ``T``: sending
-  - ``3``: some error happened
+  - ``t``: idle (shown after successful sending)
+  - ``3``: sending failed (shown after trying to send)
 - 4: reserved for BT
 - 5: unused
 - 6: unused
