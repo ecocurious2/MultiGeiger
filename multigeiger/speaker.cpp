@@ -40,7 +40,7 @@ void IRAM_ATTR isr_audio() {
   current = 0;
 
   // tone and tick generation, also led blinking
-  int frequency_mHz, volume, led, duration_ms;
+  int frequency_mHz = 0, volume = 0, led = 0, duration_ms = 0;  // init avoids compiler warning
   static bool playing_audio = false, playing_tick = false;
 
   // fetch next tone / next led state
