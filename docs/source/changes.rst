@@ -8,6 +8,8 @@ V1.13.1-dev (not released yet)
 
 New features:
 
+* implement status line on OLED display, #257
+* also support BME680 sensor for temperature, humidity, pressure
 * TLS support
 
   - add clock module, use NTP to set the clock
@@ -15,10 +17,12 @@ New features:
   - use connection: keep-alive for web requests
   - add https support for sending data
   - use https: URLs
+* speaker/LED: timer-driven sequencer, hw PWM sound, #35
 
 Fixes:
 
 * fixed GM pulse debouncing, #248
+* pulse counting: deal with microseconds uint32 overflow, #273
 
 Other changes:
 
@@ -30,7 +34,8 @@ Other changes:
 * loraWan: removed unused/not needed code, #212, #234
 * docs:
 
-  - README improvements (board name, flash size, partition scheme, passwords)
+  - README improvements (board name, flash size, partition scheme, passwords,
+    LoRa)
   - update development/release docs (create/test binaries, IDE settings, ...)
 
 
