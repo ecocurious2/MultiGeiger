@@ -252,6 +252,9 @@ void loop() {
   read_THP(current_ms, &have_thp, &temperature, &humidity, &pressure);
 
   read_hv(&hv_error, &hv_pulses);
+  set_status(STATUS_HV, hv_error ? ST_HV_ERROR : ST_HV_OK);
+
+  int wifi_status = update_wifi_status();
 
   display(current_ms, gm_counts, gm_count_timestamp, hv_pulses);
 
@@ -266,15 +269,4 @@ void loop() {
   long loop_duration;
   loop_duration = millis() - current_ms;
   iotWebConf.delay((loop_duration < LOOP_DURATION) ? (LOOP_DURATION - loop_duration) : 0);
-
-  int wifi_status = update_wifi_status();
-
-  set_status(STATUS_SCOMM, ((wifi_status == ST_WIFI_CONNECTED) && sendToCommunity) ? ST_SCOMM_IDLE : ST_SCOMM_OFF);
-  set_status(STATUS_MADAVI, ((wifi_status == ST_WIFI_CONNECTED) && sendToMadavi) ? ST_MADAVI_IDLE : ST_MADAVI_OFF);
-
-  set_status(STATUS_TTN, sendToLora ? ST_TTN_IDLE : ST_TTN_OFF);
-
-  set_status(STATUS_BT, ST_NODISPLAY);  // TODO
-
-  set_status(STATUS_HV, hv_error ? ST_HV_ERROR : ST_HV_OK);
 }
