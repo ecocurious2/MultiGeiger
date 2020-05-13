@@ -42,11 +42,6 @@
 // Measurement interval (default 2.5min) [sec]
 #define MEASUREMENT_INTERVAL 150
 
-// MAX time to wait until connected. [msec]
-// If there is still no connection after that time,
-// measurements will start, but won't be sent to servers.
-#define MAX_WAIT_TIME 300000
-
 // Max time the greeting display will be on. [msec]
 #define AFTERSTART 5000
 

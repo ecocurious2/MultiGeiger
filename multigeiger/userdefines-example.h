@@ -29,12 +29,6 @@
 // if set to true, print debug info on serial (USB) interface while sending to servers (madavi or sensor.community)
 #define DEBUG_SERVER_SEND true
 
-// Time to try to connect to saved WiFi [sec]
-#define CONNECT_TIMEOUT 30
-
-// Time for configuration via local access point [sec]
-#define WAIT_4_CONFIG 180
-
 // Speaker Ticks with every pulse?
 #define SPEAKER_TICK true
 
