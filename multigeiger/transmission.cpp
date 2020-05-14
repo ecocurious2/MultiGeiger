@@ -201,7 +201,7 @@ int send_http_thp_2_madavi(HttpsClient *client, float temperature, float humidit
 // We do NOT use Cayenne LPP.
 // The payload will be translated via http integration and a small program to be compatible with sensor.community.
 // For byte definitions see ttn2luft.pdf in docs directory.
-void send_ttn_geiger(int tube_nbr, unsigned int dt, unsigned int gm_counts) {
+int send_ttn_geiger(int tube_nbr, unsigned int dt, unsigned int gm_counts) {
   unsigned char ttnData[10];
   // first the number of GM counts
   ttnData[0] = (gm_counts >> 24) & 0xFF;
@@ -217,17 +217,17 @@ void send_ttn_geiger(int tube_nbr, unsigned int dt, unsigned int gm_counts) {
   ttnData[8] = lora_software_version & 0xFF;
   // next byte is the tube number
   ttnData[9] = tube_nbr;
-  lorawan_send(1, ttnData, 10, false, NULL, NULL, NULL);
+  return lorawan_send(1, ttnData, 10, false, NULL, NULL, NULL);
 }
 
-void send_ttn_thp(float temperature, float humidity, float pressure) {
+int send_ttn_thp(float temperature, float humidity, float pressure) {
   unsigned char ttnData[5];
   ttnData[0] = ((int)(temperature * 10)) >> 8;
   ttnData[1] = ((int)(temperature * 10)) & 0xFF;
   ttnData[2] = (int)(humidity * 2);
   ttnData[3] = ((int)(pressure / 10)) >> 8;
   ttnData[4] = ((int)(pressure / 10)) & 0xFF;
-  lorawan_send(2, ttnData, 5, false, NULL, NULL, NULL);
+  return lorawan_send(2, ttnData, 5, false, NULL, NULL, NULL);
 }
 
 void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int hv_pulses, unsigned int gm_counts, unsigned int cpm,
@@ -272,13 +272,14 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
   }
 
   if(isLoraBoard && sendToLora && (strcmp(appeui, "") != 0)) {    // send only, if we have LoRa credentials
+    bool ttn_ok;
     log(INFO, "Sending to TTN ...");
     set_status(STATUS_TTN, ST_TTN_SENDING);
     displayStatus();
-    send_ttn_geiger(tube_nbr, dt, gm_counts);
-    if (have_thp)
-      send_ttn_thp(temperature, humidity, pressure);
-    set_status(STATUS_TTN, ST_TTN_IDLE);
+    rc1 = send_ttn_geiger(tube_nbr, dt, gm_counts);
+    rc2 = have_thp ? send_ttn_thp(temperature, humidity, pressure) : TX_STATUS_UPLINK_SUCCESS;
+    ttn_ok = (rc1 == TX_STATUS_UPLINK_SUCCESS) && (rc2 == TX_STATUS_UPLINK_SUCCESS);
+    set_status(STATUS_TTN, ttn_ok ? ST_TTN_IDLE : ST_TTN_ERROR);
     displayStatus();
   }
 }
