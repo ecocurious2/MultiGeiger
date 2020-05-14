@@ -68,6 +68,10 @@ void setup_transmission(const char *version, char *ssid, bool loraHardware) {
   c_customsrv.wc = new WiFiClientSecure;
   c_customsrv.wc->setCACert(ca_certs);
   c_customsrv.hc = new HTTPClient;
+
+  set_status(STATUS_SCOMM, sendToCommunity ? ST_SCOMM_INIT : ST_SCOMM_OFF);
+  set_status(STATUS_MADAVI, sendToMadavi ? ST_MADAVI_INIT : ST_MADAVI_OFF);
+  set_status(STATUS_TTN, sendToLora ? ST_TTN_INIT : ST_TTN_OFF);
 }
 
 void prepare_http(HttpsClient *client, const char *host) {
