@@ -157,8 +157,8 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display) {
     pu8x8->drawString(0, 2, output);
   } else {
     pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
-    sprintf(output, "%7d", RadNSvph);
-    pu8x8->drawString(1, 2, output);
+    sprintf(output, " %7d", RadNSvph);
+    pu8x8->drawString(0, 2, output);
     pu8x8->setFont(u8x8_font_px437wyse700b_2x2_f);
     sprintf(output, "%4d", CPM);
     pu8x8->drawString(0, 3, output);
