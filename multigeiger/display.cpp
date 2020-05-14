@@ -127,17 +127,6 @@ void displayStatus(void) {
   displayStatusLine(output);
 }
 
-char *nullFill(int n, int digits) {
-  static char erg[9];  // max. 8 digits possible!
-  if (digits > 8) {
-    digits = 8;
-  }
-  char format[5];
-  sprintf(format, "%%%dd", digits);
-  sprintf(erg, format, n);
-  return erg;
-}
-
 void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display) {
   if (!use_display) {
     if (!displayIsClear) {
@@ -151,8 +140,8 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display) {
 
   pu8x8->clear();
 
+  char output[40];
   if (!isLoraBoard) {
-    char output[80];
     int TimeMin = TimeSec / 60;         // calculate number of minutes
     TimeMin = TimeMin % 1000;  // limit minutes to max. 999, roll over
     pu8x8->setFont(u8x8_font_7x14_1x2_f);
@@ -166,12 +155,15 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display) {
     sprintf(output, "%7d nSv/h", RadNSvph);
     pu8x8->print(output);
     pu8x8->setFont(u8x8_font_inb33_3x6_n);
-    pu8x8->drawString(0, 2, nullFill(CPM, 5));
+    sprintf(output, "%5d", CPM);
+    pu8x8->drawString(0, 2, output);
   } else {
     pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
-    pu8x8->drawString(1, 2, nullFill(RadNSvph, 7));
+    sprintf(output, "%7d", RadNSvph);
+    pu8x8->drawString(1, 2, output);
     pu8x8->setFont(u8x8_font_px437wyse700b_2x2_f);
-    pu8x8->drawString(0, 3, nullFill(CPM, 4));
+    sprintf(output, "%4d", CPM);
+    pu8x8->drawString(0, 3, output);
     pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
     pu8x8->drawString(0, 5, "     cpm");
   }
