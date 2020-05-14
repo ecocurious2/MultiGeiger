@@ -128,13 +128,19 @@ void displayStatus(void) {
 }
 
 char *format_time(int secs) {
-  static char result[10];
+  static char result[4];
   int mins = secs / 60;
+  int hours = secs / (60 * 60);
+  int days = secs / (24 * 60 * 60);
   if (secs < 60) {
-    sprintf(result, "%2ds", secs);
+    snprintf(result, 4, "%2ds", secs);
+  } else if (mins < 60) {
+    snprintf(result, 4, "%2dm", mins);
+  } else if (hours < 24) {
+    snprintf(result, 4, "%2dh", hours);
   } else {
-    mins = mins % 1000;
-    sprintf(result, "%3d", mins);
+    days = days % 100;  // roll over after 100d
+    snprintf(result, 4, "%2dd", days);
   }
   return result;
 }
@@ -152,7 +158,7 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display) {
 
   pu8x8->clear();
 
-  char tmp[40], output[40];
+  char output[40];
   if (!isLoraBoard) {
     pu8x8->setFont(u8x8_font_7x14_1x2_f);
     sprintf(output, "%3s%7d nSv/h", format_time(TimeSec), RadNSvph);
