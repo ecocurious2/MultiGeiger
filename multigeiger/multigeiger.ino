@@ -195,7 +195,7 @@ void read_THP(unsigned long current_ms,
 }
 
 void transmit(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses,
-              bool have_thp, float temperature, float humidity, float pressure) {
+              bool have_thp, float temperature, float humidity, float pressure, int wifistatus) {
   static unsigned long last_counts = 0;
   static unsigned long last_hv_pulses = 0;
   static unsigned long last_timestamp = millis();
@@ -216,7 +216,7 @@ void transmit(unsigned long current_ms, unsigned long current_counts, unsigned l
     log(DEBUG, "Measured GM: cpm= %d HV=%d", current_cpm, hv_pulses);
 
     transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hv_pulses, counts, current_cpm,
-                  have_thp, temperature, humidity, pressure);
+                  have_thp, temperature, humidity, pressure, wifistatus);
   }
 }
 
@@ -264,7 +264,7 @@ void loop() {
   if (Serial_Print_Mode == Serial_Statistics_Log)
     statistics_log(gm_counts, gm_count_time_between);
 
-  transmit(current_ms, gm_counts, gm_count_timestamp, hv_pulses, have_thp, temperature, humidity, pressure);
+  transmit(current_ms, gm_counts, gm_count_timestamp, hv_pulses, have_thp, temperature, humidity, pressure, wifi_status);
 
   long loop_duration;
   loop_duration = millis() - current_ms;
