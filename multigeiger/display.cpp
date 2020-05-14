@@ -147,13 +147,13 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display) {
     pu8x8->setFont(u8x8_font_7x14_1x2_f);
     if (TimeSec < 60)    {    // < 1 minute -> display in seconds
       sprintf(output, "%2ds", TimeSec);
-      pu8x8->print(output);
+      pu8x8->drawString(0, 0, output);
     } else {                  // >= 1 minute -> display in minutes
       sprintf(output, "%3d", TimeMin);
-      pu8x8->print(output);
+      pu8x8->drawString(0, 0, output);
     }
     sprintf(output, "%7d nSv/h", RadNSvph);
-    pu8x8->print(output);
+    pu8x8->drawString(3, 0, output);
     pu8x8->setFont(u8x8_font_inb33_3x6_n);
     sprintf(output, "%5d", CPM);
     pu8x8->drawString(0, 2, output);
