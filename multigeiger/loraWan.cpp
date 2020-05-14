@@ -1,4 +1,3 @@
-// to have CPU defined:
 #include "userdefines.h"
 
 // Compile this only if we have a LoRa capable hardware
