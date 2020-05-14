@@ -140,20 +140,18 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display) {
 
   pu8x8->clear();
 
-  char output[40];
+  char tmp[40], output[40];
   if (!isLoraBoard) {
     int TimeMin = TimeSec / 60;         // calculate number of minutes
     TimeMin = TimeMin % 1000;  // limit minutes to max. 999, roll over
     pu8x8->setFont(u8x8_font_7x14_1x2_f);
     if (TimeSec < 60)    {    // < 1 minute -> display in seconds
-      sprintf(output, "%2ds", TimeSec);
-      pu8x8->drawString(0, 0, output);
+      sprintf(tmp, "%2ds", TimeSec);
     } else {                  // >= 1 minute -> display in minutes
-      sprintf(output, "%3d", TimeMin);
-      pu8x8->drawString(0, 0, output);
+      sprintf(tmp, "%3d", TimeMin);
     }
-    sprintf(output, "%7d nSv/h", RadNSvph);
-    pu8x8->drawString(3, 0, output);
+    sprintf(output, "%3s%7d nSv/h", tmp, RadNSvph);
+    pu8x8->drawString(0, 0, output);
     pu8x8->setFont(u8x8_font_inb33_3x6_n);
     sprintf(output, "%5d", CPM);
     pu8x8->drawString(0, 2, output);
