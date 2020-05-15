@@ -231,7 +231,7 @@ void send_ttn_thp(float temperature, float humidity, float pressure) {
 }
 
 void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int hv_pulses, unsigned int gm_counts, unsigned int cpm,
-                   int have_thp, float temperature, float humidity, float pressure, int wifistatus) {
+                   int have_thp, float temperature, float humidity, float pressure, int wifi_status) {
   int rc1, rc2;
 
   #if SEND2CUSTOMSRV
@@ -243,7 +243,7 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
   log(INFO, "Sent to CUSTOMSRV, status: %s, http: %d %d", customsrv_ok ? "ok" : "error", rc1, rc2);
   #endif
 
-  if(sendToMadavi && (wifistatus == ST_WIFI_CONNECTED)) {
+  if(sendToMadavi && (wifi_status == ST_WIFI_CONNECTED)) {
     bool madavi_ok;
     log(INFO, "Sending to Madavi ...");
     set_status(STATUS_MADAVI, ST_MADAVI_SENDING);
@@ -257,7 +257,7 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
     displayStatus();
   }
 
-  if(sendToCommunity  && (wifistatus == ST_WIFI_CONNECTED)) {
+  if(sendToCommunity  && (wifi_status == ST_WIFI_CONNECTED)) {
     bool scomm_ok;
     log(INFO, "Sending to sensor.community ...");
     set_status(STATUS_SCOMM, ST_SCOMM_SENDING);
