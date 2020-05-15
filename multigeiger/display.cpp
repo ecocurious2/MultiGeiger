@@ -127,15 +127,22 @@ void displayStatus(void) {
   displayStatusLine(output);
 }
 
-char *nullFill(int n, int digits) {
-  static char erg[9];  // max. 8 digits possible!
-  if (digits > 8) {
-    digits = 8;
+char *format_time(int secs) {
+  static char result[4];
+  int mins = secs / 60;
+  int hours = secs / (60 * 60);
+  int days = secs / (24 * 60 * 60);
+  if (secs < 60) {
+    snprintf(result, 4, "%2ds", secs);
+  } else if (mins < 60) {
+    snprintf(result, 4, "%2dm", mins);
+  } else if (hours < 24) {
+    snprintf(result, 4, "%2dh", hours);
+  } else {
+    days = days % 100;  // roll over after 100d
+    snprintf(result, 4, "%2dd", days);
   }
-  char format[5];
-  sprintf(format, "%%%dd", digits);
-  sprintf(erg, format, n);
-  return erg;
+  return result;
 }
 
 void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display) {
@@ -151,29 +158,21 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display) {
 
   pu8x8->clear();
 
+  char output[40];
   if (!isLoraBoard) {
-    char output[80];
-    int TimeMin = TimeSec / 60;         // calculate number of minutes
-    TimeMin = TimeMin % 1000;  // limit minutes to max. 999, roll over
     pu8x8->setFont(u8x8_font_7x14_1x2_f);
-    if (TimeSec < 60)    {    // < 1 minute -> display in seconds
-      sprintf(output, "%2ds", TimeSec);
-      pu8x8->print(output);
-    } else {                  // >= 1 minute -> display in minutes
-      sprintf(output, "%3d", TimeMin);
-      pu8x8->print(output);
-    }
-    sprintf(output, "%7d nSv/h", RadNSvph);
-    pu8x8->print(output);
+    sprintf(output, "%3s%7d nSv/h", format_time(TimeSec), RadNSvph);
+    pu8x8->drawString(0, 0, output);
     pu8x8->setFont(u8x8_font_inb33_3x6_n);
-    pu8x8->drawString(0, 2, nullFill(CPM, 5));
+    sprintf(output, "%5d", CPM);
+    pu8x8->drawString(0, 2, output);
   } else {
     pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
-    pu8x8->drawString(1, 2, nullFill(RadNSvph, 7));
+    sprintf(output, " %7d", RadNSvph);
+    pu8x8->drawString(0, 2, output);
     pu8x8->setFont(u8x8_font_px437wyse700b_2x2_f);
-    pu8x8->drawString(0, 3, nullFill(CPM, 4));
-    pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
-    pu8x8->drawString(0, 5, "     cpm");
+    sprintf(output, "%4d", CPM);
+    pu8x8->drawString(0, 3, output);
   }
   displayStatus();
   displayIsClear = false;
