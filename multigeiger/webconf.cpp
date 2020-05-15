@@ -2,6 +2,7 @@
 // also: OTA updates
 
 #include "log.h"
+#include "speaker.h"
 
 #include "IotWebConf.h"
 #include <HTTPClient.h>
@@ -120,6 +121,12 @@ void handleRoot(void) {  // Handle web requests to "/" path.
     "</body>"
     "</html>\n";
   server.send(200, "text/html;charset=UTF-8", index);
+  // looks like user wants to do some configuration or maybe flash firmware.
+  // while accessing the flash, we need to turn ticking off to avoid exceptions.
+  // user needs to save the config (or flash firmware + reboot) to turn it on again.
+  // note: it didn't look like there is an easy way to put this call at the right place
+  // (start of fw flash / start of config save) - this is why it is here.
+  tick_enable(false);
 }
 
 static char lastWiFiSSID[IOTWEBCONF_WORD_LEN] = "";
@@ -144,6 +151,7 @@ void loadConfigVariables(void) {
 void configSaved(void) {
   log(INFO, "Config saved. ");
   loadConfigVariables();
+  tick_enable(true);
 }
 
 void initConfigVariables(void) {
