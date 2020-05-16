@@ -3,26 +3,29 @@
 Changelog
 =========
 
-V1.13.1-dev (not released yet)
+V1.14.0 2020-05-16
 ------------------------------
 
 New features:
 
 * implement status line on OLED display (see docs), #257
 * also support BME680 sensor for temperature, humidity, pressure
+* display time up to 60s / 60m / 24h / 99d, then roll over
+* speaker/LED: timer-driven sequencer, hw PWM sound, #35
 * TLS support
 
   - add clock module, use NTP to set the clock
   - use persistent per-server HTTPClient instances
   - use connection: keep-alive for web requests
-  - add https support for sending data
-  - use https: URLs
-* speaker/LED: timer-driven sequencer, hw PWM sound, #35
+  - add https capability (can be used for sending data)
+  - note: transmission to sensors.community and madavi is still using http!
 
 Fixes:
 
 * fixed GM pulse debouncing, #248
 * pulse counting: deal with microseconds uint32 overflow, #273
+* check WiFi status before trying to transmit
+* fix race condition, #286
 
 Other changes:
 
@@ -32,13 +35,14 @@ Other changes:
 * toilet -> custom server, add comments about toilet usage, #214
 * refactor/simplify pulse counting ISR, bookkeeping in main loop, #220
 * refactor big main loop into smaller functions with local bookkeeping.
+* misc. other code cleanups
 * loraWan: removed unused/not needed code, #212, #234
+* removed meeting notes, #294
 * docs:
 
   - README improvements (board name, flash size, partition scheme, passwords,
     LoRa)
   - update development/release docs (create/test binaries, IDE settings, ...)
-
 
 V1.13.0 2020-04-14
 ------------------
