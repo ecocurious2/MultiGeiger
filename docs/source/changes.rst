@@ -3,7 +3,7 @@
 Changelog
 =========
 
-V1.13.1-dev (not released yet)
+V1.14.0 2020-05-16
 ------------------------------
 
 New features:
