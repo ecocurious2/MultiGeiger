@@ -3,8 +3,23 @@
 Changelog
 =========
 
+V1.15.0-dev (not released yet)
+------------------
+
+New features:
+
+* ...
+
+Fixes:
+
+* ...
+
+Other changes:
+
+* ...
+
 V1.14.0 2020-05-16
-------------------------------
+------------------
 
 New features:
 
