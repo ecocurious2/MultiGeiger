@@ -28,25 +28,28 @@ void display_start_screen(void) {
   pu8x8->clear();
   if (isLoraBoard) {
     // Display is only 4 lines by 8 characters; lines counting from 2 to 5
-    pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);        // u8x8 can handle only 8x8, smaller font has no advantage
+    pu8x8->setFont(u8x8_font_victoriamedium8_r);
     for (int i = 2; i < 6; i++) {
       pu8x8->drawString(0, i, "        ");  // clear all 4 lines
     }
   }
 
   if (isLoraBoard) {
-    pu8x8->drawString(0, 2, "Geiger-");
-    pu8x8->drawString(0, 3, " Counter");
-    pu8x8->drawString(0, 4, "Version:");
+    pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
+    pu8x8->drawString(0, 2, "Multi-");
+    pu8x8->drawString(0, 3, " Geiger");
+    pu8x8->setFont(u8x8_font_victoriamedium8_r);
     snprintf(line, 9, "%s", VERSION_STR);  // 8 chars + \0 termination
-    pu8x8->drawString(0, 5, line);
+    pu8x8->drawString(0, 4, line);
   } else {
     pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
-    pu8x8->drawString(0, 0, "Geiger-Counter");
-    pu8x8->drawString(0, 2, "==============");
+    pu8x8->drawString(0, 0, "Multi-Geiger-");
+    pu8x8->drawString(0, 1, " Counter");
+    pu8x8->setFont(u8x8_font_victoriamedium8_r);
+    pu8x8->drawString(0, 2, "Info:boehri.de");
+    pu8x8->drawString(0, 4, "Version:");
     snprintf(line, 15, "%s", VERSION_STR);  // 14 chars + \0 termination
-    pu8x8->drawString(0, 4, line);
-    pu8x8->drawString(0, 6, "Info:boehri.de");
+    pu8x8->drawString(0, 5, line);
   }
   displayIsClear = false;
 };
@@ -74,7 +77,7 @@ void displayStatusLine(String txt) {
   if (txt.length() == 0)
     return;
   int line = isLoraBoard ? 5 : 7;
-  pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
+  pu8x8->setFont(u8x8_font_victoriamedium8_r);
   clearDisplayLine(line);
   pu8x8->drawString(0, line, txt.c_str());
 }
@@ -91,7 +94,7 @@ static const char *status_chars[STATUS_MAX] = {
   // group TTN (LoRa WAN)
   ".t3T?",  // ST_TTN_OFF, ST_TTN_IDLE, ST_TTN_ERROR, ST_TTN_SENDING, ST_TTN_INIT
   // group BlueTooth
-  ".B4b?",  // ST_BT_OFF, ST_BT_CONNECTED, ST_BT_ERROR, ST_BT_CONNECTING, ST_BT_INIT
+  ".B4b?",  // ST_BT_OFF, ST_BT_CONNECTED, ST_BT_ERROR, ST_BT_CONNECTABLE, ST_BT_INIT
   // group other
   ".",      // ST_NODISPLAY
   ".",      // ST_NODISPLAY
@@ -99,10 +102,17 @@ static const char *status_chars[STATUS_MAX] = {
 };
 
 void set_status(int index, int value) {
-  if ((index >= 0) && (index < STATUS_MAX))
-    status[index] = value;
-  else
+  if ((index >= 0) && (index < STATUS_MAX)) {
+    if (status[index] != value) {
+      status[index] = value;
+      displayStatus();
+    }
+  } else
     log(ERROR, "invalid parameters: set_status(%d, %d)", index, value);
+}
+
+int get_status(int index) {
+  return status[index];
 }
 
 char get_status_char(int index) {

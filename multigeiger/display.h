@@ -62,6 +62,7 @@ void displayStatusLine(String txt);
 #define STATUS_MAX 8
 
 void set_status(int index, int value);
+int get_status(int index);
 void displayStatus(void);
 
 #endif // _DISPLAY_H_
