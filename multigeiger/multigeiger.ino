@@ -141,8 +141,8 @@ void display(unsigned long current_ms, unsigned long current_counts, unsigned lo
     accumulated_Dose_Rate = accumulated_Count_Rate * GMC_factor_uSvph;
 
     // ... and display them.
-    DisplayGMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
-               (showDisplay && switches.display_on));
+    display_GMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
+                (showDisplay && switches.display_on));
 
     if (Serial_Print_Mode == Serial_Logging) {
       log_data(counts, dt, Count_Rate, Dose_Rate, hv_pulses,
@@ -154,7 +154,7 @@ void display(unsigned long current_ms, unsigned long current_counts, unsigned lo
     static unsigned long afterStartTime = AFTERSTART;
     if (afterStartTime && ((current_ms - boot_timestamp) >= afterStartTime)) {
       afterStartTime = 0;
-      DisplayGMC(0, 0, 0, (showDisplay && switches.display_on));
+      display_GMC(0, 0, 0, (showDisplay && switches.display_on));
     }
   }
 }
