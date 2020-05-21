@@ -135,3 +135,7 @@ void setup_ble(char *device_name, bool ble_on) {
   log(INFO, "BLE service advertising started, device name: %s, MAC: %s", device_name, BLEDevice::getAddress().toString().c_str());
 }
 
+void disable_ble(void) {
+  ble_enabled = false;
+  set_status(STATUS_BT, ST_BT_OFF);
+}
