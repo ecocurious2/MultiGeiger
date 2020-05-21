@@ -7,5 +7,6 @@
 void setup_ble(char *device_name, bool ble_enabled);
 void update_bledata(unsigned int cpm);
 bool is_ble_connected(void);
+void disable_ble(void);
 
 #endif // _BLE_H_
