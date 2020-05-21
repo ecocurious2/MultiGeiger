@@ -71,7 +71,7 @@ class MyServerCallbacks: public BLEServerCallbacks {
 // Callback allowing for Control Point Characteristic to reset "energy expenditure" (packet counter)
 class MyCharacteristicCallbacks: public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *pCharacteristic) {
-   String rxValue = pCharacteristic->getValue().c_str();
+    String rxValue = pCharacteristic->getValue().c_str();
     status_HRCP = (rxValue.length() > 0) ? (unsigned int)rxValue[0] : 0;
   }
 };
