@@ -83,6 +83,38 @@ Then point a web browser at ``docs/build/html/index.html``.
 The website is updated automatically by ReadTheDocs through GitHub web hooks on the
 main repository.
 
+After changes of the (english) master docs, the translation master files (``*.pot``)
+need updating (adding/removing/updating strings in there):
+
+::
+
+  cd docs/source/
+  sphinx-build -b gettext . ../build/gettext
+
+Then, these changes need to get pushed to transifex, so translators can comfortably
+translate on the web:
+
+::
+
+  tx push --sources
+
+Later, after translators did their part, updated translations need to get pulled
+from transifex:
+
+::
+
+  tx pull --all
+
+Now we have changes in our git workdir and we need to commit them:
+
+::
+
+  git add locales/
+  git commit -m "updated translations"
+  git push
+
+This will trigger a build of the docs and their translation(s) on readthedocs.io.
+
 .. _Sphinx: https://www.sphinx-doc.org/
 
 

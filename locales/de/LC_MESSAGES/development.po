@@ -1,0 +1,336 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, see AUTHORS
+# This file is distributed under the same license as the MultiGeiger package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: MultiGeiger\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-21 23:17+0200\n"
+"PO-Revision-Date: 2020-05-21 22:36+0000\n"
+"Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:6
+#: 0f91d0283df844c8994921de63391509
+msgid "Development"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:8
+#: c6c9e67cdb16434ab897420c756bbe03
+msgid "This chapter will get you started with |project_name| development."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:10
+#: 253aa86368dc40cf93057f1cf6b57b14
+msgid "|project_name| is written in C using Arduino-ESP32."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:14
+#: 1a26f4c1253644139b29934a5cf9340a
+msgid "Contributions"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:16
+#: 4f2e24f2e21c414d9d0fb0185236ed07
+msgid "... are welcome!"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:18
+#: de36b08cdf714701816465faa6b85a6c
+msgid "Some guidance for contributors:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:20
+#: e4bf2a76fc4f468f884274dc33603f4f
+msgid "discuss about changes on github issue tracker"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:22
+#: 409828b1e10d43c792a74f1bde6e0815
+msgid "make your PRs against the ``master`` branch"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:24
+#: 07416c498656477b9d49fb03b1688c09
+msgid "do clean changesets:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:26
+#: 390fd58138614e12bfc0547ba46d13b5
+msgid "focus on some topic, resist changing anything else."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:27
+#: 85ffc2abb0a44ffdb27cdb4ddb3c04e4
+msgid "do not do style changes mixed with functional changes."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:28
+#: a97ab24ee71c452e9196681a1603ba58
+msgid "run the automatic code formatter before committing"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:29
+#: bf544a89cd4140eebc31a9cbb0911f97
+msgid "try to avoid refactorings mixed with functional changes."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:30
+#: 39ab79472512446abecda2bb9edaac75
+msgid "if you need to fix something after commit/push:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:32
+#: 4488d21818fc490a859259d411aa9ec4
+msgid ""
+"if there are ongoing reviews: do a fixup commit you can merge into the bad "
+"commit later."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:34
+#: c7002457397a4e3fadc91e43a7f7a63f
+msgid ""
+"if there are no ongoing reviews or you did not push the bad commit yet: edit"
+" the commit to include your fix or merge the fixup commit before pushing."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:37
+#: c746e2c4835a4d3cb70041228d9c8174
+msgid "have a nice, clear, typo-free commit comment"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:38
+#: f1b869d0e75149af8d2b0252d5452e04
+msgid "if you fixed an issue, refer to it in your commit comment"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:40
+#: c710303ab2a34a04b9bde686a9bda789
+msgid ""
+"make a pull request on github and check on the PR page what ``travis-ci`` "
+"tells about the code in your PR"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:43
+#: 33c819ad1ccc4b32862707c32f74c3f7
+msgid "wait for review by other developers"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:47
+#: 8f3482e610894868b27400a18fbdf30e
+msgid "Building a development environment"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:49
+#: c46ef04843e0411c902651a64cafffbc
+msgid "TODO"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:52
+#: bcdf869f8cfd421a9c37c3612729f000
+msgid "Automatic Code Formatter"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:54
+#: d9cd7051da054928adf5c280bdf8f617
+msgid "We use astyle_ for automated code formatting / formatting checks."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:56
+#: 99a074cf87f545f6b1f98274d8fe3414
+msgid "Run it like this:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:66
+#: a2f1fd04d02a45b7a04bebb678849177
+msgid "Documentation"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:69
+#: 163a537e579d4d999675891be04bac13
+msgid "Building the docs with Sphinx"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:71
+#: 9bd00f1bd8c24ec99cd8523391e3520a
+msgid ""
+"The documentation (in reStructuredText format, .rst) is in ``docs/source/``,"
+" ``index.rst`` is the starting point there."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:74
+#: dbdb23119ac043dcbe6ee366780546a1
+msgid "To build the docs, you need to have Sphinx_ installed and run:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:81
+#: 385c43075abf4856afe0a1526d56d006
+msgid "Then point a web browser at ``docs/build/html/index.html``."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:83
+#: 34f463e7cabc43b09148a9a9a79d7cf7
+msgid ""
+"The website is updated automatically by ReadTheDocs through GitHub web hooks"
+" on the main repository."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:90
+#: dcc428948d094325bf165b80cf7c3b05
+msgid "Flashing devices / creating binaries"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:92
+#: a7affc77afa948cd9831193ccf2f710b
+msgid "Arduino IDE:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:94
+#: 614a8664c1de4930853963db6029a177
+msgid "do a git checkout of the wanted release, e.g. ``git checkout V1.13.0``"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:95
+#: 9883fce6d1f14f2281759edf825f3512
+msgid "use the default userdefines.h (available as userdefines-example.h)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:96
+#: c94119181a724d76b7def12cc4416228
+msgid "IDE settings:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:98
+#: e0827444d78645de85c5e9ab5bed18c6
+msgid ""
+"Device: Heltec WiFi Stick  (always use this, even if you have a WiFi Kit 32)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:99
+#: 675c39578dfa4617bd16e24504bdb960
+msgid "Flash size: 4MB (32Mb)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:100
+#: 806eaa2fddf14474aa9d08dcbf5caf51
+msgid ""
+"Partition scheme: minimal SPIFFS (large APPS with OTA) - this fits onto 4MB "
+"devices."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:101
+#: f3f6f73d8dd040cb87241541fb769a28
+msgid "``Arduino IDE -> Sketch -> Upload``"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:103
+#: 4103c3b8b1a24ca58129005f05342e6f
+msgid ""
+"This is to test whether the compiled code actually works after USB-flashing "
+"to your device."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:104
+#: c83ae921bd6b4fc0b0f86dff9c65555a
+msgid "``Arduino IDE -> Sketch -> Export compiled binary``"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:106
+#: 2ce44dcde93c48e5823392701dbb867c
+msgid ""
+"This creates a .bin file for OTA updating. Test whether OTA updating using "
+"that file works."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:112
+#: 593caf8222d641bbbdd83fa9a5bdd5fd
+msgid "Creating a new release"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:114
+#: 5ad0f70ef2744c25afc825d51e78fcb6
+msgid "Checklist:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:116
+#: fca8414262d44bad87a7ac5dae6c6f1e
+msgid ""
+"make sure all issues for this milestone are closed or moved to the next "
+"milestone"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:118
+#: 3ba732302a294e989df96578c59accf5
+msgid "check if there are any pending fixes for severe issues"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:119
+#: e02d107efcde45669da7a7ec61baf1e0
+msgid ""
+"check whether some CA certificate (see ``ca_certs.h``) will expire soon and "
+"whether we already can add their next valid cert."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:121
+#: ff7f215a43124441b87d5f0ba02d3f51
+msgid "find and fix any low hanging fruit left on the issue tracker"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:122
+#: 94984feaa3b44fcb8722f931a3a6a15c
+msgid "close release milestone on Github"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:123
+#: a3632d169a6e4732b01feffd73a47a27
+msgid ""
+"update ``docs/source/changes.rst``, based on ``git log $PREVIOUS_RELEASE..``"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:124
+#: 494620c741bb45f79cf065407d01e33b
+msgid "``bump2version --new-version 1.23.0 release`` - this will:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:126
+#: 9927da2e39bd4972a8d8364f04c1d4ab
+msgid "update versions everywhere"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:127
+#: 176872b462804da487b0ec9a63c2eee5
+msgid "auto-create a git tag"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:128
+#: 5a33ff1c7e0042f195c8a9a5acf606cc
+msgid "auto-create a git commit"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:129
+#: 50fc22b018254b7bbfd6df4b61c141b0
+msgid "review the automatically generated changeset"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:130
+#: 7a61ac376f13486e8f16cd08b7b9e4bf
+msgid "create a github release for this tag:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:132
+#: 4ba19bc52ac449c582a5a130566e7e70
+msgid "create a binary (see above) and attach to the github release"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:133
+#: 907276991ed942fea0c7658cff45a597
+msgid ""
+"add a link to the relevant ``changes.rst`` section to the github release"
+msgstr ""
