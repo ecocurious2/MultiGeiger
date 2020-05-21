@@ -26,27 +26,24 @@ void display_start_screen(void) {
   char line[20];
 
   pu8x8->clear();
-  if (isLoraBoard) {
-    // Display is only 4 lines by 8 characters; lines counting from 2 to 5
-    pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);        // u8x8 can handle only 8x8, smaller font has no advantage
-    for (int i = 2; i < 6; i++) {
-      pu8x8->drawString(0, i, "        ");  // clear all 4 lines
-    }
-  }
 
   if (isLoraBoard) {
-    pu8x8->drawString(0, 2, "Geiger-");
-    pu8x8->drawString(0, 3, " Counter");
-    pu8x8->drawString(0, 4, "Version:");
+    pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
+    pu8x8->drawString(0, 2, " Multi-");
+    pu8x8->drawString(0, 3, " Geiger");
+    pu8x8->setFont(u8x8_font_victoriamedium8_r);
     snprintf(line, 9, "%s", VERSION_STR);  // 8 chars + \0 termination
-    pu8x8->drawString(0, 5, line);
+    pu8x8->drawString(0, 4, line);
   } else {
     pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
-    pu8x8->drawString(0, 0, "Geiger-Counter");
-    pu8x8->drawString(0, 2, "==============");
+    pu8x8->drawString(0, 0, "  Multi-Geiger");
+    pu8x8->setFont(u8x8_font_victoriamedium8_r);
+    pu8x8->drawString(0, 1, "________________");
+    pu8x8->drawString(0, 3, "Info:boehri.de");
+    pu8x8->drawString(0, 4, "Version:");
+    pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
     snprintf(line, 15, "%s", VERSION_STR);  // 14 chars + \0 termination
-    pu8x8->drawString(0, 4, line);
-    pu8x8->drawString(0, 6, "Info:boehri.de");
+    pu8x8->drawString(0, 5, line);
   }
   displayIsClear = false;
 };
@@ -64,18 +61,18 @@ void setup_display(bool loraHardware) {
   display_start_screen();
 }
 
-void clearDisplayLine(int line) {
+void clear_displayline(int line) {
   const char *blanks;
-  blanks = isLoraBoard ? "        " : "                "; // 8 / 16
+  blanks = isLoraBoard ? "        " : "                ";  // 8 / 16
   pu8x8->drawString(0, line, blanks);
 }
 
-void displayStatusLine(String txt) {
+void display_statusline(String txt) {
   if (txt.length() == 0)
     return;
   int line = isLoraBoard ? 5 : 7;
-  pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
-  clearDisplayLine(line);
+  pu8x8->setFont(u8x8_font_victoriamedium8_r);
+  clear_displayline(line);
   pu8x8->drawString(0, line, txt.c_str());
 }
 
@@ -91,7 +88,7 @@ static const char *status_chars[STATUS_MAX] = {
   // group TTN (LoRa WAN)
   ".t3T?",  // ST_TTN_OFF, ST_TTN_IDLE, ST_TTN_ERROR, ST_TTN_SENDING, ST_TTN_INIT
   // group BlueTooth
-  ".B4b?",  // ST_BT_OFF, ST_BT_CONNECTED, ST_BT_ERROR, ST_BT_CONNECTING, ST_BT_INIT
+  ".B4b?",  // ST_BT_OFF, ST_BT_CONNECTED, ST_BT_ERROR, ST_BT_CONNECTABLE, ST_BT_INIT
   // group other
   ".",      // ST_NODISPLAY
   ".",      // ST_NODISPLAY
@@ -99,10 +96,17 @@ static const char *status_chars[STATUS_MAX] = {
 };
 
 void set_status(int index, int value) {
-  if ((index >= 0) && (index < STATUS_MAX))
-    status[index] = value;
-  else
+  if ((index >= 0) && (index < STATUS_MAX)) {
+    if (status[index] != value) {
+      status[index] = value;
+      display_status();
+    }
+  } else
     log(ERROR, "invalid parameters: set_status(%d, %d)", index, value);
+}
+
+int get_status(int index) {
+  return status[index];
 }
 
 char get_status_char(int index) {
@@ -117,14 +121,14 @@ char get_status_char(int index) {
   return '?';  // some error happened
 }
 
-void displayStatus(void) {
+void display_status(void) {
   char output[17];  // max. 16 chars wide display + \0 terminator
   const char *format = isLoraBoard ? "%c%c%c%c%c%c%c%c" : "%c %c %c %c %c %c %c %c";  // 8 or 16 chars wide
   snprintf(output, 17, format,
            get_status_char(0), get_status_char(1), get_status_char(2), get_status_char(3),
            get_status_char(4), get_status_char(5), get_status_char(6), get_status_char(7)
           );
-  displayStatusLine(output);
+  display_statusline(output);
 }
 
 char *format_time(int secs) {
@@ -145,12 +149,12 @@ char *format_time(int secs) {
   return result;
 }
 
-void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display) {
+void display_GMC(int TimeSec, int RadNSvph, int CPM, bool use_display) {
   if (!use_display) {
     if (!displayIsClear) {
       pu8x8->clear();
-      clearDisplayLine(4);
-      clearDisplayLine(5);
+      clear_displayline(4);
+      clear_displayline(5);
       displayIsClear = true;
     }
     return;
@@ -174,6 +178,6 @@ void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display) {
     sprintf(output, "%4d", CPM);
     pu8x8->drawString(0, 3, output);
   }
-  displayStatus();
+  display_status();
   displayIsClear = false;
 };

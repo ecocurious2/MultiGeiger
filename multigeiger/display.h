@@ -4,9 +4,9 @@
 #define _DISPLAY_H_
 
 void setup_display(bool loraHardware);
-void DisplayGMC(int TimeSec, int RadNSvph, int CPM, bool use_display);
-void clearDisplayLine(int line);
-void displayStatusLine(String txt);
+void display_GMC(int TimeSec, int RadNSvph, int CPM, bool use_display);
+void clear_displayline(int line);
+void display_statusline(String txt);
 
 // supported status indexes and values:
 
@@ -62,6 +62,7 @@ void displayStatusLine(String txt);
 #define STATUS_MAX 8
 
 void set_status(int index, int value);
-void displayStatus(void);
+int get_status(int index);
+void display_status(void);
 
 #endif // _DISPLAY_H_
