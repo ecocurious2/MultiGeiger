@@ -1,0 +1,219 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, see AUTHORS
+# This file is distributed under the same license as the MultiGeiger package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: MultiGeiger\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-21 23:17+0200\n"
+"PO-Revision-Date: 2020-05-21 22:36+0000\n"
+"Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:6
+#: 05fe4040251b4f58a13ccda14e965aa2
+msgid "Usage"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:9
+#: ed02b0af5b684c4096b768ef5cce5e93
+msgid "OLED display"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:12
+#: de21098f3d954132bee065f905ad6d68
+msgid "Top line"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:14
+#: 1d01a754740f4d01b329e244d5b77b2f
+msgid "Left: Time since power-on (not shown on small displays)."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:16
+#: c7c9a8c13d2b43f98b18d175700cef60
+msgid "Right: Overall average radiation since power-on."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:19
+#: 8dfd6a137a034b1683f8da957f90cb77
+msgid "Middle area"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:21
+#: 9a3e7cebd8944b668ae8c5226205f397
+msgid "Current CPM (counts per minute) displayed using a rather big font."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:24
+#: a9dbde5841a54600b2a553656b372930
+msgid "Bottom line"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:26
+#: 89417970012c4a69a791a9a00b3caf36
+msgid "This is a status display with 8 positions, numbered 0..7:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:28
+#: ec8fd210e46447eca73a848fea2a6df4
+msgid "Rules of thumb:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:30
+#: 85035a6d97834566bcbf4e457e00f555
+msgid "``.`` usually means \"off\" or \"unused\"."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:31
+#: fcfd5e1b72d140a5b73163fa59748350
+msgid ""
+"if you see some *number* (``0`` .. ``7``) within the status display line, "
+"something went wrong."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:34
+#: 33adc8ab195d404ba955c556b1a30a30
+msgid "Positions:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:36
+#: 879c04d239cf4e90a79c323a36ce26f8
+msgid "0: WiFi"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:38
+#: 0125fcd22382482681efad93de6cc57c
+msgid "``A``: AccessPoint active"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:39
+#: bec6bcad8de744bcad589947dab7cc5a
+msgid "``w``: WiFi client trying to connect"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:40
+#: 8bb8e1b4b253451ebdb56cb270b341b3
+msgid "``W``: WiFi client connected"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:41
+#: dcb8bdaa784144959197c301926d91d9
+msgid "``0``: some error happened"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:42
+#: c1d7bb7d22f54bbb82bd0fff3198d98b
+msgid "1: sensors.community transmission"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:44
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:51
+#: f3aae6ed866544c596c6e69abe2e5ad4 b703c1376a7d4265a0227bd86a66da07
+msgid "``.``: off (not configured / enabled)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:45
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:52
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:59
+#: 96ec6405c07c46099690469231a5881c 1dde00312e6344528d4815543e364822
+#: 2d02453ac44143089249f6f738055da8
+msgid "``?``: init (enabled, before 1st transmission)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:46
+#: 9c2c6421b2a34aa180778a40de35bacd
+msgid "``S``: sending"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:47
+#: ef8cb7c34fc24f30a8015f3ba564a25b
+msgid "``s``: idle (shown after successful sending)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:48
+#: a747150da04443a6bfccfab0dca3f752
+msgid "``1``: sending failed (shown after trying to send)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:49
+#: f5075b590a6346acac28e7d93d89b477
+msgid "2: madavi transmission"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:53
+#: 48b09fa52ffe45a899e93f3981810163
+msgid "``M``: sending"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:54
+#: f91cffd02c974b9c9f68c8da14447409
+msgid "``m``: idle (shown after successful sending)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:55
+#: 9712d357c63b4e1f91ded11271dddd38
+msgid "``2``: sending failed (shown after trying to send)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:56
+#: 209e1384ad6d4c1a9b37805fbac3d07f
+msgid "3: TTN (\"The Things Network\")"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:58
+#: abf5a45c2df94ec6b0b747de36b7d984
+msgid "``.``: off (not configured, not enabled, no LoRa hardware)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:60
+#: f275d7df89cd4edf886781df94a69d1e
+msgid "``T``: sending"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:61
+#: e86358f794464eb5a292a5fc3ceaca9d
+msgid "``t``: idle (shown after successful sending)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:62
+#: 6e089d28c2f04611988696f20e94431c
+msgid "``3``: sending failed (shown after trying to send)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:63
+#: daa1dc7a0a844932904da348f715ca7e
+msgid "4: reserved for BT"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:64
+#: 4aec50c53f974e15843f5646862d625f
+msgid "5: unused"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:65
+#: a5f08e23e73d484c9c7f87029da4dc97
+msgid "6: unused"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:66
+#: 0db582596b204deaac17373a417d169d
+msgid "7: High-Voltage Capacitor charging"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:68
+#: 4618c04373534b3b89ee15e98b5384ca
+msgid "``H``: OK"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:69
+#: 1a784c742a694d2ea7686a26072e54b0
+msgid "``7``: failure to charge HV capacitor"
+msgstr ""
