@@ -1,5 +1,5 @@
-// Code related to the transmission of the measured data via Bluetooth Low Energy
-// Uses GATT Heart Rate Measurement Service for notifications with CPM update
+// Code related to the transmission of the measured data via Bluetooth Low Energy,
+// uses GATT Heart Rate Measurement Service for notifications with CPM update
 //
 // Heart Rate Measurement = Radiation CPM, Energy Expense = Rolling Packet Counter
 //
@@ -40,9 +40,8 @@ uint8_t txBuffer_HRM[5]; // transmit buffer, byte[0] = flags, [1, 2] = cpm, [3, 
 uint8_t txBuffer_HRPOS[1] = {TUBE_TYPE};
 unsigned int status_HRCP = 0;
 unsigned int cpm_update_counter = 0;
-unsigned int cpm_value = 0;
 
-bool is_ble_connected() {
+bool is_ble_connected(void) {
   return ble_enabled && device_connected;
 }
 
@@ -72,8 +71,8 @@ class MyServerCallbacks: public BLEServerCallbacks {
 // Callback allowing for Control Point Characteristic to reset "energy expenditure" (packet counter)
 class MyCharacteristicCallbacks: public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *pCharacteristic) {
-    std::string rxValue = pCharacteristic->getValue();
-    status_HRCP = (rxValue.length() > 0) ? rxValue[0] : 0;
+   String rxValue = pCharacteristic->getValue().c_str();
+    status_HRCP = (rxValue.length() > 0) ? (unsigned int)rxValue[0] : 0;
   }
 };
 
@@ -87,10 +86,9 @@ void update_bledata(unsigned int cpm) {
     cpm_update_counter = 0;
     status_HRCP = 0;
   }
-  cpm_value = cpm;
   txBuffer_HRM[0] = flags_HRS;
-  txBuffer_HRM[1] = cpm_value & 0xFF;
-  txBuffer_HRM[2] = (cpm_value >> 8) & 0xFF;
+  txBuffer_HRM[1] = cpm & 0xFF;
+  txBuffer_HRM[2] = (cpm >> 8) & 0xFF;
   txBuffer_HRM[3] = cpm_update_counter & 0xFF;
   txBuffer_HRM[4] = (cpm_update_counter >> 8) & 0xFF;
   bleCharHRM.setValue(txBuffer_HRM, 5);
@@ -100,6 +98,7 @@ void update_bledata(unsigned int cpm) {
 void setup_ble(char *device_name, bool ble_on) {
   if (!ble_on) {
     set_status(STATUS_BT, ST_BT_OFF);
+    ble_enabled = false;
     return;
   }
   ble_enabled = true;
@@ -115,10 +114,10 @@ void setup_ble(char *device_name, bool ble_on) {
   bleService->addCharacteristic(&bleCharHRM);
   bleDescriptorHRM.setValue("Radiation rate CPM");
   bleCharHRM.addDescriptor(&bleDescriptorHRM);
-  bleCharHRM.addDescriptor(new BLE2902());  // required for internal notification management
+  bleCharHRM.addDescriptor(new BLE2902());  // required for notification management of the service
 
   bleService->addCharacteristic(&bleCharHRCP);
-  bleDescriptorHRCP.setValue("0x01 for count reset");
+  bleDescriptorHRCP.setValue("0x01 for Energy Exp. (packet counter) reset");
   bleCharHRCP.addDescriptor(&bleDescriptorHRCP);
   bleCharHRCP.setCallbacks(new MyCharacteristicCallbacks());
 

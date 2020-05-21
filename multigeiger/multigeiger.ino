@@ -70,7 +70,7 @@ void setup() {
   setup_webconf(isLoraBoard);
   setup_speaker(playSound, ledTick && switches.led_on, speakerTick && switches.speaker_on);
   setup_transmission(VERSION_STR, ssid, isLoraBoard);
-  setup_ble(ssid, sendToBle);
+  setup_ble(ssid, sendToBle && switches.ble_on);
 
   // a bug in arduino-esp32 1.0.4 crashes the esp32 if the wifi is not
   // configured yet and one tries to configure for NTP:
@@ -107,11 +107,12 @@ int update_wifi_status(void) {
 }
 
 int update_ble_status(void) {  // currently no error detection
-  int st = ST_BT_OFF;
-  if (get_status(STATUS_BT) != ST_BT_OFF) {
+  int st;
+  if (sendToBle && switches.ble_on)
     st = is_ble_connected() ? ST_BT_CONNECTED : ST_BT_CONNECTABLE;
-    set_status(STATUS_BT, st);
-  }
+  else
+    st = ST_BT_OFF;
+  set_status(STATUS_BT, st);
   return st;
 }
 
