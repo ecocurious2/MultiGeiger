@@ -67,7 +67,7 @@ void format_bool(bool *value, char *text) {
 // Appending new variables does not require a new version number here.
 // If this value is changed, ALL configuration variables must be re-entered,
 // including the WiFi credentials.
-#define CONFIG_VERSION "013" 
+#define CONFIG_VERSION "013"
 
 DNSServer dnsServer;
 WebServer server(80);
