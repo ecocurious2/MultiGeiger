@@ -3,6 +3,9 @@
 # This file is distributed under the same license as the MultiGeiger package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
+# Translators:
+# TW <tw@waldmann-edv.de>, 2020
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -10,6 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-21 23:17+0200\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
+"Last-Translator: TW <tw@waldmann-edv.de>, 2020\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +24,7 @@ msgstr ""
 #: /home/user/w/MultiGeiger/docs/source/usage.rst:6
 #: 05fe4040251b4f58a13ccda14e965aa2
 msgid "Usage"
-msgstr ""
+msgstr "Benutzung"
 
 #: /home/user/w/MultiGeiger/docs/source/usage.rst:9
 #: ed02b0af5b684c4096b768ef5cce5e93

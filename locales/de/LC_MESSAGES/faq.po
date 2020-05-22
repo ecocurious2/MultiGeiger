@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiGeiger\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-21 23:17+0200\n"
+"POT-Creation-Date: 2020-05-22 11:31+0200\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
 "Last-Translator: TW <tw@waldmann-edv.de>, 2020\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
@@ -27,26 +27,21 @@ msgid "Frequently Asked Questions"
 msgstr "Oft gestellte Fragen (FAQ)"
 
 #: /home/user/w/MultiGeiger/docs/source/faq.rst:9
-#: 972da50cf34740aabd647d2cc79f3be0
-msgid "SECTION1"
-msgstr ""
+#: 39ef30d1ed4d469a81a079c46c1b63fb
+msgid "General"
+msgstr "Allgemein"
 
 #: /home/user/w/MultiGeiger/docs/source/faq.rst:12
-#: 5838fa44c1aa4b60bb6bb23cfb33c602
-msgid "Question1?"
-msgstr ""
+#: 0a64320767944a0ba8f5e4d19428a67d
+msgid "Radiation doses, are there practical examples?"
+msgstr "Strahlungs-Dosis-Werte, gibt es da praktische Beispiele?"
 
 #: /home/user/w/MultiGeiger/docs/source/faq.rst:14
-#: 433e556d0f544df6a25a5f8744cd748d
-msgid "Answer1"
-msgstr ""
+#: d9a986ed48204fd8a110bacc2129015f
+msgid "There's a great XKCD about that, see there:"
+msgstr "Es gibt dazu ein großartiges XKCD, siehe dort:"
 
-#: /home/user/w/MultiGeiger/docs/source/faq.rst:17
-#: 19186c57df7d452daacc4b5c0d4fdf85
-msgid "Question2?"
-msgstr ""
-
-#: /home/user/w/MultiGeiger/docs/source/faq.rst:19
-#: 14194d8910114caa90287bdf3d57aef7
-msgid "Answer2"
-msgstr ""
+#: /home/user/w/MultiGeiger/docs/source/faq.rst:16
+#: 38dbcb53d42645cd9d2a7883b8882909
+msgid "https://xkcd.com/radiation/"
+msgstr "https://xkcd.com/radiation/"
