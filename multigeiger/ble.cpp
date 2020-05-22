@@ -97,13 +97,13 @@ void update_bledata(unsigned int cpm) {
 
 void setup_ble(char *device_name, bool ble_on) {
   if (!ble_on) {
-    set_status(STATUS_BT, ST_BT_OFF);
+    set_status(STATUS_BLE, ST_BLE_OFF);
     ble_enabled = false;
     return;
   }
   ble_enabled = true;
 
-  set_status(STATUS_BT, ST_BT_INIT);
+  set_status(STATUS_BLE, ST_BLE_INIT);
   BLEDevice::init(device_name);
 
   BLEServer *bleServer = BLEDevice::createServer();
@@ -131,11 +131,11 @@ void setup_ble(char *device_name, bool ble_on) {
   bleService->start();
   bleServer->getAdvertising()->start();
 
-  set_status(STATUS_BT, ST_BT_CONNECTABLE);
+  set_status(STATUS_BLE, ST_BLE_CONNECTABLE);
   log(INFO, "BLE service advertising started, device name: %s, MAC: %s", device_name, BLEDevice::getAddress().toString().c_str());
 }
 
 void disable_ble(void) {
   ble_enabled = false;
-  set_status(STATUS_BT, ST_BT_OFF);
+  set_status(STATUS_BLE, ST_BLE_OFF);
 }

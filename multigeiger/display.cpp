@@ -86,7 +86,7 @@ static const char *status_chars[STATUS_MAX] = {
   // group TTN (LoRa WAN)
   ".t3T?",  // ST_TTN_OFF, ST_TTN_IDLE, ST_TTN_ERROR, ST_TTN_SENDING, ST_TTN_INIT
   // group BlueTooth
-  ".B4b?",  // ST_BT_OFF, ST_BT_CONNECTED, ST_BT_ERROR, ST_BT_CONNECTABLE, ST_BT_INIT
+  ".B4b?",  // ST_BLE_OFF, ST_BLE_CONNECTED, ST_BLE_ERROR, ST_BLE_CONNECTABLE, ST_BLE_INIT
   // group other
   ".",      // ST_NODISPLAY
   ".",      // ST_NODISPLAY

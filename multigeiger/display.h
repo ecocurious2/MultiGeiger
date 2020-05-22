@@ -44,12 +44,12 @@ void display_statusline(String txt);
 #define ST_TTN_SENDING 3
 #define ST_TTN_INIT 4
 
-#define STATUS_BT 4
-#define ST_BT_OFF 0
-#define ST_BT_CONNECTED 1
-#define ST_BT_ERROR 2
-#define ST_BT_CONNECTABLE 3
-#define ST_BT_INIT 4
+#define STATUS_BLE 4
+#define ST_BLE_OFF 0
+#define ST_BLE_CONNECTED 1
+#define ST_BLE_ERROR 2
+#define ST_BLE_CONNECTABLE 3
+#define ST_BLE_INIT 4
 
 // status index 5 is still free
 
