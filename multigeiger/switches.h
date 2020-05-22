@@ -8,7 +8,7 @@ typedef struct switches {
   unsigned int speaker_on: 1;  // SW0
   unsigned int display_on: 1;  // SW1
   unsigned int led_on: 1;  // SW2
-  unsigned int unused: 1;  // SW3
+  unsigned int ble_on: 1;  // SW3
 } Switches;
 
 

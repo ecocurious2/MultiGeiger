@@ -13,6 +13,7 @@ extern bool showDisplay;
 extern bool sendToCommunity;
 extern bool sendToMadavi;
 extern bool sendToLora;
+extern bool sendToBle;
 
 extern char appeui[];
 extern char deveui[];

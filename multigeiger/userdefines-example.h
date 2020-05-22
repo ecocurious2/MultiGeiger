@@ -56,3 +56,10 @@
 // Note: The TTN configuration needs to be done in lorawan.cpp (starting at line 65).
 #define SEND2LORA false
 
+// Send data via BLE?
+// Device provides "Heart Rate Service" (0x180D) and these characteristics
+// 0x2A37: Heart Rate Measurement
+// --> sends current CPM as shown on display + rolling packet counter as energy expenditure (roll-over @0xFF)
+// 0x2A38: Heart Rate Sensor Position --> sends TUBE_TYPE
+// 0x2A39: Heart Rate Control Point --> allows to reset "energy expenditure", as required by service definition
+#define SEND2BLE false
