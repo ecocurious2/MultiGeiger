@@ -40,7 +40,6 @@ void display_start_screen(void) {
     pu8x8->setFont(u8x8_font_victoriamedium8_r);
     pu8x8->drawString(0, 1, "________________");
     pu8x8->drawString(0, 3, "Info:boehri.de");
-    pu8x8->drawString(0, 4, "Version:");
     pu8x8->setFont(u8x8_font_amstrad_cpc_extended_f);
     snprintf(line, 15, "%s", VERSION_STR);  // 14 chars + \0 termination
     pu8x8->drawString(0, 5, line);
