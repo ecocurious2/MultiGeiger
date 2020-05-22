@@ -1,27 +1,6 @@
 // Project: Simple Multi-Geiger
 // (c) 2019,2020 by the authors, see AUTHORS file in toplevel directory.
 // Licensed under the GPL v3 (or later), see LICENSE file in toplevel directory.
-//
-// Description: With minimal external components you are able to build a Geiger Counter that:
-//   - is precise
-//   - cheap
-//   - makes the typical tick sounds
-//   - produces a listing via RS232 (via USB)
-//   - is adaptable to your application
-//
-// Information about the new Heltec board ESP32 WIFI OLED:
-// - how to get the device up and running:
-//   - https://robotzero.one/heltec-wifi-kit-32/
-// - driver for the USB=>UART-Chip CP2102:
-//   - http://esp32.net/usb-uart/#SiLabs
-// - infos from the Heltec, the board manufacturer:
-//   - http://www.heltec.cn/project/wifi-kit-32/?lang=en
-// - it is sold on ebay e.g. under the following names:
-//   - "1X(ESP32 WIFI Bluetooth Entwicklungsboard OLED 0.96 "Display IOT Kit Modul GY"
-// - there is also a variant with LoRaWAN:
-//   - http://fambach.net/esp32-wifi-lora-433/
-//   - https://www.hackerspace-ffm.de/wiki/index.php?title=Heltec_Wifi_LoRa_32
-//
 
 #include <Arduino.h>
 
