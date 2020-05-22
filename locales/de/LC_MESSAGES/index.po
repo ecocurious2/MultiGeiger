@@ -28,15 +28,15 @@ msgstr "MultiGeiger-Dokumentation"
 
 #: ../../README-en.rst:2 a432cbbd9f144b9ea20748324681d0fc
 msgid "What is MultiGeiger?"
-msgstr ""
+msgstr "Was ist MultiGeiger?"
 
 #: ../../README-en.rst:4 d5caffcdcb95439cabca4779afcccdcf
 msgid "The MultiGeiger is a radioactivity measurement device."
-msgstr ""
+msgstr "Der MultiGeiger ist ein Messgerät für Radioaktivität."
 
 #: ../../README-en.rst:7 8fdb8f5be53e409a8f3a9a7e1d929ded
 msgid "Main features"
-msgstr ""
+msgstr "Haupt-Eigenschaften"
 
 #: ../../README-en.rst:9 189cb5a48b624165843f704dfb9ec605
 msgid "**multiple use cases supported**"
