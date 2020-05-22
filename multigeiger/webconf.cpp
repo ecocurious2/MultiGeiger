@@ -63,9 +63,9 @@ void format_bool(bool *value, char *text) {
   strcpy(text, *value ? "1" : "0");
 }
 
-// This only needs to be changed if the layout of the configuration is changed. 
+// This only needs to be changed if the layout of the configuration is changed.
 // Appending new variables does not require a new version number here.
-// If this value is changed, ALL configuration variables must be re-entered, 
+// If this value is changed, ALL configuration variables must be re-entered,
 // including the WiFi credentials.
 #define CONFIG_VERSION "013" 
 
