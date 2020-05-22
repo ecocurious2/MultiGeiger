@@ -109,6 +109,9 @@ Any heart monitor app / device should be able to connect to the MultiGeiger, too
 
 - Figure 3: Find the Heart Rate Measurement Characteristic (UUID 0x2A37) and click on the icon to start notifications.
 
+While testing, please keep in mind that an update packet is sent only every ~10s (along with a display refresh, if enabled). If a Wifi transmission is blocking display and BLE updates, the interval may be even longer. So it might take a while until a reaction with actual data can be seen in the app.
+
+
 .. |ble1| image:: ../../images/ble_check01.jpg
    :width: 250px
    :align: top
