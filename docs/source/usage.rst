@@ -103,7 +103,7 @@ More infos about the Android app can be found `here on github <https://www.nordi
 
 Any heart monitor app / device should be able to connect to the MultiGeiger, too, but that was not tested yet. Any input is appreciated.
 
-- Figure 1: Connect to the MultiGeiger with the name 'ESP32-<id>', where <id> should be the same ID (7 to 8 digits) than the access point to set the device up initially.
+- Figure 1: Connect to the MultiGeiger with the name 'ESP32-<id>', where <id> should be the same ID (7 to 8 digits) as with the access point to set the device up initially.
 
 - Figure 2: Find the correct service (UUID 0x180D) and, if needed, load / open characteristics.
 
