@@ -40,19 +40,19 @@ msgstr "Haupt-Eigenschaften"
 
 #: ../../README-en.rst:9 189cb5a48b624165843f704dfb9ec605
 msgid "**multiple use cases supported**"
-msgstr ""
+msgstr "**unterstützt mehrere Einsatz-Szenarien**"
 
 #: ../../README-en.rst:11 f129ab15bef248fdb4b652cbba5fe375
 msgid "fixed location stations (data transfer via network)"
-msgstr ""
+msgstr "Stationen mit fixem Standort (Daten-Transfer über Netzwerk)"
 
 #: ../../README-en.rst:12 0f3e6a50679743e4b2c51fef781ee8f5
 msgid "mobile operations (using the OLED display and speaker)"
-msgstr ""
+msgstr "mobile Anwendung (Benutzung des OLED-Displays und des Lautsprechers)"
 
 #: ../../README-en.rst:13 55cf38a2e8ea4c66a9ff300789a11109
 msgid "(more are planned)"
-msgstr ""
+msgstr "(weitere sind geplant)"
 
 #: ../../README-en.rst:15 fdb55ee4e5ea4ebe886787b88b855cf7
 msgid "**multiple 400V Geiger-Mueller tubes supported**"

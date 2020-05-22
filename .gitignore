@@ -3,6 +3,7 @@
 .DS_Store
 userdefines.h
 platformio.ini
+*.mo
 *.bin
 flash
 version.h_local
