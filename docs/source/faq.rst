@@ -5,16 +5,13 @@
 Frequently Asked Questions
 ==========================
 
-SECTION1
-########
+General
+#######
 
-Question1?
-----------
+Radiation doses, are there practical examples?
+----------------------------------------------
 
-Answer1
+There's a great XKCD about that, see there:
 
-Question2?
-----------
-
-Answer2
+https://xkcd.com/radiation/
 
