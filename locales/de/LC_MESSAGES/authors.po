@@ -28,15 +28,15 @@ msgstr "Autoren"
 
 #: ../../AUTHORS:1 f3c3bab150444ec5b80f0b7076856173
 msgid "Juergen Boehringer (see www.boehri.de)"
-msgstr ""
+msgstr "Juergen Boehringer (see www.boehri.de)"
 
 #: ../../AUTHORS:2 1f0e04e39add4642b305b438f4649205
 msgid "Reinhard X. Fuerst (see feinstaub.rexfue.de)"
-msgstr ""
+msgstr "Reinhard X. Fuerst (see feinstaub.rexfue.de)"
 
 #: ../../AUTHORS:3 bae8ed99549e450099044db50f90343c
 msgid "Thomas Waldmann <twaldmann@thinkmo.de>"
-msgstr ""
+msgstr "Thomas Waldmann <twaldmann@thinkmo.de>"
 
 #: /home/user/w/MultiGeiger/docs/source/authors.rst:9
 #: e2bd8b7469204dc19e03141aa3f3049c
