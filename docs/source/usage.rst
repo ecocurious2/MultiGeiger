@@ -80,19 +80,19 @@ BLE - Bluetooth® Low Energy
 BLE Heart Rate Service
 ----------------------
 
-The MultiGeiger, starting from firmware version 1.15.0-dev, provides a Bluetooth® Low Energy (BLE) service to collect the count rate via a `GATT Heart Rate Service <https://www.bluetooth.com/specifications/gatt/services/>`_ (Service UUID 0x180D). The following characteristics are used:
+The MultiGeiger provides a Bluetooth® Low Energy (BLE) service to allow the collection of the Geiger-Mueller count rate via a `GATT Heart Rate Service <https://www.bluetooth.com/specifications/gatt/services/>`_ (Service UUID 0x180D). The following characteristics are used:
 
 - 0x2A37 ('Heart Rate Measurement Characteristic'):
 
-  - First byte are status flags, according to the service's standard
-  - 'Heart Rate Measurement' as 16 bit value (little endian), corresponds to Geiger-Müller counts per minute (CPM)
+  - The first byte is a collection of status flags, according to the service's standard
+  - 'Heart Rate Measurement' as 16 bit value (little endian), corresponds to Geiger-Mueller counts per minute (CPM)
   - 'Energy Expenditure' as 16 bit value (little endian), represents a rolling packet counter
 - 0x2A38 ('Heart Rate Sensor Position Characteristic')
 
-  - Single byte with TUBE-TYPE value, to convert CPM to radiation rate
+  - 'Sensor Position' as 8 bit value, corresponds to TUBE-TYPE, allowing the conversion of CPM to radiation rate
 - 0x2A39 ('Heart Rate Control Point Characteristic')
 
-  - Write characteristic, required by service's standard to reset Energy Expenditure to 0. Writing 0x01 reset rolling packet counter to 0.
+  - Write characteristic, required by service's standard to reset Energy Expenditure to 0. Writing 0x01 resets the rolling packet counter to 0.
 
 Testing BLE
 -----------
@@ -109,7 +109,7 @@ Any heart monitor app / device should be able to connect to the MultiGeiger, too
 
 - Figure 3: Find the Heart Rate Measurement Characteristic (UUID 0x2A37) and click on the icon to start notifications.
 
-While testing, please keep in mind that an update packet is sent only every ~10s (along with a display refresh, if enabled). If a Wifi transmission is blocking display and BLE updates, the interval may be even longer. So it might take a while until a reaction with actual data can be seen in the app.
+While testing, please keep in mind that an update packet is sent only every ~10s (along with a display refresh, if enabled). If a WiFi transmission is blocking display and BLE updates, the interval may be even longer. So it might take a while until a reaction with actual data can be seen in the app.
 
 
 .. |ble1| image:: ../../images/ble_check01.jpg
