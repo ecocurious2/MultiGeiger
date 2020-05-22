@@ -3,13 +3,17 @@
 # This file is distributed under the same license as the MultiGeiger package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
+# Translators:
+# TW <tw@waldmann-edv.de>, 2020
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: MultiGeiger\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-21 23:17+0200\n"
+"POT-Creation-Date: 2020-05-22 11:31+0200\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
+"Last-Translator: TW <tw@waldmann-edv.de>, 2020\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +24,7 @@ msgstr ""
 #: /home/user/w/MultiGeiger/docs/source/development.rst:6
 #: 0f91d0283df844c8994921de63391509
 msgid "Development"
-msgstr ""
+msgstr "Entwicklung"
 
 #: /home/user/w/MultiGeiger/docs/source/development.rst:8
 #: c6c9e67cdb16434ab897420c756bbe03
@@ -182,154 +186,187 @@ msgid ""
 " on the main repository."
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:90
+#: /home/user/w/MultiGeiger/docs/source/development.rst:86
+#: bfaef6443a5c4f62a04656a46df0b1bb
+msgid ""
+"After changes of the (english) master docs, the translation master files "
+"(``*.pot``) need updating (adding/removing/updating strings in there):"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:94
+#: 8b24c68f7b1b491e8a826bc425eea08d
+msgid ""
+"Then, these changes need to get pushed to transifex, so translators can "
+"comfortably translate on the web:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:101
+#: d8de0bc2dd6342ca8e0cedaf2083e609
+msgid ""
+"Later, after translators did their part, updated translations need to get "
+"pulled from transifex:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:108
+#: 8a9f4b06e9974f70b32edcdeff32e8c4
+msgid "Now we have changes in our git workdir and we need to commit them:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:116
+#: ebd6cf8466ab4d0fb0c688933330383b
+msgid ""
+"This will trigger a build of the docs and their translation(s) on "
+"readthedocs.io."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/development.rst:122
 #: dcc428948d094325bf165b80cf7c3b05
 msgid "Flashing devices / creating binaries"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:92
+#: /home/user/w/MultiGeiger/docs/source/development.rst:124
 #: a7affc77afa948cd9831193ccf2f710b
 msgid "Arduino IDE:"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:94
+#: /home/user/w/MultiGeiger/docs/source/development.rst:126
 #: 614a8664c1de4930853963db6029a177
 msgid "do a git checkout of the wanted release, e.g. ``git checkout V1.13.0``"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:95
+#: /home/user/w/MultiGeiger/docs/source/development.rst:127
 #: 9883fce6d1f14f2281759edf825f3512
 msgid "use the default userdefines.h (available as userdefines-example.h)"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:96
+#: /home/user/w/MultiGeiger/docs/source/development.rst:128
 #: c94119181a724d76b7def12cc4416228
 msgid "IDE settings:"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:98
+#: /home/user/w/MultiGeiger/docs/source/development.rst:130
 #: e0827444d78645de85c5e9ab5bed18c6
 msgid ""
 "Device: Heltec WiFi Stick  (always use this, even if you have a WiFi Kit 32)"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:99
+#: /home/user/w/MultiGeiger/docs/source/development.rst:131
 #: 675c39578dfa4617bd16e24504bdb960
 msgid "Flash size: 4MB (32Mb)"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:100
+#: /home/user/w/MultiGeiger/docs/source/development.rst:132
 #: 806eaa2fddf14474aa9d08dcbf5caf51
 msgid ""
 "Partition scheme: minimal SPIFFS (large APPS with OTA) - this fits onto 4MB "
 "devices."
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:101
+#: /home/user/w/MultiGeiger/docs/source/development.rst:133
 #: f3f6f73d8dd040cb87241541fb769a28
 msgid "``Arduino IDE -> Sketch -> Upload``"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:103
+#: /home/user/w/MultiGeiger/docs/source/development.rst:135
 #: 4103c3b8b1a24ca58129005f05342e6f
 msgid ""
 "This is to test whether the compiled code actually works after USB-flashing "
 "to your device."
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:104
+#: /home/user/w/MultiGeiger/docs/source/development.rst:136
 #: c83ae921bd6b4fc0b0f86dff9c65555a
 msgid "``Arduino IDE -> Sketch -> Export compiled binary``"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:106
+#: /home/user/w/MultiGeiger/docs/source/development.rst:138
 #: 2ce44dcde93c48e5823392701dbb867c
 msgid ""
 "This creates a .bin file for OTA updating. Test whether OTA updating using "
 "that file works."
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:112
+#: /home/user/w/MultiGeiger/docs/source/development.rst:144
 #: 593caf8222d641bbbdd83fa9a5bdd5fd
 msgid "Creating a new release"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:114
+#: /home/user/w/MultiGeiger/docs/source/development.rst:146
 #: 5ad0f70ef2744c25afc825d51e78fcb6
 msgid "Checklist:"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:116
+#: /home/user/w/MultiGeiger/docs/source/development.rst:148
 #: fca8414262d44bad87a7ac5dae6c6f1e
 msgid ""
 "make sure all issues for this milestone are closed or moved to the next "
 "milestone"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:118
+#: /home/user/w/MultiGeiger/docs/source/development.rst:150
 #: 3ba732302a294e989df96578c59accf5
 msgid "check if there are any pending fixes for severe issues"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:119
+#: /home/user/w/MultiGeiger/docs/source/development.rst:151
 #: e02d107efcde45669da7a7ec61baf1e0
 msgid ""
 "check whether some CA certificate (see ``ca_certs.h``) will expire soon and "
 "whether we already can add their next valid cert."
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:121
+#: /home/user/w/MultiGeiger/docs/source/development.rst:153
 #: ff7f215a43124441b87d5f0ba02d3f51
 msgid "find and fix any low hanging fruit left on the issue tracker"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:122
+#: /home/user/w/MultiGeiger/docs/source/development.rst:154
 #: 94984feaa3b44fcb8722f931a3a6a15c
 msgid "close release milestone on Github"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:123
+#: /home/user/w/MultiGeiger/docs/source/development.rst:155
 #: a3632d169a6e4732b01feffd73a47a27
 msgid ""
 "update ``docs/source/changes.rst``, based on ``git log $PREVIOUS_RELEASE..``"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:124
+#: /home/user/w/MultiGeiger/docs/source/development.rst:156
 #: 494620c741bb45f79cf065407d01e33b
 msgid "``bump2version --new-version 1.23.0 release`` - this will:"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:126
+#: /home/user/w/MultiGeiger/docs/source/development.rst:158
 #: 9927da2e39bd4972a8d8364f04c1d4ab
 msgid "update versions everywhere"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:127
+#: /home/user/w/MultiGeiger/docs/source/development.rst:159
 #: 176872b462804da487b0ec9a63c2eee5
 msgid "auto-create a git tag"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:128
+#: /home/user/w/MultiGeiger/docs/source/development.rst:160
 #: 5a33ff1c7e0042f195c8a9a5acf606cc
 msgid "auto-create a git commit"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:129
+#: /home/user/w/MultiGeiger/docs/source/development.rst:161
 #: 50fc22b018254b7bbfd6df4b61c141b0
 msgid "review the automatically generated changeset"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:130
+#: /home/user/w/MultiGeiger/docs/source/development.rst:162
 #: 7a61ac376f13486e8f16cd08b7b9e4bf
 msgid "create a github release for this tag:"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:132
+#: /home/user/w/MultiGeiger/docs/source/development.rst:164
 #: 4ba19bc52ac449c582a5a130566e7e70
 msgid "create a binary (see above) and attach to the github release"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/development.rst:133
+#: /home/user/w/MultiGeiger/docs/source/development.rst:165
 #: 907276991ed942fea0c7658cff45a597
 msgid ""
 "add a link to the relevant ``changes.rst`` section to the github release"
