@@ -1,5 +1,5 @@
 // Code related to the transmission of the measured data via Bluetooth Low Energy,
-// uses GATT Heart Rate Measurement Service for notifications with CPM update
+// uses GATT Heart Rate Measurement Service for notifications with CPM update.
 //
 // Heart Rate Measurement = Radiation CPM, Energy Expense = Rolling Packet Counter
 //
