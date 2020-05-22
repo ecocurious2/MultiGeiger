@@ -71,19 +71,30 @@ void setup() {
   setup_speaker(playSound, ledTick && switches.led_on, speakerTick && switches.speaker_on);
   setup_transmission(VERSION_STR, ssid, isLoraBoard);
   setup_ble(ssid, sendToBle && switches.ble_on);
+  setup_log_data(SERIAL_DEBUG);
+  setup_tube();
+}
+
+void setup_ntp(int wifi_status) {
+  static bool clock_configured = false;
+  if (clock_configured)
+    return;
+
+  // this is called from loop() because we do not want to block in setup().
+  // it might either take a while until WiFi is ready or it might even never
+  // be ready, e.g. in LoRa-based deployments or on the road using BLE.
 
   // a bug in arduino-esp32 1.0.4 crashes the esp32 if the wifi is not
   // configured yet and one tries to configure for NTP:
-  while (iotWebConf.getState() <= IOTWEBCONF_STATE_NOT_CONFIGURED) {
-    iotWebConf.delay(200);
-  }
+  if (wifi_status != ST_WIFI_CONNECTED)
+    return;
+
   setup_clock(0);  // 0 == do NTP!
   // please note that time is not necessarily NTP-correct below here.
-  // it might some minutes until we have the correct time.
+  // it might take some minutes until we have the correct time.
   // if we do not have a connection to NTP servers, it will just count up from 1970.
 
-  setup_log_data(SERIAL_DEBUG);
-  setup_tube();
+  clock_configured = true;
 }
 
 int update_wifi_status(void) {
@@ -274,6 +285,8 @@ void loop() {
   set_status(STATUS_HV, hv_error ? ST_HV_ERROR : ST_HV_OK);
 
   int wifi_status = update_wifi_status();
+  setup_ntp(wifi_status);
+
   update_ble_status();
 
   publish(current_ms, gm_counts, gm_count_timestamp, hv_pulses);
