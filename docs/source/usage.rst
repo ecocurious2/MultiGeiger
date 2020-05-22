@@ -60,7 +60,13 @@ Positions:
   - ``T``: sending
   - ``t``: idle (shown after successful sending)
   - ``3``: sending failed (shown after trying to send)
-- 4: reserved for BT
+- 4: BLE (Bluetooth Low Energy)
+
+  - ``.``: off (not enabled)
+  - ``?``: init (enabled, before setup of BLE service)
+  - ``B``: connected and sending notifications, if requested by connected device
+  - ``b``: connectable (advertising and ready to connect)
+  - ``4``: BLE error
 - 5: unused
 - 6: unused
 - 7: High-Voltage Capacitor charging
