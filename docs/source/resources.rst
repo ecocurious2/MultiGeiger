@@ -6,5 +6,21 @@ Resources
 
 This is a collection of additional resources that are somehow related to MultiGeiger.
 
-TODO: add links.
+Hardware / Parts
+----------------
+
+MultiGeiger supported ESP32 boards:
+
+- Heltec WiFi Kit 32 (WiFi-only, infos from board manufacturer)
+  https://heltec.org/project/wifi-kit-32/
+
+- Heltec Wireless Stick (WiFi+LoRa, infos from board manufacturer)
+  https://heltec.org/project/wireless-stick/
+
+
+Software
+--------
+
+- Windows driver for the USB -> UART chip CP2102:
+  http://esp32.net/usb-uart/#SiLabs
 
