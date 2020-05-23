@@ -120,10 +120,10 @@ int update_wifi_status(void) {
 int update_ble_status(void) {  // currently no error detection
   int st;
   if (sendToBle && switches.ble_on)
-    st = is_ble_connected() ? ST_BT_CONNECTED : ST_BT_CONNECTABLE;
+    st = is_ble_connected() ? ST_BLE_CONNECTED : ST_BLE_CONNECTABLE;
   else
-    st = ST_BT_OFF;
-  set_status(STATUS_BT, st);
+    st = ST_BLE_OFF;
+  set_status(STATUS_BLE, st);
   return st;
 }
 
