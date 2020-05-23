@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiGeiger\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-21 23:17+0200\n"
+"POT-Creation-Date: 2020-05-23 14:46+0200\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
 "Last-Translator: TW <tw@waldmann-edv.de>, 2020\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
@@ -193,31 +193,209 @@ msgid "``3``: sending failed (shown after trying to send)"
 msgstr ""
 
 #: /home/user/w/MultiGeiger/docs/source/usage.rst:63
-#: daa1dc7a0a844932904da348f715ca7e
-msgid "4: reserved for BT"
+#: 127d676f63b3484da427227f08520b8b
+msgid "4: BLE (Bluetooth® Low Energy)"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:64
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:65
+#: 027dcffa0bbf431bb1d54e0d76263d33
+msgid "``.``: off (not enabled)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:66
+#: 48f53e2817a3431fb7b0fade5c21192a
+msgid "``?``: init (enabled, before setup of BLE service)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:67
+#: e778141d5d9e43f487da44695e0d6487
+msgid ""
+"``B``: connected and sending notifications, if requested by connected device"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:68
+#: e80102169f9e4094a041b2e9fb89c966
+msgid "``b``: connectable (advertising and ready to connect)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:69
+#: 00cf9651b556431e80a7b26f0029b4ea
+msgid "``4``: BLE error"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:70
 #: 4aec50c53f974e15843f5646862d625f
 msgid "5: unused"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:65
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:71
 #: a5f08e23e73d484c9c7f87029da4dc97
 msgid "6: unused"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:66
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:72
 #: 0db582596b204deaac17373a417d169d
 msgid "7: High-Voltage Capacitor charging"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:68
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:74
 #: 4618c04373534b3b89ee15e98b5384ca
 msgid "``H``: OK"
 msgstr ""
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:69
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:75
 #: 1a784c742a694d2ea7686a26072e54b0
 msgid "``7``: failure to charge HV capacitor"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:78
+#: cc29907b75eb4d10bde7d36e05400929
+msgid "BLE - Bluetooth® Low Energy"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:81
+#: a4e0d7351c0e4eb2ad9864eb41874df3
+msgid "BLE Heart Rate Service"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:83
+#: 2ec44c69b40b4fc9aa19f4827c903bb3
+msgid ""
+"The MultiGeiger provides a Bluetooth® Low Energy (BLE) service to allow the "
+"collection of the Geiger-Mueller count rate via a `GATT Heart Rate Service "
+"<https://www.bluetooth.com/specifications/gatt/services/>`_ (Service UUID "
+"0x180D). The following characteristics are used:"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:85
+#: 025a517053f446bcbe30c14272b87f35
+msgid "0x2A37 ('Heart Rate Measurement Characteristic'):"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:87
+#: ff818f4711d04f0b8f8a7c269dd247cc
+msgid ""
+"The first byte is a collection of status flags, according to the service's "
+"standard"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:88
+#: e0515456d5fd4186b884d86c65aec807
+msgid ""
+"'Heart Rate Measurement' as 16 bit value (little endian), corresponds to "
+"Geiger-Mueller counts per minute (CPM)"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:89
+#: b84bc88806ab4bd9b15638b4dc197128
+msgid ""
+"'Energy Expenditure' as 16 bit value (little endian), represents a rolling "
+"packet counter"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:90
+#: dace7c171b0e44fb9262f5dfa47830ce
+msgid "0x2A38 ('Heart Rate Sensor Position Characteristic')"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:92
+#: 64907eba9afb457a8317bbfbd5830619
+msgid ""
+"'Sensor Position' as 8 bit value, corresponds to TUBE-TYPE, allowing the "
+"conversion of CPM to radiation rate"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:93
+#: ad6482b5d7f9467ba08f4eaa0f9d055c
+msgid "0x2A39 ('Heart Rate Control Point Characteristic')"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:95
+#: 2fbac6dc842548d19333d660a07d3da5
+msgid ""
+"Write characteristic, required by service's standard to reset Energy "
+"Expenditure to 0. Writing 0x01 resets the rolling packet counter to 0."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:98
+#: 636d1b1cc87742e0bb630c40ccc3dcb0
+msgid "Testing BLE"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:100
+#: 333f5255103a47618a6f935db63ec006
+msgid ""
+"Any decent Bluetooth® scanning app should be able to connect to the device "
+"and show the notification values. Known to work well is the nordic® nRF "
+"Connect app, which should be available for iOS and Android. More infos about"
+" the Android app can be found `here on github <https://www.nordicsemi.com"
+"/Software-and-Tools/Development-Tools/nRF-Connect-for-mobile>`_."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:104
+#: 220a395339ae4dea87d2d3c5f517ea11
+msgid ""
+"Any heart monitor app / device should be able to connect to the MultiGeiger,"
+" too, but that was not tested yet. Any input is appreciated."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:106
+#: 291d34ba300f426f860319b91ece71c3
+msgid ""
+"Figure 1: Connect to the MultiGeiger with the name 'ESP32-<id>', where <id> "
+"should be the same ID (7 to 8 digits) as with the access point to set the "
+"device up initially."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:108
+#: 6c6041dd5a524f859539991990890fd6
+msgid ""
+"Figure 2: Find the correct service (UUID 0x180D) and, if needed, load / open"
+" characteristics."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:110
+#: dcbb588af8bc44efb394ee495200ceb8
+msgid ""
+"Figure 3: Find the Heart Rate Measurement Characteristic (UUID 0x2A37) and "
+"click on the icon to start notifications."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:112
+#: 0ad4fe9e1c15467996d317c5a9795a79
+msgid ""
+"While testing, please keep in mind that an update packet is sent only every "
+"~10s (along with a display refresh, if enabled). If a WiFi transmission is "
+"blocking display and BLE updates, the interval may be even longer. So it "
+"might take a while until a reaction with actual data can be seen in the app."
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:126
+#: 1654995df2a6449fb85a51cad04c1035
+msgid "*Fig. 1*"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:128
+#: 86bd5193d3334944a585b5385cf7a3bc
+msgid "|ble1|"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:126
+#: 90532af32c324539bb1f2b9cfbddf800
+msgid "*Fig. 2*"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:128
+#: 6d3114b6bd15452b8535b8d579778ef8
+msgid "|ble2|"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:126
+#: 79e6c189389b4c0a800da591da371a0a
+msgid "*Fig. 3*"
+msgstr ""
+
+#: /home/user/w/MultiGeiger/docs/source/usage.rst:128
+#: 28385e92a08c4d79855a95ab5f8ae540
+msgid "|ble3|"
 msgstr ""
