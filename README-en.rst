@@ -43,12 +43,21 @@ Main features
  * open development and issue tracking on GitHub
 
 
-There is a lot more information in our `documentation`_, which is also available as `offline documentation`_.
+Documentation
+~~~~~~~~~~~~~
 
-.. _documentation: https://multigeiger.readthedocs.org/
-.. _offline documentation: https://readthedocs.org/projects/multigeiger/downloads
+You're reading our new, versioned and translated documentation.
 
+See the box at the lower right of https://multigeiger.readthedocs.io to
+switch languages and versions! You can also download PDF, Epub or HTML there.
 
-Note: some stuff is only available in German language or in document formats which
-can not be directly included in the above mentioned docs - see the docs/ directory.
+There is also more (legacy, german) documentation there:
+
+- https://github.com/ecocurious2/MultiGeiger/tree/master/README-de.md
+
+  Software, configuration and setup.
+
+- https://github.com/ecocurious2/MultiGeiger/tree/master/docs/Bauanleitung
+
+  Building and outside deployment of the MultiGeiger.
 
