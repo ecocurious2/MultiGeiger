@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiGeiger\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-21 23:17+0200\n"
+"POT-Creation-Date: 2020-05-23 14:46+0200\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
 "Last-Translator: TW <tw@waldmann-edv.de>, 2020\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
@@ -140,20 +140,43 @@ msgstr "GPL v3 lizensiert"
 msgid "open development and issue tracking on GitHub"
 msgstr "offene Entwicklung und Issue-Tracking auf GitHub"
 
-#: ../../README-en.rst:46 89d45efe2c224de5a745beecb4977945
-msgid ""
-"There is a lot more information in our `documentation`_, which is also "
-"available as `offline documentation`_."
-msgstr ""
-"Es gibt noch viel mehr Informationan in unserer `documentation`_, die auch "
-"als `offline documentation`_ verfügbar ist."
+#: ../../README-en.rst:47 9482e21b805649f3b63833cc28e92ce4
+msgid "Documentation"
+msgstr "Dokumentation"
 
-#: ../../README-en.rst:52 f6d796466d924a3cbd1ece46b5aed937
-msgid ""
-"Note: some stuff is only available in German language or in document formats"
-" which can not be directly included in the above mentioned docs - see the "
-"docs/ directory."
+#: ../../README-en.rst:49 89d45efe2c224de5a745beecb4977945
+msgid "You're reading our new, versioned and translated documentation."
 msgstr ""
-"Bitte beachten: einiges ist nur in deutscher Sprache oder in Dokumenten-"
-"Formaten verfügbar, die nicht in die oben genannte Dokumentation eingebunden"
-" werden kann - siehe das docs/ Verzeichnis."
+"Du liest gerade unsere neue, versionierte und übersetzte Dokumentation."
+
+#: ../../README-en.rst:51 ef0c960bb5094728b1ea2dcc89209084
+msgid ""
+"See the box at the lower right of https://multigeiger.readthedocs.io to "
+"switch languages and versions! You can also download PDF, Epub or HTML "
+"there."
+msgstr ""
+"Mit der Box unten rechts auf https://multigeiger.readthedocs.io kann man "
+"Sprache und Versionen umschalten! Ebenso kann man dort PDF, Epub oder HTML "
+"herunter laden."
+
+#: ../../README-en.rst:54 9c32e43a10914cb1b13f8edb8a818455
+msgid "There is also more (legacy, german) documentation there:"
+msgstr "Dort gibt es weitere (seitherige, deutsche) Dokumentation:"
+
+#: ../../README-en.rst:56 4e9cb23ba8ea42598f40c9d9560c64db
+msgid "https://github.com/ecocurious2/MultiGeiger/tree/master/README-de.md"
+msgstr "https://github.com/ecocurious2/MultiGeiger/tree/master/README-de.md"
+
+#: ../../README-en.rst:58 7ed8554d819640a290f529930c103393
+msgid "Software, configuration and setup."
+msgstr "Software, Konfiguration and Installation."
+
+#: ../../README-en.rst:60 ff6d62c8d6ef4b7fbcd3075d8314c660
+msgid ""
+"https://github.com/ecocurious2/MultiGeiger/tree/master/docs/Bauanleitung"
+msgstr ""
+"https://github.com/ecocurious2/MultiGeiger/tree/master/docs/Bauanleitung"
+
+#: ../../README-en.rst:62 5929856097f84eeaaa52ea95d6bd7583
+msgid "Building and outside deployment of the MultiGeiger."
+msgstr "Bau und Aufstellung des MultiGeigers."
