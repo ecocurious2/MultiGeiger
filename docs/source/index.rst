@@ -16,6 +16,7 @@ MultiGeiger Documentation
 
    changes
    usage
+   deployment
    faq
    resources
    development
