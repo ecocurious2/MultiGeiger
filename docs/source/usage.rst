@@ -74,6 +74,31 @@ Positions:
   - ``H``: OK
   - ``7``: failure to charge HV capacitor
 
+
+ESP32 buttons
+#############
+
+The MultiGeiger ESP32 microcontroller board has 2 buttons:
+
+- RST: reset (restarts device)
+- PRG: program (press and hold PRG, press RST momentarily, upload firmware)
+
+Often, using PRG is not needed for flashing firmware, because it "just works" when using the right tools.
+
+
+DIP Switches
+############
+
+Optionally, the MultiGeiger can be equipped with a 4-contact DIP switch under the ESP32 microcontroller board.
+
+The firmware makes use of these 4 switches as defined in the ``Switches`` data type in ``switches.h``:
+
+- SW0: Speaker on
+- SW1: Display on
+- SW2: LED on
+- SW3: BLE on
+
+
 BLE - Bluetooth® Low Energy
 ###########################
 
