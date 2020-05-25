@@ -41,14 +41,14 @@ Positions:
   - ``0``: some error happened
 - 1: sensors.community transmission
 
-  - ``.``: off (not configured / enabled)
+  - ``.``: off (not configured, not enabled)
   - ``?``: init (enabled, before 1st transmission)
   - ``S``: sending
   - ``s``: idle (shown after successful sending)
   - ``1``: sending failed (shown after trying to send)
 - 2: madavi transmission
 
-  - ``.``: off (not configured / enabled)
+  - ``.``: off (not configured, not enabled)
   - ``?``: init (enabled, before 1st transmission)
   - ``M``: sending
   - ``m``: idle (shown after successful sending)
