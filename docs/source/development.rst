@@ -96,7 +96,7 @@ translate on the web:
 
 ::
 
-  tx push --sources
+  tx push --source
 
 Later, after translators did their part, updated translations need to get pulled
 from transifex:
