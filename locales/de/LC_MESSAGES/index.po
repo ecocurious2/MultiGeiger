@@ -179,4 +179,4 @@ msgstr ""
 
 #: ../../README-en.rst:62 5929856097f84eeaaa52ea95d6bd7583
 msgid "Building and outside deployment of the MultiGeiger."
-msgstr "Bau und Aufstellung des MultiGeigers."
+msgstr "Bau und Aufstellung des MultiGeigers im Freien."

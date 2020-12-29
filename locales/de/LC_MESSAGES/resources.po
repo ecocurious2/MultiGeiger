@@ -4,6 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
+# Martin Weis <transifex.20.mlbox@spamgourmet.com>, 2020
 # TW <tw@waldmann-edv.de>, 2020
 # 
 #, fuzzy
@@ -36,12 +37,12 @@ msgstr "Dies ist eine Sammlung von zusätzlichen Ressourcen für MultiGeiger."
 #: /home/user/w/MultiGeiger/docs/source/resources.rst:10
 #: 54840261989c4a64937f31072eb767ca
 msgid "Hardware / Parts"
-msgstr ""
+msgstr "Hardware / Einzelteile"
 
 #: /home/user/w/MultiGeiger/docs/source/resources.rst:12
 #: d238bbc3e5c14c1ab696cb7c506440e3
 msgid "MultiGeiger supported ESP32 boards:"
-msgstr ""
+msgstr "MultiGeiger-unterstützte ESP32-Boards:"
 
 #: /home/user/w/MultiGeiger/docs/source/resources.rst:14
 #: faeaf261831b4d03996e46f689dd9418
@@ -49,6 +50,8 @@ msgid ""
 "Heltec WiFi Kit 32 (WiFi-only, infos from board manufacturer) "
 "https://heltec.org/project/wifi-kit-32/"
 msgstr ""
+"Heltec WiFi Kit 32 (WiFi-only, Infos vom Boardhersteller) "
+"https://heltec.org/project/wifi-kit-32/"
 
 #: /home/user/w/MultiGeiger/docs/source/resources.rst:17
 #: d854ee859bcb4ceab0b1d703d9b9ed65
@@ -56,11 +59,13 @@ msgid ""
 "Heltec Wireless Stick (WiFi+LoRa, infos from board manufacturer) "
 "https://heltec.org/project/wireless-stick/"
 msgstr ""
+"Heltec Wireless Stick (WiFi+LoRa, Infos vom Board-Hersteller) "
+"https://heltec.org/project/wireless-stick/"
 
 #: /home/user/w/MultiGeiger/docs/source/resources.rst:22
 #: 92e83913d293405d84bfa4081f66ed49
 msgid "Software"
-msgstr ""
+msgstr "Software"
 
 #: /home/user/w/MultiGeiger/docs/source/resources.rst:24
 #: f550a51187bc47398f8b895e58d9101d
@@ -68,3 +73,5 @@ msgid ""
 "Windows driver for the USB -> UART chip CP2102: http://esp32.net/usb-"
 "uart/#SiLabs"
 msgstr ""
+"Windows-Treiber für den USB -> UART-Chip CP2102: http://esp32.net/usb-"
+"uart/#SiLabs"
