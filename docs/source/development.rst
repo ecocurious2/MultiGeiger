@@ -68,8 +68,11 @@ Documentation
 Building the docs with Sphinx
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Documentation is written in English and translated to other languages from that source (initially German).
+
 The documentation (in reStructuredText format, .rst) is in ``docs/source/``,
 ``index.rst`` is the starting point there.
+
 
 To build the docs, you need to have Sphinx_ installed and run:
 
@@ -93,6 +96,10 @@ need updating (adding/removing/updating strings in there):
 
 Then, these changes need to get pushed to transifex, so translators can comfortably
 translate on the web:
+
+Translation is organised via [transifex](https://www.transifex.com/thomaswaldmann/multigeiger/), 
+you need to have an account or at least login there and fire a "join team" request. 
+Then translate the missing parts and notify the developers (e.g. via issue tracker).
 
 ::
 
