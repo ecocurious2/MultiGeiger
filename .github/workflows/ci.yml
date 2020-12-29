@@ -1,0 +1,47 @@
+# badge: https://github.com/ecocurious2/MultiGeiger/workflows/CI/badge.svg?branch=master
+
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+    - '**.ino'
+    - '**.cpp'
+    - '**.c'
+    - '**.h'
+    - '**.yml'
+    - '**.ini'
+    - '!docs/**'
+  pull_request:
+    branches: [ master ]
+    paths:
+    - '**.ino'
+    - '**.cpp'
+    - '**.c'
+    - '**.h'
+    - '**.yml'
+    - '**.ini'
+    - '!docs/**'
+
+jobs:
+  stylecheck:
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install astyle package
+      run: |
+        sudo apt-get install -y astyle
+    - name: Check Style with astyle
+      run: |
+        astyle --version
+        astyle --options=.astylerc 'multigeiger/*'
+        if [[ -n $(git diff) ]]; then
+          echo "astyle found the following issues - please fix them locally:"
+          echo ""
+          git diff
+          exit -1
+        fi
