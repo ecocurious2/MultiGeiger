@@ -38,7 +38,7 @@ Some guidance for contributors:
   - if you fixed an issue, refer to it in your commit comment
 
 - make a pull request on github and check on the PR page
-  what ``travis-ci`` tells about the code in your PR
+  what the CI system tells about the code in your PR
 
 - wait for review by other developers
 
@@ -96,7 +96,7 @@ translate on the web:
 
 ::
 
-  tx push --sources
+  tx push --source
 
 Later, after translators did their part, updated translations need to get pulled
 from transifex:
