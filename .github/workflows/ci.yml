@@ -35,7 +35,7 @@ jobs:
     - name: Install astyle package
       run: |
         sudo apt-get install -y astyle
-    - name: Check Style with astyle
+    - name: Check style with astyle
       run: |
         astyle --version
         astyle --options=.astylerc 'multigeiger/*'
@@ -45,3 +45,24 @@ jobs:
           git diff
           exit -1
         fi
+
+  build:
+    needs: stylecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: install / prepare platformio
+      run: |
+        cp multigeiger/userdefines-example.h multigeiger/userdefines.h
+        cp platformio-example.ini platformio.ini
+        pip install -U platformio
+        platformio update
+    - name: do platformio build
+      run: |
+        platformio run --environment geiger
