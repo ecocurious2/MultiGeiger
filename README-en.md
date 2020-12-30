@@ -80,7 +80,6 @@ If the compiler reminds other libraries, please install them in the Arduino IDE 
 The device establishes its own WiFi access point (AP). The SSID of the AP is **ESP32-xxxxxx**, where the xxx are the chip ID (or MAC address) of the WiFi chip (example: **ESP32-51564452**).
 **Please write down this number, it will be needed later.**
 This access point remains active for 30 sec. After that the device tries to connect to the (previously) defined WiFi netwword. This connection attempt also takes 30sec. If no connection could be established, the own AP is created again and the process starts again and again. 
-As long as there is no connection, the display reads *connecting ...*. This message immediately disappears as soon as a WiFi connection could be established.
 
 ## Configuring the device via WiFi network
 After the WiFi AP of the device appears on your cell phone or computer, connect to it.
