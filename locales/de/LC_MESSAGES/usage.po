@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiGeiger\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-23 14:46+0200\n"
+"POT-Creation-Date: 2020-12-29 12:59+0100\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
 "Last-Translator: TW <tw@waldmann-edv.de>, 2020\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
@@ -22,64 +22,52 @@ msgstr ""
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:6
-#: 05fe4040251b4f58a13ccda14e965aa2
+#: ../../source/usage.rst:6 05fe4040251b4f58a13ccda14e965aa2
 msgid "Usage"
 msgstr "Benutzung"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:9
-#: ed02b0af5b684c4096b768ef5cce5e93
+#: ../../source/usage.rst:9 ed02b0af5b684c4096b768ef5cce5e93
 msgid "OLED display"
 msgstr "OLED-Display"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:12
-#: de21098f3d954132bee065f905ad6d68
+#: ../../source/usage.rst:12 de21098f3d954132bee065f905ad6d68
 msgid "Top line"
 msgstr "Oberste Zeile"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:14
-#: 1d01a754740f4d01b329e244d5b77b2f
+#: ../../source/usage.rst:14 1d01a754740f4d01b329e244d5b77b2f
 msgid "Left: Time since power-on (not shown on small displays)."
 msgstr "Links: Zeit seit Einschalten (nicht auf kleinen Displays angezeigt)."
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:16
-#: c7c9a8c13d2b43f98b18d175700cef60
+#: ../../source/usage.rst:16 c7c9a8c13d2b43f98b18d175700cef60
 msgid "Right: Overall average radiation since power-on."
 msgstr "Rechts: Gesamte mittlere Strahlung seit Einschalten."
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:19
-#: 8dfd6a137a034b1683f8da957f90cb77
+#: ../../source/usage.rst:19 8dfd6a137a034b1683f8da957f90cb77
 msgid "Middle area"
 msgstr "Mittlerer Bereich"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:21
-#: 9a3e7cebd8944b668ae8c5226205f397
+#: ../../source/usage.rst:21 9a3e7cebd8944b668ae8c5226205f397
 msgid "Current CPM (counts per minute) displayed using a rather big font."
 msgstr ""
 "Aktueller CPM (Zählungen pro Minute) angezeigt in ziemlich großer Schrift"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:24
-#: a9dbde5841a54600b2a553656b372930
+#: ../../source/usage.rst:24 a9dbde5841a54600b2a553656b372930
 msgid "Bottom line"
 msgstr "Untere Zeile"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:26
-#: 89417970012c4a69a791a9a00b3caf36
+#: ../../source/usage.rst:26 89417970012c4a69a791a9a00b3caf36
 msgid "This is a status display with 8 positions, numbered 0..7:"
 msgstr "Das ist eine Statusanzeige mit 8 Positionen, numeriert von 0..7:"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:28
-#: ec8fd210e46447eca73a848fea2a6df4
+#: ../../source/usage.rst:28 ec8fd210e46447eca73a848fea2a6df4
 msgid "Rules of thumb:"
 msgstr "Faustregeln:"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:30
-#: 85035a6d97834566bcbf4e457e00f555
+#: ../../source/usage.rst:30 85035a6d97834566bcbf4e457e00f555
 msgid "``.`` usually means \"off\" or \"unused\"."
 msgstr "``.`` bedeutet meist \"aus\" oder \"nicht in Gebrauch\"."
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:31
-#: fcfd5e1b72d140a5b73163fa59748350
+#: ../../source/usage.rst:31 fcfd5e1b72d140a5b73163fa59748350
 msgid ""
 "if you see some *number* (``0`` .. ``7``) within the status display line, "
 "something went wrong."
@@ -87,185 +75,204 @@ msgstr ""
 "eine *Ziffer* (``0`` .. ``7``) im Status-Display bedeutet, dass etwas falsch"
 " ist."
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:34
-#: 33adc8ab195d404ba955c556b1a30a30
+#: ../../source/usage.rst:34 33adc8ab195d404ba955c556b1a30a30
 msgid "Positions:"
 msgstr "Positionen:"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:36
-#: 879c04d239cf4e90a79c323a36ce26f8
+#: ../../source/usage.rst:36 879c04d239cf4e90a79c323a36ce26f8
 msgid "0: WiFi"
 msgstr "0: WiFi"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:38
-#: 0125fcd22382482681efad93de6cc57c
+#: ../../source/usage.rst:38 0125fcd22382482681efad93de6cc57c
 msgid "``A``: AccessPoint active"
 msgstr "``A``: AccessPoint aktiv"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:39
-#: bec6bcad8de744bcad589947dab7cc5a
+#: ../../source/usage.rst:39 bec6bcad8de744bcad589947dab7cc5a
 msgid "``w``: WiFi client trying to connect"
 msgstr "``w``: WiFi-Client versucht, sich zu verbinden"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:40
-#: 8bb8e1b4b253451ebdb56cb270b341b3
+#: ../../source/usage.rst:40 8bb8e1b4b253451ebdb56cb270b341b3
 msgid "``W``: WiFi client connected"
 msgstr "``W``: WiFi-Client ist verbunden"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:41
-#: dcb8bdaa784144959197c301926d91d9
+#: ../../source/usage.rst:41 dcb8bdaa784144959197c301926d91d9
 msgid "``0``: some error happened"
 msgstr "``0``: ein Fehler ist aufgetreten"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:42
-#: c1d7bb7d22f54bbb82bd0fff3198d98b
+#: ../../source/usage.rst:42 c1d7bb7d22f54bbb82bd0fff3198d98b
 msgid "1: sensors.community transmission"
 msgstr "1: sensors.community-Übertragung"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:44
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:51
-#: f3aae6ed866544c596c6e69abe2e5ad4 b703c1376a7d4265a0227bd86a66da07
-msgid "``.``: off (not configured / enabled)"
-msgstr "``.``: aus (nicht konfiguriert / aktiviert)"
+#: ../../source/usage.rst:44 ../../source/usage.rst:51
+#: b703c1376a7d4265a0227bd86a66da07 b703c1376a7d4265a0227bd86a66da07
+msgid "``.``: off (not configured, not enabled)"
+msgstr "``.``: aus (nicht konfiguriert / nicht aktiviert)"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:45
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:52
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:59
-#: 96ec6405c07c46099690469231a5881c 1dde00312e6344528d4815543e364822
-#: 2d02453ac44143089249f6f738055da8
+#: ../../source/usage.rst:45 ../../source/usage.rst:52
+#: ../../source/usage.rst:59 96ec6405c07c46099690469231a5881c
+#: 1dde00312e6344528d4815543e364822 2d02453ac44143089249f6f738055da8
 msgid "``?``: init (enabled, before 1st transmission)"
 msgstr "``?``: Initialisierung (aktiviert, vor der 1. Übertragung)"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:46
-#: 9c2c6421b2a34aa180778a40de35bacd
+#: ../../source/usage.rst:46 9c2c6421b2a34aa180778a40de35bacd
 msgid "``S``: sending"
 msgstr "``S``: Senden"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:47
-#: ef8cb7c34fc24f30a8015f3ba564a25b
+#: ../../source/usage.rst:47 ef8cb7c34fc24f30a8015f3ba564a25b
 msgid "``s``: idle (shown after successful sending)"
 msgstr "``s``: Leerlauf (wird nach erfolgreichem Senden angezeigt)"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:48
-#: a747150da04443a6bfccfab0dca3f752
+#: ../../source/usage.rst:48 a747150da04443a6bfccfab0dca3f752
 msgid "``1``: sending failed (shown after trying to send)"
 msgstr "``1``: Senden fehlgeschlagen (nach Sendeversuch angezeigt)"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:49
-#: f5075b590a6346acac28e7d93d89b477
+#: ../../source/usage.rst:49 f5075b590a6346acac28e7d93d89b477
 msgid "2: madavi transmission"
 msgstr "2: madavi-Übertragung"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:53
-#: 48b09fa52ffe45a899e93f3981810163
+#: ../../source/usage.rst:53 48b09fa52ffe45a899e93f3981810163
 msgid "``M``: sending"
 msgstr "``M``: Senden"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:54
-#: f91cffd02c974b9c9f68c8da14447409
+#: ../../source/usage.rst:54 f91cffd02c974b9c9f68c8da14447409
 msgid "``m``: idle (shown after successful sending)"
 msgstr "``m``: Leerlauf (wird nach erfolgreichem Senden angezeigt)"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:55
-#: 9712d357c63b4e1f91ded11271dddd38
+#: ../../source/usage.rst:55 9712d357c63b4e1f91ded11271dddd38
 msgid "``2``: sending failed (shown after trying to send)"
 msgstr "``2``: Senden fehlgeschlagen (nach Sendeversuch angezeigt)"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:56
-#: 209e1384ad6d4c1a9b37805fbac3d07f
+#: ../../source/usage.rst:56 209e1384ad6d4c1a9b37805fbac3d07f
 msgid "3: TTN (\"The Things Network\")"
 msgstr "3: TTN (\"The Things Network\")"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:58
-#: abf5a45c2df94ec6b0b747de36b7d984
+#: ../../source/usage.rst:58 abf5a45c2df94ec6b0b747de36b7d984
 msgid "``.``: off (not configured, not enabled, no LoRa hardware)"
 msgstr "``.``: aus (nicht konfiguriert, nicht aktiviert, keine LoRa Hardware)"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:60
-#: f275d7df89cd4edf886781df94a69d1e
+#: ../../source/usage.rst:60 f275d7df89cd4edf886781df94a69d1e
 msgid "``T``: sending"
 msgstr "``T``: Senden"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:61
-#: e86358f794464eb5a292a5fc3ceaca9d
+#: ../../source/usage.rst:61 e86358f794464eb5a292a5fc3ceaca9d
 msgid "``t``: idle (shown after successful sending)"
 msgstr "``t``: Leerlauf (wird nach erfolgreichem Senden angezeigt)"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:62
-#: 6e089d28c2f04611988696f20e94431c
+#: ../../source/usage.rst:62 6e089d28c2f04611988696f20e94431c
 msgid "``3``: sending failed (shown after trying to send)"
 msgstr "``3``: Senden fehlgeschlagen (nach Sendeversuch angezeigt)"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:63
-#: 127d676f63b3484da427227f08520b8b
+#: ../../source/usage.rst:63 127d676f63b3484da427227f08520b8b
 msgid "4: BLE (Bluetooth® Low Energy)"
 msgstr "4: BLE (Bluetooth® Low Energy)"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:65
-#: 027dcffa0bbf431bb1d54e0d76263d33
+#: ../../source/usage.rst:65 027dcffa0bbf431bb1d54e0d76263d33
 msgid "``.``: off (not enabled)"
 msgstr "``.``: aus (nicht aktiviert)"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:66
-#: 48f53e2817a3431fb7b0fade5c21192a
+#: ../../source/usage.rst:66 48f53e2817a3431fb7b0fade5c21192a
 msgid "``?``: init (enabled, before setup of BLE service)"
 msgstr "``?``: Initialisierung (aktiviert, vor Start des BLE-Dienstes)"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:67
-#: e778141d5d9e43f487da44695e0d6487
+#: ../../source/usage.rst:67 e778141d5d9e43f487da44695e0d6487
 msgid ""
 "``B``: connected and sending notifications, if requested by connected device"
 msgstr ""
 "``B``: verbunden und sendet Benachrichtigungen, wenn es von einem "
 "verbundenen Gerät angefordert wird"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:68
-#: e80102169f9e4094a041b2e9fb89c966
+#: ../../source/usage.rst:68 e80102169f9e4094a041b2e9fb89c966
 msgid "``b``: connectable (advertising and ready to connect)"
 msgstr "``b``: verbindbar (sichtbar und Bereit zur Verbindung)"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:69
-#: 00cf9651b556431e80a7b26f0029b4ea
+#: ../../source/usage.rst:69 00cf9651b556431e80a7b26f0029b4ea
 msgid "``4``: BLE error"
 msgstr "``4``: BLE-Fehler"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:70
-#: 4aec50c53f974e15843f5646862d625f
+#: ../../source/usage.rst:70 4aec50c53f974e15843f5646862d625f
 msgid "5: unused"
 msgstr "5: ungenutzt"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:71
-#: a5f08e23e73d484c9c7f87029da4dc97
+#: ../../source/usage.rst:71 a5f08e23e73d484c9c7f87029da4dc97
 msgid "6: unused"
 msgstr "6: ungenutzt"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:72
-#: 0db582596b204deaac17373a417d169d
+#: ../../source/usage.rst:72 0db582596b204deaac17373a417d169d
 msgid "7: High-Voltage Capacitor charging"
 msgstr "7: Hochspannungskondensator laden"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:74
-#: 4618c04373534b3b89ee15e98b5384ca
+#: ../../source/usage.rst:74 4618c04373534b3b89ee15e98b5384ca
 msgid "``H``: OK"
 msgstr "``H``: OK"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:75
-#: 1a784c742a694d2ea7686a26072e54b0
+#: ../../source/usage.rst:75 1a784c742a694d2ea7686a26072e54b0
 msgid "``7``: failure to charge HV capacitor"
 msgstr "``7``: Fehler beim Laden des Hochspannungskondensators"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:78
-#: cc29907b75eb4d10bde7d36e05400929
+#: ../../source/usage.rst:79 71e77fadcbca445ab5f8db39013a3a1e
+msgid "ESP32 buttons"
+msgstr ""
+
+#: ../../source/usage.rst:81 c07aed99baba4e9aa51a44c44f5c6138
+msgid "The MultiGeiger ESP32 microcontroller board has 2 buttons:"
+msgstr ""
+
+#: ../../source/usage.rst:83 3585d1ce70fc434296b200ef5978fb03
+msgid "RST: reset (restarts device)"
+msgstr ""
+
+#: ../../source/usage.rst:84 ee950c128daf41ebb934839ddaf3abb5
+msgid ""
+"PRG: program (press and hold PRG, press RST momentarily, upload firmware)"
+msgstr ""
+
+#: ../../source/usage.rst:86 116148aeabd34381a5944f98d5a62b29
+msgid ""
+"Often, using PRG is not needed for flashing firmware, because it \"just "
+"works\" when using the right tools."
+msgstr ""
+
+#: ../../source/usage.rst:90 395d0d42766d44d8858834aa717dfd64
+msgid "DIP Switches"
+msgstr ""
+
+#: ../../source/usage.rst:92 de07f905c8b546cd8aac06bdc3af6212
+msgid ""
+"Optionally, the MultiGeiger can be equipped with a 4-contact DIP switch "
+"under the ESP32 microcontroller board."
+msgstr ""
+
+#: ../../source/usage.rst:94 3cae7c334ee64c24af51edf36d377fac
+msgid ""
+"The firmware makes use of these 4 switches as defined in the ``Switches`` "
+"data type in ``switches.h``:"
+msgstr ""
+
+#: ../../source/usage.rst:96 3fb60c62971f4f59bdca727ee13a9422
+msgid "SW0: Speaker on"
+msgstr ""
+
+#: ../../source/usage.rst:97 28379f613ac04701a741cefd213e338b
+msgid "SW1: Display on"
+msgstr ""
+
+#: ../../source/usage.rst:98 2d7e21d6f79e463ea80990d25859a5f4
+msgid "SW2: LED on"
+msgstr ""
+
+#: ../../source/usage.rst:99 604ed850923946c5945ede55fac865ff
+msgid "SW3: BLE on"
+msgstr ""
+
+#: ../../source/usage.rst:103 cc29907b75eb4d10bde7d36e05400929
 msgid "BLE - Bluetooth® Low Energy"
 msgstr "BLE - Bluetooth® Low Energy"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:81
-#: a4e0d7351c0e4eb2ad9864eb41874df3
+#: ../../source/usage.rst:106 a4e0d7351c0e4eb2ad9864eb41874df3
 msgid "BLE Heart Rate Service"
 msgstr "BLE-Herzfrequenz-Dienst"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:83
-#: 2ec44c69b40b4fc9aa19f4827c903bb3
+#: ../../source/usage.rst:108 2ec44c69b40b4fc9aa19f4827c903bb3
 msgid ""
 "The MultiGeiger provides a Bluetooth® Low Energy (BLE) service to allow the "
 "collection of the Geiger-Mueller count rate via a `GATT Heart Rate Service "
@@ -278,20 +285,17 @@ msgstr ""
 "<https://www.bluetooth.com/specifications/gatt/services/>`_ (Service UUID "
 "0x180D). Die folgenden Merkmale werden genutzt:"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:85
-#: 025a517053f446bcbe30c14272b87f35
+#: ../../source/usage.rst:110 025a517053f446bcbe30c14272b87f35
 msgid "0x2A37 ('Heart Rate Measurement Characteristic'):"
 msgstr "0x2A37 ('Merkmal Herzfrequenz-Messung'):"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:87
-#: ff818f4711d04f0b8f8a7c269dd247cc
+#: ../../source/usage.rst:112 ff818f4711d04f0b8f8a7c269dd247cc
 msgid ""
 "The first byte is a collection of status flags, according to the service's "
 "standard"
 msgstr "Das erste Byte ist eine Sammlung von Status-Flags nach Dienststandard"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:88
-#: e0515456d5fd4186b884d86c65aec807
+#: ../../source/usage.rst:113 e0515456d5fd4186b884d86c65aec807
 msgid ""
 "'Heart Rate Measurement' as 16 bit value (little endian), corresponds to "
 "Geiger-Mueller counts per minute (CPM)"
@@ -299,8 +303,7 @@ msgstr ""
 "'Herzfrequenz-Messung' als 16 Bit Wert (little endian), entspricht dem "
 "Geiger-Müller-Zählwert pro Minute (CPM)"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:89
-#: b84bc88806ab4bd9b15638b4dc197128
+#: ../../source/usage.rst:114 b84bc88806ab4bd9b15638b4dc197128
 msgid ""
 "'Energy Expenditure' as 16 bit value (little endian), represents a rolling "
 "packet counter"
@@ -308,13 +311,11 @@ msgstr ""
 "'Energieverbrauch' als 16 Bit Wert (little endian), repräsentiert einen "
 "rollierenden Paket-Zähler"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:90
-#: dace7c171b0e44fb9262f5dfa47830ce
+#: ../../source/usage.rst:115 dace7c171b0e44fb9262f5dfa47830ce
 msgid "0x2A38 ('Heart Rate Sensor Position Characteristic')"
 msgstr "0x2A38 ('Merkmal Herzfrequenz-Sensorposition')"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:92
-#: 64907eba9afb457a8317bbfbd5830619
+#: ../../source/usage.rst:117 64907eba9afb457a8317bbfbd5830619
 msgid ""
 "'Sensor Position' as 8 bit value, corresponds to TUBE-TYPE, allowing the "
 "conversion of CPM to radiation rate"
@@ -322,13 +323,11 @@ msgstr ""
 "'Sensorposition' als 8 Bit Wert, der TUBE-TYPE entspricht, ermöglicht die "
 "Umrechnung von CPM zu Strahlungswert"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:93
-#: ad6482b5d7f9467ba08f4eaa0f9d055c
+#: ../../source/usage.rst:118 ad6482b5d7f9467ba08f4eaa0f9d055c
 msgid "0x2A39 ('Heart Rate Control Point Characteristic')"
 msgstr "0x2A39 ('Merkmal Herzfrequenz-Kontrollpunkt')"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:95
-#: 2fbac6dc842548d19333d660a07d3da5
+#: ../../source/usage.rst:120 2fbac6dc842548d19333d660a07d3da5
 msgid ""
 "Write characteristic, required by service's standard to reset Energy "
 "Expenditure to 0. Writing 0x01 resets the rolling packet counter to 0."
@@ -337,13 +336,11 @@ msgstr ""
 "Energieverbrauch auf 0 zu setzen. Schreiben von 0x01 setzt den rollierenden "
 "Paketzähler auf 0 zurück."
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:98
-#: 636d1b1cc87742e0bb630c40ccc3dcb0
+#: ../../source/usage.rst:123 636d1b1cc87742e0bb630c40ccc3dcb0
 msgid "Testing BLE"
 msgstr "Test BLE"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:100
-#: 333f5255103a47618a6f935db63ec006
+#: ../../source/usage.rst:125 333f5255103a47618a6f935db63ec006
 msgid ""
 "Any decent Bluetooth® scanning app should be able to connect to the device "
 "and show the notification values. Known to work well is the nordic® nRF "
@@ -358,8 +355,7 @@ msgstr ""
 "`hier auf github <https://www.nordicsemi.com/Software-and-Tools/Development-"
 "Tools/nRF-Connect-for-mobile>`_."
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:104
-#: 220a395339ae4dea87d2d3c5f517ea11
+#: ../../source/usage.rst:129 220a395339ae4dea87d2d3c5f517ea11
 msgid ""
 "Any heart monitor app / device should be able to connect to the MultiGeiger,"
 " too, but that was not tested yet. Any input is appreciated."
@@ -368,8 +364,7 @@ msgstr ""
 "mit dem MultiGeiger verbinden können, aber das wurde noch nicht getestet. "
 "Jede Rückmeldung ist willkommen."
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:106
-#: 291d34ba300f426f860319b91ece71c3
+#: ../../source/usage.rst:131 291d34ba300f426f860319b91ece71c3
 msgid ""
 "Figure 1: Connect to the MultiGeiger with the name 'ESP32-<id>', where <id> "
 "should be the same ID (7 to 8 digits) as with the access point to set the "
@@ -379,8 +374,7 @@ msgstr ""
 "'ESP32-<id>', wobei <id> die gleiche ID (7 bis 8 Ziffern) sein sollte, wie "
 "beim Access Point, um das Gerät initial einzurichten."
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:108
-#: 6c6041dd5a524f859539991990890fd6
+#: ../../source/usage.rst:133 6c6041dd5a524f859539991990890fd6
 msgid ""
 "Figure 2: Find the correct service (UUID 0x180D) and, if needed, load / open"
 " characteristics."
@@ -388,8 +382,7 @@ msgstr ""
 "Abbildung 2: Finden Sie den richtigen Dienst (UUID 0x180D) und, falls "
 "erforderlich, laden / öffnen Sie die Einstellungen."
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:110
-#: dcbb588af8bc44efb394ee495200ceb8
+#: ../../source/usage.rst:135 dcbb588af8bc44efb394ee495200ceb8
 msgid ""
 "Figure 3: Find the Heart Rate Measurement Characteristic (UUID 0x2A37) and "
 "click on the icon to start notifications."
@@ -398,8 +391,7 @@ msgstr ""
 "0x2A37) und klicken Sie auf das Symbol, um die Benachrichtigungen zu "
 "starten."
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:112
-#: 0ad4fe9e1c15467996d317c5a9795a79
+#: ../../source/usage.rst:137 0ad4fe9e1c15467996d317c5a9795a79
 msgid ""
 "While testing, please keep in mind that an update packet is sent only every "
 "~10s (along with a display refresh, if enabled). If a WiFi transmission is "
@@ -412,32 +404,26 @@ msgstr ""
 "noch länger sein. Es kann also eine Weile dauern, bis eine Reaktion mit "
 "aktuellen Daten in der App zu sehen ist."
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:126
-#: 1654995df2a6449fb85a51cad04c1035
+#: ../../source/usage.rst:151 1654995df2a6449fb85a51cad04c1035
 msgid "*Fig. 1*"
 msgstr "*Abb. 1*"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:128
-#: 86bd5193d3334944a585b5385cf7a3bc
+#: ../../source/usage.rst:153 86bd5193d3334944a585b5385cf7a3bc
 msgid "|ble1|"
 msgstr "|ble1|"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:126
-#: 90532af32c324539bb1f2b9cfbddf800
+#: ../../source/usage.rst:151 90532af32c324539bb1f2b9cfbddf800
 msgid "*Fig. 2*"
 msgstr "*Abb. 2*"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:128
-#: 6d3114b6bd15452b8535b8d579778ef8
+#: ../../source/usage.rst:153 6d3114b6bd15452b8535b8d579778ef8
 msgid "|ble2|"
 msgstr "|ble2|"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:126
-#: 79e6c189389b4c0a800da591da371a0a
+#: ../../source/usage.rst:151 79e6c189389b4c0a800da591da371a0a
 msgid "*Fig. 3*"
 msgstr "*Abb. 3*"
 
-#: /home/user/w/MultiGeiger/docs/source/usage.rst:128
-#: 28385e92a08c4d79855a95ab5f8ae540
+#: ../../source/usage.rst:153 28385e92a08c4d79855a95ab5f8ae540
 msgid "|ble3|"
 msgstr "|ble3|"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiGeiger\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-22 11:31+0200\n"
+"POT-Creation-Date: 2020-12-29 12:59+0100\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
 "Last-Translator: TW <tw@waldmann-edv.de>, 2020\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
@@ -21,27 +21,22 @@ msgstr ""
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: /home/user/w/MultiGeiger/docs/source/faq.rst:6
-#: b47e1ff90cb442ec84c6d6e5e6c52312
+#: ../../source/faq.rst:6 b47e1ff90cb442ec84c6d6e5e6c52312
 msgid "Frequently Asked Questions"
 msgstr "Oft gestellte Fragen (FAQ)"
 
-#: /home/user/w/MultiGeiger/docs/source/faq.rst:9
-#: 39ef30d1ed4d469a81a079c46c1b63fb
+#: ../../source/faq.rst:9 39ef30d1ed4d469a81a079c46c1b63fb
 msgid "General"
 msgstr "Allgemein"
 
-#: /home/user/w/MultiGeiger/docs/source/faq.rst:12
-#: 0a64320767944a0ba8f5e4d19428a67d
+#: ../../source/faq.rst:12 0a64320767944a0ba8f5e4d19428a67d
 msgid "Radiation doses, are there practical examples?"
 msgstr "Strahlungs-Dosis-Werte, gibt es da praktische Beispiele?"
 
-#: /home/user/w/MultiGeiger/docs/source/faq.rst:14
-#: d9a986ed48204fd8a110bacc2129015f
+#: ../../source/faq.rst:14 d9a986ed48204fd8a110bacc2129015f
 msgid "There's a great XKCD about that, see there:"
 msgstr "Es gibt dazu ein großartiges XKCD, siehe dort:"
 
-#: /home/user/w/MultiGeiger/docs/source/faq.rst:16
-#: 38dbcb53d42645cd9d2a7883b8882909
+#: ../../source/faq.rst:16 38dbcb53d42645cd9d2a7883b8882909
 msgid "https://xkcd.com/radiation/"
 msgstr "https://xkcd.com/radiation/"

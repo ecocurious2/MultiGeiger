@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiGeiger\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-23 14:46+0200\n"
+"POT-Creation-Date: 2020-12-29 12:59+0100\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
 "Last-Translator: TW <tw@waldmann-edv.de>, 2020\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
@@ -21,135 +21,134 @@ msgstr ""
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: /home/user/w/MultiGeiger/docs/source/index.rst:10
-#: ca33e5f4a35e4783928ebf124bfc7a75
+#: ../../source/index.rst:10 ca33e5f4a35e4783928ebf124bfc7a75
 msgid "MultiGeiger Documentation"
 msgstr "MultiGeiger-Dokumentation"
 
-#: ../../README-en.rst:2 a432cbbd9f144b9ea20748324681d0fc
+#: ../../../README-en.rst:2 a432cbbd9f144b9ea20748324681d0fc
 msgid "What is MultiGeiger?"
 msgstr "Was ist MultiGeiger?"
 
-#: ../../README-en.rst:4 d5caffcdcb95439cabca4779afcccdcf
+#: ../../../README-en.rst:4 d5caffcdcb95439cabca4779afcccdcf
 msgid "The MultiGeiger is a radioactivity measurement device."
 msgstr "Der MultiGeiger ist ein Messgerät für Radioaktivität."
 
-#: ../../README-en.rst:7 8fdb8f5be53e409a8f3a9a7e1d929ded
+#: ../../../README-en.rst:7 8fdb8f5be53e409a8f3a9a7e1d929ded
 msgid "Main features"
 msgstr "Haupt-Eigenschaften"
 
-#: ../../README-en.rst:9 189cb5a48b624165843f704dfb9ec605
+#: ../../../README-en.rst:9 189cb5a48b624165843f704dfb9ec605
 msgid "**multiple use cases supported**"
 msgstr "**unterstützt mehrere Einsatz-Szenarien**"
 
-#: ../../README-en.rst:11 f129ab15bef248fdb4b652cbba5fe375
+#: ../../../README-en.rst:11 f129ab15bef248fdb4b652cbba5fe375
 msgid "fixed location stations (data transfer via network)"
 msgstr "Stationen mit fixem Standort (Daten-Transfer über Netzwerk)"
 
-#: ../../README-en.rst:12 0f3e6a50679743e4b2c51fef781ee8f5
+#: ../../../README-en.rst:12 0f3e6a50679743e4b2c51fef781ee8f5
 msgid "mobile operations (using the OLED display and speaker)"
 msgstr "mobile Anwendung (Benutzung des OLED-Displays und des Lautsprechers)"
 
-#: ../../README-en.rst:13 55cf38a2e8ea4c66a9ff300789a11109
+#: ../../../README-en.rst:13 55cf38a2e8ea4c66a9ff300789a11109
 msgid "(more are planned)"
 msgstr "(weitere sind geplant)"
 
-#: ../../README-en.rst:15 fdb55ee4e5ea4ebe886787b88b855cf7
+#: ../../../README-en.rst:15 fdb55ee4e5ea4ebe886787b88b855cf7
 msgid "**multiple 400V Geiger-Mueller tubes supported**"
 msgstr "**mehrere 400V-Geiger-Müller-Zählrohre werden unterstützt**"
 
-#: ../../README-en.rst:17 ddbddb60ddd144628b9074291cdf687f
+#: ../../../README-en.rst:17 ddbddb60ddd144628b9074291cdf687f
 msgid ""
 "big, sensitive tubes, like the Si21g or Si22g (for measurement stations)"
 msgstr ""
 "große, empfindliche Zählrohre, wie das Si21g oder Si22g (für Mess-Stationen)"
 
-#: ../../README-en.rst:18 bd059449157f413d89cf2c5fe5645f4f
+#: ../../../README-en.rst:18 bd059449157f413d89cf2c5fe5645f4f
 msgid ""
 "smaller, less sensitive tubes, like the SBM21 (good for finding hot spots)"
 msgstr ""
 "kleinere, weniger empfindliche Zählrohre, wie das SBM21 (gut, um Hotspots zu"
 " finden)"
 
-#: ../../README-en.rst:20 64baaa902a3e476e9592b4ffebd13cda
+#: ../../../README-en.rst:20 64baaa902a3e476e9592b4ffebd13cda
 msgid "**Hardware**"
 msgstr "**Hardware**"
 
-#: ../../README-en.rst:22 99abbd43111b4cad82b1ac98f2202603
+#: ../../../README-en.rst:22 99abbd43111b4cad82b1ac98f2202603
 msgid "low parts count, simple to assemble"
 msgstr "geringe Zahl an Bauteilen, einfach zusammen zu bauen"
 
-#: ../../README-en.rst:23 939c04f93bbf4ecc85f0ff872f53565a
+#: ../../../README-en.rst:23 939c04f93bbf4ecc85f0ff872f53565a
 msgid "inexpensive, but still good parts"
 msgstr "preisgünstig, aber trotzdem gute Bauteile"
 
-#: ../../README-en.rst:24 a513dd7d570f4a4c92a98a3c2f579478
+#: ../../../README-en.rst:24 a513dd7d570f4a4c92a98a3c2f579478
 msgid "using ESP32, a modern and fast 32bit micro controller"
 msgstr ""
 "benutzt den ESP32, einen modernen und schnellen 32bit-Micro-Controller"
 
-#: ../../README-en.rst:25 a5a645245a8d47959184f2a0781d775c
+#: ../../../README-en.rst:25 a5a645245a8d47959184f2a0781d775c
 msgid "with WiFi (WPA2) or with WiFi + LoRA"
 msgstr "mit WLAN (WPA2) oder mit WLAN + LoRA"
 
-#: ../../README-en.rst:26 4026d527d7524a49a6c94d8ddde37836
+#: ../../../README-en.rst:26 4026d527d7524a49a6c94d8ddde37836
 msgid "with OLED display"
 msgstr "mit OLED-Display"
 
-#: ../../README-en.rst:28 766d1b850c7745dd812ba6bb9120ff9b
+#: ../../../README-en.rst:28 766d1b850c7745dd812ba6bb9120ff9b
 msgid "**Firmware**"
 msgstr "**Firmware**"
 
-#: ../../README-en.rst:30 ed66a812fcc848358ad221d6e2b42484
+#: ../../../README-en.rst:30 ed66a812fcc848358ad221d6e2b42484
 msgid "implemented in C"
 msgstr "implementiert in C"
 
-#: ../../README-en.rst:31 c8ee72e98f9f4784bec33a5056b06eef
+#: ../../../README-en.rst:31 c8ee72e98f9f4784bec33a5056b06eef
 msgid "using the popular arduino API"
 msgstr "benutzt die beliebte Arduino-API"
 
-#: ../../README-en.rst:32 91a3b544f9704d9a8fe0341084e39001
+#: ../../../README-en.rst:32 91a3b544f9704d9a8fe0341084e39001
 msgid "over-the-air firmware updates"
 msgstr "over-the-air Firmware-Updates"
 
-#: ../../README-en.rst:34 bc80248984e4475e91e4e64cf51dceff
+#: ../../../README-en.rst:34 bc80248984e4475e91e4e64cf51dceff
 msgid "**Network and Community**"
 msgstr "**Netzwerk und Community**"
 
-#: ../../README-en.rst:36 d26517cefd21454594cec4a0cddb0eef
+#: ../../../README-en.rst:36 d26517cefd21454594cec4a0cddb0eef
 msgid "this is an Ecocurious citizen science project"
 msgstr "dies ist ein Ecocurious-\"Citizen Science\"-Projekt"
 
-#: ../../README-en.rst:37 4cf1275b13384902a69661c477ef9ac9
+#: ../../../README-en.rst:37 4cf1275b13384902a69661c477ef9ac9
 msgid "web-based geo map for publishing measurements"
 msgstr "web-basierte Karte für das Veröffentlichen von Messungen"
 
-#: ../../README-en.rst:38 6e262f5510be4030980e69b8c97fe9a7
+#: ../../../README-en.rst:38 6e262f5510be4030980e69b8c97fe9a7
 msgid "web-based archive of historic radiation data"
 msgstr "web-basiertes Archiv von historischen Strahlungs-Werten"
 
-#: ../../README-en.rst:40 b85bf168879b43f2a7c3c74c32e7da12
+#: ../../../README-en.rst:40 b85bf168879b43f2a7c3c74c32e7da12
 msgid "**Free and Open**"
 msgstr "**Frei und Offen**"
 
-#: ../../README-en.rst:42 47895ff55e6a440293cf5ef6d335feb0
+#: ../../../README-en.rst:42 47895ff55e6a440293cf5ef6d335feb0
 msgid "GPL v3 licensed"
 msgstr "GPL v3 lizensiert"
 
-#: ../../README-en.rst:43 5a5e7775384246f9a5319bf1e8ad4b8c
+#: ../../../README-en.rst:43 5a5e7775384246f9a5319bf1e8ad4b8c
 msgid "open development and issue tracking on GitHub"
 msgstr "offene Entwicklung und Issue-Tracking auf GitHub"
 
-#: ../../README-en.rst:47 9482e21b805649f3b63833cc28e92ce4
+#: ../../../README-en.rst:47 9482e21b805649f3b63833cc28e92ce4
 msgid "Documentation"
 msgstr "Dokumentation"
 
-#: ../../README-en.rst:49 89d45efe2c224de5a745beecb4977945
+#: ../../../README-en.rst:49 89d45efe2c224de5a745beecb4977945
 msgid "You're reading our new, versioned and translated documentation."
 msgstr ""
 "Du liest gerade unsere neue, versionierte und übersetzte Dokumentation."
 
-#: ../../README-en.rst:51 ef0c960bb5094728b1ea2dcc89209084
+#: ../../../README-en.rst:51 ef0c960bb5094728b1ea2dcc89209084
 msgid ""
 "See the box at the lower right of https://multigeiger.readthedocs.io to "
 "switch languages and versions! You can also download PDF, Epub or HTML "
@@ -159,24 +158,24 @@ msgstr ""
 "Sprache und Versionen umschalten! Ebenso kann man dort PDF, Epub oder HTML "
 "herunter laden."
 
-#: ../../README-en.rst:54 9c32e43a10914cb1b13f8edb8a818455
+#: ../../../README-en.rst:54 9c32e43a10914cb1b13f8edb8a818455
 msgid "There is also more (legacy, german) documentation there:"
 msgstr "Dort gibt es weitere (seitherige, deutsche) Dokumentation:"
 
-#: ../../README-en.rst:56 4e9cb23ba8ea42598f40c9d9560c64db
+#: ../../../README-en.rst:56 4e9cb23ba8ea42598f40c9d9560c64db
 msgid "https://github.com/ecocurious2/MultiGeiger/tree/master/README-de.md"
 msgstr "https://github.com/ecocurious2/MultiGeiger/tree/master/README-de.md"
 
-#: ../../README-en.rst:58 7ed8554d819640a290f529930c103393
+#: ../../../README-en.rst:58 7ed8554d819640a290f529930c103393
 msgid "Software, configuration and setup."
 msgstr "Software, Konfiguration and Installation."
 
-#: ../../README-en.rst:60 ff6d62c8d6ef4b7fbcd3075d8314c660
+#: ../../../README-en.rst:60 ff6d62c8d6ef4b7fbcd3075d8314c660
 msgid ""
 "https://github.com/ecocurious2/MultiGeiger/tree/master/docs/Bauanleitung"
 msgstr ""
 "https://github.com/ecocurious2/MultiGeiger/tree/master/docs/Bauanleitung"
 
-#: ../../README-en.rst:62 5929856097f84eeaaa52ea95d6bd7583
+#: ../../../README-en.rst:62 5929856097f84eeaaa52ea95d6bd7583
 msgid "Building and outside deployment of the MultiGeiger."
 msgstr "Bau und Aufstellung des MultiGeigers im Freien."

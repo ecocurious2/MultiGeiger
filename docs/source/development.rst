@@ -88,8 +88,8 @@ need updating (adding/removing/updating strings in there):
 
 ::
 
-  cd docs/source/
-  sphinx-build -b gettext . ../build/gettext
+  cd docs/build/gettext
+  sphinx-build -b gettext ../../source .
 
 Then, these changes need to get pushed to transifex, so translators can comfortably
 translate on the web:
