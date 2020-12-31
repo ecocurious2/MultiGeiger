@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'MultiGeiger'
-copyright = '2020, see AUTHORS'
+copyright = '2020-2021, see AUTHORS'
 author = 'see AUTHORS'
 
 # The full version, including alpha/beta/rc tags
