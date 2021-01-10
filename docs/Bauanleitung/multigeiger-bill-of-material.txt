@@ -1,0 +1,18 @@
+TEIL	ANZAHL 	BESCHREIBUNG	Artikelbezeichnung	LINK
+T1	1	N-MOS-Transistor BSP125,	BSP125H6433XTMA1	https://www.digikey.ch/product-detail/de/BSP125H6433XTMA1/BSP125H6433XTMA1CT-ND/8416918
+R1	1	kOhm Widerstand, braun-schwarz-orange-gold, Kohleschicht, 0411, 500 mW, 5%	z.B. RD12JN103T52	https://www.reichelt.de/ch/de/widerstand-kohleschicht-10-kohm-0411-500-mw-5--k-o-rd12jn103t52-p237431.html?&nbc=1
+R2, R5	2	1,0 Mohm Widerstand, braun-schwarz-grün-gold, Kohleschicht, 0207, 250 mW, 5%	z.B. CFR-25JT-52-1M	https://www.reichelt.de/ch/de/widerstand-kohleschicht-1-0-mohm-0207-250-mw-5--1-4w-1-0m-p1316.html?&nbc=1
+R3, R4	2	4,7 Mohm Widerstand, gelb-violett-grün-gold,  Kohleschicht, 0207, 250 mW, 5%	z.B. CFR-25JT-52-4M7	https://www.reichelt.de/ch/de/widerstand-kohleschicht-4-7-mohm-0207-250-mw-5--1-4w-4-7m-p1426.html?&nbc=1
+D1, D2	2	Z-Diode, ZY 200	ZY200 oder BZX85C200	https://www.reichelt.de/ch/de/zenerdiode-200-v-2-w-do-41-zy-200-dio-p219675.html?&nbc=1 oder https://www.reichelt.de/ch/de/zenerdiode-200-v-2-w-do-204al-do41-zy-200-p23258.html?&nbc=1
+D3	1	Z-Diode, 3,3 V, 0,5 W, DO-35	BZX55C3V3	https://www.reichelt.de/ch/de/zenerdiode-3-3-v-0-5-w-do-35-bzx-55c3v3-vis-p219425.html?&nbc=1
+D4	1	Gleichrichterdiode, 1000 V, 1 A, SOD-57	BYV26E	https://www.reichelt.de/ch/de/gleichrichterdiode-1000-v-1-a-sod-57-byv-26e-p216750.html?&nbc=1
+D6	1	Gleichrichterdiode GP10Y, 1.6 kV, 1 A	GP10Y-E3/54	https://www.digikey.ch/product-detail/de/GP10Y-E3%2f54/GP10Y-E3%2f54GICT-ND/3026056
+C1	1	ELKO Elektrolytkondensator 100 uF, 16 V	SKR101M1CE11VM	https://www.reichelt.de/ch/de/elko-radial-100-f-16-v-rm-2-5-85-c-20--jam-skr101m1ce11-p229977.html?&nbc=1
+C2	1	Folienkondensator, 10nF, 100V, FKP2-100 10N, "0.01  100-"	FKP2D021001I00HSSD	https://www.reichelt.de/ch/de/folienkondensator-10nf-100v-rm5-fkp2-100-10n-p172454.html?&nbc=1
+C3	1	Folienkondensator, 100nF, 630V, MKP4-630 100N, "0.1  630-"	MKP4J031004D00KSSD	https://www.reichelt.de/ch/de/folienkondensator-100nf-630v-rm15-mkp4-630-100n-p173032.html?&nbc=1
+C4	1	Folienkondensator, 100pF, 1000V, FKP2-1000 100P, "100/1000-"	FKP2O101001D00HSSD	https://www.reichelt.de/ch/de/folienkondensator-100pf-1000v-rm5-fkp2-1000-100p-p31949.html?&nbc=1
+L1	1	Spule, 150 uH, "154J"	11P-154J-50	https://www.reichelt.de/ch/de/stehende-induktivitaet-11p-ferrit-150m-l-11p-150m-p73012.html?&nbc=1
+Pz1	1	Piezo-Lautsprecher	AL-60SP05	https://www.reichelt.de/ch/de/elektromagnetischer-summer-summer-tdb-05-p35918.html?&nbc=1
+X1, X2	2	Zählrohrhalter		
+	1	Zählrohr SBM-20, SBM-19 oder Si22G, (andere möglich, wobei Umrechnungsfaktor muss in Firmware angepasst werden muss)	 SBM-20, SBM-19 oder Si22G	diverse, z.B. ebay, häufig russische oder ukranische Verkäufer
+	2	Buchsenleiste, Fassung für Microcontroler-Modul
