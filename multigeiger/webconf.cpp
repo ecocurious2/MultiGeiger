@@ -51,17 +51,6 @@ iotwebconf::TextParameter deveuiParam = iotwebconf::TextParameter("DEVEUI", "dev
 iotwebconf::TextParameter appeuiParam = iotwebconf::TextParameter("APPEUI", "appeui", appeui, 17);
 iotwebconf::TextParameter appkeyParam = iotwebconf::TextParameter("APPKEY", "appkey", appkey, 33);
 
-bool parse_bool(char *text, bool *value) {
-  if (!strcmp(text, "0")) {
-    *value = false;
-    return true;
-  }
-  if (!strcmp(text, "1")) {
-    *value = true;
-    return true;
-  }
-  return false;  // invalid
-}
 
 // This only needs to be changed if the layout of the configuration is changed.
 // Appending new variables does not require a new version number here.
@@ -162,14 +151,11 @@ void configSaved(void) {
 void setup_webconf(bool loraHardware) {
   isLoraBoard = loraHardware;
   iotWebConf.setConfigSavedCallback(&configSaved);
+  // *INDENT-OFF*   <- for 'astyle' to not format the following 3 lines
   iotWebConf.setupUpdateServer(
-  [](const char *updatePath) {
-    httpUpdater.setup(&server, updatePath);
-  },
-  [](const char *userName, char *password) {
-    httpUpdater.updateCredentials(userName, password);
-  });
-
+    [](const char *updatePath) { httpUpdater.setup(&server, updatePath); },
+    [](const char *userName, char *password) { httpUpdater.updateCredentials(userName, password); });
+  // *INDENT-ON* 
   // override the confusing default labels of IotWebConf:
   iotWebConf.getThingNameParameter()->label = "Geiger accesspoint SSID";
   iotWebConf.getApPasswordParameter()->label = "Geiger accesspoint password";
