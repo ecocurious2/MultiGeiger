@@ -18,3 +18,20 @@ lower right there to switch languages and documentation versions)!
 Dort ist unsere neue, versionierte und übersetzte Doku (siehe die Box
 rechts unten, mit der man Sprache und Version umschalten kann)!
 
+Quicklinks
+~~~~~~~~~~
+
+English Overview: 
+
+https://github.com/ecocurious2/MultiGeiger/blob/master/README-en.rst
+
+Deutsche Dokumentation (alt):
+
+https://github.com/ecocurious2/MultiGeiger/blob/master/README-de.md
+
+Deutsche Aufbauanleitung / Construction instructions (german):
+
+https://github.com/ecocurious2/MultiGeiger/blob/master/docs/Bauanleitung/Aufbauanleitung.pdf
+
+Default Wifi-Password: "ESP32Geiger"
+
