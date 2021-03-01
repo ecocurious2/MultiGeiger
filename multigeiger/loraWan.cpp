@@ -218,6 +218,10 @@ void setup_lorawan() {
   LMIC_setDrTxpow(DR_SF7, 14);
 }
 
+void poll_lorawan() {
+  os_runloop_once();
+}
+
 // Send LoRaWan frame with ack or not
 // - txPort : port to transmit
 // - txBuffer : message to transmit
