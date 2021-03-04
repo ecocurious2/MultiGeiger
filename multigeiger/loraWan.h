@@ -16,6 +16,9 @@ typedef enum {
 #define LORA_TIMEOUT_MS 30000L
 
 void setup_lorawan();
+
+// call os_runloop_once(); a separate function to keep the LMIC header files mostly hidden.
+void poll_lorawan();
 transmissionStatus_t lorawan_send(uint8_t txPort, uint8_t *txBuffer, uint8_t txSz, bool ack, uint8_t *rxPort, uint8_t *rxBuffer, uint8_t *rxSz);
 
 #endif // _LORAWAN_H_

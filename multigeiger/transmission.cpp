@@ -74,6 +74,16 @@ void setup_transmission(const char *version, char *ssid, bool loraHardware) {
   set_status(STATUS_TTN, sendToLora ? ST_TTN_INIT : ST_TTN_OFF);
 }
 
+void poll_transmission() {
+  if (isLoraBoard) {
+    // The LMIC needs to be polled a lot; and this is very low cost if the LMIC isn't
+    // active. So we just act as a bridge. We need this routine so we can see
+    // `isLoraBoard`. Most C compilers will notice the tail call and optimize this
+    // to a jump.
+    poll_lorawan();
+  }
+}
+
 void prepare_http(HttpsClient *client, const char *host) {
   if (host[4] == 's')  // https
     client->hc->begin(*client->wc, host);

@@ -218,6 +218,10 @@ void setup_lorawan() {
   LMIC_setDrTxpow(DR_SF7, 14);
 }
 
+void poll_lorawan() {
+  os_runloop_once();
+}
+
 // Send LoRaWan frame with ack or not
 // - txPort : port to transmit
 // - txBuffer : message to transmit
@@ -229,8 +233,8 @@ void setup_lorawan() {
 // - rxSz : size of received data
 transmissionStatus_t lorawan_send(uint8_t txPort, uint8_t *txBuffer, uint8_t txSz, bool ack, uint8_t *rxPort, uint8_t *rxBuffer, uint8_t *rxSz) {
   // Check if there is not a current TX/RX job running
-  if (LMIC.opmode & OP_TXRXPEND) {
-    log(DEBUG, "OP_TXRXPEND, not sending");
+  if (LMIC.opmode & (OP_POLL | OP_TXDATA | OP_TXRXPEND)) {
+    log(DEBUG, "OP_POLL | OP_TXDATA | OP_TXRXPEND, not sending");
     return TX_STATUS_ENDING_ERROR;
   } else {
     txStatus = TX_STATUS_UNKNOWN;
