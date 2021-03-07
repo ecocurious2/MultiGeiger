@@ -4,7 +4,7 @@
 Assembly Guide
 ==============
 
-.. Die erste Version dieser Anleitung stammte von einem Handout von Jürgen Böhringer mit dem Titel ``Wie baue ich einen Multigeiger?``
+.. Die erste Version dieser Anleitung stammte von einem Handout von Jürgen Böhringer mit dem Titel ``Wie baue ich einen Multigeiger?`` (damals: HW-Version V1.4 jb/rxf 2019-09  -  Handout-Version 2021-03-03)
 
 .. image:: images/ecocurious.png
    :width: 25%
@@ -221,8 +221,8 @@ Fertige Geigerzähler- und Mikrocontrollerplatine
       :width: 70%
 
    **Man sollte vor dem Arbeiten an der Schaltung den Kondensator entladen.** 
-   Am einfachsten macht man dies mit einer zweiten, ca. 30cm langer Leitung, mit dem man Anode und Kathode des Zählrohrs für etwa eine Sekunde kurzschließt. 
-   Dies schützt nicht nur vor unangenehmen Stromsachlängen, sondern schützt auch die empfindliche elektronische Schaltung.
+   Am einfachsten macht man dies mit einer zweiten, ca. 30cm langer Leitung, mit der man Anode und Kathode des Zählrohrs für etwa eine Sekunde kurzschließt. 
+   Dies schützt nicht nur vor unangenehmen Stromschlägen, sondern schützt auch die empfindliche elektronische Schaltung.
 
 Gehäuse
 #######
@@ -244,10 +244,10 @@ Rohre
   Unten wird der Erdspieß auf entsprechende Länge abgesägt im 45-Grad-Winkel. 
   Mit diesem schrägen Anschnitt lässt sich der Erdspieß später mit leichten Drehbewegungen gut in die Erde bohren. 
   Alternativ kann man diesen Teil des Rohrs kurzhalten (ca. 15cm) und in einem verzinkten Sonnenschirmhalter mit Erdspieß (Ø40mm) festklemmen.
-* Lüftungs-/Kabelloch bohren: Mit einem Reißnagel o.ä. wird das Loch seitlich im Erdspieß vorgestochen. 
+* Lüftungs-/Kabelloch bohren: Mit einem Reißnagel o. ä. wird das Loch seitlich im Erdspieß vorgestochen. 
   Anschließend wird es aufgebohrt. Zuletzt wird es mit einem großen Bohrer / Schälbohrer auf etwa 17 mm Durchmesser aufgebohrt. 
 
-.. note:: Verletzungsgefahr: Mit der Klinge/dem Bohrer immer nach außen, d.h. vom Körper weg, schneiden oder Bohren!
+.. note:: Verletzungsgefahr: Mit der Klinge/dem Bohrer immer nach außen, d.h. vom Körper weg, schneiden oder bohren!
 
 Dach und Zwischenboden
 ----------------------
@@ -286,7 +286,7 @@ In den Zwischenboden wird in der Mitte ein Loch zur Kabeldurchführung mit 10 mm
 
 .. Ab hier nicht mehr auskommentiert die Anleitung zur Auflage:
 
-Eine Zwischenbodenauflage dient zum Schutz vor Insekten, da sie das Loch der Kabeldurchführung verkleinert. Man kann dafür z.B. den roten Deckel der Kruke oder ein ähnliches Stück Kunststoff verwenden.
+Eine Zwischenbodenauflage dient zum Schutz vor Insekten, da sie das Loch der Kabeldurchführung verkleinert. Man kann dafür z. B. den roten Deckel der Kruke oder ein ähnliches Stück Kunststoff verwenden.
 
 Es wird die Mitte markiert und dort ein Loch mit dem Durchmesser des Stromkabels (ca. 5 mm) gebohrt. Anschließend werden die Ecken abgeschnitten. Zusätzlich wird ein Verbindungsschlitz von außen zum Loch geschnitten.
 
@@ -301,7 +301,7 @@ Installationsplatte
 
 * Die Installationsplatte kann aus dem Ober- oder Unterteil eines Kabelkanals gefertigt werden. 
   Dazu werden die Seitenteile vorsichtig mit einem Messer abgeschnitten.
-  Danach wird der dadurch entstandene „labbrige“ Kunststoffstreifen auf die richtige Länge gebracht. Hierzu kann eine starke Schere verwendet werden.
+  Danach wird der dadurch entstandene, biegsame Kunststoffstreifen auf die richtige Länge gebracht. Hierzu kann eine starke Schere verwendet werden.
 * Löcher durch Installationsplatte bohren: Elektronik und Zählrohr werden so mit Kabelbindern auf Installationsplatte fixiert, dass das Zählrohr sich auf 1 m Höhe befindet, wenn der Erdspieß 25 cm in der Erde steckt. 
   Das Zählrohr zeigt nach unten. Die Löcher werden mit dem Reißnagel vorgestochen und dann auf 3 mm aufgebohrt (s. Bild „Bohrplan Installationsplatte“)
 * Die Platine wird lediglich mit einem Kabelbinder auf der Platte montiert, der durch beide Löcher gezogen wird. Er verläuft unterhalb des USB-Steckers. 
@@ -331,9 +331,9 @@ Einbau des Geräts (die roten Pfeile markieren Kabelbinder)
 Inbetriebnahme
 ##############
 WLAN-Variante: Das Gerät baut einen eigenen WLAN-Accesspoint (AP) auf. Die SSID des AP lautet ESP32-xxxxxxxx, wobei die xxx die Chip-ID des WLAN-Chips sind (Beispiel: ESP32-51564452). 
-Bitte diese Nummer notieren, sie wird später für die Anmeldung benötigt, z.B. bei https://devices.sensor.community/. Der Access-Point bleibt für 30sec aktiv. Danach versucht das Gerät, sich mit dem (früher) eingestellten WLAN zu verbinden. 
-Dieser Verbindungsversuch dauert ebenfalls 30sec. Kommt keine Verbindung zustande, wird wieder der eigene AP für erzeugt. Das standardmäßig vergebene WLAN-Kennwort ist „ESP32Geiger“ und sollte zeitnah geändert werden.
+Bitte diese Nummer notieren, sie wird später für die Anmeldung benötigt, z. B. bei https://devices.sensor.community/. Der Access-Point bleibt für 30sec aktiv. Danach versucht das Gerät, sich mit dem (früher) eingestellten WLAN zu verbinden. 
+Dieser Verbindungsversuch dauert ebenfalls 30 s. Kommt keine Verbindung zustande, wird wieder der eigene AP für erzeugt. Das standardmäßig vergebene WLAN-Kennwort ist „ESP32Geiger“ und sollte zeitnah geändert werden.
 
 Weitere Informationen: :ref:`deployment` und :ref:`usage`.
 
-**Wir wünschen viel Freude mit dem neu gebauten Gerät und hoffen dass es niemals unnatürliche Ausschläge messen wird!**
+**Wir wünschen viel Freude mit dem neu gebauten Gerät und hoffen dass es niemals unnatürliche bzw. gesundheitsschädliche Ausschläge messen wird!**
