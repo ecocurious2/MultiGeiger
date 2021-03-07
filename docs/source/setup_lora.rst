@@ -168,5 +168,5 @@ Select the tab **Payload Formats** in the menu bar and paste the following code 
      return decoded;
    }
 
-.. |“HTTP Integration filled”| image:: ../../images/http_integration_filled.png
+.. |“HTTP Integration filled”| image:: images/http_integration_filled.png
 

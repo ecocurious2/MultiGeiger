@@ -6,7 +6,7 @@ Assembly Guide
 
 .. Die erste Version dieser Anleitung stammte von einem Handout von Jürgen Böhringer mit dem Titel ``Wie baue ich einen Multigeiger?``
 
-.. image:: ../../images/ecocurious.png
+.. image:: images/ecocurious.png
    :width: 25%
    :align: right
 
@@ -18,7 +18,7 @@ Die Echtzeitdaten der stationären Geräte werden per LoRaWAN oder WiFi/WLAN an 
 So entsteht ein Radioaktivitätsmessnetz in Bürgerhand, das wir hiermit aufbauen wollen.
 Herzliche Einladung zum Mitmachen!
 
-.. image:: ../../images/build_01_final.jpg
+.. image:: images/build_01_final.jpg
    :width: 100%
 
 Bauteile
@@ -26,55 +26,55 @@ Bauteile
 
 Bauteile (s. `Stückliste <https://github.com/ecocurious2/MultiGeiger/blob/master/docs/hardware/MultiGeiger_Partlist.ods?raw=true>`_) zunächst sortieren und auf Vollständigkeit prüfen:
 
-.. |parts01| image:: ../../images/build_02_parts_01.jpg
+.. |parts01| image:: images/build_02_parts_01.jpg
    :width: 100px
 
-.. |parts02| image:: ../../images/build_02_parts_02.jpg
+.. |parts02| image:: images/build_02_parts_02.jpg
    :width: 200px
 
-.. |parts03| image:: ../../images/build_02_parts_03.jpg
+.. |parts03| image:: images/build_02_parts_03.jpg
    :width: 200px
 
-.. |parts04| image:: ../../images/build_02_parts_04.jpg
+.. |parts04| image:: images/build_02_parts_04.jpg
    :width: 200px
 
-.. |parts05| image:: ../../images/build_02_parts_05.jpg
+.. |parts05| image:: images/build_02_parts_05.jpg
    :width: 200px
 
-.. |parts06| image:: ../../images/build_02_parts_06.jpg
+.. |parts06| image:: images/build_02_parts_06.jpg
    :width: 200px
 
-.. |parts07| image:: ../../images/build_02_parts_07.jpg
+.. |parts07| image:: images/build_02_parts_07.jpg
    :width: 200px
 
-.. |parts08| image:: ../../images/build_02_parts_08.jpg
+.. |parts08| image:: images/build_02_parts_08.jpg
    :width: 200px
 
-.. |parts09| image:: ../../images/build_02_parts_09.jpg
+.. |parts09| image:: images/build_02_parts_09.jpg
    :width: 200px
 
-.. |parts10| image:: ../../images/build_02_parts_10.jpg
+.. |parts10| image:: images/build_02_parts_10.jpg
    :width: 100px
 
-.. |parts11| image:: ../../images/build_02_parts_11.jpg
+.. |parts11| image:: images/build_02_parts_11.jpg
    :width: 150px
 
-.. |parts12| image:: ../../images/build_02_parts_12.jpg
+.. |parts12| image:: images/build_02_parts_12.jpg
    :width: 70px
 
-.. |parts13| image:: ../../images/build_02_parts_13.jpg
+.. |parts13| image:: images/build_02_parts_13.jpg
    :width: 150px
 
-.. |parts14| image:: ../../images/build_02_parts_14.jpg
+.. |parts14| image:: images/build_02_parts_14.jpg
    :width: 100px
 
-.. |parts15| image:: ../../images/build_02_parts_15.jpg
+.. |parts15| image:: images/build_02_parts_15.jpg
    :width: 180px
 
-.. |parts16| image:: ../../images/build_02_parts_16.jpg
+.. |parts16| image:: images/build_02_parts_16.jpg
    :width: 200px
 
-.. |parts17| image:: ../../images/build_02_parts_17.jpg
+.. |parts17| image:: images/build_02_parts_17.jpg
    :width: 200px
 
 +-------+---+------------------------------------+------------------------------------------+
@@ -124,7 +124,7 @@ Feldeffekt-Transistor T1
 Als erstes Bauteil wird das einzige Bauteil im SMD-Bauform montiert. Mit Klebeband (Kreppband hat sich bewährt) wird er so auf die Platine geklebt, so dass die drei Pins sichtbar sind. 
 Dann werden die vorderen Anschlüsse verlötet, das Klebeband vorsichtig entfernt und der hintere Anschluss verlötet. 
 
-.. image:: ../../images/build_03_solderingTransistor.jpg
+.. image:: images/build_03_solderingTransistor.jpg
    :width: 50%
 
 Widerstände und Dioden
@@ -133,12 +133,12 @@ Widerstände und Dioden
 Die Widerstände und Dioden werden alle in einer Abbiegevorrichtung (oder entsprechend mit der Hand oder einer kleinen Zange) gebogen.
 Die Breite ist immer 4 Einheiten – sprich ca. 10 mm.
 
-.. image:: ../../images/build_04_bending.jpg
+.. image:: images/build_04_bending.jpg
    :width: 70%
 
 Anschließend wird die Platine mit den Widerständen und Dioden bestückt. Bei den Dioden unbedingt auf die Polarität achten! Die Kathode (Minus-Pol) ist mit einem Strich auf Platine und Bauteil markiert.
 
-.. image:: ../../images/build_05_soldering_before.jpg
+.. image:: images/build_05_soldering_before.jpg
    :width: 100%
 
 Vor dem Löten der Unterseite werden die Bauteile auf der Oberseite mit Klebeband fixiert, oder die Beinchen der Bauteile durch leichtes Auseinanderbiegen verklemmt.
@@ -146,7 +146,7 @@ Dann Bauteile anlöten, Klebeband entfernen und überschüssigen Draht abschneid
 
 .. note:: Verletzungsgefahr: Beim Abschneiden darauf achten, dass der davonfliegende Draht niemanden verletzten kann. Möglichst festhalten beim Abschneiden!
 
-.. image:: ../../images/build_06_soldering_before_withTape.jpg
+.. image:: images/build_06_soldering_before_withTape.jpg
    :width: 70%
 
 Kondensatoren und restliche Bauteile
@@ -156,7 +156,7 @@ Der Elektrolytkondensator (Elko) wird vorher mit einer Flachzange angewinkelt. B
 Auf dem Elko ist der „–“-Pol markiert, auf der Platine der „+“-Pol. Die Beschriftungen müssen sich gegenüber liegen.
 Der Zählrohrhalter muss so herum eingesetzt werden, dass das Zählrohr nach außen steht kann – am besten testen! Dann die Bauteile mit Klebeband fixieren, anlöten und den überschüssigen Draht abschneiden. 
 
-.. |build07| image:: ../../images/build_07_soldering_filmCapacitors.jpg
+.. |build07| image:: images/build_07_soldering_filmCapacitors.jpg
    :width: 100%
    :alt: Kondensatoren, Zählrohrhalter, Spule, Piezo-Lautsprecher sind bestückt
 
@@ -171,13 +171,13 @@ Die Buchsenleiste muss vorher evtl. noch gekürzt werden.
 .. note:: Dabei muss der Seitenschneider genau auf dem **letzten nicht mehr benötigten Kontakt** angesetzt werden – **nicht dort wo man ihn eigentlich kürzen will** – ansonsten kann sie splittern.
    Beim Abschneiden wegfliegende Teile möglichst festhalten!
 
-.. image:: ../../images/build_08_soldering_femaleConnectorStrip.jpg
+.. image:: images/build_08_soldering_femaleConnectorStrip.jpg
    :width: 50%
 
 Wird der große Piezo-Lautsprecher verwendet, so sollte die Buchsenleiste mit einer Feile etwas abgefeilt werden (vorher ausprobieren).
 Am einfachsten geht das an der originalen, nicht bearbeiteten Seite der Buchsenleiste. Je nachdem, welches Mikrocontroller-Board verwendet wird, müssen die Buchsenleisten an den entsprechenden Stellen bestückt werden.
 
-.. image:: ../../images/build_09_soldering_femaleConnectorStrip_location.jpg
+.. image:: images/build_09_soldering_femaleConnectorStrip_location.jpg
    :width: 100%
 
 Die Winkel der Buchsenleiste sollten genau stimmen. Daher am besten so vorgehen:
@@ -192,7 +192,7 @@ Die Winkel der Buchsenleiste sollten genau stimmen. Daher am besten so vorgehen:
 
 .. note:: Das OLED-Grafikdisplay ist über eine dünne Flex-Leitung angeschlossen, die nicht zu heiß werden darf. Im Zweifel lötet man die Pins in der Nähe der Flex-Leitung nicht an – sie werden nicht benötigt.
 
-.. image:: ../../images/build_10_soldering_femaleConnectorStripESP32withTape.jpg
+.. image:: images/build_10_soldering_femaleConnectorStripESP32withTape.jpg
    :width: 100%
 
 Nach dem Löten kann das Mikrocontroller-Modul mit wippenden Bewegungen vorsichtig abgezogen werden.
@@ -205,7 +205,7 @@ Nach dem Löten kann das Mikrocontroller-Modul mit wippenden Bewegungen vorsicht
 * Zählrohr anklemmen: der Plus-Pol (Anode) ist markiert und muss in Richtung Platine zeigen
 * Erste Funktionskontrolle
 
-.. |build11| image:: ../../images/build_11_soldering_done.jpg
+.. |build11| image:: images/build_11_soldering_done.jpg
    :width: 100%
    :alt: Fertige Geigerzähler- und Mikrocontrollerplatine
 
@@ -217,7 +217,7 @@ Fertige Geigerzähler- und Mikrocontrollerplatine
 .. warning:: Verletzungsgefahr: Auf der Geigerzählerplatine wird eine **Spannung von 400 Volt** erzeugt. 
    Diese hält sich auch noch längere Zeit **nach dem Ausschalten des Geräts**. Bei Berührung kann es zu kleineren Stromschlägen kommen, die normalerweise harmlos sind. Dennoch sollten sie vermieden werden! 
 
-   .. image:: ../../images/build_12_highVoltageWarningSign.png
+   .. image:: images/build_12_highVoltageWarningSign.png
       :width: 70%
 
    **Man sollte vor dem Arbeiten an der Schaltung den Kondensator entladen.** 
@@ -236,7 +236,7 @@ Funktionen des Gehäuses
 Rohre
 -----
 
-.. image:: ../../images/build_13_pipe.jpg
+.. image:: images/build_13_pipe.jpg
 
 * Rohr für das Elektronikgehäuse: Zunächst wird das Rohr mit einer Säge auf entsprechende Länge abgesägt.
   Die Muffe (Aufweitung) zeigt nach unten.
@@ -252,14 +252,14 @@ Rohre
 Dach und Zwischenboden
 ----------------------
 
-.. image:: ../../images/build_14_cap.jpg
+.. image:: images/build_14_cap.jpg
    :align: right
    :width: 20%
    :alt: Deckel
 
 Für das Dach kann man einen Rohrabschlussstopfen oben vorsichtig über das Rohr schieben, s. Bild rechts.
 
-.. image:: ../../images/build_14_bottle_bottom.jpg
+.. image:: images/build_14_bottle_bottom.jpg
    :width: 30%
    :align: left
    :alt: Zwischenboden
@@ -274,7 +274,7 @@ In den Zwischenboden wird in der Mitte ein Loch zur Kabeldurchführung mit 10 mm
 .. Auskommentiert, da die Variante mit Deckel viel einfacher ist
   Bei Verwendung einer Kruke als Dach wird der „Kragen“ unter dem Gewinde mit abgesägt, so dass die Dachkruke oben genau in das Rohr hineinpasst:
 
-  .. image:: ../../images/build_14_bottle_top.jpg
+  .. image:: images/build_14_bottle_top.jpg
      :width: 30%
      :align: left
      :alt: Deckel zum Einkleben
@@ -290,7 +290,7 @@ Eine Zwischenbodenauflage dient zum Schutz vor Insekten, da sie das Loch der Kab
 
 Es wird die Mitte markiert und dort ein Loch mit dem Durchmesser des Stromkabels (ca. 5 mm) gebohrt. Anschließend werden die Ecken abgeschnitten. Zusätzlich wird ein Verbindungsschlitz von außen zum Loch geschnitten.
 
-.. |build15| image:: ../../images/build_15_intermediateFloorSeal.jpg
+.. |build15| image:: images/build_15_intermediateFloorSeal.jpg
    :alt: Aufbau der Zwischenbodenauflage (in zwei Arbeitsschritten)
 
 |build15|
@@ -306,7 +306,7 @@ Installationsplatte
   Das Zählrohr zeigt nach unten. Die Löcher werden mit dem Reißnagel vorgestochen und dann auf 3 mm aufgebohrt (s. Bild „Bohrplan Installationsplatte“)
 * Die Platine wird lediglich mit einem Kabelbinder auf der Platte montiert, der durch beide Löcher gezogen wird. Er verläuft unterhalb des USB-Steckers. 
 
-.. |build16| image:: ../../images/build_16_installationPlate.jpg
+.. |build16| image:: images/build_16_installationPlate.jpg
 
 |build16|
 Bohrplan Installationsplatte
@@ -314,7 +314,7 @@ Bohrplan Installationsplatte
 Einbau
 ------
 
-.. |build17| image:: ../../images/build_17_finalAssembly.jpg
+.. |build17| image:: images/build_17_finalAssembly.jpg
 
 |build17|
 Einbau des Geräts (die roten Pfeile markieren Kabelbinder)
