@@ -17,6 +17,7 @@ MultiGeiger Documentation
    ecocurious
    changes
    usage
+   assemblyguide
    deployment
    installation
    setup_lora
