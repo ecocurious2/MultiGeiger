@@ -1,3 +1,6 @@
+.. include:: global.rst.inc
+.. _setup_lora:
+
 LoRa interface
 --------------
 
@@ -72,7 +75,10 @@ Modifying the LoRa parameters
 
 -  After the registration was completed, the LoRa parameters can be transferred to the program.
 -  They can be set up at the configuration site of the Geiger counter (see above).
--  Go through the configuration site until the settings of the LoRa  parameters are displayed. Type in the 3 parameters from the TTN console (**APPEUI, DEVEUI, APPKEY**). They can be find in your TTN account for each device (see above). The HEX values must be entered **without** spaces as they appear in the TTN or other devices.
+-  Go through the configuration site until the settings of the LoRa  parameters are displayed. 
+   Type in the 3 parameters from the TTN console (**APPEUI, DEVEUI, APPKEY**). 
+   They can be find in your TTN account for each device (see above). 
+   The HEX values must be entered **without** spaces as they appear in the TTN or other devices.
 
 Example:
 | The TTN console reads
@@ -116,22 +122,22 @@ thenclick on the application of the GeigerCounter
 integration**.
 
 Now fill in the displayed fields:
--  **Process ID**
+ - **Process ID**
    Enter any name for this integration here **Access Key:**
    Click here once and select the *default key*
--  **URL:**
+ - **URL:**
    Enter the URL for the ttn2luft program: https://ttn2luft.citysensor.de
--  **Method:**
+ - **Method:**
    If it reads already *POST*, don’t touch it
--  **Authorization:** 
+ - **Authorization:** 
    remains empty
--  **Custom Header Name:**
+ - **Custom Header Name:**
    here comes the text **X-SSID** pure
--  **Custom Header value:**
+ - **Custom Header value:**
    Enter the SSID of the sensor (the number you got when you registered at sensor.community, *NOT* the chip ID).
--  Click **Add integration** in the lower right corner to confirm the   changes.
+ - Click **Add integration** in the lower right corner to confirm the   changes.
 
-See this example how the form should look like :
+See this example how the form should look like:
 |“HTTP Integration filled”|
 
 TTN payload (example)
@@ -162,5 +168,5 @@ Select the tab **Payload Formats** in the menu bar and paste the following code 
      return decoded;
    }
 
-.. |“HTTP Integration filled”| image:: images/http_integration_filled.png
+.. |“HTTP Integration filled”| image:: ../../images/http_integration_filled.png
 
