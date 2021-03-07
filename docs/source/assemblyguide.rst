@@ -131,7 +131,7 @@ Widerstände und Dioden
 ----------------------
 
 Die Widerstände und Dioden werden alle in einer Abbiegevorrichtung (oder entsprechend mit der Hand oder einer kleinen Zange) gebogen.
-Die Breite ist immer 4 Einheiten – sprich ca. 10 mm.
+Die Breite ist immer vier Einheiten – sprich ca. 10 mm.
 
 .. image:: images/build_04_bending.jpg
    :width: 70%
@@ -182,13 +182,13 @@ Am einfachsten geht das an der originalen, nicht bearbeiteten Seite der Buchsenl
 
 Die Winkel der Buchsenleiste sollten genau stimmen. Daher am besten so vorgehen:
 
-* Die erste Buchsenleiste einstecken
-* Von unten her eine Lötstelle in der Mitte löten, die Lötstelle nochmals heiß machen und gleichzeitig die Buchsenleiste justieren (rechter Winkel, alle Pins richtig)
-* Die zweite Buchsenleiste einstecken
-* In beide Buchsenleisten die Stiftleiste aus dem Mikrocontroller-Modul-Set einstecken, so dass deren längerer Teil der Stiftleiste in der Buchsenleiste steckt
-* Das Mikrocontroller-Modul aufstecken, so dass das Display sichtbar ist und die Mikro-USB-Buchse über dem Piezo-Lautsprecher liegt
-* Alles mit einem schmalen Klebeband fixieren (siehe Bild unten), so dass alle Lötstellen zugänglich sind
-* nun können alle Kontakte gelötet werden 
+* Die erste Buchsenleiste einstecken.
+* Von unten her eine Lötstelle in der Mitte löten, die Lötstelle nochmals heiß machen und gleichzeitig die Buchsenleiste justieren (rechter Winkel, alle Pins richtig).
+* Die zweite Buchsenleiste einstecken.
+* In beide Buchsenleisten die Stiftleiste aus dem Mikrocontroller-Modul-Set einstecken, so dass deren längerer Teil der Stiftleiste in der Buchsenleiste steckt.
+* Das Mikrocontroller-Modul aufstecken, so dass das Display sichtbar ist und die Mikro-USB-Buchse über dem Piezo-Lautsprecher liegt.
+* Alles mit einem schmalen Klebeband fixieren (siehe Bild unten), so dass alle Lötstellen zugänglich sind.
+* Nun können alle Kontakte gelötet werden.
 
 .. note:: Das OLED-Grafikdisplay ist über eine dünne Flex-Leitung angeschlossen, die nicht zu heiß werden darf. Im Zweifel lötet man die Pins in der Nähe der Flex-Leitung nicht an – sie werden nicht benötigt.
 
@@ -199,11 +199,11 @@ Nach dem Löten kann das Mikrocontroller-Modul mit wippenden Bewegungen vorsicht
 
 * Beim Mikrocontroller-Modul sind Pin-Beschriftungsaufkleber mit dabei. Diese können jetzt seitlich aufgeklebt werden. Welcher Pin wo ist, steht auf der Unterseite des Mikrocontroller-Moduls.
 * Das Kabel für den Anschluss der Zählrohr-Kathode (Minus-Anschluss) an Klammer und Platine anlöten.
-* Kabel mit jeweils einem Tropfen Heißkleber sichern (Zugentlastung)
-* Sichtkontrolle (hast du Lötstellen vergessen, sind Lötbrücken entstanden, …)
-* Mikrocontroller-Modul wieder aufstecken
-* Zählrohr anklemmen: der Plus-Pol (Anode) ist markiert und muss in Richtung Platine zeigen
-* Erste Funktionskontrolle
+* Kabel mit jeweils einem Tropfen Heißkleber sichern (Zugentlastung).
+* Sichtkontrolle (hast du Lötstellen vergessen, sind Lötbrücken entstanden, ...).
+* Mikrocontroller-Modul wieder aufstecken.
+* Zählrohr anklemmen: der Plus-Pol (Anode) ist markiert und muss in Richtung Platine zeigen.
+* Eine erste Funktionskontrolle ist nun möglich, s. `Inbetriebnahme`_.
 
 .. |build11| image:: images/build_11_soldering_done.jpg
    :width: 100%
@@ -221,7 +221,7 @@ Fertige Geigerzähler- und Mikrocontrollerplatine
       :width: 70%
 
    **Man sollte vor dem Arbeiten an der Schaltung den Kondensator entladen.** 
-   Am einfachsten macht man dies mit einer zweiten, ca. 30cm langer Leitung, mit der man Anode und Kathode des Zählrohrs für etwa eine Sekunde kurzschließt. 
+   Am einfachsten macht man dies mit einer zweiten, ca. 30 cm langen Leitung, mit der man Anode und Kathode des Zählrohrs für etwa eine Sekunde kurzschließt. 
    Dies schützt nicht nur vor unangenehmen Stromschlägen, sondern schützt auch die empfindliche elektronische Schaltung.
 
 Gehäuse
@@ -243,7 +243,7 @@ Rohre
 * Rohr für den Erdspieß: Der noch umgesägte Teil des Restes ist das obere Ende des Erdspießes.
   Unten wird der Erdspieß auf entsprechende Länge abgesägt im 45-Grad-Winkel. 
   Mit diesem schrägen Anschnitt lässt sich der Erdspieß später mit leichten Drehbewegungen gut in die Erde bohren. 
-  Alternativ kann man diesen Teil des Rohrs kurzhalten (ca. 15cm) und in einem verzinkten Sonnenschirmhalter mit Erdspieß (Ø40mm) festklemmen.
+  Alternativ kann man diesen Teil des Rohrs kurzhalten (ca. 15 cm) und in einem verzinkten Sonnenschirmhalter mit Erdspieß (Ø40mm) festklemmen.
 * Lüftungs-/Kabelloch bohren: Mit einem Reißnagel o. ä. wird das Loch seitlich im Erdspieß vorgestochen. 
   Anschließend wird es aufgebohrt. Zuletzt wird es mit einem großen Bohrer / Schälbohrer auf etwa 17 mm Durchmesser aufgebohrt. 
 
@@ -303,7 +303,7 @@ Installationsplatte
   Dazu werden die Seitenteile vorsichtig mit einem Messer abgeschnitten.
   Danach wird der dadurch entstandene, biegsame Kunststoffstreifen auf die richtige Länge gebracht. Hierzu kann eine starke Schere verwendet werden.
 * Löcher durch Installationsplatte bohren: Elektronik und Zählrohr werden so mit Kabelbindern auf Installationsplatte fixiert, dass das Zählrohr sich auf 1 m Höhe befindet, wenn der Erdspieß 25 cm in der Erde steckt. 
-  Das Zählrohr zeigt nach unten. Die Löcher werden mit dem Reißnagel vorgestochen und dann auf 3 mm aufgebohrt (s. Bild „Bohrplan Installationsplatte“)
+  Das Zählrohr zeigt nach unten. Die Löcher werden mit dem Reißnagel vorgestochen und dann auf 3 mm aufgebohrt (s. Bild „Bohrplan Installationsplatte“).
 * Die Platine wird lediglich mit einem Kabelbinder auf der Platte montiert, der durch beide Löcher gezogen wird. Er verläuft unterhalb des USB-Steckers. 
 
 .. |build16| image:: images/build_16_installationPlate.jpg
@@ -319,20 +319,20 @@ Einbau
 |build17|
 Einbau des Geräts (die roten Pfeile markieren Kabelbinder)
 
-* Platine und Zählrohr werden mit Kabelbinder auf die Installationsplatte montiert
-* In die Micro-USB-Buchse wird der passende Adapter gesteckt
-* Das „10 m Verlängerungskabel“ wird richtig herum zunächst durch den Erdspieß und dann durch den Zwischenboden gefädelt. Anschließend wird er mit dem Adapter verbunden
-* Danach wird die Zwischenbodenauflage oberhalb des Zwischenbodens vorsichtig auf das Kabel geschoben
-* Oberhalb der Zwischenbodenauflage wird ein Kabelbinder auf das Kabel gezurrt, so dass eine Zugentlastung entsteht
-* Erster Test des Gehäuses: Wir schieben erst vorsichtig die Installationsplatte in das Elektronikgehäuse. Anschließend folgen Zwischenboden und der Erdspieß
-* Wenn alles passt wird noch die Zwischenbodenauflage mit Silikon-Kleber auf den Zwischenboden geklebt und mit Kreppband (bis zum Aushärten) fixiert
-* Der Warn-Aufkleber „Vorsicht Hochspannung“ wird auf die Installationsplatte geklebt
+* Platine und Zählrohr werden mit Kabelbinder auf die Installationsplatte montiert.
+* In die Micro-USB-Buchse wird der passende Adapter gesteckt.
+* Das „10 m Verlängerungskabel“ wird richtig herum zunächst durch den Erdspieß und dann durch den Zwischenboden gefädelt. Anschließend wird er mit dem Adapter verbunden.
+* Danach wird die Zwischenbodenauflage oberhalb des Zwischenbodens vorsichtig auf das Kabel geschoben.
+* Oberhalb der Zwischenbodenauflage wird ein Kabelbinder auf das Kabel gezurrt, so dass eine Zugentlastung entsteht.
+* Erster Test des Gehäuses: Wir schieben erst vorsichtig die Installationsplatte in das Elektronikgehäuse. Anschließend folgen Zwischenboden und der Erdspieß.
+* Wenn alles passt wird noch die Zwischenbodenauflage mit Silikon-Kleber auf den Zwischenboden geklebt und mit Kreppband (bis zum Aushärten) fixiert.
+* Der Warn-Aufkleber „Vorsicht Hochspannung“ wird auf die Installationsplatte geklebt.
 
 Inbetriebnahme
 ##############
 WLAN-Variante: Das Gerät baut einen eigenen WLAN-Accesspoint (AP) auf. Die SSID des AP lautet ESP32-xxxxxxxx, wobei die xxx die Chip-ID des WLAN-Chips sind (Beispiel: ESP32-51564452). 
-Bitte diese Nummer notieren, sie wird später für die Anmeldung benötigt, z. B. bei https://devices.sensor.community/. Der Access-Point bleibt für 30sec aktiv. Danach versucht das Gerät, sich mit dem (früher) eingestellten WLAN zu verbinden. 
-Dieser Verbindungsversuch dauert ebenfalls 30 s. Kommt keine Verbindung zustande, wird wieder der eigene AP für erzeugt. Das standardmäßig vergebene WLAN-Kennwort ist „ESP32Geiger“ und sollte zeitnah geändert werden.
+Bitte diese Nummer notieren, sie wird später für die Anmeldung benötigt, z. B. bei https://devices.sensor.community/. Der Access-Point bleibt für 30 s aktiv. Danach versucht das Gerät, sich mit dem (früher) eingestellten WLAN zu verbinden. 
+Dieser Verbindungsversuch dauert ebenfalls 30 s. Kommt keine Verbindung zustande, wird wieder der eigene AP für erzeugt. Das standardmäßig vergebene WLAN-Kennwort ist „*ESP32Geiger*“ und sollte zeitnah geändert werden.
 
 Weitere Informationen: :ref:`deployment` und :ref:`usage`.
 

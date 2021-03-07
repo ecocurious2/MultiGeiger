@@ -19,7 +19,7 @@ different services.
    headers on the board.
 
 To select the Heltec boards in the Arduino IDE, the following steps must
-be proceed: 
+be taken: 
 
 -  Add the file: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json in Preferences->Additional Boards Manager URLs. 
 -  Then, the ESP32 boards (name “esp32 by Espressif Systems”) can be installed under Tools->Board->Boards Manager. Choose the correct Heltec board under Tools->Board.  
@@ -115,7 +115,7 @@ If **Update error: …** appears, the update did not work. The previous firmware
 The settings page can be called up from your own WiFi at any time. To do this, just enter in the address bar of the browser: http://esp32-xxxxxxx (xxxxx is the chip ID – see above). 
 If it does not work with this hostname, use the IP address of the Geiger counter instead. The Ip address can be found in the devices list in your router.
 If successful, the login page appears. 
-Enter **admin** as username and the chosen password (see above). Now you will see the settings page as discribed.
+Enter **admin** as username and the chosen password (see above). Now you will see the settings page as described.
 
 Server for measured data
 ########################
