@@ -1,3 +1,7 @@
+Overview
+========
+
+
 What is MultiGeiger?
 --------------------
 
@@ -41,23 +45,3 @@ Main features
 
  * GPL v3 licensed
  * open development and issue tracking on GitHub
-
-
-Documentation
-~~~~~~~~~~~~~
-
-You're reading our new, versioned and translated documentation.
-
-See the box at the lower right of https://multigeiger.readthedocs.io to
-switch languages and versions! You can also download PDF, Epub or HTML there.
-
-There is also more (legacy, german) documentation there:
-
-- https://github.com/ecocurious2/MultiGeiger/tree/master/README-de.md
-
-  Software, configuration and setup.
-
-- https://github.com/ecocurious2/MultiGeiger/tree/master/docs/Bauanleitung
-
-  Building and outside deployment of the MultiGeiger.
-
