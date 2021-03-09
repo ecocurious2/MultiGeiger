@@ -209,7 +209,7 @@ After the registration was completed, the LoRa parameters can be transferred to 
 They can be set up at the configuration site of the Geiger counter (see above).
 
 Go through the configuration site until the settings of the LoRa parameters are displayed. Type in the 3 parameters from the TTN console (**APPEUI, DEVEUI, APPKEY**). 
-They can be found in your TTN account for each device (see above). The HEX values must be entered **without** spaces as they appear in the TTN or other devices.
+They can be found in your TTN account for each device (see above). The HEX values must be entered **without** spaces as they appear in the TTN.
 Example:\
 The TTN console reads
 ```
