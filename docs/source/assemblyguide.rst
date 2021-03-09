@@ -24,7 +24,7 @@ Herzliche Einladung zum Mitmachen!
 Bauteile
 ########
 
-Bauteile (s. `Stückliste <https://github.com/ecocurious2/MultiGeiger/blob/master/docs/hardware/MultiGeiger_Partlist.ods?raw=true>`_) zunächst sortieren und auf Vollständigkeit prüfen:
+Elektronikbauteile aus (s. `Stückliste <https://github.com/ecocurious2/MultiGeiger/blob/master/docs/hardware/MultiGeiger_Partlist.ods?raw=true>`_) zunächst sortieren und auf Vollständigkeit prüfen:
 
 .. |parts01| image:: images/build_02_parts_01.jpg
    :width: 100px
@@ -114,6 +114,8 @@ Bauteile (s. `Stückliste <https://github.com/ecocurious2/MultiGeiger/blob/maste
 +-------+---+------------------------------------+------------------------------------------+
 |       | 2 | |parts17|                          | Je 30 cm isolierte Kupferlitze           |
 +-------+---+------------------------------------+------------------------------------------+
+|       | 1 |                                    | Micro-USB Stromversorgung                |
++-------+---+------------------------------------+------------------------------------------+
 
 Lötarbeiten
 ###########
@@ -121,11 +123,13 @@ Lötarbeiten
 Feldeffekt-Transistor T1
 ------------------------
 
-Als erstes Bauteil wird das einzige Bauteil im SMD-Bauform montiert. Mit Klebeband (Kreppband hat sich bewährt) wird er so auf die Platine geklebt, so dass die drei Pins sichtbar sind. 
+Als erstes Bauteil wird das einzige Bauteil im SMD-Bauform montiert.
+Mit Klebeband (Kreppband hat sich bewährt) wird er so auf die Platine geklebt, so dass die drei Pins sichtbar sind. 
 Dann werden die vorderen Anschlüsse verlötet, das Klebeband vorsichtig entfernt und der hintere Anschluss verlötet. 
 
 .. image:: images/build_03_solderingTransistor.jpg
    :width: 50%
+   :align: center
 
 Widerstände und Dioden
 ----------------------
@@ -135,8 +139,10 @@ Die Breite ist immer vier Einheiten – sprich ca. 10 mm.
 
 .. image:: images/build_04_bending.jpg
    :width: 70%
+   :align: center
 
-Anschließend wird die Platine mit den Widerständen und Dioden bestückt. Bei den Dioden unbedingt auf die Polarität achten! Die Kathode (Minus-Pol) ist mit einem Strich auf Platine und Bauteil markiert.
+Anschließend wird die Platine mit den Widerständen und Dioden bestückt.
+Bei den Dioden unbedingt auf die Polarität achten! Die Kathode (Minus-Pol) ist mit einem Strich auf Platine und Bauteil markiert.
 
 .. image:: images/build_05_soldering_before.jpg
    :width: 100%
@@ -144,24 +150,26 @@ Anschließend wird die Platine mit den Widerständen und Dioden bestückt. Bei d
 Vor dem Löten der Unterseite werden die Bauteile auf der Oberseite mit Klebeband fixiert, oder die Beinchen der Bauteile durch leichtes Auseinanderbiegen verklemmt.
 Dann Bauteile anlöten, Klebeband entfernen und überschüssigen Draht abschneiden. 
 
-.. note:: Verletzungsgefahr: Beim Abschneiden darauf achten, dass der davonfliegende Draht niemanden verletzten kann. Möglichst festhalten beim Abschneiden!
+.. note:: Verletzungsgefahr: Beim Abschneiden darauf achten, dass der davonfliegende Draht niemanden verletzten kann.
+   Möglichst festhalten beim Abschneiden!
 
 .. image:: images/build_06_soldering_before_withTape.jpg
    :width: 70%
+   :align: center
 
 Kondensatoren und restliche Bauteile
 ------------------------------------
 
 Der Elektrolytkondensator (Elko) wird vorher mit einer Flachzange angewinkelt. Beim Elko unbedingt auf die Polung achten: 
 Auf dem Elko ist der „–“-Pol markiert, auf der Platine der „+“-Pol. Die Beschriftungen müssen sich gegenüber liegen.
-Der Zählrohrhalter muss so herum eingesetzt werden, dass das Zählrohr nach außen steht kann – am besten testen! Dann die Bauteile mit Klebeband fixieren, anlöten und den überschüssigen Draht abschneiden. 
+Der Zählrohrhalter muss so herum eingesetzt werden, dass das Zählrohr nach außen steht kann – am besten testen!
+Dann die Bauteile mit Klebeband fixieren, anlöten und den überschüssigen Draht abschneiden. 
 
-.. |build07| image:: images/build_07_soldering_filmCapacitors.jpg
+Kondensatoren, Zählrohrhalter, Spule, Piezo-Lautsprecher sind bestückt:
+
+.. image:: images/build_07_soldering_filmCapacitors.jpg
    :width: 100%
    :alt: Kondensatoren, Zählrohrhalter, Spule, Piezo-Lautsprecher sind bestückt
-
-|build07|
-Kondensatoren, Zählrohrhalter, Spule, Piezo-Lautsprecher sind bestückt
 
 Buchsenleisten und Mikrocontroller-Modul
 ----------------------------------------
@@ -173,9 +181,11 @@ Die Buchsenleiste muss vorher evtl. noch gekürzt werden.
 
 .. image:: images/build_08_soldering_femaleConnectorStrip.jpg
    :width: 50%
+   :align: center
 
 Wird der große Piezo-Lautsprecher verwendet, so sollte die Buchsenleiste mit einer Feile etwas abgefeilt werden (vorher ausprobieren).
-Am einfachsten geht das an der originalen, nicht bearbeiteten Seite der Buchsenleiste. Je nachdem, welches Mikrocontroller-Board verwendet wird, müssen die Buchsenleisten an den entsprechenden Stellen bestückt werden.
+Am einfachsten geht das an der originalen, nicht bearbeiteten Seite der Buchsenleiste.
+Je nachdem, welches Mikrocontroller-Board verwendet wird, müssen die Buchsenleisten an den entsprechenden Stellen bestückt werden.
 
 .. image:: images/build_09_soldering_femaleConnectorStrip_location.jpg
    :width: 100%
@@ -190,14 +200,17 @@ Die Winkel der Buchsenleiste sollten genau stimmen. Daher am besten so vorgehen:
 * Alles mit einem schmalen Klebeband fixieren (siehe Bild unten), so dass alle Lötstellen zugänglich sind.
 * Nun können alle Kontakte gelötet werden.
 
-.. note:: Das OLED-Grafikdisplay ist über eine dünne Flex-Leitung angeschlossen, die nicht zu heiß werden darf. Im Zweifel lötet man die Pins in der Nähe der Flex-Leitung nicht an – sie werden nicht benötigt.
+.. note:: Das OLED-Grafikdisplay ist über eine dünne Flex-Leitung angeschlossen, die nicht zu heiß werden darf.
+   Im Zweifel lötet man die Pins in der Nähe der Flex-Leitung nicht an – sie werden nicht benötigt.
 
 .. image:: images/build_10_soldering_femaleConnectorStripESP32withTape.jpg
    :width: 100%
 
 Nach dem Löten kann das Mikrocontroller-Modul mit wippenden Bewegungen vorsichtig abgezogen werden.
 
-* Beim Mikrocontroller-Modul sind Pin-Beschriftungsaufkleber mit dabei. Diese können jetzt seitlich aufgeklebt werden. Welcher Pin wo ist, steht auf der Unterseite des Mikrocontroller-Moduls.
+* Beim Mikrocontroller-Modul sind Pin-Beschriftungsaufkleber mit dabei.
+  Diese können jetzt seitlich aufgeklebt werden.
+  Welcher Pin wo ist, steht auf der Unterseite des Mikrocontroller-Moduls.
 * Das Kabel für den Anschluss der Zählrohr-Kathode (Minus-Anschluss) an Klammer und Platine anlöten.
 * Kabel mit jeweils einem Tropfen Heißkleber sichern (Zugentlastung).
 * Sichtkontrolle (hast du Lötstellen vergessen, sind Lötbrücken entstanden, ...).
@@ -205,17 +218,19 @@ Nach dem Löten kann das Mikrocontroller-Modul mit wippenden Bewegungen vorsicht
 * Zählrohr anklemmen: der Plus-Pol (Anode) ist markiert und muss in Richtung Platine zeigen.
 * Eine erste Funktionskontrolle ist nun möglich, s. `Inbetriebnahme`_.
 
-.. |build11| image:: images/build_11_soldering_done.jpg
+Fertige Geigerzähler- und Mikrocontrollerplatine:
+
+.. image:: images/build_11_soldering_done.jpg
    :width: 100%
    :alt: Fertige Geigerzähler- und Mikrocontrollerplatine
 
-|build11|
-Fertige Geigerzähler- und Mikrocontrollerplatine
-
-.. note:: Das dünne Glas des OLED-Grafikdisplays ist empfindlich. Bitte keine Kraft darauf ausüben, sondern nur auf der Mikrocontrollerplatine!
+.. note:: Das dünne Glas des OLED-Grafikdisplays ist empfindlich.
+          Bitte keine Kraft auf das Display ausüben, sondern nur auf die Mikrocontrollerplatine!
 
 .. warning:: Verletzungsgefahr: Auf der Geigerzählerplatine wird eine **Spannung von 400 Volt** erzeugt. 
-   Diese hält sich auch noch längere Zeit **nach dem Ausschalten des Geräts**. Bei Berührung kann es zu kleineren Stromschlägen kommen, die normalerweise harmlos sind. Dennoch sollten sie vermieden werden! 
+   Diese hält sich auch noch längere Zeit **nach dem Ausschalten des Geräts**.
+   Bei Berührung kann es zu kleineren Stromschlägen kommen, die normalerweise harmlos sind.
+   Dennoch sollten sie vermieden werden! 
 
    .. image:: images/build_12_highVoltageWarningSign.png
       :width: 70%
@@ -237,6 +252,8 @@ Rohre
 -----
 
 .. image:: images/build_13_pipe.jpg
+   :width: 600px
+   :align: center
 
 * Rohr für das Elektronikgehäuse: Zunächst wird das Rohr mit einer Säge auf entsprechende Länge abgesägt.
   Die Muffe (Aufweitung) zeigt nach unten.
@@ -247,7 +264,7 @@ Rohre
 * Lüftungs-/Kabelloch bohren: Mit einem Reißnagel o. ä. wird das Loch seitlich im Erdspieß vorgestochen. 
   Anschließend wird es aufgebohrt. Zuletzt wird es mit einem großen Bohrer / Schälbohrer auf etwa 17 mm Durchmesser aufgebohrt. 
 
-.. note:: Verletzungsgefahr: Mit der Klinge/dem Bohrer immer nach außen, d.h. vom Körper weg, schneiden oder bohren!
+.. note:: Verletzungsgefahr: Mit der Klinge/dem Bohrer immer nach außen, d. h. vom Körper weg, schneiden oder bohren!
 
 Dach und Zwischenboden
 ----------------------
@@ -267,9 +284,11 @@ Für das Dach kann man einen Rohrabschlussstopfen oben vorsichtig über das Rohr
 Als Zwischenboden verwenden wir eine Kruke, also eine Plastikdose, die in Apotheken zum Abfüllen von Salben verwendet wird.
 Der rote Deckel kann als Material für eine kabeldurchführungsverkleinernde Zwischenbodenauflage dienen.
 
-Für den Zwischenboden (s. Bild links) wird lediglich das Gewinde vorsichtig mit der Säge abgesägt. Der „Kragen“ muss bestehen bleiben, da er als Anschlag dient.
+Für den Zwischenboden wird lediglich das Gewinde vorsichtig mit der Säge abgesägt, s. Bild links.
+Der „Kragen“ muss bestehen bleiben, da er als Anschlag dient.
 
-In den Zwischenboden wird in der Mitte ein Loch zur Kabeldurchführung mit 10 mm gebohrt. Der Stecker des Kabels muss durch das Loch passen.
+In den Zwischenboden wird in der Mitte ein Loch zur Kabeldurchführung mit 10 mm gebohrt.
+Der Stecker des Kabels muss durch das Loch passen.
 
 .. Auskommentiert, da die Variante mit Deckel viel einfacher ist
   Bei Verwendung einer Kruke als Dach wird der „Kragen“ unter dem Gewinde mit abgesägt, so dass die Dachkruke oben genau in das Rohr hineinpasst:
@@ -279,60 +298,77 @@ In den Zwischenboden wird in der Mitte ein Loch zur Kabeldurchführung mit 10 mm
      :align: left
      :alt: Deckel zum Einkleben
 
-  Das obere Viertel der Dachkruke wird seitlich mit Silikonklebstoff benetzt und in das obere Teil des Elektronikgehäuses geschoben. Die Fuge wird weiterhin mit Silikonklebstoff abgedichtet. 
+  Das obere Viertel der Dachkruke wird seitlich mit Silikonklebstoff benetzt und in das obere Teil des Elektronikgehäuses geschoben. 
+  Die Fuge wird weiterhin mit Silikonklebstoff abgedichtet. 
 
-  Auch der obere Rand der Dachkruke wird mit Klebstoff benetzt (s. Skizze). Um ein Hereinrutschen zu verhindern, kann man sie von unten mit einem langen Gegenstand fixieren. 
+  Auch der obere Rand der Dachkruke wird mit Klebstoff benetzt (s. Skizze).
+  Um ein Hereinrutschen zu verhindern, kann man sie von unten mit einem langen Gegenstand fixieren. 
   Die Silikonfuge kann man glätten, indem man einen Finger mit Spülmittel benetzt und damit das „Dach“ glättet. 
 
 .. Ab hier nicht mehr auskommentiert die Anleitung zur Auflage:
 
-Eine Zwischenbodenauflage dient zum Schutz vor Insekten, da sie das Loch der Kabeldurchführung verkleinert. Man kann dafür z. B. den roten Deckel der Kruke oder ein ähnliches Stück Kunststoff verwenden.
+Eine Zwischenbodenauflage dient zum Schutz vor Insekten, da sie das Loch der Kabeldurchführung verkleinert.
+Man kann dafür z. B. den roten Deckel der Kruke oder ein ähnliches Stück Kunststoff verwenden.
 
-Es wird die Mitte markiert und dort ein Loch mit dem Durchmesser des Stromkabels (ca. 5 mm) gebohrt. Anschließend werden die Ecken abgeschnitten. Zusätzlich wird ein Verbindungsschlitz von außen zum Loch geschnitten.
+Es wird die Mitte markiert und dort ein Loch mit dem Durchmesser des Stromkabels (ca. 5 mm) gebohrt.
+Anschließend werden die Ecken abgeschnitten.
+Zusätzlich wird ein Verbindungsschlitz von außen zum Loch geschnitten.
 
-.. |build15| image:: images/build_15_intermediateFloorSeal.jpg
+Aufbau der Zwischenbodenauflage (in zwei Arbeitsschritten):
+
+.. image:: images/build_15_intermediateFloorSeal.jpg
    :alt: Aufbau der Zwischenbodenauflage (in zwei Arbeitsschritten)
-
-|build15|
-Aufbau der Zwischenbodenauflage (in zwei Arbeitsschritten)
+   :width: 70%
+   :align: center
 
 Installationsplatte
 -------------------
 
 * Die Installationsplatte kann aus dem Ober- oder Unterteil eines Kabelkanals gefertigt werden. 
   Dazu werden die Seitenteile vorsichtig mit einem Messer abgeschnitten.
-  Danach wird der dadurch entstandene, biegsame Kunststoffstreifen auf die richtige Länge gebracht. Hierzu kann eine starke Schere verwendet werden.
+  Danach wird der dadurch entstandene, biegsame Kunststoffstreifen auf die richtige Länge gebracht.
+  Hierzu kann eine starke Schere verwendet werden.
 * Löcher durch Installationsplatte bohren: Elektronik und Zählrohr werden so mit Kabelbindern auf Installationsplatte fixiert, dass das Zählrohr sich auf 1 m Höhe befindet, wenn der Erdspieß 25 cm in der Erde steckt. 
-  Das Zählrohr zeigt nach unten. Die Löcher werden mit dem Reißnagel vorgestochen und dann auf 3 mm aufgebohrt (s. Bild „Bohrplan Installationsplatte“).
-* Die Platine wird lediglich mit einem Kabelbinder auf der Platte montiert, der durch beide Löcher gezogen wird. Er verläuft unterhalb des USB-Steckers. 
+  Das Zählrohr zeigt nach unten.
+  Die Löcher werden mit dem Reißnagel vorgestochen und dann auf 3 mm aufgebohrt, s. Bild „Bohrplan Installationsplatte“.
+* Die Platine wird lediglich mit einem Kabelbinder auf der Platte montiert, der durch beide Löcher gezogen wird.
+  Er verläuft unterhalb des USB-Steckers. 
 
-.. |build16| image:: images/build_16_installationPlate.jpg
+Bohrplan Installationsplatte:
 
-|build16|
-Bohrplan Installationsplatte
+.. image:: images/build_16_installationPlate.jpg
+   :width: 500px
+   :align: center
+   :alt: Bohrplan Installationsplatte
 
 Einbau
 ------
 
-.. |build17| image:: images/build_17_finalAssembly.jpg
+Einbau des Geräts (die roten Pfeile markieren Kabelbinder):
 
-|build17|
-Einbau des Geräts (die roten Pfeile markieren Kabelbinder)
+.. image:: images/build_17_finalAssembly.jpg
+   :width: 600px
+   :align: center
 
 * Platine und Zählrohr werden mit Kabelbinder auf die Installationsplatte montiert.
 * In die Micro-USB-Buchse wird der passende Adapter gesteckt.
-* Das „10 m Verlängerungskabel“ wird richtig herum zunächst durch den Erdspieß und dann durch den Zwischenboden gefädelt. Anschließend wird er mit dem Adapter verbunden.
+* Das „10 m Verlängerungskabel“ wird richtig herum zunächst durch den Erdspieß und dann durch den Zwischenboden gefädelt. 
+  Anschließend wird er mit dem Adapter verbunden.
 * Danach wird die Zwischenbodenauflage oberhalb des Zwischenbodens vorsichtig auf das Kabel geschoben.
 * Oberhalb der Zwischenbodenauflage wird ein Kabelbinder auf das Kabel gezurrt, so dass eine Zugentlastung entsteht.
-* Erster Test des Gehäuses: Wir schieben erst vorsichtig die Installationsplatte in das Elektronikgehäuse. Anschließend folgen Zwischenboden und der Erdspieß.
+* Erster Test des Gehäuses: Wir schieben erst vorsichtig die Installationsplatte in das Elektronikgehäuse.
+  Anschließend folgen Zwischenboden und der Erdspieß.
 * Wenn alles passt wird noch die Zwischenbodenauflage mit Silikon-Kleber auf den Zwischenboden geklebt und mit Kreppband (bis zum Aushärten) fixiert.
 * Der Warn-Aufkleber „Vorsicht Hochspannung“ wird auf die Installationsplatte geklebt.
 
 Inbetriebnahme
 ##############
-WLAN-Variante: Das Gerät baut einen eigenen WLAN-Accesspoint (AP) auf. Die SSID des AP lautet ESP32-xxxxxxxx, wobei die xxx die Chip-ID des WLAN-Chips sind (Beispiel: ESP32-51564452). 
-Bitte diese Nummer notieren, sie wird später für die Anmeldung benötigt, z. B. bei https://devices.sensor.community/. Der Access-Point bleibt für 30 s aktiv. Danach versucht das Gerät, sich mit dem (früher) eingestellten WLAN zu verbinden. 
-Dieser Verbindungsversuch dauert ebenfalls 30 s. Kommt keine Verbindung zustande, wird wieder der eigene AP für erzeugt. Das standardmäßig vergebene WLAN-Kennwort ist „*ESP32Geiger*“ und sollte zeitnah geändert werden.
+WLAN-Variante: Das Gerät baut einen eigenen WLAN-Accesspoint (AP) auf.
+Die SSID des AP lautet ESP32-xxxxxxxx, wobei die xxx die Chip-ID des WLAN-Chips sind (Beispiel: ESP32-51564452). 
+Bitte diese Nummer notieren, sie wird später für die Anmeldung benötigt, z. B. bei https://devices.sensor.community/.
+Der Access-Point bleibt für 30 s aktiv. Danach versucht das Gerät, sich mit dem (früher) eingestellten WLAN zu verbinden. 
+Dieser Verbindungsversuch dauert ebenfalls 30 s. Kommt keine Verbindung zustande, wird wieder der eigene AP für erzeugt.
+Das standardmäßig vergebene WLAN-Kennwort ist „*ESP32Geiger*“ und sollte zeitnah geändert werden.
 
 Weitere Informationen: :ref:`deployment` und :ref:`usage`.
 
