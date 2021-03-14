@@ -2,6 +2,10 @@
 
 Hinweis: dies ist die seitherige Doku im Markdown-Format.
 
+<!---
+Do not maintain this file, as it is old. Edit the *.rst files instead!
+-->
+
 Sie soll mit der Zeit auf https://multigeiger.readthedocs.io/ in Englisch und
 Deutsch verfügbar gemacht werden.
 

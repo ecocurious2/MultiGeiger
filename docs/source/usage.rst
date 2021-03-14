@@ -137,13 +137,13 @@ Any heart monitor app / device should be able to connect to the MultiGeiger, too
 While testing, please keep in mind that an update packet is sent only every ~10s (along with a display refresh, if enabled). If a WiFi transmission is blocking display and BLE updates, the interval may be even longer. So it might take a while until a reaction with actual data can be seen in the app.
 
 
-.. |ble1| image:: ../../images/ble_check01.jpg
+.. |ble1| image:: images/ble_check01.jpg
    :width: 250px
    :align: top
-.. |ble2| image:: ../../images/ble_check02.jpg
+.. |ble2| image:: images/ble_check02.jpg
    :width: 250px
    :align: top
-.. |ble3| image:: ../../images/ble_check03.jpg
+.. |ble3| image:: images/ble_check03.jpg
    :width: 250px
    :align: top
 

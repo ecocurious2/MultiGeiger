@@ -4,7 +4,7 @@ Changelog
 =========
 
 V1.15.0-dev (not released yet)
-------------------
+------------------------------
 
 New features:
 

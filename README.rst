@@ -22,31 +22,27 @@ Quicklinks
 ~~~~~~~~~~
 
 * Default Wifi-Password: "ESP32Geiger"
-* English Overview: 
+* Multigeiger map / Karte:
+
+  https://multigeiger.citysensor.de/
+
+* Übersichtsseite bei Ecocurious / Ecocurious project overview page (German):
+
+  https://ecocurious.de/projekte/multigeiger-2/
+
+* Online Multigeiger event room with some instruction videos (German) to discover / Online Multigeiger-Raum mit einigen Anleitungsvideos zum Entdecken:
+
+  https://play.wa.binary-kitchen.de/_/global/raw.githubusercontent.com/ecocurious2/rc3_2020/main/main.json
+
+Old Documentation
+~~~~~~~~~~~~~~~~~
+
+In case you search for something that cannot be found on https://multigeiger.readthedocs.org/ yet, you might want to have a look at the old documentation:
+
+* English Overview (old): 
 
   https://github.com/ecocurious2/MultiGeiger/blob/master/README-en.rst
 
 * Deutsche Dokumentation (alt):
 
   https://github.com/ecocurious2/MultiGeiger/blob/master/README-de.md
-
-* Deutsche Aufbauanleitung / Construction instructions (german):
-
-  https://github.com/ecocurious2/MultiGeiger/blob/master/docs/Bauanleitung/Aufbauanleitung.pdf
-
-* Aufstellung des Geigers / Set up and positioning of the Multigeiger (german):
-
-  https://github.com/ecocurious2/MultiGeiger/blob/master/docs/Bauanleitung/Aufstellanleitung_Messstation.pdf
-
-* Multigeiger map / Karte:
-
-  https://multigeiger.citysensor.de/
-
-* Übersichtsseite bei Ecocurious / Ecocurious project overview page (german):
-
-  https://ecocurious.de/projekte/multigeiger-2/
-
-* Online Multigeiger event room with some instruction videos (german) to discover / Online Multigeiger-Raum mit einigen Anleitungsvideos zum Entdecken:
-
-  https://play.wa.binary-kitchen.de/_/global/raw.githubusercontent.com/ecocurious2/rc3_2020/main/main.json
-

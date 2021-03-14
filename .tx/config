@@ -19,6 +19,24 @@ source_file = docs/build/gettext/usage.pot
 source_lang = en
 type = PO
 
+[multigeiger.docs_build_gettext_assemblyguide]
+file_filter = locales/<lang>/LC_MESSAGES/assemblyguide.po
+source_file = docs/build/gettext/assemblyguide.pot
+source_lang = de
+type = PO
+
+[multigeiger.docs_build_gettext_deployment]
+file_filter = locales/<lang>/LC_MESSAGES/deployment.po
+source_file = docs/build/gettext/deployment.pot
+source_lang = en
+type = PO
+
+[multigeiger.docs_build_gettext_setup_lora]
+file_filter = locales/<lang>/LC_MESSAGES/setup_lora.po
+source_file = docs/build/gettext/setup_lora.pot
+source_lang = en
+type = PO
+
 [multigeiger.docs_build_gettext_faq]
 file_filter = locales/<lang>/LC_MESSAGES/faq.po
 source_file = docs/build/gettext/faq.pot
