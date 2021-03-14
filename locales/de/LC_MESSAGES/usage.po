@@ -1,20 +1,20 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2020, see AUTHORS
+# Copyright (C) 2020-2021, see AUTHORS
 # This file is distributed under the same license as the MultiGeiger package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
 # Martin Weis <transifex.20.mlbox@spamgourmet.com>, 2020
-# TW <tw@waldmann-edv.de>, 2020
+# TW <tw@waldmann-edv.de>, 2021
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: MultiGeiger\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-29 12:59+0100\n"
+"POT-Creation-Date: 2021-03-14 22:24+0100\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
-"Last-Translator: TW <tw@waldmann-edv.de>, 2020\n"
+"Last-Translator: TW <tw@waldmann-edv.de>, 2021\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -211,58 +211,66 @@ msgstr "``7``: Fehler beim Laden des Hochspannungskondensators"
 
 #: ../../source/usage.rst:79 71e77fadcbca445ab5f8db39013a3a1e
 msgid "ESP32 buttons"
-msgstr ""
+msgstr "ESP32-Taster"
 
 #: ../../source/usage.rst:81 c07aed99baba4e9aa51a44c44f5c6138
 msgid "The MultiGeiger ESP32 microcontroller board has 2 buttons:"
-msgstr ""
+msgstr "Das Multigeiger-ESP32-Microcontroller-Board hat 2 Taster:"
 
 #: ../../source/usage.rst:83 3585d1ce70fc434296b200ef5978fb03
 msgid "RST: reset (restarts device)"
-msgstr ""
+msgstr "RST: Reset (startet Gerät neu)"
 
 #: ../../source/usage.rst:84 ee950c128daf41ebb934839ddaf3abb5
 msgid ""
 "PRG: program (press and hold PRG, press RST momentarily, upload firmware)"
 msgstr ""
+"PRG: Program (PRG drücken und halten, dann kurz RST drücken, Firmware "
+"hochladen)"
 
 #: ../../source/usage.rst:86 116148aeabd34381a5944f98d5a62b29
 msgid ""
 "Often, using PRG is not needed for flashing firmware, because it \"just "
 "works\" when using the right tools."
 msgstr ""
+"Oft ist es nicht notwendig, PRG zum Flashen von Firmware zu benutzen, weil "
+"es auch \"einfach so\" funktioniert, wenn man die richtigen Werkzeuge nutzt."
 
 #: ../../source/usage.rst:90 395d0d42766d44d8858834aa717dfd64
 msgid "DIP Switches"
-msgstr ""
+msgstr "DIP-Schalter"
 
 #: ../../source/usage.rst:92 de07f905c8b546cd8aac06bdc3af6212
 msgid ""
 "Optionally, the MultiGeiger can be equipped with a 4-contact DIP switch "
 "under the ESP32 microcontroller board."
 msgstr ""
+"Optional kann der Multigeiger auch mit einem 4-poligen DIP-Schalter "
+"unterhalb der EPS32-Microcontroller-Platine ausgerüstet werden."
 
 #: ../../source/usage.rst:94 3cae7c334ee64c24af51edf36d377fac
 msgid ""
 "The firmware makes use of these 4 switches as defined in the ``Switches`` "
 "data type in ``switches.h``:"
 msgstr ""
+"Die Firmware benutzt diese 4 Schalter so wie im \"Switches\"-Datentyp in "
+"\"switches.h\" definiert:"
 
 #: ../../source/usage.rst:96 3fb60c62971f4f59bdca727ee13a9422
 msgid "SW0: Speaker on"
-msgstr ""
+msgstr "SW0: Lautsprecher an"
 
 #: ../../source/usage.rst:97 28379f613ac04701a741cefd213e338b
 msgid "SW1: Display on"
-msgstr ""
+msgstr "SW1: Display an"
 
 #: ../../source/usage.rst:98 2d7e21d6f79e463ea80990d25859a5f4
 msgid "SW2: LED on"
-msgstr ""
+msgstr "SW2: LED an"
 
 #: ../../source/usage.rst:99 604ed850923946c5945ede55fac865ff
 msgid "SW3: BLE on"
-msgstr ""
+msgstr "SW3: BLE an"
 
 #: ../../source/usage.rst:103 cc29907b75eb4d10bde7d36e05400929
 msgid "BLE - Bluetooth® Low Energy"

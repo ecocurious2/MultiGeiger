@@ -1,0 +1,881 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020-2021, see AUTHORS
+# This file is distributed under the same license as the MultiGeiger package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: MultiGeiger\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-03-14 22:24+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source/assemblyguide.rst:5 7ae7c0700057403b9e5acece3a609ddf
+msgid "Assembly Guide"
+msgstr "Assembly Guide"
+
+#: ../../source/assemblyguide.rst:14 8f741677e1c24385b127998bc02c26ca
+msgid "Ergebnis"
+msgstr "Ergebnis"
+
+#: ../../source/assemblyguide.rst:15 8c59719b6c2a42ffaa37fdeea66175df
+msgid ""
+"Das Multigeigerprojekt ist eine Idee der `Ecocurious-Initiative "
+"<https://ecocurious.de/projekte/multigeiger-2/>`_. Das dazugehörige Open-"
+"Source Multigeigermessgerät zum Messen radioaktiver Gammastrahlung wird von "
+"der Community entwickelt. Die Echtzeitdaten der stationären Geräte werden "
+"per LoRaWAN oder WiFi/WLAN an einen Server gefunkt und auf einer `Karte "
+"<https://ecocurious.de/multigeiger-karte/>`_ visualisiert. So entsteht ein "
+"Radioaktivitätsmessnetz in Bürgerhand, das wir hiermit aufbauen wollen. "
+"Herzliche Einladung zum Mitmachen!"
+msgstr ""
+"Das Multigeigerprojekt ist eine Idee der `Ecocurious-Initiative "
+"<https://ecocurious.de/projekte/multigeiger-2/>`_. Das dazugehörige Open-"
+"Source Multigeigermessgerät zum Messen radioaktiver Gammastrahlung wird von "
+"der Community entwickelt. Die Echtzeitdaten der stationären Geräte werden "
+"per LoRaWAN oder WiFi/WLAN an einen Server gefunkt und auf einer `Karte "
+"<https://ecocurious.de/multigeiger-karte/>`_ visualisiert. So entsteht ein "
+"Radioaktivitätsmessnetz in Bürgerhand, das wir hiermit aufbauen wollen. "
+"Herzliche Einladung zum Mitmachen!"
+
+#: ../../source/assemblyguide.rst:25 84f34adc445f4c4ba88ede8cbbda95f8
+msgid "Bauteile"
+msgstr "Bauteile"
+
+#: ../../source/assemblyguide.rst:27 0472cf73174547c0a176e1af32b5d4ea
+msgid ""
+"Elektronikbauteile aus (s. `Stückliste "
+"<https://github.com/ecocurious2/MultiGeiger/blob/master/docs/hardware/MultiGeiger_Partlist.ods?raw=true>`_)"
+" zunächst sortieren und auf Vollständigkeit prüfen:"
+msgstr ""
+"Elektronikbauteile aus (s. `Stückliste "
+"<https://github.com/ecocurious2/MultiGeiger/blob/master/docs/hardware/MultiGeiger_Partlist.ods?raw=true>`_)"
+" zunächst sortieren und auf Vollständigkeit prüfen:"
+
+#: ../../source/assemblyguide.rst:81 f57b8a2ab82840fe887ad71af59f7485
+msgid "ID(s)"
+msgstr "ID(s)"
+
+#: ../../source/assemblyguide.rst:81 e215b502d41a44a582aac5b10306d1fc
+msgid "#"
+msgstr "#"
+
+#: ../../source/assemblyguide.rst:81 174c32f6f91848119c212ddb32c95097
+msgid "Bild"
+msgstr "Bild"
+
+#: ../../source/assemblyguide.rst:81 27a18219cb894746b42f1e2a4d312d95
+msgid "Typ"
+msgstr "Typ"
+
+#: ../../source/assemblyguide.rst:83 9b59c26d5dc84e108400acc1d8278ccf
+msgid "T1"
+msgstr "T1"
+
+#: ../../source/assemblyguide.rst:83 ../../source/assemblyguide.rst:85
+#: ../../source/assemblyguide.rst:93 ../../source/assemblyguide.rst:95
+#: ../../source/assemblyguide.rst:97 ../../source/assemblyguide.rst:99
+#: ../../source/assemblyguide.rst:101 ../../source/assemblyguide.rst:103
+#: ../../source/assemblyguide.rst:105 ../../source/assemblyguide.rst:107
+#: ../../source/assemblyguide.rst:109 ../../source/assemblyguide.rst:117
+#: e5b0c9a9de9b437cba319ddec7774942 7f8a2e9e7ca847639c3cd18b4a1eabea
+#: 99edd8571a434fd49f979d69064b7b49 ce875faa47f94e7a9651f9ffab2d3be3
+#: d94f1437906d4903b54fa5059ad9901a 3b8e98b3d4f842d8b0272e10562ea9b4
+#: 44e6dc7f147348bda1e011f02836d044 fc07e74e1dcc4e85af45bd20073d4aea
+#: cbeffc964d32403dbc8fa4a02b1725ce 6713c43aa10c498681c50c1f1f66e5d4
+#: 6235a219f81347a9b7faeb08689f1182 5db7a59aceba4812bbacd3c5da184833
+msgid "1"
+msgstr "1"
+
+#: ../../source/assemblyguide.rst:83 724be5ecb28a4e58b4bb484c7eaef23b
+msgid "|parts01|"
+msgstr "|parts01|"
+
+#: ../../source/assemblyguide.rst:83 08832c5583d54a0b9a8ea63515d8a690
+msgid "N-MOS-Transistor BSP125"
+msgstr "N-MOS-Transistor BSP125"
+
+#: ../../source/assemblyguide.rst:85 c3416027be7644779b064cb8baae7223
+msgid "R1"
+msgstr "R1"
+
+#: ../../source/assemblyguide.rst:85 f71f10c29628407db4435ce7137ab8b1
+msgid "|parts02|"
+msgstr "|parts02|"
+
+#: ../../source/assemblyguide.rst:85 240fdde68190468b909e323625900633
+msgid "10K Widerstand braun-schwarz-orange-gold"
+msgstr "10K Widerstand braun-schwarz-orange-gold"
+
+#: ../../source/assemblyguide.rst:87 31d11fd73bfc476d98257dc7d92a09f8
+msgid "R2 R5"
+msgstr "R2 R5"
+
+#: ../../source/assemblyguide.rst:87 ../../source/assemblyguide.rst:89
+#: ../../source/assemblyguide.rst:91 ../../source/assemblyguide.rst:111
+#: ../../source/assemblyguide.rst:113 ../../source/assemblyguide.rst:115
+#: 8fdde208b9594f7bb77bda9318b831d3 f21707a5f1954528949f51d3628e6844
+#: 1c6a783dcebe4bb0858e3229bfa1810a afd5692b92ae479a9a5fda06e012c1b4
+#: 06f4a37e12984d9aa7843cfd5d341e6a db09634cee234f52bec4f7b25b371b57
+msgid "2"
+msgstr "2"
+
+#: ../../source/assemblyguide.rst:87 081fa5cbc13c45639bb5279ca458f5ef
+msgid "|parts03|"
+msgstr "|parts03|"
+
+#: ../../source/assemblyguide.rst:87 d40242c17a224724bde3ce3442a32fd7
+msgid "1,0M Widerstand braun-schwarz-grün-gold"
+msgstr "1,0M Widerstand braun-schwarz-grün-gold"
+
+#: ../../source/assemblyguide.rst:89 9b0c382d9d4345929a6954c9ae58c99d
+msgid "R3 R4"
+msgstr "R3 R4"
+
+#: ../../source/assemblyguide.rst:89 3300cc8a4aa548e489e03cfa0a569704
+msgid "|parts04|"
+msgstr "|parts04|"
+
+#: ../../source/assemblyguide.rst:89 a6f9dc5beced40798965a845610429ce
+msgid "4,7M Widerstand gelb-violett-grün-gold"
+msgstr "4,7M Widerstand gelb-violett-grün-gold"
+
+#: ../../source/assemblyguide.rst:91 1e6d66ee805f4212a05e8521f832d5e4
+msgid "D1 D2"
+msgstr "D1 D2"
+
+#: ../../source/assemblyguide.rst:91 1a5b8da8934744e6b8bb3bce9ecc7a9c
+msgid "|parts05|"
+msgstr "|parts05|"
+
+#: ../../source/assemblyguide.rst:91 d3a42ef37c354f93babab974eb922c22
+msgid "Z-Diode ZY 200"
+msgstr "Z-Diode ZY 200"
+
+#: ../../source/assemblyguide.rst:93 16d8696a9aa24242a75d087f26069cf2
+msgid "D3"
+msgstr "D3"
+
+#: ../../source/assemblyguide.rst:93 dc413c9e69bd4d9b8cd60d2ed69acb67
+msgid "|parts06|"
+msgstr "|parts06|"
+
+#: ../../source/assemblyguide.rst:93 8b155371422b4b0abc1c0bf2440dc622
+msgid "Z-Diode BZX55C3V3"
+msgstr "Z-Diode BZX55C3V3"
+
+#: ../../source/assemblyguide.rst:95 729eac4de7db46e3a54dea8b3d0be5d9
+msgid "D4"
+msgstr "D4"
+
+#: ../../source/assemblyguide.rst:95 4635c10aaa2c4c12931480a7dbbee212
+msgid "|parts07|"
+msgstr "|parts07|"
+
+#: ../../source/assemblyguide.rst:95 ac2e31f406ed41ba9de7e0d4bef4d177
+msgid "Gleichrichterdiode BYV 26E"
+msgstr "Gleichrichterdiode BYV 26E"
+
+#: ../../source/assemblyguide.rst:97 ec032885af1a468796e0716a881b1d05
+msgid "D6"
+msgstr "D6"
+
+#: ../../source/assemblyguide.rst:97 fa364d8ea2ab4dbbab3e532c04abdf16
+msgid "|parts08|"
+msgstr "|parts08|"
+
+#: ../../source/assemblyguide.rst:97 9596f39c5a034b60a2746c41a085f889
+msgid "Gleichrichterdiode GP10Y"
+msgstr "Gleichrichterdiode GP10Y"
+
+#: ../../source/assemblyguide.rst:99 65b92b60713d4188b533154b0f7d1b02
+msgid "C1"
+msgstr "C1"
+
+#: ../../source/assemblyguide.rst:99 745f95dbf74848fc89f57e8613258edf
+msgid "|parts09|"
+msgstr "|parts09|"
+
+#: ../../source/assemblyguide.rst:99 85d4639d3b884bcc8349e9e052e5545b
+msgid "ELKO Elektrolytkondensator 100 uF, 16 V"
+msgstr "ELKO Elektrolytkondensator 100 uF, 16 V"
+
+#: ../../source/assemblyguide.rst:101 d596deb7899b494f95a1544bdebfb992
+msgid "C2"
+msgstr "C2"
+
+#: ../../source/assemblyguide.rst:101 a11f38a89abc4ee991f25f01f82ea4b2
+msgid "|parts10|"
+msgstr "|parts10|"
+
+#: ../../source/assemblyguide.rst:101 c057683e0c65405c94156ee8f0a33824
+msgid "Folienkondensator 10nF, 100V 0.01  100-"
+msgstr "Folienkondensator 10nF, 100V 0.01  100-"
+
+#: ../../source/assemblyguide.rst:103 4d081835d469446c968f62c2574127c6
+msgid "C3"
+msgstr "C3"
+
+#: ../../source/assemblyguide.rst:103 725514cdb3e24decaeb6b23ec641565e
+msgid "|parts11|"
+msgstr "|parts11|"
+
+#: ../../source/assemblyguide.rst:103 57265e0ff86f4af3ac1b70030cb4c9ae
+msgid "Folienkondensator 100nF, 630V 0.1  630-"
+msgstr "Folienkondensator 100nF, 630V 0.1  630-"
+
+#: ../../source/assemblyguide.rst:105 987555cfd001401eb8227d2a1c746ac9
+msgid "C4"
+msgstr "C4"
+
+#: ../../source/assemblyguide.rst:105 3927de17b1e6408394f63b4f75b0dd7f
+msgid "|parts12|"
+msgstr "|parts12|"
+
+#: ../../source/assemblyguide.rst:105 7abb96bb5c1b431188a397a9d45dff82
+msgid "Folienkondensator 100pF, 1000V 100/1000-"
+msgstr "Folienkondensator 100pF, 1000V 100/1000-"
+
+#: ../../source/assemblyguide.rst:107 29f2f45dac014262b5dda4f43b0bd0e6
+msgid "L1"
+msgstr "L1"
+
+#: ../../source/assemblyguide.rst:107 bafeefad379e4a87ae91cc139aa0fdb8
+msgid "|parts13|"
+msgstr "|parts13|"
+
+#: ../../source/assemblyguide.rst:107 9820b8c262464ca5af5ec99230624559
+msgid "Spule 150uH 154J"
+msgstr "Spule 150uH 154J"
+
+#: ../../source/assemblyguide.rst:109 cba9ff0e7f514260a193c06597e0747e
+msgid "Pz1"
+msgstr "Pz1"
+
+#: ../../source/assemblyguide.rst:109 14ea7034aefa4ec8b25f031f8d0d4450
+msgid "|parts14|"
+msgstr "|parts14|"
+
+#: ../../source/assemblyguide.rst:109 c2681bbe9814412bab7bdd6e1a926edd
+msgid "Piezo-Lautsprecher"
+msgstr "Piezo-Lautsprecher"
+
+#: ../../source/assemblyguide.rst:111 df5380ea48ab4391a6d53c91e828e11e
+msgid "X1 X2"
+msgstr "X1 X2"
+
+#: ../../source/assemblyguide.rst:111 ae199e5dc11c49eba5316a1efeba5ddb
+msgid "|parts15|"
+msgstr "|parts15|"
+
+#: ../../source/assemblyguide.rst:111 22d31aff59994a318daa640b6b33fbbf
+msgid "Zählrohrhalter"
+msgstr "Zählrohrhalter"
+
+#: ../../source/assemblyguide.rst:113 d7bfd720fcdf48c48d9ccf25931b3493
+msgid "|parts16|"
+msgstr "|parts16|"
+
+#: ../../source/assemblyguide.rst:113 11e9b42e565d4576bb85ed3cc153b244
+msgid "Buchsenleiste Microcontroler-Modul"
+msgstr "Buchsenleiste Microcontroler-Modul"
+
+#: ../../source/assemblyguide.rst:115 1ffb4abfa78146428fff13240686934d
+msgid "|parts17|"
+msgstr "|parts17|"
+
+#: ../../source/assemblyguide.rst:115 6a8e9a9e4d2c43848039869fcfd452ae
+msgid "Je 30 cm isolierte Kupferlitze"
+msgstr "Je 30 cm isolierte Kupferlitze"
+
+#: ../../source/assemblyguide.rst:117 5aabf462a3564077888a3d3d5de2f55c
+msgid "Micro-USB Stromversorgung"
+msgstr "Micro-USB Stromversorgung"
+
+#: ../../source/assemblyguide.rst:121 994cd075f62c4912959ba706fed4d6c1
+msgid "Lötarbeiten"
+msgstr "Lötarbeiten"
+
+#: ../../source/assemblyguide.rst:124 40db8473307a4f569d919b85c63c3bc7
+msgid "Feldeffekt-Transistor T1"
+msgstr "Feldeffekt-Transistor T1"
+
+#: ../../source/assemblyguide.rst:126 5fb9cf40d07847b3b358f2496292fd18
+msgid ""
+"Als erstes Bauteil wird das einzige Bauteil im SMD-Bauform montiert. Mit "
+"Klebeband (Kreppband hat sich bewährt) wird er so auf die Platine geklebt, "
+"so dass die drei Pins sichtbar sind. Dann werden die vorderen Anschlüsse "
+"verlötet, das Klebeband vorsichtig entfernt und der hintere Anschluss "
+"verlötet."
+msgstr ""
+"Als erstes Bauteil wird das einzige Bauteil im SMD-Bauform montiert. Mit "
+"Klebeband (Kreppband hat sich bewährt) wird er so auf die Platine geklebt, "
+"so dass die drei Pins sichtbar sind. Dann werden die vorderen Anschlüsse "
+"verlötet, das Klebeband vorsichtig entfernt und der hintere Anschluss "
+"verlötet."
+
+#: ../../source/assemblyguide.rst:135 94f5ea928e264ed0bdc96b9265641076
+msgid "Widerstände und Dioden"
+msgstr "Widerstände und Dioden"
+
+#: ../../source/assemblyguide.rst:137 822635d715874431852da3af8e4f434a
+msgid ""
+"Die Widerstände und Dioden werden alle in einer Abbiegevorrichtung (oder "
+"entsprechend mit der Hand oder einer kleinen Zange) gebogen. Die Breite ist "
+"immer vier Einheiten – sprich ca. 10 mm."
+msgstr ""
+"Die Widerstände und Dioden werden alle in einer Abbiegevorrichtung (oder "
+"entsprechend mit der Hand oder einer kleinen Zange) gebogen. Die Breite ist "
+"immer vier Einheiten – sprich ca. 10 mm."
+
+#: ../../source/assemblyguide.rst:144 f796162cc58d4090a3911e9697b6d0bb
+msgid ""
+"Anschließend wird die Platine mit den Widerständen und Dioden bestückt. Bei "
+"den Dioden unbedingt auf die Polarität achten! Die Kathode (Minus-Pol) ist "
+"mit einem Strich auf Platine und Bauteil markiert."
+msgstr ""
+"Anschließend wird die Platine mit den Widerständen und Dioden bestückt. Bei "
+"den Dioden unbedingt auf die Polarität achten! Die Kathode (Minus-Pol) ist "
+"mit einem Strich auf Platine und Bauteil markiert."
+
+#: ../../source/assemblyguide.rst:150 0c9c9420046445dea371fc71713b963c
+msgid ""
+"Vor dem Löten der Unterseite werden die Bauteile auf der Oberseite mit "
+"Klebeband fixiert, oder die Beinchen der Bauteile durch leichtes "
+"Auseinanderbiegen verklemmt. Dann Bauteile anlöten, Klebeband entfernen und "
+"überschüssigen Draht abschneiden."
+msgstr ""
+"Vor dem Löten der Unterseite werden die Bauteile auf der Oberseite mit "
+"Klebeband fixiert, oder die Beinchen der Bauteile durch leichtes "
+"Auseinanderbiegen verklemmt. Dann Bauteile anlöten, Klebeband entfernen und "
+"überschüssigen Draht abschneiden."
+
+#: ../../source/assemblyguide.rst:153 57a698e561c94f149af6d538d7ef2948
+msgid ""
+"Verletzungsgefahr: Beim Abschneiden darauf achten, dass der davonfliegende "
+"Draht niemanden verletzten kann. Möglichst festhalten beim Abschneiden!"
+msgstr ""
+"Verletzungsgefahr: Beim Abschneiden darauf achten, dass der davonfliegende "
+"Draht niemanden verletzten kann. Möglichst festhalten beim Abschneiden!"
+
+#: ../../source/assemblyguide.rst:161 95379200679147b9af5bd7da03a00b61
+msgid "Kondensatoren und restliche Bauteile"
+msgstr "Kondensatoren und restliche Bauteile"
+
+#: ../../source/assemblyguide.rst:163 bd48ebf1f30e43989d80da12c8e1c98f
+msgid ""
+"Der Elektrolytkondensator (Elko) wird vorher mit einer Flachzange "
+"angewinkelt. Beim Elko unbedingt auf die Polung achten: Auf dem Elko ist der"
+" „–“-Pol markiert, auf der Platine der „+“-Pol. Die Beschriftungen müssen "
+"sich gegenüber liegen. Der Zählrohrhalter muss so herum eingesetzt werden, "
+"dass das Zählrohr nach außen steht kann – am besten testen! Dann die "
+"Bauteile mit Klebeband fixieren, anlöten und den überschüssigen Draht "
+"abschneiden."
+msgstr ""
+"Der Elektrolytkondensator (Elko) wird vorher mit einer Flachzange "
+"angewinkelt. Beim Elko unbedingt auf die Polung achten: Auf dem Elko ist der"
+" „–“-Pol markiert, auf der Platine der „+“-Pol. Die Beschriftungen müssen "
+"sich gegenüber liegen. Der Zählrohrhalter muss so herum eingesetzt werden, "
+"dass das Zählrohr nach außen steht kann – am besten testen! Dann die "
+"Bauteile mit Klebeband fixieren, anlöten und den überschüssigen Draht "
+"abschneiden."
+
+#: ../../source/assemblyguide.rst:168 2735728955ac41fbb861c6fc1ecef9f0
+msgid ""
+"Kondensatoren, Zählrohrhalter, Spule, Piezo-Lautsprecher sind bestückt:"
+msgstr ""
+"Kondensatoren, Zählrohrhalter, Spule, Piezo-Lautsprecher sind bestückt:"
+
+#: ../../source/assemblyguide.rst:175 433178e6919a42e885dedb27771536f4
+msgid "Buchsenleisten und Mikrocontroller-Modul"
+msgstr "Buchsenleisten und Mikrocontroller-Modul"
+
+#: ../../source/assemblyguide.rst:177 8550d5cb1c2b4228b592b0f84fb788bf
+msgid "Die Buchsenleiste muss vorher evtl. noch gekürzt werden."
+msgstr "Die Buchsenleiste muss vorher evtl. noch gekürzt werden."
+
+#: ../../source/assemblyguide.rst:179 6b4de8d5d25f49bbb70d8684ec29464e
+msgid ""
+"Dabei muss der Seitenschneider genau auf dem **letzten nicht mehr benötigten"
+" Kontakt** angesetzt werden – **nicht dort wo man ihn eigentlich kürzen "
+"will** – ansonsten kann sie splittern. Beim Abschneiden wegfliegende Teile "
+"möglichst festhalten!"
+msgstr ""
+"Dabei muss der Seitenschneider genau auf dem **letzten nicht mehr benötigten"
+" Kontakt** angesetzt werden – **nicht dort wo man ihn eigentlich kürzen "
+"will** – ansonsten kann sie splittern. Beim Abschneiden wegfliegende Teile "
+"möglichst festhalten!"
+
+#: ../../source/assemblyguide.rst:186 49ca06fc46ec4b97b7920b099d04d515
+msgid ""
+"Wird der große Piezo-Lautsprecher verwendet, so sollte die Buchsenleiste mit"
+" einer Feile etwas abgefeilt werden (vorher ausprobieren). Am einfachsten "
+"geht das an der originalen, nicht bearbeiteten Seite der Buchsenleiste. Je "
+"nachdem, welches Mikrocontroller-Board verwendet wird, müssen die "
+"Buchsenleisten an den entsprechenden Stellen bestückt werden."
+msgstr ""
+"Wird der große Piezo-Lautsprecher verwendet, so sollte die Buchsenleiste mit"
+" einer Feile etwas abgefeilt werden (vorher ausprobieren). Am einfachsten "
+"geht das an der originalen, nicht bearbeiteten Seite der Buchsenleiste. Je "
+"nachdem, welches Mikrocontroller-Board verwendet wird, müssen die "
+"Buchsenleisten an den entsprechenden Stellen bestückt werden."
+
+#: ../../source/assemblyguide.rst:193 ebb4640587d44f0d80c7eacf3b5c505a
+msgid ""
+"Die Winkel der Buchsenleiste sollten genau stimmen. Daher am besten so "
+"vorgehen:"
+msgstr ""
+"Die Winkel der Buchsenleiste sollten genau stimmen. Daher am besten so "
+"vorgehen:"
+
+#: ../../source/assemblyguide.rst:195 7e4a6e42aa34423aaff3fe83d82a2a06
+msgid "Die erste Buchsenleiste einstecken."
+msgstr "Die erste Buchsenleiste einstecken."
+
+#: ../../source/assemblyguide.rst:196 c55bd0be058746c7868393cea295a834
+msgid ""
+"Von unten her eine Lötstelle in der Mitte löten, die Lötstelle nochmals heiß"
+" machen und gleichzeitig die Buchsenleiste justieren (rechter Winkel, alle "
+"Pins richtig)."
+msgstr ""
+"Von unten her eine Lötstelle in der Mitte löten, die Lötstelle nochmals heiß"
+" machen und gleichzeitig die Buchsenleiste justieren (rechter Winkel, alle "
+"Pins richtig)."
+
+#: ../../source/assemblyguide.rst:197 a2b41af948654985983914c1586ef185
+msgid "Die zweite Buchsenleiste einstecken."
+msgstr "Die zweite Buchsenleiste einstecken."
+
+#: ../../source/assemblyguide.rst:198 f32f2faf61424c59801ae811c11922a6
+msgid ""
+"In beide Buchsenleisten die Stiftleiste aus dem Mikrocontroller-Modul-Set "
+"einstecken, so dass deren längerer Teil der Stiftleiste in der Buchsenleiste"
+" steckt."
+msgstr ""
+"In beide Buchsenleisten die Stiftleiste aus dem Mikrocontroller-Modul-Set "
+"einstecken, so dass deren längerer Teil der Stiftleiste in der Buchsenleiste"
+" steckt."
+
+#: ../../source/assemblyguide.rst:199 4a16d3b3fe024201a4909cb70207e0aa
+msgid ""
+"Das Mikrocontroller-Modul aufstecken, so dass das Display sichtbar ist und "
+"die Mikro-USB-Buchse über dem Piezo-Lautsprecher liegt."
+msgstr ""
+"Das Mikrocontroller-Modul aufstecken, so dass das Display sichtbar ist und "
+"die Mikro-USB-Buchse über dem Piezo-Lautsprecher liegt."
+
+#: ../../source/assemblyguide.rst:200 5333d2fe2b044d64b0d8ca148b538d95
+msgid ""
+"Alles mit einem schmalen Klebeband fixieren (siehe Bild unten), so dass alle"
+" Lötstellen zugänglich sind."
+msgstr ""
+"Alles mit einem schmalen Klebeband fixieren (siehe Bild unten), so dass alle"
+" Lötstellen zugänglich sind."
+
+#: ../../source/assemblyguide.rst:201 a9d6e6b7264f4e028acd768b6c51c6e4
+msgid "Nun können alle Kontakte gelötet werden."
+msgstr "Nun können alle Kontakte gelötet werden."
+
+#: ../../source/assemblyguide.rst:203 39728040ac42421392299db8423821d7
+msgid ""
+"Das OLED-Grafikdisplay ist über eine dünne Flex-Leitung angeschlossen, die "
+"nicht zu heiß werden darf. Im Zweifel lötet man die Pins in der Nähe der "
+"Flex-Leitung nicht an – sie werden nicht benötigt."
+msgstr ""
+"Das OLED-Grafikdisplay ist über eine dünne Flex-Leitung angeschlossen, die "
+"nicht zu heiß werden darf. Im Zweifel lötet man die Pins in der Nähe der "
+"Flex-Leitung nicht an – sie werden nicht benötigt."
+
+#: ../../source/assemblyguide.rst:209 f5f7fbdaa73842eea320868bb2f9afa6
+msgid ""
+"Nach dem Löten kann das Mikrocontroller-Modul mit wippenden Bewegungen "
+"vorsichtig abgezogen werden."
+msgstr ""
+"Nach dem Löten kann das Mikrocontroller-Modul mit wippenden Bewegungen "
+"vorsichtig abgezogen werden."
+
+#: ../../source/assemblyguide.rst:211 cf33c1cc050d4317ba46ef9cf5037ddb
+msgid ""
+"Beim Mikrocontroller-Modul sind Pin-Beschriftungsaufkleber mit dabei. Diese "
+"können jetzt seitlich aufgeklebt werden. Welcher Pin wo ist, steht auf der "
+"Unterseite des Mikrocontroller-Moduls."
+msgstr ""
+"Beim Mikrocontroller-Modul sind Pin-Beschriftungsaufkleber mit dabei. Diese "
+"können jetzt seitlich aufgeklebt werden. Welcher Pin wo ist, steht auf der "
+"Unterseite des Mikrocontroller-Moduls."
+
+#: ../../source/assemblyguide.rst:214 d9e636c3cd4a4cd4a97f6b4d71138b2b
+msgid ""
+"Das Kabel für den Anschluss der Zählrohr-Kathode (Minus-Anschluss) an "
+"Klammer und Platine anlöten."
+msgstr ""
+"Das Kabel für den Anschluss der Zählrohr-Kathode (Minus-Anschluss) an "
+"Klammer und Platine anlöten."
+
+#: ../../source/assemblyguide.rst:215 528a9aa142354edfb659f7434c2e8447
+msgid "Kabel mit jeweils einem Tropfen Heißkleber sichern (Zugentlastung)."
+msgstr "Kabel mit jeweils einem Tropfen Heißkleber sichern (Zugentlastung)."
+
+#: ../../source/assemblyguide.rst:216 eaa16527779148b9881b97a0586ccdc2
+msgid ""
+"Sichtkontrolle (hast du Lötstellen vergessen, sind Lötbrücken entstanden, "
+"...)."
+msgstr ""
+"Sichtkontrolle (hast du Lötstellen vergessen, sind Lötbrücken entstanden, "
+"...)."
+
+#: ../../source/assemblyguide.rst:217 3225efdaf2f3445e896a78901d6c9a20
+msgid "Mikrocontroller-Modul wieder aufstecken."
+msgstr "Mikrocontroller-Modul wieder aufstecken."
+
+#: ../../source/assemblyguide.rst:218 f737a9d4a1794525aa9cdb9154ae5ffa
+msgid ""
+"Zählrohr anklemmen: der Plus-Pol (Anode) ist markiert und muss in Richtung "
+"Platine zeigen."
+msgstr ""
+"Zählrohr anklemmen: der Plus-Pol (Anode) ist markiert und muss in Richtung "
+"Platine zeigen."
+
+#: ../../source/assemblyguide.rst:219 618f336396e54190a5bdda74f9f60903
+msgid "Eine erste Funktionskontrolle ist nun möglich, s. `Inbetriebnahme`_."
+msgstr "Eine erste Funktionskontrolle ist nun möglich, s. `Inbetriebnahme`_."
+
+#: ../../source/assemblyguide.rst:221 7dadaaf11f6649e4b669e067ccbee02a
+msgid "Fertige Geigerzähler- und Mikrocontrollerplatine:"
+msgstr "Fertige Geigerzähler- und Mikrocontrollerplatine:"
+
+#: ../../source/assemblyguide.rst:227 dfb249d1ede6424890fee42161e7b8f6
+msgid ""
+"Das dünne Glas des OLED-Grafikdisplays ist empfindlich. Bitte keine Kraft "
+"auf das Display ausüben, sondern nur auf die Mikrocontrollerplatine!"
+msgstr ""
+"Das dünne Glas des OLED-Grafikdisplays ist empfindlich. Bitte keine Kraft "
+"auf das Display ausüben, sondern nur auf die Mikrocontrollerplatine!"
+
+#: ../../source/assemblyguide.rst:230 bd45400b57bb4fc1b8a5d1b522633b27
+msgid ""
+"Verletzungsgefahr: Auf der Geigerzählerplatine wird eine **Spannung von 400 "
+"Volt** erzeugt. Diese hält sich auch noch längere Zeit **nach dem "
+"Ausschalten des Geräts**. Bei Berührung kann es zu kleineren Stromschlägen "
+"kommen, die normalerweise harmlos sind. Dennoch sollten sie vermieden "
+"werden!"
+msgstr ""
+"Verletzungsgefahr: Auf der Geigerzählerplatine wird eine **Spannung von 400 "
+"Volt** erzeugt. Diese hält sich auch noch längere Zeit **nach dem "
+"Ausschalten des Geräts**. Bei Berührung kann es zu kleineren Stromschlägen "
+"kommen, die normalerweise harmlos sind. Dennoch sollten sie vermieden "
+"werden!"
+
+#: ../../source/assemblyguide.rst:238 f5d413f3b7e544a68d1de2483218ef80
+msgid ""
+"**Man sollte vor dem Arbeiten an der Schaltung den Kondensator entladen.** "
+"Am einfachsten macht man dies mit einer zweiten, ca. 30 cm langen Leitung, "
+"mit der man Anode und Kathode des Zählrohrs für etwa eine Sekunde "
+"kurzschließt. Dies schützt nicht nur vor unangenehmen Stromschlägen, sondern"
+" schützt auch die empfindliche elektronische Schaltung."
+msgstr ""
+"**Man sollte vor dem Arbeiten an der Schaltung den Kondensator entladen.** "
+"Am einfachsten macht man dies mit einer zweiten, ca. 30 cm langen Leitung, "
+"mit der man Anode und Kathode des Zählrohrs für etwa eine Sekunde "
+"kurzschließt. Dies schützt nicht nur vor unangenehmen Stromschlägen, sondern"
+" schützt auch die empfindliche elektronische Schaltung."
+
+#: ../../source/assemblyguide.rst:243 3146d6eacca54f708e8617cedb19f28d
+msgid "Gehäuse"
+msgstr "Gehäuse"
+
+#: ../../source/assemblyguide.rst:246 6b38c1706cb6433c8e96bfdd1476fad8
+msgid "Funktionen des Gehäuses"
+msgstr "Funktionen des Gehäuses"
+
+#: ../../source/assemblyguide.rst:248 f063afa2d29e4075a490cda78d9b46c0
+msgid ""
+"Es schützt die Elektronik vor Umwelteinflüssen (z. B. Regen) und Insekten "
+"(daher sollte kein Zugang von außen zur Elektronik größer sein als 0,5 mm)."
+msgstr ""
+"Es schützt die Elektronik vor Umwelteinflüssen (z. B. Regen) und Insekten "
+"(daher sollte kein Zugang von außen zur Elektronik größer sein als 0,5 mm)."
+
+#: ../../source/assemblyguide.rst:249 c0a6ad08a6b942c6afc613d1cce84e6e
+msgid ""
+"Es hält das Zählrohr in einer Höhe von 1 m über der Wiese – somit sind "
+"unsere Messwerte (bestmöglich) vergleichbar zu denen des amtlichen `ODL-"
+"Messnetzes <https://odlinfo.bfs.de/DE/index.html>`_."
+msgstr ""
+"Es hält das Zählrohr in einer Höhe von 1 m über der Wiese – somit sind "
+"unsere Messwerte (bestmöglich) vergleichbar zu denen des amtlichen `ODL-"
+"Messnetzes <https://odlinfo.bfs.de/DE/index.html>`_."
+
+#: ../../source/assemblyguide.rst:252 307c35d73fc14a709d2fc71ca14ea536
+msgid "Rohre"
+msgstr "Rohre"
+
+#: ../../source/assemblyguide.rst:258 15e2561b49cc40619fca50e9e0780092
+msgid ""
+"Rohr für das Elektronikgehäuse: Zunächst wird das Rohr mit einer Säge auf "
+"entsprechende Länge abgesägt. Die Muffe (Aufweitung) zeigt nach unten."
+msgstr ""
+"Rohr für das Elektronikgehäuse: Zunächst wird das Rohr mit einer Säge auf "
+"entsprechende Länge abgesägt. Die Muffe (Aufweitung) zeigt nach unten."
+
+#: ../../source/assemblyguide.rst:260 cf81458ace4c485a9e0f688082fcee8c
+msgid ""
+"Rohr für den Erdspieß: Der noch umgesägte Teil des Restes ist das obere Ende"
+" des Erdspießes. Unten wird der Erdspieß auf entsprechende Länge abgesägt im"
+" 45-Grad-Winkel. Mit diesem schrägen Anschnitt lässt sich der Erdspieß "
+"später mit leichten Drehbewegungen gut in die Erde bohren. Alternativ kann "
+"man diesen Teil des Rohrs kurzhalten (ca. 15 cm) und in einem verzinkten "
+"Sonnenschirmhalter mit Erdspieß (Ø40mm) festklemmen."
+msgstr ""
+"Rohr für den Erdspieß: Der noch umgesägte Teil des Restes ist das obere Ende"
+" des Erdspießes. Unten wird der Erdspieß auf entsprechende Länge abgesägt im"
+" 45-Grad-Winkel. Mit diesem schrägen Anschnitt lässt sich der Erdspieß "
+"später mit leichten Drehbewegungen gut in die Erde bohren. Alternativ kann "
+"man diesen Teil des Rohrs kurzhalten (ca. 15 cm) und in einem verzinkten "
+"Sonnenschirmhalter mit Erdspieß (Ø40mm) festklemmen."
+
+#: ../../source/assemblyguide.rst:264 49bf18666ee24c8c9f967bb7c94517ce
+msgid ""
+"Lüftungs-/Kabelloch bohren: Mit einem Reißnagel o. ä. wird das Loch seitlich"
+" im Erdspieß vorgestochen. Anschließend wird es aufgebohrt. Zuletzt wird es "
+"mit einem großen Bohrer / Schälbohrer auf etwa 17 mm Durchmesser aufgebohrt."
+msgstr ""
+"Lüftungs-/Kabelloch bohren: Mit einem Reißnagel o. ä. wird das Loch seitlich"
+" im Erdspieß vorgestochen. Anschließend wird es aufgebohrt. Zuletzt wird es "
+"mit einem großen Bohrer / Schälbohrer auf etwa 17 mm Durchmesser aufgebohrt."
+
+#: ../../source/assemblyguide.rst:267 fc020c7fb9e64c6b8060f7386c875877
+msgid ""
+"Verletzungsgefahr: Mit der Klinge/dem Bohrer immer nach außen, d. h. vom "
+"Körper weg, schneiden oder bohren!"
+msgstr ""
+"Verletzungsgefahr: Mit der Klinge/dem Bohrer immer nach außen, d. h. vom "
+"Körper weg, schneiden oder bohren!"
+
+#: ../../source/assemblyguide.rst:270 36c4a2c1767e410284f92c0c7cea131a
+msgid "Dach und Zwischenboden"
+msgstr "Dach und Zwischenboden"
+
+#: ../../source/assemblyguide.rst:277 2052f98fe4664e31b5883718767221ba
+msgid ""
+"Für das Dach kann man einen Rohrabschlussstopfen oben vorsichtig über das "
+"Rohr schieben, s. Bild rechts."
+msgstr ""
+"Für das Dach kann man einen Rohrabschlussstopfen oben vorsichtig über das "
+"Rohr schieben, s. Bild rechts."
+
+#: ../../source/assemblyguide.rst:284 be7dfef099c1450a96b8e62e90d399f3
+msgid ""
+"Als Zwischenboden verwenden wir eine Kruke, also eine Plastikdose, die in "
+"Apotheken zum Abfüllen von Salben verwendet wird. Der rote Deckel kann als "
+"Material für eine kabeldurchführungsverkleinernde Zwischenbodenauflage "
+"dienen."
+msgstr ""
+"Als Zwischenboden verwenden wir eine Kruke, also eine Plastikdose, die in "
+"Apotheken zum Abfüllen von Salben verwendet wird. Der rote Deckel kann als "
+"Material für eine kabeldurchführungsverkleinernde Zwischenbodenauflage "
+"dienen."
+
+#: ../../source/assemblyguide.rst:287 e6357c6bfb6e4f339cad8b787c497bee
+msgid ""
+"Für den Zwischenboden wird lediglich das Gewinde vorsichtig mit der Säge "
+"abgesägt, s. Bild links. Der „Kragen“ muss bestehen bleiben, da er als "
+"Anschlag dient."
+msgstr ""
+"Für den Zwischenboden wird lediglich das Gewinde vorsichtig mit der Säge "
+"abgesägt, s. Bild links. Der „Kragen“ muss bestehen bleiben, da er als "
+"Anschlag dient."
+
+#: ../../source/assemblyguide.rst:290 cd5c20638270445ea1bda87f21d2f7ea
+msgid ""
+"In den Zwischenboden wird in der Mitte ein Loch zur Kabeldurchführung mit 10"
+" mm gebohrt. Der Stecker des Kabels muss durch das Loch passen."
+msgstr ""
+"In den Zwischenboden wird in der Mitte ein Loch zur Kabeldurchführung mit 10"
+" mm gebohrt. Der Stecker des Kabels muss durch das Loch passen."
+
+#: ../../source/assemblyguide.rst:310 a466a064890b4a14b725bfd14d0585ca
+msgid ""
+"Eine Zwischenbodenauflage dient zum Schutz vor Insekten, da sie das Loch der"
+" Kabeldurchführung verkleinert. Man kann dafür z. B. den roten Deckel der "
+"Kruke oder ein ähnliches Stück Kunststoff verwenden."
+msgstr ""
+"Eine Zwischenbodenauflage dient zum Schutz vor Insekten, da sie das Loch der"
+" Kabeldurchführung verkleinert. Man kann dafür z. B. den roten Deckel der "
+"Kruke oder ein ähnliches Stück Kunststoff verwenden."
+
+#: ../../source/assemblyguide.rst:313 a419e6d6e48847d8b3bfc207b0ba8774
+msgid ""
+"Es wird die Mitte markiert und dort ein Loch mit dem Durchmesser des "
+"Stromkabels (ca. 5 mm) gebohrt. Anschließend werden die Ecken abgeschnitten."
+" Zusätzlich wird ein Verbindungsschlitz von außen zum Loch geschnitten."
+msgstr ""
+"Es wird die Mitte markiert und dort ein Loch mit dem Durchmesser des "
+"Stromkabels (ca. 5 mm) gebohrt. Anschließend werden die Ecken abgeschnitten."
+" Zusätzlich wird ein Verbindungsschlitz von außen zum Loch geschnitten."
+
+#: ../../source/assemblyguide.rst:317 a359741e222045db82b4206e148d7e46
+msgid "Aufbau der Zwischenbodenauflage (in zwei Arbeitsschritten):"
+msgstr "Aufbau der Zwischenbodenauflage (in zwei Arbeitsschritten):"
+
+#: ../../source/assemblyguide.rst:325 1692fb81b5564f40a54780c749a6ccaf
+msgid "Installationsplatte"
+msgstr "Installationsplatte"
+
+#: ../../source/assemblyguide.rst:327 e23d4d4baa3d4857b7036b6e9780c40a
+msgid ""
+"Die Installationsplatte kann aus dem Ober- oder Unterteil eines Kabelkanals "
+"gefertigt werden. Dazu werden die Seitenteile vorsichtig mit einem Messer "
+"abgeschnitten. Danach wird der dadurch entstandene, biegsame "
+"Kunststoffstreifen auf die richtige Länge gebracht. Hierzu kann eine starke "
+"Schere verwendet werden."
+msgstr ""
+"Die Installationsplatte kann aus dem Ober- oder Unterteil eines Kabelkanals "
+"gefertigt werden. Dazu werden die Seitenteile vorsichtig mit einem Messer "
+"abgeschnitten. Danach wird der dadurch entstandene, biegsame "
+"Kunststoffstreifen auf die richtige Länge gebracht. Hierzu kann eine starke "
+"Schere verwendet werden."
+
+#: ../../source/assemblyguide.rst:331 6201a7433a0648aa958b4ee313ab6012
+msgid ""
+"Löcher durch Installationsplatte bohren: Elektronik und Zählrohr werden so "
+"mit Kabelbindern auf Installationsplatte fixiert, dass das Zählrohr sich auf"
+" 1 m Höhe befindet, wenn der Erdspieß 25 cm in der Erde steckt. Das Zählrohr"
+" zeigt nach unten. Die Löcher werden mit dem Reißnagel vorgestochen und dann"
+" auf 3 mm aufgebohrt, s. Bild „Bohrplan Installationsplatte“."
+msgstr ""
+"Löcher durch Installationsplatte bohren: Elektronik und Zählrohr werden so "
+"mit Kabelbindern auf Installationsplatte fixiert, dass das Zählrohr sich auf"
+" 1 m Höhe befindet, wenn der Erdspieß 25 cm in der Erde steckt. Das Zählrohr"
+" zeigt nach unten. Die Löcher werden mit dem Reißnagel vorgestochen und dann"
+" auf 3 mm aufgebohrt, s. Bild „Bohrplan Installationsplatte“."
+
+#: ../../source/assemblyguide.rst:334 10c4f29b98aa4bd885d0e9d5404b8613
+msgid ""
+"Die Platine wird lediglich mit einem Kabelbinder auf der Platte montiert, "
+"der durch beide Löcher gezogen wird. Er verläuft unterhalb des USB-Steckers."
+msgstr ""
+"Die Platine wird lediglich mit einem Kabelbinder auf der Platte montiert, "
+"der durch beide Löcher gezogen wird. Er verläuft unterhalb des USB-Steckers."
+
+#: ../../source/assemblyguide.rst:337 0cefe9df7fa541d3b237a2fa3b3c46dc
+msgid "Bohrplan Installationsplatte:"
+msgstr "Bohrplan Installationsplatte:"
+
+#: ../../source/assemblyguide.rst:345 01791f6f793a4fabad3c13da1cd887a8
+msgid "Einbau"
+msgstr "Einbau"
+
+#: ../../source/assemblyguide.rst:347 cbcd76c74da94a27b196e5c46fe65dbd
+msgid "Einbau des Geräts (die roten Pfeile markieren Kabelbinder):"
+msgstr "Einbau des Geräts (die roten Pfeile markieren Kabelbinder):"
+
+#: ../../source/assemblyguide.rst:353 ec0ce1d24fbb44fa94ea57074bf1a1c8
+msgid ""
+"Platine und Zählrohr werden mit Kabelbinder auf die Installationsplatte "
+"montiert."
+msgstr ""
+"Platine und Zählrohr werden mit Kabelbinder auf die Installationsplatte "
+"montiert."
+
+#: ../../source/assemblyguide.rst:354 5f68816692a848d4a4f1195602437f3f
+msgid "In die Micro-USB-Buchse wird der passende Adapter gesteckt."
+msgstr "In die Micro-USB-Buchse wird der passende Adapter gesteckt."
+
+#: ../../source/assemblyguide.rst:355 70bef011b0874582a6fcda13131784c6
+msgid ""
+"Das „10 m Verlängerungskabel“ wird richtig herum zunächst durch den Erdspieß"
+" und dann durch den Zwischenboden gefädelt. Anschließend wird er mit dem "
+"Adapter verbunden."
+msgstr ""
+"Das „10 m Verlängerungskabel“ wird richtig herum zunächst durch den Erdspieß"
+" und dann durch den Zwischenboden gefädelt. Anschließend wird er mit dem "
+"Adapter verbunden."
+
+#: ../../source/assemblyguide.rst:357 7702c1e09bbd400e871bca444657f733
+msgid ""
+"Danach wird die Zwischenbodenauflage oberhalb des Zwischenbodens vorsichtig "
+"auf das Kabel geschoben."
+msgstr ""
+"Danach wird die Zwischenbodenauflage oberhalb des Zwischenbodens vorsichtig "
+"auf das Kabel geschoben."
+
+#: ../../source/assemblyguide.rst:358 9c1c5afd1b094365a8becbe2a095557b
+msgid ""
+"Oberhalb der Zwischenbodenauflage wird ein Kabelbinder auf das Kabel "
+"gezurrt, so dass eine Zugentlastung entsteht."
+msgstr ""
+"Oberhalb der Zwischenbodenauflage wird ein Kabelbinder auf das Kabel "
+"gezurrt, so dass eine Zugentlastung entsteht."
+
+#: ../../source/assemblyguide.rst:359 178e03b16d8944028c5c3da8fab3104f
+msgid ""
+"Erster Test des Gehäuses: Wir schieben erst vorsichtig die "
+"Installationsplatte in das Elektronikgehäuse. Anschließend folgen "
+"Zwischenboden und der Erdspieß."
+msgstr ""
+"Erster Test des Gehäuses: Wir schieben erst vorsichtig die "
+"Installationsplatte in das Elektronikgehäuse. Anschließend folgen "
+"Zwischenboden und der Erdspieß."
+
+#: ../../source/assemblyguide.rst:361 59d0d93d0f6446318852ffadd884d740
+msgid ""
+"Wenn alles passt wird noch die Zwischenbodenauflage mit Silikon-Kleber auf "
+"den Zwischenboden geklebt und mit Kreppband (bis zum Aushärten) fixiert."
+msgstr ""
+"Wenn alles passt wird noch die Zwischenbodenauflage mit Silikon-Kleber auf "
+"den Zwischenboden geklebt und mit Kreppband (bis zum Aushärten) fixiert."
+
+#: ../../source/assemblyguide.rst:362 4107f03357874e4c853c55e8bb59e694
+msgid ""
+"Der Warn-Aufkleber „Vorsicht Hochspannung“ wird auf die Installationsplatte "
+"geklebt."
+msgstr ""
+"Der Warn-Aufkleber „Vorsicht Hochspannung“ wird auf die Installationsplatte "
+"geklebt."
+
+#: ../../source/assemblyguide.rst:365 f0e351549f5a4e45b89494be5c9d3cde
+msgid "Inbetriebnahme"
+msgstr "Inbetriebnahme"
+
+#: ../../source/assemblyguide.rst:366 0e5a925afa7a4192aedb97488127e9b1
+msgid ""
+"WLAN-Variante: Das Gerät baut einen eigenen WLAN-Accesspoint (AP) auf. Die "
+"SSID des AP lautet ESP32-xxxxxxxx, wobei die xxx die Chip-ID des WLAN-Chips "
+"sind (Beispiel: ESP32-51564452). Bitte diese Nummer notieren, sie wird "
+"später für die Anmeldung benötigt, z. B. bei "
+"https://devices.sensor.community/. Der Access-Point bleibt für 30 s aktiv. "
+"Danach versucht das Gerät, sich mit dem (früher) eingestellten WLAN zu "
+"verbinden. Dieser Verbindungsversuch dauert ebenfalls 30 s. Kommt keine "
+"Verbindung zustande, wird wieder der eigene AP für erzeugt. Das "
+"standardmäßig vergebene WLAN-Kennwort ist „*ESP32Geiger*“ und sollte zeitnah"
+" geändert werden."
+msgstr ""
+"WLAN-Variante: Das Gerät baut einen eigenen WLAN-Accesspoint (AP) auf. Die "
+"SSID des AP lautet ESP32-xxxxxxxx, wobei die xxx die Chip-ID des WLAN-Chips "
+"sind (Beispiel: ESP32-51564452). Bitte diese Nummer notieren, sie wird "
+"später für die Anmeldung benötigt, z. B. bei "
+"https://devices.sensor.community/. Der Access-Point bleibt für 30 s aktiv. "
+"Danach versucht das Gerät, sich mit dem (früher) eingestellten WLAN zu "
+"verbinden. Dieser Verbindungsversuch dauert ebenfalls 30 s. Kommt keine "
+"Verbindung zustande, wird wieder der eigene AP für erzeugt. Das "
+"standardmäßig vergebene WLAN-Kennwort ist „*ESP32Geiger*“ und sollte zeitnah"
+" geändert werden."
+
+#: ../../source/assemblyguide.rst:373 d48cbd383cd14a488d73e6094db72042
+msgid "Weitere Informationen: :ref:`deployment` und :ref:`usage`."
+msgstr "Weitere Informationen: :ref:`deployment` und :ref:`usage`."
+
+#: ../../source/assemblyguide.rst:375 a51687d73c6a4b5e9b3f97ee92e13e28
+msgid ""
+"**Wir wünschen viel Freude mit dem neu gebauten Gerät und hoffen dass es "
+"niemals unnatürliche bzw. gesundheitsschädliche Ausschläge messen wird!**"
+msgstr ""
+"**Wir wünschen viel Freude mit dem neu gebauten Gerät und hoffen dass es "
+"niemals unnatürliche bzw. gesundheitsschädliche Ausschläge messen wird!**"
