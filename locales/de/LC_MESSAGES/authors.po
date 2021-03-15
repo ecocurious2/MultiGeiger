@@ -1,19 +1,19 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2020, see AUTHORS
+# Copyright (C) 2020-2021, see AUTHORS
 # This file is distributed under the same license as the MultiGeiger package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# TW <tw@waldmann-edv.de>, 2020
+# TW <tw@waldmann-edv.de>, 2021
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: MultiGeiger\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-29 12:59+0100\n"
+"POT-Creation-Date: 2021-03-14 22:24+0100\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
-"Last-Translator: TW <tw@waldmann-edv.de>, 2020\n"
+"Last-Translator: TW <tw@waldmann-edv.de>, 2021\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,6 +36,10 @@ msgstr "Reinhard X. Fuerst (see feinstaub.rexfue.de)"
 #: ../../../AUTHORS:3 bae8ed99549e450099044db50f90343c
 msgid "Thomas Waldmann <twaldmann@thinkmo.de>"
 msgstr "Thomas Waldmann <twaldmann@thinkmo.de>"
+
+#: ../../../AUTHORS:4 dc3b6eaa81da4ff0a429f0cda4e6b551
+msgid "and others"
+msgstr "und andere"
 
 #: ../../source/authors.rst:9 e2bd8b7469204dc19e03141aa3f3049c
 msgid "License"

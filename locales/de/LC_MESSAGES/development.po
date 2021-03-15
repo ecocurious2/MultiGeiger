@@ -1,20 +1,20 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2020, see AUTHORS
+# Copyright (C) 2020-2021, see AUTHORS
 # This file is distributed under the same license as the MultiGeiger package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
 # Martin Weis <transifex.20.mlbox@spamgourmet.com>, 2020
-# TW <tw@waldmann-edv.de>, 2020
+# TW <tw@waldmann-edv.de>, 2021
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: MultiGeiger\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-29 12:59+0100\n"
+"POT-Creation-Date: 2021-03-14 22:24+0100\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
-"Last-Translator: TW <tw@waldmann-edv.de>, 2020\n"
+"Last-Translator: TW <tw@waldmann-edv.de>, 2021\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -154,7 +154,15 @@ msgstr "Dokumentation"
 msgid "Building the docs with Sphinx"
 msgstr "Erstellen der Dokumentation mit Sphinx"
 
-#: ../../source/development.rst:71 9bd00f1bd8c24ec99cd8523391e3520a
+#: ../../source/development.rst:71 df30fa7cf9ed45fa80f6c90f4219a64c
+msgid ""
+"Documentation is written in English and translated to other languages from "
+"that source (initially German)."
+msgstr ""
+"Die Dokumentation wird in Englisch geschrieben und dann von dieser Quelle "
+"aus in andere Sprachen übersetzt (anfangs Deutsch)."
+
+#: ../../source/development.rst:73 9bd00f1bd8c24ec99cd8523391e3520a
 msgid ""
 "The documentation (in reStructuredText format, .rst) is in ``docs/source/``,"
 " ``index.rst`` is the starting point there."
@@ -162,18 +170,18 @@ msgstr ""
 "Die Dokumentation (im reStructuredText-Format, .rst) befindet sich in "
 "``docs/source/``, ``index.rst`` ist der Startpunkt dort."
 
-#: ../../source/development.rst:74 dbdb23119ac043dcbe6ee366780546a1
+#: ../../source/development.rst:77 dbdb23119ac043dcbe6ee366780546a1
 msgid "To build the docs, you need to have Sphinx_ installed and run:"
 msgstr ""
 "Um die Dokumentation zu erstellen, müssen Sie Sphinx_ installiert haben und "
 "dies ausführen:"
 
-#: ../../source/development.rst:81 385c43075abf4856afe0a1526d56d006
+#: ../../source/development.rst:84 385c43075abf4856afe0a1526d56d006
 msgid "Then point a web browser at ``docs/build/html/index.html``."
 msgstr ""
 "Rufen Sie dann einen Webbrowser für ``docs/build/html/index.html`` auf."
 
-#: ../../source/development.rst:83 34f463e7cabc43b09148a9a9a79d7cf7
+#: ../../source/development.rst:86 34f463e7cabc43b09148a9a9a79d7cf7
 msgid ""
 "The website is updated automatically by ReadTheDocs through GitHub web hooks"
 " on the main repository."
@@ -181,7 +189,7 @@ msgstr ""
 "Die Website wird von ReadTheDocs automatisch über GitHub-Web-Hooks auf dem "
 "Haupt-Repository aktualisiert."
 
-#: ../../source/development.rst:86 bfaef6443a5c4f62a04656a46df0b1bb
+#: ../../source/development.rst:89 bfaef6443a5c4f62a04656a46df0b1bb
 msgid ""
 "After changes of the (english) master docs, the translation master files "
 "(``*.pot``) need updating (adding/removing/updating strings in there):"
@@ -190,7 +198,7 @@ msgstr ""
 "Masterdateien (``*.pot``) aktualisiert werden "
 "(Hinzufügen/Entfernen/Aktualisieren von Strings darin):"
 
-#: ../../source/development.rst:94 8b24c68f7b1b491e8a826bc425eea08d
+#: ../../source/development.rst:97 8b24c68f7b1b491e8a826bc425eea08d
 msgid ""
 "Then, these changes need to get pushed to transifex, so translators can "
 "comfortably translate on the web:"
@@ -198,7 +206,22 @@ msgstr ""
 "Dann müssen diese Änderungen nach transifex gepusht werden, damit die "
 "Übersetzer bequem im Web übersetzen können:"
 
-#: ../../source/development.rst:101 d8de0bc2dd6342ca8e0cedaf2083e609
+#: ../../source/development.rst:100 6962fb8ede264d918d2cc97d105b267a
+msgid ""
+"Translation is organised via "
+"[transifex](https://www.transifex.com/thomaswaldmann/multigeiger/), you need"
+" to have an account or at least login there and fire a \"join team\" "
+"request. Then translate the missing parts and notify the developers (e.g. "
+"via issue tracker)."
+msgstr ""
+"Die Übersetzung ist auf "
+"[transifex](https://www.transifex.com/thomaswaldmann/multigeiger/) "
+"organisiert, Du brauchst dort ein Konto oder musst zumindest Dich dort "
+"einloggen und einen \"Team beitreten\"-Antrag absetzen. Dann die fehlenden "
+"Teile übersetzen und den Entwicklern Bescheid sagen (z. B. über den Issue "
+"Tracker)."
+
+#: ../../source/development.rst:108 d8de0bc2dd6342ca8e0cedaf2083e609
 msgid ""
 "Later, after translators did their part, updated translations need to get "
 "pulled from transifex:"
@@ -206,12 +229,12 @@ msgstr ""
 "Später, nachdem die Übersetzer ihren Teil erledigt haben, müssen die "
 "aktualisierten Übersetzungen von transifex gepulled werden:"
 
-#: ../../source/development.rst:108 8a9f4b06e9974f70b32edcdeff32e8c4
+#: ../../source/development.rst:115 8a9f4b06e9974f70b32edcdeff32e8c4
 msgid "Now we have changes in our git workdir and we need to commit them:"
 msgstr ""
 "Jetzt haben wir Änderungen in unserem Git-Workdir und müssen sie committen:"
 
-#: ../../source/development.rst:116 ebd6cf8466ab4d0fb0c688933330383b
+#: ../../source/development.rst:123 ebd6cf8466ab4d0fb0c688933330383b
 msgid ""
 "This will trigger a build of the docs and their translation(s) on "
 "readthedocs.io."
@@ -219,42 +242,42 @@ msgstr ""
 "Dies wird einen Build der Dokumentation und ihrer Übersetzung(en) auf "
 "readthedocs.io auslösen."
 
-#: ../../source/development.rst:122 dcc428948d094325bf165b80cf7c3b05
+#: ../../source/development.rst:129 dcc428948d094325bf165b80cf7c3b05
 msgid "Flashing devices / creating binaries"
 msgstr "Geräte flashen / Binärdateien erzeugen"
 
-#: ../../source/development.rst:124 a7affc77afa948cd9831193ccf2f710b
+#: ../../source/development.rst:131 a7affc77afa948cd9831193ccf2f710b
 msgid "Arduino IDE:"
 msgstr "Arduino IDE:"
 
-#: ../../source/development.rst:126 614a8664c1de4930853963db6029a177
+#: ../../source/development.rst:133 614a8664c1de4930853963db6029a177
 msgid "do a git checkout of the wanted release, e.g. ``git checkout V1.13.0``"
 msgstr ""
 "Führen Sie ein Git Checkout der gewünschten Version durch, z.B. ``git "
 "checkout V1.13.0``"
 
-#: ../../source/development.rst:127 9883fce6d1f14f2281759edf825f3512
+#: ../../source/development.rst:134 9883fce6d1f14f2281759edf825f3512
 msgid "use the default userdefines.h (available as userdefines-example.h)"
 msgstr ""
 "verwenden Sie die Standard userdefines.h (verfügbar als userdefines-"
 "example.h)"
 
-#: ../../source/development.rst:128 c94119181a724d76b7def12cc4416228
+#: ../../source/development.rst:135 c94119181a724d76b7def12cc4416228
 msgid "IDE settings:"
 msgstr "IDE-Einstellungen:"
 
-#: ../../source/development.rst:130 e0827444d78645de85c5e9ab5bed18c6
+#: ../../source/development.rst:137 e0827444d78645de85c5e9ab5bed18c6
 msgid ""
 "Device: Heltec WiFi Stick  (always use this, even if you have a WiFi Kit 32)"
 msgstr ""
 "Gerät: Heltec WiFi Stick (diesen immer verwenden, auch wenn Sie ein WiFi Kit"
 " 32 haben)"
 
-#: ../../source/development.rst:131 675c39578dfa4617bd16e24504bdb960
+#: ../../source/development.rst:138 675c39578dfa4617bd16e24504bdb960
 msgid "Flash size: 4MB (32Mb)"
 msgstr "Flash-Größe: 4MB (32Mb)"
 
-#: ../../source/development.rst:132 806eaa2fddf14474aa9d08dcbf5caf51
+#: ../../source/development.rst:139 806eaa2fddf14474aa9d08dcbf5caf51
 msgid ""
 "Partition scheme: minimal SPIFFS (large APPS with OTA) - this fits onto 4MB "
 "devices."
@@ -262,11 +285,11 @@ msgstr ""
 "Partitionsschema: minimal SPIFFS (große APPS mit OTA) - das passt auf 4MB-"
 "Geräte."
 
-#: ../../source/development.rst:133 f3f6f73d8dd040cb87241541fb769a28
+#: ../../source/development.rst:140 f3f6f73d8dd040cb87241541fb769a28
 msgid "``Arduino IDE -> Sketch -> Upload``"
 msgstr "``Arduino IDE -> Sketch -> Hochladen``"
 
-#: ../../source/development.rst:135 4103c3b8b1a24ca58129005f05342e6f
+#: ../../source/development.rst:142 4103c3b8b1a24ca58129005f05342e6f
 msgid ""
 "This is to test whether the compiled code actually works after USB-flashing "
 "to your device."
@@ -274,11 +297,11 @@ msgstr ""
 "Dies ist zum Testen, ob der kompilierte Code nach dem USB-Flashen auf Ihr "
 "Gerät tatsächlich funktioniert."
 
-#: ../../source/development.rst:136 c83ae921bd6b4fc0b0f86dff9c65555a
+#: ../../source/development.rst:143 c83ae921bd6b4fc0b0f86dff9c65555a
 msgid "``Arduino IDE -> Sketch -> Export compiled binary``"
 msgstr "``Arduino IDE -> Sketch -> Kompilierte Binärdatei exportieren``"
 
-#: ../../source/development.rst:138 2ce44dcde93c48e5823392701dbb867c
+#: ../../source/development.rst:145 2ce44dcde93c48e5823392701dbb867c
 msgid ""
 "This creates a .bin file for OTA updating. Test whether OTA updating using "
 "that file works."
@@ -286,15 +309,15 @@ msgstr ""
 "Dies erzeugt eine .bin-Datei für die OTA-Aktualisierung. Testen Sie, ob die "
 "OTA-Aktualisierung mit dieser Datei funktioniert."
 
-#: ../../source/development.rst:144 593caf8222d641bbbdd83fa9a5bdd5fd
+#: ../../source/development.rst:151 593caf8222d641bbbdd83fa9a5bdd5fd
 msgid "Creating a new release"
 msgstr "Erstellen eines neuen Releases"
 
-#: ../../source/development.rst:146 5ad0f70ef2744c25afc825d51e78fcb6
+#: ../../source/development.rst:153 5ad0f70ef2744c25afc825d51e78fcb6
 msgid "Checklist:"
 msgstr "Checkliste:"
 
-#: ../../source/development.rst:148 fca8414262d44bad87a7ac5dae6c6f1e
+#: ../../source/development.rst:155 fca8414262d44bad87a7ac5dae6c6f1e
 msgid ""
 "make sure all issues for this milestone are closed or moved to the next "
 "milestone"
@@ -302,13 +325,13 @@ msgstr ""
 "Sicherstellen, dass alle Probleme für diesen Meilenstein geschlossen oder "
 "zum nächsten Meilenstein verschoben worden sind"
 
-#: ../../source/development.rst:150 3ba732302a294e989df96578c59accf5
+#: ../../source/development.rst:157 3ba732302a294e989df96578c59accf5
 msgid "check if there are any pending fixes for severe issues"
 msgstr ""
 "Prüfen Sie, ob es noch ausstehende Korrekturen für schwerwiegende Probleme "
 "gibt"
 
-#: ../../source/development.rst:151 e02d107efcde45669da7a7ec61baf1e0
+#: ../../source/development.rst:158 e02d107efcde45669da7a7ec61baf1e0
 msgid ""
 "check whether some CA certificate (see ``ca_certs.h``) will expire soon and "
 "whether we already can add their next valid cert."
@@ -316,52 +339,52 @@ msgstr ""
 "prüfen, ob ein CA-Zertifikat (siehe ``ca_certs.h``) bald abläuft und ob wir "
 "bereits deren nächstes gültiges Zertifikat hinzufügen können."
 
-#: ../../source/development.rst:153 ff7f215a43124441b87d5f0ba02d3f51
+#: ../../source/development.rst:160 ff7f215a43124441b87d5f0ba02d3f51
 msgid "find and fix any low hanging fruit left on the issue tracker"
 msgstr "alle einfach zu lösenden Probleme im Issue Tracker finden und beheben"
 
-#: ../../source/development.rst:154 94984feaa3b44fcb8722f931a3a6a15c
+#: ../../source/development.rst:161 94984feaa3b44fcb8722f931a3a6a15c
 msgid "close release milestone on Github"
 msgstr "Release-Meilenstein auf Github schließen"
 
-#: ../../source/development.rst:155 a3632d169a6e4732b01feffd73a47a27
+#: ../../source/development.rst:162 a3632d169a6e4732b01feffd73a47a27
 msgid ""
 "update ``docs/source/changes.rst``, based on ``git log $PREVIOUS_RELEASE..``"
 msgstr ""
 "Aktualisieren von ``docs/source/changes.rst``, basierend auf ``git log "
 "$PREVIOUS_RELEASE..``"
 
-#: ../../source/development.rst:156 494620c741bb45f79cf065407d01e33b
+#: ../../source/development.rst:163 494620c741bb45f79cf065407d01e33b
 msgid "``bump2version --new-version 1.23.0 release`` - this will:"
 msgstr "``bump2version --new-version 1.23.0 release`` - dies wird:"
 
-#: ../../source/development.rst:158 9927da2e39bd4972a8d8364f04c1d4ab
+#: ../../source/development.rst:165 9927da2e39bd4972a8d8364f04c1d4ab
 msgid "update versions everywhere"
 msgstr "die Versionen überall aktualisieren"
 
-#: ../../source/development.rst:159 176872b462804da487b0ec9a63c2eee5
+#: ../../source/development.rst:166 176872b462804da487b0ec9a63c2eee5
 msgid "auto-create a git tag"
 msgstr "einen Git-Tag automatisch erstellen"
 
-#: ../../source/development.rst:160 5a33ff1c7e0042f195c8a9a5acf606cc
+#: ../../source/development.rst:167 5a33ff1c7e0042f195c8a9a5acf606cc
 msgid "auto-create a git commit"
 msgstr "einen Git-Commit automatisch erstellen"
 
-#: ../../source/development.rst:161 50fc22b018254b7bbfd6df4b61c141b0
+#: ../../source/development.rst:168 50fc22b018254b7bbfd6df4b61c141b0
 msgid "review the automatically generated changeset"
 msgstr "Überprüfen Sie das automatisch erzeugte Changeset"
 
-#: ../../source/development.rst:162 7a61ac376f13486e8f16cd08b7b9e4bf
+#: ../../source/development.rst:169 7a61ac376f13486e8f16cd08b7b9e4bf
 msgid "create a github release for this tag:"
 msgstr "einen Github-Release für dieses Tag erstellen:"
 
-#: ../../source/development.rst:164 4ba19bc52ac449c582a5a130566e7e70
+#: ../../source/development.rst:171 4ba19bc52ac449c582a5a130566e7e70
 msgid "create a binary (see above) and attach to the github release"
 msgstr ""
 "Erstellen Sie ein Binary (siehe oben) und hängen Sie es an den Github-"
 "Release an"
 
-#: ../../source/development.rst:165 907276991ed942fea0c7658cff45a597
+#: ../../source/development.rst:172 907276991ed942fea0c7658cff45a597
 msgid ""
 "add a link to the relevant ``changes.rst`` section to the github release"
 msgstr ""

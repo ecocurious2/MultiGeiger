@@ -1,0 +1,256 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020-2021, see AUTHORS
+# This file is distributed under the same license as the MultiGeiger package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# TW <tw@waldmann-edv.de>, 2021
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: MultiGeiger\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-03-14 22:24+0100\n"
+"PO-Revision-Date: 2021-03-14 21:27+0000\n"
+"Last-Translator: TW <tw@waldmann-edv.de>, 2021\n"
+"Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../../source/deployment.rst:6 de72d5e24aa044b4ad1d4508b530d124
+msgid "Deployment"
+msgstr "Aufstellen"
+
+#: ../../source/deployment.rst:8 ec5cf13528cf4bd2b725e27546f6271d
+msgid ""
+"When deploying the MultiGeiger measurement station, you need to consider "
+"some things."
+msgstr ""
+
+#: ../../source/deployment.rst:10 2c79c0a8d79c4b60b3b1e310df12fe3e
+msgid ""
+"Of course, for us private persons, there rarely will be a 100% perfect "
+"deployment place. But still, we can be aware of the parameters which may "
+"have a negative impact."
+msgstr ""
+
+#: ../../source/deployment.rst:15 bb827d5d064f4c8b89e28d734a3baf94
+msgid "Requirements for the deployment place"
+msgstr ""
+
+#: ../../source/deployment.rst:18 dedff27ccb314edb8209620b28433829
+msgid "In any case we need this at the deployment place:"
+msgstr ""
+
+#: ../../source/deployment.rst:20 2ef11566366d495296ecb0b8bea06227
+msgid "WiFi or LoRa reception for data transmission (A)"
+msgstr ""
+
+#: ../../source/deployment.rst:22 8b7b085cdce148b7a8a0695ed4c52fa5
+msgid "WiFi can come from inside the house, LoRa from some TTN LoRa gateway."
+msgstr ""
+
+#: ../../source/deployment.rst:24 38d9e36cd4084806ae8df215198a6f15
+msgid "Power: 5 V / ~ 100 mA (B)"
+msgstr ""
+
+#: ../../source/deployment.rst:26 dcbd7b78316f4c1cb1625406a46b0e7d
+msgid ""
+"Power can come from inside the house via a 5V cable or from other power "
+"supply."
+msgstr ""
+
+#: ../../source/deployment.rst:28 737db227386948cd9ef204a25d6abcab
+msgid "Irrigation area (C)"
+msgstr ""
+
+#: ../../source/deployment.rst:30 66ffe6669ee546038f21bcd67e91b09a
+msgid ""
+"E.g. some lawn, meadow or similar that gets some rainfall, potentially "
+"including fallout."
+msgstr ""
+
+#: ../../source/deployment.rst:18 2065184e06c2485c8af44cf6f3f9f44a
+msgid "|mg-garden|"
+msgstr ""
+
+#: ../../source/deployment.rst:39 412481f3104244cc93f285ef07001667
+msgid "Choosing a deployment place"
+msgstr ""
+
+#: ../../source/deployment.rst:41 fe49e86e44664b7cb38f0368021e691e
+msgid ""
+"We want to measure radioactive substances (dust), also known as \"fallout\"."
+" They come from e.g. nuclear explosions or reactor desasters."
+msgstr ""
+
+#: ../../source/deployment.rst:44 043c28e5802640a8bba29b43778b5d5a
+msgid ""
+"In a very weak variant, they also naturally come from the atmosphere due to "
+"the decay of the radioactive noble gas radon. This \"radon fallout\" causes "
+"a small, but measurable peak on our devices, which degrades with a half life"
+" of 45 minutes."
+msgstr ""
+
+#: ../../source/deployment.rst:47 5ba5ceb0488547d9aff7ccad03f12076
+msgid ""
+"With the help of these \"radon peaks\", we can see whether our device is "
+"deployed to a good place and is sensitive also for \"real\" fallout."
+msgstr ""
+
+#: ../../source/deployment.rst:50 2810ac598f7347ecb11ed7efb6efc12e
+msgid "Irrigation area"
+msgstr ""
+
+#: ../../source/deployment.rst:52 77b3a43b966542d5abcb56a0b4031f4c
+msgid ""
+"We need a bigger irrigation area in the direct vicinity of the measurement "
+"station. This area should also have the capability to hold and store "
+"radioactive particles."
+msgstr ""
+
+#: ../../source/deployment.rst:55 24f7a96125324b2b987fc9e2ec49e0d2
+msgid "A lawn or a meadow is perfect for this."
+msgstr ""
+
+#: ../../source/deployment.rst:57 8bf2f8d96cf94b659e28403958003ce9
+msgid ""
+"On the other hand, some asphalt can not do that, because particles are "
+"washed away directly after raining down."
+msgstr ""
+
+#: ../../source/deployment.rst:60 58168e86b0074d049b04053b1b573d91
+msgid "Wind direction"
+msgstr ""
+
+#: ../../source/deployment.rst:62 330032654ff04efaa68a17e2adc95550
+msgid ""
+"The area should be unobstructed from the main wind direction by other "
+"buildings, bushes or trees."
+msgstr ""
+
+#: ../../source/deployment.rst:65 11d02a8b7c4445729e5294c2b418d40d
+msgid "Sun light"
+msgstr ""
+
+#: ../../source/deployment.rst:67 df043edc66b04fa0993e759b57ea4df9
+msgid ""
+"The power supply cable as well as the MultiGeiger device itself, should be "
+"in the shadows most of the time."
+msgstr ""
+
+#: ../../source/deployment.rst:69 990acb66d13347de92af86e8615827d3
+msgid "Direct sunlight can have two negative influences:"
+msgstr ""
+
+#: ../../source/deployment.rst:71 f270e17c703840bea2ebbf5c22397888
+msgid ""
+"Heat: The temperature inside the device can rise to up to 60 deg celsius in "
+"direct sunshine (45 deg celsius in the shadows). We did practical "
+"temperature tests showing that the device works ok up to 70 deg celsius. But"
+" the GM tube is only specified to up to 50 deg celsius."
+msgstr ""
+
+#: ../../source/deployment.rst:76 e5516619d5b74b5b8ae58feaf8b510ce
+msgid ""
+"UV damage: Over time, the cable and case can be damaged by UV radiation and "
+"get porous."
+msgstr ""
+
+#: ../../source/deployment.rst:81 e8675ececd324c779daa682ce0130953
+msgid "Examples"
+msgstr ""
+
+#: ../../source/deployment.rst:83 fc21bf0ac75e4b4082edc437031f4e5d
+msgid "Examples of good and bad deployment places:"
+msgstr ""
+
+#: ../../source/deployment.rst:85 316902f951fe40158f3ef444805f12c1
+msgid "|mg-placement|"
+msgstr ""
+
+#: ../../source/deployment.rst:91 0dc9abf289ea47beb4c21d3c3fac6905
+msgid ""
+"Comparison of two deployment places. Yellow is the \"usable irrigation "
+"area\"."
+msgstr ""
+
+#: ../../source/deployment.rst:93 fbc199aeb1ba45919f3890af5ef9ae09
+msgid "Bad deployment place (red dot at the left)"
+msgstr ""
+
+#: ../../source/deployment.rst:95 ../../source/deployment.rst:104
+#: c804b4b4d26e4544ba64b0792692f7fb 9def88da8aec4744a24dcec631357b9a
+msgid "Reasons:"
+msgstr ""
+
+#: ../../source/deployment.rst:97 8c3cd62837e44392b2a62eb77c750da1
+msgid ""
+"Meadow: a bit part of the area around the GM device is made of concrete "
+"platter. Incapable of holding/storing fallout."
+msgstr ""
+
+#: ../../source/deployment.rst:98 57514b1ba6e24ab5857774361fa312bb
+msgid ""
+"Wind: the main wind direction is from the west and the tree obstructs "
+"fallout raining down close to the device."
+msgstr ""
+
+#: ../../source/deployment.rst:99 46f351e796344d628d41ce8c7f4f98dc
+msgid ""
+"Sun: Sunlight comes primarily from the south and strongly shines on the "
+"devices."
+msgstr ""
+
+#: ../../source/deployment.rst:102 13bb8180120f42988b4f6ca0f2cf651b
+msgid "Good deployment place (red dot at the right)"
+msgstr ""
+
+#: ../../source/deployment.rst:106 4b4a22e8083c455d8f264704a8c06cca
+msgid ""
+"Meadow: a big part of the area around the GM device is meadow, which can "
+"hold/store fallout."
+msgstr ""
+
+#: ../../source/deployment.rst:107 1b12c348443d4da6bf708f25f41901eb
+msgid "Wind: no obstruction"
+msgstr ""
+
+#: ../../source/deployment.rst:108 11e34d688b334c4d9d83eca6bb247dc8
+msgid "Sun: the GM device is in the shadow due to the garden shack."
+msgstr ""
+
+#: ../../source/deployment.rst:112 54c12f181314454587ed62f40b81a335
+msgid "More Information"
+msgstr ""
+
+#: ../../source/deployment.rst:114 584b8809020c4146aafee17e98bdcda0
+msgid "Description of the BFS-ODL measurement network (german):"
+msgstr ""
+
+#: ../../source/deployment.rst:116 595771e5d9c54da3bc5f2c51888aea4b
+msgid ""
+"`Messnetz "
+"<https://www.bfs.de/SharedDocs/Downloads/BfS/DE/broschueren/ion/radioaktivitaetsmessnetz.pdf?__blob=publicationFile&v=5>`_"
+msgstr ""
+
+#: ../../source/deployment.rst:117 4a53fc2ca83e44edba9b8dd5cd0eae20
+msgid ""
+"`ODL-Sonde <https://odlinfo.bfs.de/DE/themen/wie-wird-gemessen/odl-"
+"sonde.html>`_"
+msgstr ""
+
+#: ../../source/deployment.rst:119 3973b9ec77624235b17b5cab410cc7e7
+msgid "Video interview about the BFS-ODL measurement network (german):"
+msgstr ""
+
+#: ../../source/deployment.rst:121 1304cf9196ce45df83cc80304207de72
+msgid ""
+"`Interview über das BFS-ODL-Netzwerk "
+"<https://www.bfs.de/SharedDocs/Videos/BfS/DE/kt-interview-"
+"umweltueberwachung.html>`_"
+msgstr ""
