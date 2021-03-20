@@ -20,14 +20,20 @@ source_lang = en
 type = PO
 
 [multigeiger.docs_build_gettext_assemblyguide]
-file_filter = locales/<lang>/LC_MESSAGES/assemblyguide.po
-source_file = docs/build/gettext/assemblyguide.pot
+file_filter = locales/<lang>/LC_MESSAGES/assembly.po
+source_file = docs/build/gettext/assembly.pot
 source_lang = de
 type = PO
 
 [multigeiger.docs_build_gettext_deployment]
 file_filter = locales/<lang>/LC_MESSAGES/deployment.po
 source_file = docs/build/gettext/deployment.pot
+source_lang = en
+type = PO
+
+[multigeiger.docs_build_gettext_setup]
+file_filter = locales/<lang>/LC_MESSAGES/setup.po
+source_file = docs/build/gettext/setup.pot
 source_lang = en
 type = PO
 
