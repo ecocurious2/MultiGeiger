@@ -55,12 +55,6 @@ source_file = docs/build/gettext/faq.pot
 source_lang = en
 type = PO
 
-[multigeiger.docs_build_gettext_changes]
-file_filter = locales/<lang>/LC_MESSAGES/changes.po
-source_file = docs/build/gettext/changes.pot
-source_lang = en
-type = PO
-
 [multigeiger.docs_build_gettext_authors]
 file_filter = locales/<lang>/LC_MESSAGES/authors.po
 source_file = docs/build/gettext/authors.pot
