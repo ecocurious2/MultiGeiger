@@ -8,15 +8,35 @@ V1.15.0-dev (not released yet)
 
 New features:
 
-* ...
+* add bluetooth (BLE) support, #78
 
 Fixes:
 
-* ...
+* improve LoRaWAN stability (work around LMIC bug #677, add LMIC polling
+  from loop()), #373
+* do async NTP/clock setup, #316
+* avoid using IotWebConf 3.0.0 for now, #357, PR #370
 
 Other changes:
 
-* ...
+* move CI from travis CI to github workflow
+* start screen cleanups, #335
+* code / naming style fixes
+* remove dates in file names, commit relevant versions to git
+* add drill files, #354
+* docs:
+
+  - use transifex / sphinx / readthedocs.org for translatons (en/de for now)
+  - document docs/translation workflow in development docs
+  - added assembly and deployment guide
+  - document esp32 board buttons, #129
+  - document dip switch usage, #128
+  - BLE usage documentation update with some images, #338
+  - added links to map, ecocurious, assembly room
+  - markup, rendering, spelling fixes, cleanups
+  - fix unclear version / date in Aufbauanleitung, #110
+  - moved links to docs -> resources, #223
+  - add xkcd about radiation doses to FAQ, #310
 
 V1.14.0 2020-05-16
 ------------------
