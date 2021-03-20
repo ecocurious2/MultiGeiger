@@ -1,5 +1,5 @@
-Installation
-------------
+Setup
+-----
 
 Download and unpack the latest release from GitHub (
 https://github.com/ecocurious/MultiGeiger/releases ) as source code

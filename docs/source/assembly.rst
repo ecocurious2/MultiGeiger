@@ -1,8 +1,8 @@
 .. include:: global.rst.inc
 .. _assemblyguide:
 
-Assembly Guide
-==============
+Assembly
+========
 
 .. Die erste Version dieser Anleitung stammte von einem Handout von Jürgen Böhringer mit dem Titel ``Wie baue ich einen Multigeiger?`` (damals: HW-Version V1.4 jb/rxf 2019-09  -  Handout-Version 2021-03-03)
 

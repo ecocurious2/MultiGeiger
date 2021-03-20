@@ -1,6 +1,12 @@
 [main]
 host = https://www.transifex.com
 
+[multigeiger.docs_build_gettext_index]
+file_filter = locales/<lang>/LC_MESSAGES/index.po
+source_file = docs/build/gettext/index.pot
+source_lang = en
+type = PO
+
 [multigeiger.docs_build_gettext_resources]
 file_filter = locales/<lang>/LC_MESSAGES/resources.po
 source_file = docs/build/gettext/resources.pot
@@ -19,15 +25,21 @@ source_file = docs/build/gettext/usage.pot
 source_lang = en
 type = PO
 
-[multigeiger.docs_build_gettext_assemblyguide]
-file_filter = locales/<lang>/LC_MESSAGES/assemblyguide.po
-source_file = docs/build/gettext/assemblyguide.pot
+[multigeiger.docs_build_gettext_assembly]
+file_filter = locales/<lang>/LC_MESSAGES/assembly.po
+source_file = docs/build/gettext/assembly.pot
 source_lang = de
 type = PO
 
 [multigeiger.docs_build_gettext_deployment]
 file_filter = locales/<lang>/LC_MESSAGES/deployment.po
 source_file = docs/build/gettext/deployment.pot
+source_lang = en
+type = PO
+
+[multigeiger.docs_build_gettext_setup]
+file_filter = locales/<lang>/LC_MESSAGES/setup.po
+source_file = docs/build/gettext/setup.pot
 source_lang = en
 type = PO
 
@@ -40,18 +52,6 @@ type = PO
 [multigeiger.docs_build_gettext_faq]
 file_filter = locales/<lang>/LC_MESSAGES/faq.po
 source_file = docs/build/gettext/faq.pot
-source_lang = en
-type = PO
-
-[multigeiger.docs_build_gettext_changes]
-file_filter = locales/<lang>/LC_MESSAGES/changes.po
-source_file = docs/build/gettext/changes.pot
-source_lang = en
-type = PO
-
-[multigeiger.docs_build_gettext_index]
-file_filter = locales/<lang>/LC_MESSAGES/index.po
-source_file = docs/build/gettext/index.pot
 source_lang = en
 type = PO
 

@@ -14,15 +14,15 @@ MultiGeiger Documentation
 .. toctree::
    :maxdepth: 2
 
-   ecocurious
-   changes
-   usage
-   assemblyguide
-   deployment
-   installation
+   about
+   assembly
+   setup
    setup_lora
+   usage
+   deployment
    faq
    resources
+   changes
    development
    authors
 
