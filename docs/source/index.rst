@@ -14,8 +14,8 @@ MultiGeiger Documentation
 .. toctree::
    :maxdepth: 2
 
-   ecocurious
-   assemblyguide
+   about
+   assembly
    installation
    setup_lora
    usage
