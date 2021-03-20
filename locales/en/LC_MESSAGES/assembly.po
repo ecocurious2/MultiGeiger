@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiGeiger\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-14 22:24+0100\n"
+"POT-Creation-Date: 2021-03-20 21:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,15 +16,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../source/assemblyguide.rst:5 7ae7c0700057403b9e5acece3a609ddf
-msgid "Assembly Guide"
-msgstr "Assembly Guide"
+#: ../../source/assembly.rst:5 48c8604280de4f43b9c4a163a79b6fe4
+msgid "Assembly"
+msgstr "Assembly"
 
-#: ../../source/assemblyguide.rst:14 8f741677e1c24385b127998bc02c26ca
+#: ../../source/assembly.rst:14 7f6e822cd6d24ba0ad5265db050da6f5
 msgid "Ergebnis"
 msgstr "Ergebnis"
 
-#: ../../source/assemblyguide.rst:15 8c59719b6c2a42ffaa37fdeea66175df
+#: ../../source/assembly.rst:15 3139526997a7476bb1f124f5a482894b
 msgid ""
 "Das Multigeigerprojekt ist eine Idee der `Ecocurious-Initiative "
 "<https://ecocurious.de/projekte/multigeiger-2/>`_. Das dazugehörige Open-"
@@ -44,11 +44,11 @@ msgstr ""
 "Radioaktivitätsmessnetz in Bürgerhand, das wir hiermit aufbauen wollen. "
 "Herzliche Einladung zum Mitmachen!"
 
-#: ../../source/assemblyguide.rst:25 84f34adc445f4c4ba88ede8cbbda95f8
+#: ../../source/assembly.rst:25 b1576aab62fa437885445ff82143b8f4
 msgid "Bauteile"
 msgstr "Bauteile"
 
-#: ../../source/assemblyguide.rst:27 0472cf73174547c0a176e1af32b5d4ea
+#: ../../source/assembly.rst:27 005b05c65c214cc0b7f47950a7a13eac
 msgid ""
 "Elektronikbauteile aus (s. `Stückliste "
 "<https://github.com/ecocurious2/MultiGeiger/blob/master/docs/hardware/MultiGeiger_Partlist.ods?raw=true>`_)"
@@ -58,255 +58,255 @@ msgstr ""
 "<https://github.com/ecocurious2/MultiGeiger/blob/master/docs/hardware/MultiGeiger_Partlist.ods?raw=true>`_)"
 " zunächst sortieren und auf Vollständigkeit prüfen:"
 
-#: ../../source/assemblyguide.rst:81 f57b8a2ab82840fe887ad71af59f7485
+#: ../../source/assembly.rst:81 ebc8cb1056a74e7aaf3b0ddc00da8d7c
 msgid "ID(s)"
 msgstr "ID(s)"
 
-#: ../../source/assemblyguide.rst:81 e215b502d41a44a582aac5b10306d1fc
+#: ../../source/assembly.rst:81 4d12cef7a2ec482c81f6d51e76105cd8
 msgid "#"
 msgstr "#"
 
-#: ../../source/assemblyguide.rst:81 174c32f6f91848119c212ddb32c95097
+#: ../../source/assembly.rst:81 b3520f51e32f453987d07187a1d27828
 msgid "Bild"
 msgstr "Bild"
 
-#: ../../source/assemblyguide.rst:81 27a18219cb894746b42f1e2a4d312d95
+#: ../../source/assembly.rst:81 659e65b36f9a4bfd846ebca3f7f2d809
 msgid "Typ"
 msgstr "Typ"
 
-#: ../../source/assemblyguide.rst:83 9b59c26d5dc84e108400acc1d8278ccf
+#: ../../source/assembly.rst:83 4513f43731c8471696364f39162fa082
 msgid "T1"
 msgstr "T1"
 
-#: ../../source/assemblyguide.rst:83 ../../source/assemblyguide.rst:85
-#: ../../source/assemblyguide.rst:93 ../../source/assemblyguide.rst:95
-#: ../../source/assemblyguide.rst:97 ../../source/assemblyguide.rst:99
-#: ../../source/assemblyguide.rst:101 ../../source/assemblyguide.rst:103
-#: ../../source/assemblyguide.rst:105 ../../source/assemblyguide.rst:107
-#: ../../source/assemblyguide.rst:109 ../../source/assemblyguide.rst:117
-#: e5b0c9a9de9b437cba319ddec7774942 7f8a2e9e7ca847639c3cd18b4a1eabea
-#: 99edd8571a434fd49f979d69064b7b49 ce875faa47f94e7a9651f9ffab2d3be3
-#: d94f1437906d4903b54fa5059ad9901a 3b8e98b3d4f842d8b0272e10562ea9b4
-#: 44e6dc7f147348bda1e011f02836d044 fc07e74e1dcc4e85af45bd20073d4aea
-#: cbeffc964d32403dbc8fa4a02b1725ce 6713c43aa10c498681c50c1f1f66e5d4
-#: 6235a219f81347a9b7faeb08689f1182 5db7a59aceba4812bbacd3c5da184833
+#: ../../source/assembly.rst:83 ../../source/assembly.rst:85
+#: ../../source/assembly.rst:93 ../../source/assembly.rst:95
+#: ../../source/assembly.rst:97 ../../source/assembly.rst:99
+#: ../../source/assembly.rst:101 ../../source/assembly.rst:103
+#: ../../source/assembly.rst:105 ../../source/assembly.rst:107
+#: ../../source/assembly.rst:109 ../../source/assembly.rst:117
+#: bae9781f014849d9872c31b0b1045857 ce4d1a96cedd413e9a3c726c80a85aed
+#: d880a631559a4dba80795a954af7d3bc 67bfaaaa63464830a6695207e1276ba8
+#: ffebb123c53f4572bb0ed5c3a09d4d46 5a901f8f6efd4ac38bb902aed782d910
+#: d4e28c6d8b654f5fb4c73a5b1eeb9f00 de167f209d7b4f5191796aff4d7f5f6b
+#: dc6eed76c3e64019aa8adf70ece98357 22c807f1c8244ec7802f6631976fd4dd
+#: d2533abc4b7e4c8bac634cf35bfbd3e9 f54a39f6c2214ad8abd01b53166135f7
 msgid "1"
 msgstr "1"
 
-#: ../../source/assemblyguide.rst:83 724be5ecb28a4e58b4bb484c7eaef23b
+#: ../../source/assembly.rst:83 58aeda91774c4d08b231e68620db4115
 msgid "|parts01|"
 msgstr "|parts01|"
 
-#: ../../source/assemblyguide.rst:83 08832c5583d54a0b9a8ea63515d8a690
+#: ../../source/assembly.rst:83 5c7e9d5c62ca4d67bd92f952d1d9f1a4
 msgid "N-MOS-Transistor BSP125"
 msgstr "N-MOS-Transistor BSP125"
 
-#: ../../source/assemblyguide.rst:85 c3416027be7644779b064cb8baae7223
+#: ../../source/assembly.rst:85 6857b4413fa14b87a5f0ff40952f7118
 msgid "R1"
 msgstr "R1"
 
-#: ../../source/assemblyguide.rst:85 f71f10c29628407db4435ce7137ab8b1
+#: ../../source/assembly.rst:85 61ca17c52b1b49f0836976f6199f11c5
 msgid "|parts02|"
 msgstr "|parts02|"
 
-#: ../../source/assemblyguide.rst:85 240fdde68190468b909e323625900633
+#: ../../source/assembly.rst:85 6c31e14fde3848fa912de32ef6b0f9d7
 msgid "10K Widerstand braun-schwarz-orange-gold"
 msgstr "10K Widerstand braun-schwarz-orange-gold"
 
-#: ../../source/assemblyguide.rst:87 31d11fd73bfc476d98257dc7d92a09f8
+#: ../../source/assembly.rst:87 ec68775c4ea04c3386926aae89609b5c
 msgid "R2 R5"
 msgstr "R2 R5"
 
-#: ../../source/assemblyguide.rst:87 ../../source/assemblyguide.rst:89
-#: ../../source/assemblyguide.rst:91 ../../source/assemblyguide.rst:111
-#: ../../source/assemblyguide.rst:113 ../../source/assemblyguide.rst:115
-#: 8fdde208b9594f7bb77bda9318b831d3 f21707a5f1954528949f51d3628e6844
-#: 1c6a783dcebe4bb0858e3229bfa1810a afd5692b92ae479a9a5fda06e012c1b4
-#: 06f4a37e12984d9aa7843cfd5d341e6a db09634cee234f52bec4f7b25b371b57
+#: ../../source/assembly.rst:87 ../../source/assembly.rst:89
+#: ../../source/assembly.rst:91 ../../source/assembly.rst:111
+#: ../../source/assembly.rst:113 ../../source/assembly.rst:115
+#: d0b0e580304a430bb58fb381276a5b78 4b6cb394c45a4e3c93b5b8c4083a790a
+#: 70d2ac4b825747208152ea7d53bc971a 06626d3a66cb413dbe616dc224084ff0
+#: 9c11f584588345909f91b7e812b213e9 5537c31396844aeb90fe9555f47032d4
 msgid "2"
 msgstr "2"
 
-#: ../../source/assemblyguide.rst:87 081fa5cbc13c45639bb5279ca458f5ef
+#: ../../source/assembly.rst:87 9a807aca19d2401585daa8b72ebf29ab
 msgid "|parts03|"
 msgstr "|parts03|"
 
-#: ../../source/assemblyguide.rst:87 d40242c17a224724bde3ce3442a32fd7
+#: ../../source/assembly.rst:87 723d0c5c5b3b41bd95c94e844ff152b4
 msgid "1,0M Widerstand braun-schwarz-grün-gold"
 msgstr "1,0M Widerstand braun-schwarz-grün-gold"
 
-#: ../../source/assemblyguide.rst:89 9b0c382d9d4345929a6954c9ae58c99d
+#: ../../source/assembly.rst:89 308ed40e84d3490ab71d262d1686878f
 msgid "R3 R4"
 msgstr "R3 R4"
 
-#: ../../source/assemblyguide.rst:89 3300cc8a4aa548e489e03cfa0a569704
+#: ../../source/assembly.rst:89 8facec8dd4d64c9cbda57f8fe5cb9d98
 msgid "|parts04|"
 msgstr "|parts04|"
 
-#: ../../source/assemblyguide.rst:89 a6f9dc5beced40798965a845610429ce
+#: ../../source/assembly.rst:89 6d8172a2708547b8975a3b508bdf2a58
 msgid "4,7M Widerstand gelb-violett-grün-gold"
 msgstr "4,7M Widerstand gelb-violett-grün-gold"
 
-#: ../../source/assemblyguide.rst:91 1e6d66ee805f4212a05e8521f832d5e4
+#: ../../source/assembly.rst:91 91f97bd50044448bb9ac85c39d4fd554
 msgid "D1 D2"
 msgstr "D1 D2"
 
-#: ../../source/assemblyguide.rst:91 1a5b8da8934744e6b8bb3bce9ecc7a9c
+#: ../../source/assembly.rst:91 bc69fb224b9d41b09506875dbcd25271
 msgid "|parts05|"
 msgstr "|parts05|"
 
-#: ../../source/assemblyguide.rst:91 d3a42ef37c354f93babab974eb922c22
+#: ../../source/assembly.rst:91 14b2258ef6fb451a9728539d1fbc42da
 msgid "Z-Diode ZY 200"
 msgstr "Z-Diode ZY 200"
 
-#: ../../source/assemblyguide.rst:93 16d8696a9aa24242a75d087f26069cf2
+#: ../../source/assembly.rst:93 d358ef04816647f9b3eecf29ae569eb7
 msgid "D3"
 msgstr "D3"
 
-#: ../../source/assemblyguide.rst:93 dc413c9e69bd4d9b8cd60d2ed69acb67
+#: ../../source/assembly.rst:93 abd5963546044f9fa693ea90f070230a
 msgid "|parts06|"
 msgstr "|parts06|"
 
-#: ../../source/assemblyguide.rst:93 8b155371422b4b0abc1c0bf2440dc622
+#: ../../source/assembly.rst:93 5a0da5e91d9a4795ac8ebfc8fdde807c
 msgid "Z-Diode BZX55C3V3"
 msgstr "Z-Diode BZX55C3V3"
 
-#: ../../source/assemblyguide.rst:95 729eac4de7db46e3a54dea8b3d0be5d9
+#: ../../source/assembly.rst:95 bc5f1538ccab4df6b7ab835282ffb267
 msgid "D4"
 msgstr "D4"
 
-#: ../../source/assemblyguide.rst:95 4635c10aaa2c4c12931480a7dbbee212
+#: ../../source/assembly.rst:95 5a75525474204b8c83dc6c1b33e9ce7f
 msgid "|parts07|"
 msgstr "|parts07|"
 
-#: ../../source/assemblyguide.rst:95 ac2e31f406ed41ba9de7e0d4bef4d177
+#: ../../source/assembly.rst:95 83d09990513d40928c31d42caf7d50b0
 msgid "Gleichrichterdiode BYV 26E"
 msgstr "Gleichrichterdiode BYV 26E"
 
-#: ../../source/assemblyguide.rst:97 ec032885af1a468796e0716a881b1d05
+#: ../../source/assembly.rst:97 b8f49b24b2854cfc8a999308b3450989
 msgid "D6"
 msgstr "D6"
 
-#: ../../source/assemblyguide.rst:97 fa364d8ea2ab4dbbab3e532c04abdf16
+#: ../../source/assembly.rst:97 ab35a3a2abe0409189b48349b6b22023
 msgid "|parts08|"
 msgstr "|parts08|"
 
-#: ../../source/assemblyguide.rst:97 9596f39c5a034b60a2746c41a085f889
+#: ../../source/assembly.rst:97 7247a3d607514c0ca8558b289fb167f8
 msgid "Gleichrichterdiode GP10Y"
 msgstr "Gleichrichterdiode GP10Y"
 
-#: ../../source/assemblyguide.rst:99 65b92b60713d4188b533154b0f7d1b02
+#: ../../source/assembly.rst:99 0f31d51b506e41ffb7ab9da1ab535659
 msgid "C1"
 msgstr "C1"
 
-#: ../../source/assemblyguide.rst:99 745f95dbf74848fc89f57e8613258edf
+#: ../../source/assembly.rst:99 8892fd580c3e48af926550802b1dd1af
 msgid "|parts09|"
 msgstr "|parts09|"
 
-#: ../../source/assemblyguide.rst:99 85d4639d3b884bcc8349e9e052e5545b
+#: ../../source/assembly.rst:99 3f21317df3254bcca3fae093d6f96c0e
 msgid "ELKO Elektrolytkondensator 100 uF, 16 V"
 msgstr "ELKO Elektrolytkondensator 100 uF, 16 V"
 
-#: ../../source/assemblyguide.rst:101 d596deb7899b494f95a1544bdebfb992
+#: ../../source/assembly.rst:101 f0ab4ee94e2246e3ac9083ff957a80ac
 msgid "C2"
 msgstr "C2"
 
-#: ../../source/assemblyguide.rst:101 a11f38a89abc4ee991f25f01f82ea4b2
+#: ../../source/assembly.rst:101 a41850c76c4346bdbb9b00206a775361
 msgid "|parts10|"
 msgstr "|parts10|"
 
-#: ../../source/assemblyguide.rst:101 c057683e0c65405c94156ee8f0a33824
+#: ../../source/assembly.rst:101 6389a20573f54e4dae691ab631abdac0
 msgid "Folienkondensator 10nF, 100V 0.01  100-"
 msgstr "Folienkondensator 10nF, 100V 0.01  100-"
 
-#: ../../source/assemblyguide.rst:103 4d081835d469446c968f62c2574127c6
+#: ../../source/assembly.rst:103 49caf1ab5b3045108a7d798a7ca06493
 msgid "C3"
 msgstr "C3"
 
-#: ../../source/assemblyguide.rst:103 725514cdb3e24decaeb6b23ec641565e
+#: ../../source/assembly.rst:103 68ea007d74fb4e04ac97020c4e677780
 msgid "|parts11|"
 msgstr "|parts11|"
 
-#: ../../source/assemblyguide.rst:103 57265e0ff86f4af3ac1b70030cb4c9ae
+#: ../../source/assembly.rst:103 c9a0973afd88403c8dfda16f1538a63b
 msgid "Folienkondensator 100nF, 630V 0.1  630-"
 msgstr "Folienkondensator 100nF, 630V 0.1  630-"
 
-#: ../../source/assemblyguide.rst:105 987555cfd001401eb8227d2a1c746ac9
+#: ../../source/assembly.rst:105 b38a5487f4514ff79f82ea59bbed675a
 msgid "C4"
 msgstr "C4"
 
-#: ../../source/assemblyguide.rst:105 3927de17b1e6408394f63b4f75b0dd7f
+#: ../../source/assembly.rst:105 052599295da041cbbd5d75c4ea99cd44
 msgid "|parts12|"
 msgstr "|parts12|"
 
-#: ../../source/assemblyguide.rst:105 7abb96bb5c1b431188a397a9d45dff82
+#: ../../source/assembly.rst:105 0744fed3e70147b7b3f7449c4af77ed7
 msgid "Folienkondensator 100pF, 1000V 100/1000-"
 msgstr "Folienkondensator 100pF, 1000V 100/1000-"
 
-#: ../../source/assemblyguide.rst:107 29f2f45dac014262b5dda4f43b0bd0e6
+#: ../../source/assembly.rst:107 449a055e605645fc9485a57905dead72
 msgid "L1"
 msgstr "L1"
 
-#: ../../source/assemblyguide.rst:107 bafeefad379e4a87ae91cc139aa0fdb8
+#: ../../source/assembly.rst:107 748b502fffa54a32931d363a1e986fa0
 msgid "|parts13|"
 msgstr "|parts13|"
 
-#: ../../source/assemblyguide.rst:107 9820b8c262464ca5af5ec99230624559
+#: ../../source/assembly.rst:107 00405b3d8f704efca5baee5544959d8b
 msgid "Spule 150uH 154J"
 msgstr "Spule 150uH 154J"
 
-#: ../../source/assemblyguide.rst:109 cba9ff0e7f514260a193c06597e0747e
+#: ../../source/assembly.rst:109 0857f8b42b1f4e87b684cebd0df7a5af
 msgid "Pz1"
 msgstr "Pz1"
 
-#: ../../source/assemblyguide.rst:109 14ea7034aefa4ec8b25f031f8d0d4450
+#: ../../source/assembly.rst:109 ce4427a86f49400e94f4df9d47f38421
 msgid "|parts14|"
 msgstr "|parts14|"
 
-#: ../../source/assemblyguide.rst:109 c2681bbe9814412bab7bdd6e1a926edd
+#: ../../source/assembly.rst:109 e64a90de53474d56ba49cd9a26565c1f
 msgid "Piezo-Lautsprecher"
 msgstr "Piezo-Lautsprecher"
 
-#: ../../source/assemblyguide.rst:111 df5380ea48ab4391a6d53c91e828e11e
+#: ../../source/assembly.rst:111 c0e728d8abee44f380b3aa6ff58d819f
 msgid "X1 X2"
 msgstr "X1 X2"
 
-#: ../../source/assemblyguide.rst:111 ae199e5dc11c49eba5316a1efeba5ddb
+#: ../../source/assembly.rst:111 ce5d664a7ec14f208d70f5c084faa98b
 msgid "|parts15|"
 msgstr "|parts15|"
 
-#: ../../source/assemblyguide.rst:111 22d31aff59994a318daa640b6b33fbbf
+#: ../../source/assembly.rst:111 22850f8cebb74b029b8fce2abd4f0d4c
 msgid "Zählrohrhalter"
 msgstr "Zählrohrhalter"
 
-#: ../../source/assemblyguide.rst:113 d7bfd720fcdf48c48d9ccf25931b3493
+#: ../../source/assembly.rst:113 8c082a782c0d4fca9b7ef1ef37014e5a
 msgid "|parts16|"
 msgstr "|parts16|"
 
-#: ../../source/assemblyguide.rst:113 11e9b42e565d4576bb85ed3cc153b244
+#: ../../source/assembly.rst:113 b8c19aaf3d5c42af87ba5e285fc961e7
 msgid "Buchsenleiste Microcontroler-Modul"
 msgstr "Buchsenleiste Microcontroler-Modul"
 
-#: ../../source/assemblyguide.rst:115 1ffb4abfa78146428fff13240686934d
+#: ../../source/assembly.rst:115 7031cccb645746c588b05f0c9ec74a3f
 msgid "|parts17|"
 msgstr "|parts17|"
 
-#: ../../source/assemblyguide.rst:115 6a8e9a9e4d2c43848039869fcfd452ae
+#: ../../source/assembly.rst:115 cdd7fabb099b46fb9be44d8639e1d933
 msgid "Je 30 cm isolierte Kupferlitze"
 msgstr "Je 30 cm isolierte Kupferlitze"
 
-#: ../../source/assemblyguide.rst:117 5aabf462a3564077888a3d3d5de2f55c
+#: ../../source/assembly.rst:117 d32b1fe36ac34489803e13e4ad6d3e4e
 msgid "Micro-USB Stromversorgung"
 msgstr "Micro-USB Stromversorgung"
 
-#: ../../source/assemblyguide.rst:121 994cd075f62c4912959ba706fed4d6c1
+#: ../../source/assembly.rst:121 a3da1c8f1a2542d3b53ab9b7104056b9
 msgid "Lötarbeiten"
 msgstr "Lötarbeiten"
 
-#: ../../source/assemblyguide.rst:124 40db8473307a4f569d919b85c63c3bc7
+#: ../../source/assembly.rst:124 433dd2bd5af042e08fcbf60fa0204688
 msgid "Feldeffekt-Transistor T1"
 msgstr "Feldeffekt-Transistor T1"
 
-#: ../../source/assemblyguide.rst:126 5fb9cf40d07847b3b358f2496292fd18
+#: ../../source/assembly.rst:126 c204a0dc78004acaa8695fd2cd5e238e
 msgid ""
 "Als erstes Bauteil wird das einzige Bauteil im SMD-Bauform montiert. Mit "
 "Klebeband (Kreppband hat sich bewährt) wird er so auf die Platine geklebt, "
@@ -320,11 +320,11 @@ msgstr ""
 "verlötet, das Klebeband vorsichtig entfernt und der hintere Anschluss "
 "verlötet."
 
-#: ../../source/assemblyguide.rst:135 94f5ea928e264ed0bdc96b9265641076
+#: ../../source/assembly.rst:135 c7a1e70f19bb4dddb0ecff9ce4b22af8
 msgid "Widerstände und Dioden"
 msgstr "Widerstände und Dioden"
 
-#: ../../source/assemblyguide.rst:137 822635d715874431852da3af8e4f434a
+#: ../../source/assembly.rst:137 fd3d47641f94495889876658a1af2369
 msgid ""
 "Die Widerstände und Dioden werden alle in einer Abbiegevorrichtung (oder "
 "entsprechend mit der Hand oder einer kleinen Zange) gebogen. Die Breite ist "
@@ -334,7 +334,7 @@ msgstr ""
 "entsprechend mit der Hand oder einer kleinen Zange) gebogen. Die Breite ist "
 "immer vier Einheiten – sprich ca. 10 mm."
 
-#: ../../source/assemblyguide.rst:144 f796162cc58d4090a3911e9697b6d0bb
+#: ../../source/assembly.rst:144 3fac3ce1c9b74319b8fd3ef2a11697ee
 msgid ""
 "Anschließend wird die Platine mit den Widerständen und Dioden bestückt. Bei "
 "den Dioden unbedingt auf die Polarität achten! Die Kathode (Minus-Pol) ist "
@@ -344,7 +344,7 @@ msgstr ""
 "den Dioden unbedingt auf die Polarität achten! Die Kathode (Minus-Pol) ist "
 "mit einem Strich auf Platine und Bauteil markiert."
 
-#: ../../source/assemblyguide.rst:150 0c9c9420046445dea371fc71713b963c
+#: ../../source/assembly.rst:150 b310cbc139f8401da67bc405ec01fa40
 msgid ""
 "Vor dem Löten der Unterseite werden die Bauteile auf der Oberseite mit "
 "Klebeband fixiert, oder die Beinchen der Bauteile durch leichtes "
@@ -356,7 +356,7 @@ msgstr ""
 "Auseinanderbiegen verklemmt. Dann Bauteile anlöten, Klebeband entfernen und "
 "überschüssigen Draht abschneiden."
 
-#: ../../source/assemblyguide.rst:153 57a698e561c94f149af6d538d7ef2948
+#: ../../source/assembly.rst:153 e2402492247f4a1c8d2950f82ce0ae92
 msgid ""
 "Verletzungsgefahr: Beim Abschneiden darauf achten, dass der davonfliegende "
 "Draht niemanden verletzten kann. Möglichst festhalten beim Abschneiden!"
@@ -364,11 +364,11 @@ msgstr ""
 "Verletzungsgefahr: Beim Abschneiden darauf achten, dass der davonfliegende "
 "Draht niemanden verletzten kann. Möglichst festhalten beim Abschneiden!"
 
-#: ../../source/assemblyguide.rst:161 95379200679147b9af5bd7da03a00b61
+#: ../../source/assembly.rst:161 a60db8093bfa47f39e4da810ebad1751
 msgid "Kondensatoren und restliche Bauteile"
 msgstr "Kondensatoren und restliche Bauteile"
 
-#: ../../source/assemblyguide.rst:163 bd48ebf1f30e43989d80da12c8e1c98f
+#: ../../source/assembly.rst:163 eff8d6f4e5d8487d830a4b4fdfa243a9
 msgid ""
 "Der Elektrolytkondensator (Elko) wird vorher mit einer Flachzange "
 "angewinkelt. Beim Elko unbedingt auf die Polung achten: Auf dem Elko ist der"
@@ -386,21 +386,21 @@ msgstr ""
 "Bauteile mit Klebeband fixieren, anlöten und den überschüssigen Draht "
 "abschneiden."
 
-#: ../../source/assemblyguide.rst:168 2735728955ac41fbb861c6fc1ecef9f0
+#: ../../source/assembly.rst:168 ce7443aa56a14a4e8db635df2c0ffbac
 msgid ""
 "Kondensatoren, Zählrohrhalter, Spule, Piezo-Lautsprecher sind bestückt:"
 msgstr ""
 "Kondensatoren, Zählrohrhalter, Spule, Piezo-Lautsprecher sind bestückt:"
 
-#: ../../source/assemblyguide.rst:175 433178e6919a42e885dedb27771536f4
+#: ../../source/assembly.rst:175 d1c4366af0034976a6c86b1bc9bc70d9
 msgid "Buchsenleisten und Mikrocontroller-Modul"
 msgstr "Buchsenleisten und Mikrocontroller-Modul"
 
-#: ../../source/assemblyguide.rst:177 8550d5cb1c2b4228b592b0f84fb788bf
+#: ../../source/assembly.rst:177 0953ab0c2d4a4ad2b3c427d687c995a8
 msgid "Die Buchsenleiste muss vorher evtl. noch gekürzt werden."
 msgstr "Die Buchsenleiste muss vorher evtl. noch gekürzt werden."
 
-#: ../../source/assemblyguide.rst:179 6b4de8d5d25f49bbb70d8684ec29464e
+#: ../../source/assembly.rst:179 376a56e90643437fb473bce68b66e1ec
 msgid ""
 "Dabei muss der Seitenschneider genau auf dem **letzten nicht mehr benötigten"
 " Kontakt** angesetzt werden – **nicht dort wo man ihn eigentlich kürzen "
@@ -412,7 +412,7 @@ msgstr ""
 "will** – ansonsten kann sie splittern. Beim Abschneiden wegfliegende Teile "
 "möglichst festhalten!"
 
-#: ../../source/assemblyguide.rst:186 49ca06fc46ec4b97b7920b099d04d515
+#: ../../source/assembly.rst:186 52563d9c4eb044f5a3c29a53555711c8
 msgid ""
 "Wird der große Piezo-Lautsprecher verwendet, so sollte die Buchsenleiste mit"
 " einer Feile etwas abgefeilt werden (vorher ausprobieren). Am einfachsten "
@@ -426,7 +426,7 @@ msgstr ""
 "nachdem, welches Mikrocontroller-Board verwendet wird, müssen die "
 "Buchsenleisten an den entsprechenden Stellen bestückt werden."
 
-#: ../../source/assemblyguide.rst:193 ebb4640587d44f0d80c7eacf3b5c505a
+#: ../../source/assembly.rst:193 37781e4581d642809dd8918326e03792
 msgid ""
 "Die Winkel der Buchsenleiste sollten genau stimmen. Daher am besten so "
 "vorgehen:"
@@ -434,11 +434,11 @@ msgstr ""
 "Die Winkel der Buchsenleiste sollten genau stimmen. Daher am besten so "
 "vorgehen:"
 
-#: ../../source/assemblyguide.rst:195 7e4a6e42aa34423aaff3fe83d82a2a06
+#: ../../source/assembly.rst:195 2106720f909848d4b1b35c2e955d22cf
 msgid "Die erste Buchsenleiste einstecken."
 msgstr "Die erste Buchsenleiste einstecken."
 
-#: ../../source/assemblyguide.rst:196 c55bd0be058746c7868393cea295a834
+#: ../../source/assembly.rst:196 86aa180f6a5c4df7956506ae2cd77340
 msgid ""
 "Von unten her eine Lötstelle in der Mitte löten, die Lötstelle nochmals heiß"
 " machen und gleichzeitig die Buchsenleiste justieren (rechter Winkel, alle "
@@ -448,11 +448,11 @@ msgstr ""
 " machen und gleichzeitig die Buchsenleiste justieren (rechter Winkel, alle "
 "Pins richtig)."
 
-#: ../../source/assemblyguide.rst:197 a2b41af948654985983914c1586ef185
+#: ../../source/assembly.rst:197 5c9e5bffb2e04feea3f2e8eeecb929e8
 msgid "Die zweite Buchsenleiste einstecken."
 msgstr "Die zweite Buchsenleiste einstecken."
 
-#: ../../source/assemblyguide.rst:198 f32f2faf61424c59801ae811c11922a6
+#: ../../source/assembly.rst:198 f8ac249efb4e47268d1181d80eacf73e
 msgid ""
 "In beide Buchsenleisten die Stiftleiste aus dem Mikrocontroller-Modul-Set "
 "einstecken, so dass deren längerer Teil der Stiftleiste in der Buchsenleiste"
@@ -462,7 +462,7 @@ msgstr ""
 "einstecken, so dass deren längerer Teil der Stiftleiste in der Buchsenleiste"
 " steckt."
 
-#: ../../source/assemblyguide.rst:199 4a16d3b3fe024201a4909cb70207e0aa
+#: ../../source/assembly.rst:199 6413bce6d98344c9b4f556edaac00064
 msgid ""
 "Das Mikrocontroller-Modul aufstecken, so dass das Display sichtbar ist und "
 "die Mikro-USB-Buchse über dem Piezo-Lautsprecher liegt."
@@ -470,7 +470,7 @@ msgstr ""
 "Das Mikrocontroller-Modul aufstecken, so dass das Display sichtbar ist und "
 "die Mikro-USB-Buchse über dem Piezo-Lautsprecher liegt."
 
-#: ../../source/assemblyguide.rst:200 5333d2fe2b044d64b0d8ca148b538d95
+#: ../../source/assembly.rst:200 804e6ec552cb41e0b0c426e3ff92f24c
 msgid ""
 "Alles mit einem schmalen Klebeband fixieren (siehe Bild unten), so dass alle"
 " Lötstellen zugänglich sind."
@@ -478,11 +478,11 @@ msgstr ""
 "Alles mit einem schmalen Klebeband fixieren (siehe Bild unten), so dass alle"
 " Lötstellen zugänglich sind."
 
-#: ../../source/assemblyguide.rst:201 a9d6e6b7264f4e028acd768b6c51c6e4
+#: ../../source/assembly.rst:201 1beb0f5e4d1b4d4f975af6fe2ca986da
 msgid "Nun können alle Kontakte gelötet werden."
 msgstr "Nun können alle Kontakte gelötet werden."
 
-#: ../../source/assemblyguide.rst:203 39728040ac42421392299db8423821d7
+#: ../../source/assembly.rst:203 9add38a2d4354fefbf4a10d8c9e1e2dd
 msgid ""
 "Das OLED-Grafikdisplay ist über eine dünne Flex-Leitung angeschlossen, die "
 "nicht zu heiß werden darf. Im Zweifel lötet man die Pins in der Nähe der "
@@ -492,7 +492,7 @@ msgstr ""
 "nicht zu heiß werden darf. Im Zweifel lötet man die Pins in der Nähe der "
 "Flex-Leitung nicht an – sie werden nicht benötigt."
 
-#: ../../source/assemblyguide.rst:209 f5f7fbdaa73842eea320868bb2f9afa6
+#: ../../source/assembly.rst:209 72927c177504448fa4ee51956e3dc82a
 msgid ""
 "Nach dem Löten kann das Mikrocontroller-Modul mit wippenden Bewegungen "
 "vorsichtig abgezogen werden."
@@ -500,7 +500,7 @@ msgstr ""
 "Nach dem Löten kann das Mikrocontroller-Modul mit wippenden Bewegungen "
 "vorsichtig abgezogen werden."
 
-#: ../../source/assemblyguide.rst:211 cf33c1cc050d4317ba46ef9cf5037ddb
+#: ../../source/assembly.rst:211 85aacffcae4e4eefa94e6774e127c573
 msgid ""
 "Beim Mikrocontroller-Modul sind Pin-Beschriftungsaufkleber mit dabei. Diese "
 "können jetzt seitlich aufgeklebt werden. Welcher Pin wo ist, steht auf der "
@@ -510,7 +510,7 @@ msgstr ""
 "können jetzt seitlich aufgeklebt werden. Welcher Pin wo ist, steht auf der "
 "Unterseite des Mikrocontroller-Moduls."
 
-#: ../../source/assemblyguide.rst:214 d9e636c3cd4a4cd4a97f6b4d71138b2b
+#: ../../source/assembly.rst:214 8e536089fe0c4785b290385a3abb3e6f
 msgid ""
 "Das Kabel für den Anschluss der Zählrohr-Kathode (Minus-Anschluss) an "
 "Klammer und Platine anlöten."
@@ -518,11 +518,11 @@ msgstr ""
 "Das Kabel für den Anschluss der Zählrohr-Kathode (Minus-Anschluss) an "
 "Klammer und Platine anlöten."
 
-#: ../../source/assemblyguide.rst:215 528a9aa142354edfb659f7434c2e8447
+#: ../../source/assembly.rst:215 fba8b16caf984dd6bb6d375ad2f7e48a
 msgid "Kabel mit jeweils einem Tropfen Heißkleber sichern (Zugentlastung)."
 msgstr "Kabel mit jeweils einem Tropfen Heißkleber sichern (Zugentlastung)."
 
-#: ../../source/assemblyguide.rst:216 eaa16527779148b9881b97a0586ccdc2
+#: ../../source/assembly.rst:216 69832b0717d84fa2a37c913ea003d034
 msgid ""
 "Sichtkontrolle (hast du Lötstellen vergessen, sind Lötbrücken entstanden, "
 "...)."
@@ -530,11 +530,11 @@ msgstr ""
 "Sichtkontrolle (hast du Lötstellen vergessen, sind Lötbrücken entstanden, "
 "...)."
 
-#: ../../source/assemblyguide.rst:217 3225efdaf2f3445e896a78901d6c9a20
+#: ../../source/assembly.rst:217 d70b4bc8223b44198e036a754a96dff5
 msgid "Mikrocontroller-Modul wieder aufstecken."
 msgstr "Mikrocontroller-Modul wieder aufstecken."
 
-#: ../../source/assemblyguide.rst:218 f737a9d4a1794525aa9cdb9154ae5ffa
+#: ../../source/assembly.rst:218 7a4ae126e6604665941b9e76c8a88321
 msgid ""
 "Zählrohr anklemmen: der Plus-Pol (Anode) ist markiert und muss in Richtung "
 "Platine zeigen."
@@ -542,15 +542,15 @@ msgstr ""
 "Zählrohr anklemmen: der Plus-Pol (Anode) ist markiert und muss in Richtung "
 "Platine zeigen."
 
-#: ../../source/assemblyguide.rst:219 618f336396e54190a5bdda74f9f60903
+#: ../../source/assembly.rst:219 b23b1ea9841a4ee4aac1ac54a6ad4141
 msgid "Eine erste Funktionskontrolle ist nun möglich, s. `Inbetriebnahme`_."
 msgstr "Eine erste Funktionskontrolle ist nun möglich, s. `Inbetriebnahme`_."
 
-#: ../../source/assemblyguide.rst:221 7dadaaf11f6649e4b669e067ccbee02a
+#: ../../source/assembly.rst:221 66275ba38402434eaeeacd31e6fa20b8
 msgid "Fertige Geigerzähler- und Mikrocontrollerplatine:"
 msgstr "Fertige Geigerzähler- und Mikrocontrollerplatine:"
 
-#: ../../source/assemblyguide.rst:227 dfb249d1ede6424890fee42161e7b8f6
+#: ../../source/assembly.rst:227 86e8da855d0348af983cf03de5bcb1ae
 msgid ""
 "Das dünne Glas des OLED-Grafikdisplays ist empfindlich. Bitte keine Kraft "
 "auf das Display ausüben, sondern nur auf die Mikrocontrollerplatine!"
@@ -558,7 +558,7 @@ msgstr ""
 "Das dünne Glas des OLED-Grafikdisplays ist empfindlich. Bitte keine Kraft "
 "auf das Display ausüben, sondern nur auf die Mikrocontrollerplatine!"
 
-#: ../../source/assemblyguide.rst:230 bd45400b57bb4fc1b8a5d1b522633b27
+#: ../../source/assembly.rst:230 38d33ffb9cb34edd81c1fe1f57bbacd6
 msgid ""
 "Verletzungsgefahr: Auf der Geigerzählerplatine wird eine **Spannung von 400 "
 "Volt** erzeugt. Diese hält sich auch noch längere Zeit **nach dem "
@@ -572,7 +572,7 @@ msgstr ""
 "kommen, die normalerweise harmlos sind. Dennoch sollten sie vermieden "
 "werden!"
 
-#: ../../source/assemblyguide.rst:238 f5d413f3b7e544a68d1de2483218ef80
+#: ../../source/assembly.rst:238 74a80ed0cfce4cdaa22fab0202ce4d00
 msgid ""
 "**Man sollte vor dem Arbeiten an der Schaltung den Kondensator entladen.** "
 "Am einfachsten macht man dies mit einer zweiten, ca. 30 cm langen Leitung, "
@@ -586,15 +586,15 @@ msgstr ""
 "kurzschließt. Dies schützt nicht nur vor unangenehmen Stromschlägen, sondern"
 " schützt auch die empfindliche elektronische Schaltung."
 
-#: ../../source/assemblyguide.rst:243 3146d6eacca54f708e8617cedb19f28d
+#: ../../source/assembly.rst:243 d271fb8188cc447695956ac3a7daf3f2
 msgid "Gehäuse"
 msgstr "Gehäuse"
 
-#: ../../source/assemblyguide.rst:246 6b38c1706cb6433c8e96bfdd1476fad8
+#: ../../source/assembly.rst:246 b58f791394b04490a015473d4592ce85
 msgid "Funktionen des Gehäuses"
 msgstr "Funktionen des Gehäuses"
 
-#: ../../source/assemblyguide.rst:248 f063afa2d29e4075a490cda78d9b46c0
+#: ../../source/assembly.rst:248 f3ccbfb4ea4d4941a57511e91d9e482b
 msgid ""
 "Es schützt die Elektronik vor Umwelteinflüssen (z. B. Regen) und Insekten "
 "(daher sollte kein Zugang von außen zur Elektronik größer sein als 0,5 mm)."
@@ -602,7 +602,7 @@ msgstr ""
 "Es schützt die Elektronik vor Umwelteinflüssen (z. B. Regen) und Insekten "
 "(daher sollte kein Zugang von außen zur Elektronik größer sein als 0,5 mm)."
 
-#: ../../source/assemblyguide.rst:249 c0a6ad08a6b942c6afc613d1cce84e6e
+#: ../../source/assembly.rst:249 5a9588e744fc4a7a9f28ea4178dabc98
 msgid ""
 "Es hält das Zählrohr in einer Höhe von 1 m über der Wiese – somit sind "
 "unsere Messwerte (bestmöglich) vergleichbar zu denen des amtlichen `ODL-"
@@ -612,11 +612,11 @@ msgstr ""
 "unsere Messwerte (bestmöglich) vergleichbar zu denen des amtlichen `ODL-"
 "Messnetzes <https://odlinfo.bfs.de/DE/index.html>`_."
 
-#: ../../source/assemblyguide.rst:252 307c35d73fc14a709d2fc71ca14ea536
+#: ../../source/assembly.rst:252 5d29e70c99dd4ed6b596f9b2c9c3b7e7
 msgid "Rohre"
 msgstr "Rohre"
 
-#: ../../source/assemblyguide.rst:258 15e2561b49cc40619fca50e9e0780092
+#: ../../source/assembly.rst:258 8462449ebeb64329af3b056b76f223c8
 msgid ""
 "Rohr für das Elektronikgehäuse: Zunächst wird das Rohr mit einer Säge auf "
 "entsprechende Länge abgesägt. Die Muffe (Aufweitung) zeigt nach unten."
@@ -624,7 +624,7 @@ msgstr ""
 "Rohr für das Elektronikgehäuse: Zunächst wird das Rohr mit einer Säge auf "
 "entsprechende Länge abgesägt. Die Muffe (Aufweitung) zeigt nach unten."
 
-#: ../../source/assemblyguide.rst:260 cf81458ace4c485a9e0f688082fcee8c
+#: ../../source/assembly.rst:260 67ca77e4e85a44e2b2b9d0c940609113
 msgid ""
 "Rohr für den Erdspieß: Der noch umgesägte Teil des Restes ist das obere Ende"
 " des Erdspießes. Unten wird der Erdspieß auf entsprechende Länge abgesägt im"
@@ -640,7 +640,7 @@ msgstr ""
 "man diesen Teil des Rohrs kurzhalten (ca. 15 cm) und in einem verzinkten "
 "Sonnenschirmhalter mit Erdspieß (Ø40mm) festklemmen."
 
-#: ../../source/assemblyguide.rst:264 49bf18666ee24c8c9f967bb7c94517ce
+#: ../../source/assembly.rst:264 8c42327d7f39498089f8ac8037b8a535
 msgid ""
 "Lüftungs-/Kabelloch bohren: Mit einem Reißnagel o. ä. wird das Loch seitlich"
 " im Erdspieß vorgestochen. Anschließend wird es aufgebohrt. Zuletzt wird es "
@@ -650,7 +650,7 @@ msgstr ""
 " im Erdspieß vorgestochen. Anschließend wird es aufgebohrt. Zuletzt wird es "
 "mit einem großen Bohrer / Schälbohrer auf etwa 17 mm Durchmesser aufgebohrt."
 
-#: ../../source/assemblyguide.rst:267 fc020c7fb9e64c6b8060f7386c875877
+#: ../../source/assembly.rst:267 96699ebf997349899f43e8a7c3ab7f89
 msgid ""
 "Verletzungsgefahr: Mit der Klinge/dem Bohrer immer nach außen, d. h. vom "
 "Körper weg, schneiden oder bohren!"
@@ -658,11 +658,11 @@ msgstr ""
 "Verletzungsgefahr: Mit der Klinge/dem Bohrer immer nach außen, d. h. vom "
 "Körper weg, schneiden oder bohren!"
 
-#: ../../source/assemblyguide.rst:270 36c4a2c1767e410284f92c0c7cea131a
+#: ../../source/assembly.rst:270 d517e7c84b48416aaab7f63259ca2dd3
 msgid "Dach und Zwischenboden"
 msgstr "Dach und Zwischenboden"
 
-#: ../../source/assemblyguide.rst:277 2052f98fe4664e31b5883718767221ba
+#: ../../source/assembly.rst:277 c3b6b61b5ed24feda6b2fd3b77cc3ddc
 msgid ""
 "Für das Dach kann man einen Rohrabschlussstopfen oben vorsichtig über das "
 "Rohr schieben, s. Bild rechts."
@@ -670,7 +670,7 @@ msgstr ""
 "Für das Dach kann man einen Rohrabschlussstopfen oben vorsichtig über das "
 "Rohr schieben, s. Bild rechts."
 
-#: ../../source/assemblyguide.rst:284 be7dfef099c1450a96b8e62e90d399f3
+#: ../../source/assembly.rst:284 48a711de466f4d5b9a3554e9f6e507ab
 msgid ""
 "Als Zwischenboden verwenden wir eine Kruke, also eine Plastikdose, die in "
 "Apotheken zum Abfüllen von Salben verwendet wird. Der rote Deckel kann als "
@@ -682,7 +682,7 @@ msgstr ""
 "Material für eine kabeldurchführungsverkleinernde Zwischenbodenauflage "
 "dienen."
 
-#: ../../source/assemblyguide.rst:287 e6357c6bfb6e4f339cad8b787c497bee
+#: ../../source/assembly.rst:287 a84ceb8fec02440583fe25f898bf2567
 msgid ""
 "Für den Zwischenboden wird lediglich das Gewinde vorsichtig mit der Säge "
 "abgesägt, s. Bild links. Der „Kragen“ muss bestehen bleiben, da er als "
@@ -692,7 +692,7 @@ msgstr ""
 "abgesägt, s. Bild links. Der „Kragen“ muss bestehen bleiben, da er als "
 "Anschlag dient."
 
-#: ../../source/assemblyguide.rst:290 cd5c20638270445ea1bda87f21d2f7ea
+#: ../../source/assembly.rst:290 646042f7b6a340dfab75094f44ec4c9f
 msgid ""
 "In den Zwischenboden wird in der Mitte ein Loch zur Kabeldurchführung mit 10"
 " mm gebohrt. Der Stecker des Kabels muss durch das Loch passen."
@@ -700,7 +700,7 @@ msgstr ""
 "In den Zwischenboden wird in der Mitte ein Loch zur Kabeldurchführung mit 10"
 " mm gebohrt. Der Stecker des Kabels muss durch das Loch passen."
 
-#: ../../source/assemblyguide.rst:310 a466a064890b4a14b725bfd14d0585ca
+#: ../../source/assembly.rst:310 8251a27282ed4248b05296bd2c5dd418
 msgid ""
 "Eine Zwischenbodenauflage dient zum Schutz vor Insekten, da sie das Loch der"
 " Kabeldurchführung verkleinert. Man kann dafür z. B. den roten Deckel der "
@@ -710,7 +710,7 @@ msgstr ""
 " Kabeldurchführung verkleinert. Man kann dafür z. B. den roten Deckel der "
 "Kruke oder ein ähnliches Stück Kunststoff verwenden."
 
-#: ../../source/assemblyguide.rst:313 a419e6d6e48847d8b3bfc207b0ba8774
+#: ../../source/assembly.rst:313 6537e6d5c5e44899892b9bf88779aef1
 msgid ""
 "Es wird die Mitte markiert und dort ein Loch mit dem Durchmesser des "
 "Stromkabels (ca. 5 mm) gebohrt. Anschließend werden die Ecken abgeschnitten."
@@ -720,15 +720,15 @@ msgstr ""
 "Stromkabels (ca. 5 mm) gebohrt. Anschließend werden die Ecken abgeschnitten."
 " Zusätzlich wird ein Verbindungsschlitz von außen zum Loch geschnitten."
 
-#: ../../source/assemblyguide.rst:317 a359741e222045db82b4206e148d7e46
+#: ../../source/assembly.rst:317 b5ae912a4464408296d0ad1ed9dce489
 msgid "Aufbau der Zwischenbodenauflage (in zwei Arbeitsschritten):"
 msgstr "Aufbau der Zwischenbodenauflage (in zwei Arbeitsschritten):"
 
-#: ../../source/assemblyguide.rst:325 1692fb81b5564f40a54780c749a6ccaf
+#: ../../source/assembly.rst:325 5e57bf4128264c37b172f227d4f00a8c
 msgid "Installationsplatte"
 msgstr "Installationsplatte"
 
-#: ../../source/assemblyguide.rst:327 e23d4d4baa3d4857b7036b6e9780c40a
+#: ../../source/assembly.rst:327 7d2d22ec33db4959ac597fdbb53b2df9
 msgid ""
 "Die Installationsplatte kann aus dem Ober- oder Unterteil eines Kabelkanals "
 "gefertigt werden. Dazu werden die Seitenteile vorsichtig mit einem Messer "
@@ -742,7 +742,7 @@ msgstr ""
 "Kunststoffstreifen auf die richtige Länge gebracht. Hierzu kann eine starke "
 "Schere verwendet werden."
 
-#: ../../source/assemblyguide.rst:331 6201a7433a0648aa958b4ee313ab6012
+#: ../../source/assembly.rst:331 41a94c02eb3b4be9b8f48c6936fe5f1b
 msgid ""
 "Löcher durch Installationsplatte bohren: Elektronik und Zählrohr werden so "
 "mit Kabelbindern auf Installationsplatte fixiert, dass das Zählrohr sich auf"
@@ -756,7 +756,7 @@ msgstr ""
 " zeigt nach unten. Die Löcher werden mit dem Reißnagel vorgestochen und dann"
 " auf 3 mm aufgebohrt, s. Bild „Bohrplan Installationsplatte“."
 
-#: ../../source/assemblyguide.rst:334 10c4f29b98aa4bd885d0e9d5404b8613
+#: ../../source/assembly.rst:334 b29b932ac5a74f9299d083cfdadb9c84
 msgid ""
 "Die Platine wird lediglich mit einem Kabelbinder auf der Platte montiert, "
 "der durch beide Löcher gezogen wird. Er verläuft unterhalb des USB-Steckers."
@@ -764,19 +764,19 @@ msgstr ""
 "Die Platine wird lediglich mit einem Kabelbinder auf der Platte montiert, "
 "der durch beide Löcher gezogen wird. Er verläuft unterhalb des USB-Steckers."
 
-#: ../../source/assemblyguide.rst:337 0cefe9df7fa541d3b237a2fa3b3c46dc
+#: ../../source/assembly.rst:337 194c82859e9b4c1f9ebe4633848d0422
 msgid "Bohrplan Installationsplatte:"
 msgstr "Bohrplan Installationsplatte:"
 
-#: ../../source/assemblyguide.rst:345 01791f6f793a4fabad3c13da1cd887a8
+#: ../../source/assembly.rst:345 79cb867a8cff4b61808945a37e8db990
 msgid "Einbau"
 msgstr "Einbau"
 
-#: ../../source/assemblyguide.rst:347 cbcd76c74da94a27b196e5c46fe65dbd
+#: ../../source/assembly.rst:347 f5705f9e5983483bba6f0946efb00f67
 msgid "Einbau des Geräts (die roten Pfeile markieren Kabelbinder):"
 msgstr "Einbau des Geräts (die roten Pfeile markieren Kabelbinder):"
 
-#: ../../source/assemblyguide.rst:353 ec0ce1d24fbb44fa94ea57074bf1a1c8
+#: ../../source/assembly.rst:353 1c30f96bde97498c976d5cd3a58a8d04
 msgid ""
 "Platine und Zählrohr werden mit Kabelbinder auf die Installationsplatte "
 "montiert."
@@ -784,11 +784,11 @@ msgstr ""
 "Platine und Zählrohr werden mit Kabelbinder auf die Installationsplatte "
 "montiert."
 
-#: ../../source/assemblyguide.rst:354 5f68816692a848d4a4f1195602437f3f
+#: ../../source/assembly.rst:354 fbee35114cab47fe9c1d5435e8d10e31
 msgid "In die Micro-USB-Buchse wird der passende Adapter gesteckt."
 msgstr "In die Micro-USB-Buchse wird der passende Adapter gesteckt."
 
-#: ../../source/assemblyguide.rst:355 70bef011b0874582a6fcda13131784c6
+#: ../../source/assembly.rst:355 1f14f1f842034991863993d5105712a3
 msgid ""
 "Das „10 m Verlängerungskabel“ wird richtig herum zunächst durch den Erdspieß"
 " und dann durch den Zwischenboden gefädelt. Anschließend wird er mit dem "
@@ -798,7 +798,7 @@ msgstr ""
 " und dann durch den Zwischenboden gefädelt. Anschließend wird er mit dem "
 "Adapter verbunden."
 
-#: ../../source/assemblyguide.rst:357 7702c1e09bbd400e871bca444657f733
+#: ../../source/assembly.rst:357 6d29398e241146428e9dc26adc5b628b
 msgid ""
 "Danach wird die Zwischenbodenauflage oberhalb des Zwischenbodens vorsichtig "
 "auf das Kabel geschoben."
@@ -806,7 +806,7 @@ msgstr ""
 "Danach wird die Zwischenbodenauflage oberhalb des Zwischenbodens vorsichtig "
 "auf das Kabel geschoben."
 
-#: ../../source/assemblyguide.rst:358 9c1c5afd1b094365a8becbe2a095557b
+#: ../../source/assembly.rst:358 7009dff838d04e0cb428216d4b3fdafb
 msgid ""
 "Oberhalb der Zwischenbodenauflage wird ein Kabelbinder auf das Kabel "
 "gezurrt, so dass eine Zugentlastung entsteht."
@@ -814,7 +814,7 @@ msgstr ""
 "Oberhalb der Zwischenbodenauflage wird ein Kabelbinder auf das Kabel "
 "gezurrt, so dass eine Zugentlastung entsteht."
 
-#: ../../source/assemblyguide.rst:359 178e03b16d8944028c5c3da8fab3104f
+#: ../../source/assembly.rst:359 f5758ddd6d23430cbfa5baf929724d5d
 msgid ""
 "Erster Test des Gehäuses: Wir schieben erst vorsichtig die "
 "Installationsplatte in das Elektronikgehäuse. Anschließend folgen "
@@ -824,7 +824,7 @@ msgstr ""
 "Installationsplatte in das Elektronikgehäuse. Anschließend folgen "
 "Zwischenboden und der Erdspieß."
 
-#: ../../source/assemblyguide.rst:361 59d0d93d0f6446318852ffadd884d740
+#: ../../source/assembly.rst:361 66cb8abeb2f247db8ea8631e83faae87
 msgid ""
 "Wenn alles passt wird noch die Zwischenbodenauflage mit Silikon-Kleber auf "
 "den Zwischenboden geklebt und mit Kreppband (bis zum Aushärten) fixiert."
@@ -832,7 +832,7 @@ msgstr ""
 "Wenn alles passt wird noch die Zwischenbodenauflage mit Silikon-Kleber auf "
 "den Zwischenboden geklebt und mit Kreppband (bis zum Aushärten) fixiert."
 
-#: ../../source/assemblyguide.rst:362 4107f03357874e4c853c55e8bb59e694
+#: ../../source/assembly.rst:362 241f3ecd0c23485b8da3a7203699af97
 msgid ""
 "Der Warn-Aufkleber „Vorsicht Hochspannung“ wird auf die Installationsplatte "
 "geklebt."
@@ -840,11 +840,11 @@ msgstr ""
 "Der Warn-Aufkleber „Vorsicht Hochspannung“ wird auf die Installationsplatte "
 "geklebt."
 
-#: ../../source/assemblyguide.rst:365 f0e351549f5a4e45b89494be5c9d3cde
+#: ../../source/assembly.rst:365 c1fc4a0b12de44a6b48366f77461298e
 msgid "Inbetriebnahme"
 msgstr "Inbetriebnahme"
 
-#: ../../source/assemblyguide.rst:366 0e5a925afa7a4192aedb97488127e9b1
+#: ../../source/assembly.rst:366 db35994c77c0473db39d5f8d49fa7e70
 msgid ""
 "WLAN-Variante: Das Gerät baut einen eigenen WLAN-Accesspoint (AP) auf. Die "
 "SSID des AP lautet ESP32-xxxxxxxx, wobei die xxx die Chip-ID des WLAN-Chips "
@@ -868,11 +868,11 @@ msgstr ""
 "standardmäßig vergebene WLAN-Kennwort ist „*ESP32Geiger*“ und sollte zeitnah"
 " geändert werden."
 
-#: ../../source/assemblyguide.rst:373 d48cbd383cd14a488d73e6094db72042
+#: ../../source/assembly.rst:373 7724d95ef3914231883a0142bbb9ca5a
 msgid "Weitere Informationen: :ref:`deployment` und :ref:`usage`."
 msgstr "Weitere Informationen: :ref:`deployment` und :ref:`usage`."
 
-#: ../../source/assemblyguide.rst:375 a51687d73c6a4b5e9b3f97ee92e13e28
+#: ../../source/assembly.rst:375 d6eeb0dc07a048d59a79ef9c096ce78f
 msgid ""
 "**Wir wünschen viel Freude mit dem neu gebauten Gerät und hoffen dass es "
 "niemals unnatürliche bzw. gesundheitsschädliche Ausschläge messen wird!**"

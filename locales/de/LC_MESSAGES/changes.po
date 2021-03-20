@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2020, see AUTHORS
+# Copyright (C) 2020-2021, see AUTHORS
 # This file is distributed under the same license as the MultiGeiger package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiGeiger\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-29 12:59+0100\n"
+"POT-Creation-Date: 2021-03-20 21:30+0100\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
 "MIME-Version: 1.0\n"
@@ -25,569 +25,647 @@ msgstr ""
 msgid "V1.15.0-dev (not released yet)"
 msgstr ""
 
-#: ../../source/changes.rst:9 ../../source/changes.rst:24
+#: ../../source/changes.rst:9 ../../source/changes.rst:44
 #: 663ad5b8b98f4881a55966c47bed41ef 1e24847e27914e95a5590714f27fa639
 msgid "New features:"
 msgstr ""
 
-#: ../../source/changes.rst:11 ../../source/changes.rst:15
-#: ../../source/changes.rst:19 ca6db424a63a4656a9d790fee5573ff8
-#: 82657626720b4af288dc059c138563d3 ad8ee92dff9e4e36b1fe948f708c5a86
-msgid "..."
+#: ../../source/changes.rst:11 4d3cf3092a3041f1927051a31c07dcb8
+msgid "add bluetooth (BLE) support, #78"
 msgstr ""
 
-#: ../../source/changes.rst:13 ../../source/changes.rst:38
+#: ../../source/changes.rst:13 ../../source/changes.rst:58
 #: 18b95686eedd4a9881c1118a3e122988 48467cb9c1b8456ab11f1af90566da35
 msgid "Fixes:"
 msgstr ""
 
-#: ../../source/changes.rst:17 ../../source/changes.rst:45
-#: ada858658d574f62b1cb63d4ebc6d269 e222f646957847b8a1f6e41cc3baf418
+#: ../../source/changes.rst:15 9e636b7b371b4dbc8acf3683da01f830
+msgid ""
+"improve LoRaWAN stability (work around LMIC bug #677, add LMIC polling from "
+"loop()), #373"
+msgstr ""
+
+#: ../../source/changes.rst:17 ffe6008180f84bdc8ee33c011781dbea
+msgid "do async NTP/clock setup, #316"
+msgstr ""
+
+#: ../../source/changes.rst:18 9c318d0c1af94e67bcc7cfbfef03add8
+msgid "avoid using IotWebConf 3.0.0 for now, #357, PR #370"
+msgstr ""
+
+#: ../../source/changes.rst:20 ../../source/changes.rst:65
+#: ada858658d574f62b1cb63d4ebc6d269 ada858658d574f62b1cb63d4ebc6d269
 msgid "Other changes:"
 msgstr ""
 
-#: ../../source/changes.rst:22 576170e451c84d63bd4a1fe4d60571f0
+#: ../../source/changes.rst:22 bb0ccb8f67af4221936ee77502209e92
+msgid "move CI from travis CI to github workflow"
+msgstr ""
+
+#: ../../source/changes.rst:23 d3c2e34dc03041bc930715d8f2ae2e07
+msgid "start screen cleanups, #335"
+msgstr ""
+
+#: ../../source/changes.rst:24 56b0957d02b740ab993426c66fc94707
+msgid "code / naming style fixes"
+msgstr ""
+
+#: ../../source/changes.rst:25 8d953bcd66d24c9ea7742b9b94eb24c8
+msgid "remove dates in file names, commit relevant versions to git"
+msgstr ""
+
+#: ../../source/changes.rst:26 9fcdea99bd22429fa9183ea941de52e0
+msgid "add drill files, #354"
+msgstr ""
+
+#: ../../source/changes.rst:27 ../../source/changes.rst:76
+#: ../../source/changes.rst:103 9c0155ec4be2447a9e882e1435a6d9cb
+#: 9c0155ec4be2447a9e882e1435a6d9cb 9c0155ec4be2447a9e882e1435a6d9cb
+msgid "docs:"
+msgstr ""
+
+#: ../../source/changes.rst:29 22a1f618139d4b42a6163edf0108ecdb
+msgid ""
+"use transifex / sphinx / readthedocs.org for translatons (en/de for now)"
+msgstr ""
+
+#: ../../source/changes.rst:30 33808a6705f3468ba81eb9e371ca3427
+msgid "document docs/translation workflow in development docs"
+msgstr ""
+
+#: ../../source/changes.rst:31 ff8a6761f1704362ac29b4228b9edbfe
+msgid "added assembly and deployment guide"
+msgstr ""
+
+#: ../../source/changes.rst:32 e277381d3b154f308b58d36e1c50e256
+msgid "document esp32 board buttons, #129"
+msgstr ""
+
+#: ../../source/changes.rst:33 0319a7c164024a0292f1192210208d50
+msgid "document dip switch usage, #128"
+msgstr ""
+
+#: ../../source/changes.rst:34 ed907e08999442debd6db42ca299b672
+msgid "BLE usage documentation update with some images, #338"
+msgstr ""
+
+#: ../../source/changes.rst:35 028c6bccc3724a018fe7781f8205e9cf
+msgid "added links to map, ecocurious, assembly room"
+msgstr ""
+
+#: ../../source/changes.rst:36 fdc2eb8bc3c940a1bc883b9e5354a0c3
+msgid "markup, rendering, spelling fixes, cleanups"
+msgstr ""
+
+#: ../../source/changes.rst:37 0f97f0cb8cb54bda8026743d7d45c53e
+msgid "fix unclear version / date in Aufbauanleitung, #110"
+msgstr ""
+
+#: ../../source/changes.rst:38 068ee3db21dd48e18111f175e3dc439a
+msgid "moved links to docs -> resources, #223"
+msgstr ""
+
+#: ../../source/changes.rst:39 2e75d7ad0ca048b8bfd383e29afb775d
+msgid "add xkcd about radiation doses to FAQ, #310"
+msgstr ""
+
+#: ../../source/changes.rst:42 576170e451c84d63bd4a1fe4d60571f0
 msgid "V1.14.0 2020-05-16"
 msgstr ""
 
-#: ../../source/changes.rst:26 843012c27ea742b489da0885af016f17
+#: ../../source/changes.rst:46 843012c27ea742b489da0885af016f17
 msgid "implement status line on OLED display (see docs), #257"
 msgstr ""
 
-#: ../../source/changes.rst:27 8b0e288410c84f869c05c266d64f3de2
+#: ../../source/changes.rst:47 8b0e288410c84f869c05c266d64f3de2
 msgid "also support BME680 sensor for temperature, humidity, pressure"
 msgstr ""
 
-#: ../../source/changes.rst:28 73fb0e75f3a24ca29f033274f901fa85
+#: ../../source/changes.rst:48 73fb0e75f3a24ca29f033274f901fa85
 msgid "display time up to 60s / 60m / 24h / 99d, then roll over"
 msgstr ""
 
-#: ../../source/changes.rst:29 08736a4079864d02bfd571f07c2a9978
+#: ../../source/changes.rst:49 08736a4079864d02bfd571f07c2a9978
 msgid "speaker/LED: timer-driven sequencer, hw PWM sound, #35"
 msgstr ""
 
-#: ../../source/changes.rst:30 613e44b561d24f42acb57337ff18ffff
+#: ../../source/changes.rst:50 613e44b561d24f42acb57337ff18ffff
 msgid "TLS support"
 msgstr ""
 
-#: ../../source/changes.rst:32 256bae3e7ae64b2eb4453b8b8301d916
+#: ../../source/changes.rst:52 256bae3e7ae64b2eb4453b8b8301d916
 msgid "add clock module, use NTP to set the clock"
 msgstr ""
 
-#: ../../source/changes.rst:33 d560195bc4994cd2aaeaaf76d369f1d3
+#: ../../source/changes.rst:53 d560195bc4994cd2aaeaaf76d369f1d3
 msgid "use persistent per-server HTTPClient instances"
 msgstr ""
 
-#: ../../source/changes.rst:34 44f314e492bc412f90d47b047f671f71
+#: ../../source/changes.rst:54 44f314e492bc412f90d47b047f671f71
 msgid "use connection: keep-alive for web requests"
 msgstr ""
 
-#: ../../source/changes.rst:35 ab9f30d7924547559014e735d28f1b2a
+#: ../../source/changes.rst:55 ab9f30d7924547559014e735d28f1b2a
 msgid "add https capability (can be used for sending data)"
 msgstr ""
 
-#: ../../source/changes.rst:36 dcf82fad98b24c8fa41cad0e23146d0a
+#: ../../source/changes.rst:56 dcf82fad98b24c8fa41cad0e23146d0a
 msgid ""
 "note: transmission to sensors.community and madavi is still using http!"
 msgstr ""
 
-#: ../../source/changes.rst:40 93d035320ce24113bbb79aa68dee4a52
+#: ../../source/changes.rst:60 93d035320ce24113bbb79aa68dee4a52
 msgid "fixed GM pulse debouncing, #248"
 msgstr ""
 
-#: ../../source/changes.rst:41 becd33cbb5164631abc21094e2ad7b0c
+#: ../../source/changes.rst:61 becd33cbb5164631abc21094e2ad7b0c
 msgid "pulse counting: deal with microseconds uint32 overflow, #273"
 msgstr ""
 
-#: ../../source/changes.rst:42 840c5949294646fdbf81ccbf6ffc6d56
+#: ../../source/changes.rst:62 840c5949294646fdbf81ccbf6ffc6d56
 msgid "check WiFi status before trying to transmit"
 msgstr ""
 
-#: ../../source/changes.rst:43 6724bd679079419b93a75586a1a8f154
+#: ../../source/changes.rst:63 6724bd679079419b93a75586a1a8f154
 msgid "fix race condition, #286"
 msgstr ""
 
-#: ../../source/changes.rst:47 b8c4d012b51e46169bcc0f017cddbac4
+#: ../../source/changes.rst:67 b8c4d012b51e46169bcc0f017cddbac4
 msgid "dip switches: only read once at boot time, #207"
 msgstr ""
 
-#: ../../source/changes.rst:48 5c9946bb5ecd4abb88130cf3d1d13102
+#: ../../source/changes.rst:68 5c9946bb5ecd4abb88130cf3d1d13102
 msgid "new font (u8x8 uses 8px width anyway)"
 msgstr ""
 
-#: ../../source/changes.rst:49 b1694c15f06a437fa652c7f5434dbea3
+#: ../../source/changes.rst:69 b1694c15f06a437fa652c7f5434dbea3
 msgid "slow down main loop"
 msgstr ""
 
-#: ../../source/changes.rst:50 4c71a48820324f1fa8074527acd070e2
+#: ../../source/changes.rst:70 4c71a48820324f1fa8074527acd070e2
 msgid "toilet -> custom server, add comments about toilet usage, #214"
 msgstr ""
 
-#: ../../source/changes.rst:51 218cb60b95d845ffbf0adf0ddefd41c0
+#: ../../source/changes.rst:71 218cb60b95d845ffbf0adf0ddefd41c0
 msgid "refactor/simplify pulse counting ISR, bookkeeping in main loop, #220"
 msgstr ""
 
-#: ../../source/changes.rst:52 53e79c45fd8d4a6d873a8cdc72372eb7
+#: ../../source/changes.rst:72 53e79c45fd8d4a6d873a8cdc72372eb7
 msgid "refactor big main loop into smaller functions with local bookkeeping."
 msgstr ""
 
-#: ../../source/changes.rst:53 128333511f924d5ea45f80731fdc8d59
+#: ../../source/changes.rst:73 128333511f924d5ea45f80731fdc8d59
 msgid "misc. other code cleanups"
 msgstr ""
 
-#: ../../source/changes.rst:54 5ec662487a384fe3a1bdfa2e377faece
+#: ../../source/changes.rst:74 5ec662487a384fe3a1bdfa2e377faece
 msgid "loraWan: removed unused/not needed code, #212, #234"
 msgstr ""
 
-#: ../../source/changes.rst:55 9fcdea99bd22429fa9183ea941de52e0
+#: ../../source/changes.rst:75 9fcdea99bd22429fa9183ea941de52e0
 msgid "removed meeting notes, #294"
 msgstr ""
 
-#: ../../source/changes.rst:56 ../../source/changes.rst:83
-#: 9c0155ec4be2447a9e882e1435a6d9cb ea502c6cd2ee4f20a271e95e872cf0a5
-msgid "docs:"
-msgstr ""
-
-#: ../../source/changes.rst:58 c09aaf73110b408b83d7d9a83a47025c
+#: ../../source/changes.rst:78 c09aaf73110b408b83d7d9a83a47025c
 msgid ""
 "README improvements (board name, flash size, partition scheme, passwords, "
 "LoRa)"
 msgstr ""
 
-#: ../../source/changes.rst:60 1c13309b75194f8e874cfd8e3f5b8a63
+#: ../../source/changes.rst:80 1c13309b75194f8e874cfd8e3f5b8a63
 msgid ""
 "update development/release docs (create/test binaries, IDE settings, ...)"
 msgstr ""
 
-#: ../../source/changes.rst:63 c9414a39e6a94c30b4f2b0d130884b5a
+#: ../../source/changes.rst:83 c9414a39e6a94c30b4f2b0d130884b5a
 msgid "V1.13.0 2020-04-14"
 msgstr ""
 
-#: ../../source/changes.rst:65 bc9c60b885a840f38de97e87aef6ddb8
+#: ../../source/changes.rst:85 bc9c60b885a840f38de97e87aef6ddb8
 msgid "auto-detect hardware (STICK vs. WIFI) by hardware pin"
 msgstr ""
 
-#: ../../source/changes.rst:66 6261b6eb5db24cc1837048812007f181
+#: ../../source/changes.rst:86 6261b6eb5db24cc1837048812007f181
 msgid ""
 "use config web page for more values (userdefines.h has the defaults), #140"
 msgstr ""
 
-#: ../../source/changes.rst:67 108f962a4ffc4ac093bc79d0793cc738
+#: ../../source/changes.rst:87 108f962a4ffc4ac093bc79d0793cc738
 msgid "try both adresses of BME280"
 msgstr ""
 
-#: ../../source/changes.rst:68 3f3fc7bddebc49f3bde2c60f8ee92094
+#: ../../source/changes.rst:88 3f3fc7bddebc49f3bde2c60f8ee92094
 msgid "LoRa payload changes, e.g. to fulfill 'TTN Fair Access Policy'"
 msgstr ""
 
-#: ../../source/changes.rst:69 c80a75f97769444199a088fc79c58776
+#: ../../source/changes.rst:89 c80a75f97769444199a088fc79c58776
 msgid "send additional data to servers"
 msgstr ""
 
-#: ../../source/changes.rst:70 cc9c51dc204b49388a2bb93268dcec95
+#: ../../source/changes.rst:90 cc9c51dc204b49388a2bb93268dcec95
 msgid "send to MADAVI in one single request both geiger and thp data"
 msgstr ""
 
-#: ../../source/changes.rst:71 8ba1e90bb2ae4d7c91ccc9e3553b4ece
+#: ../../source/changes.rst:91 8ba1e90bb2ae4d7c91ccc9e3553b4ece
 msgid "new logging with DEFAULT_LOG_LEVEL configuration"
 msgstr ""
 
-#: ../../source/changes.rst:72 1c7831a6e63e4d889dd3b563963be0c4
+#: ../../source/changes.rst:92 1c7831a6e63e4d889dd3b563963be0c4
 msgid "integrated travis-ci:"
 msgstr ""
 
-#: ../../source/changes.rst:74 13874524d9054e42b6e6bfa2f2647f93
+#: ../../source/changes.rst:94 13874524d9054e42b6e6bfa2f2647f93
 msgid "for compile checks (platformio, wifi and stick build)"
 msgstr ""
 
-#: ../../source/changes.rst:75 af2380b319354217907f816b2628761d
+#: ../../source/changes.rst:95 af2380b319354217907f816b2628761d
 msgid "for style checks (using the \"astyle\" CPP checker)"
 msgstr ""
 
-#: ../../source/changes.rst:76 aa8af4c857674ccab72f9fd72a3d3f62
+#: ../../source/changes.rst:96 aa8af4c857674ccab72f9fd72a3d3f62
 msgid ""
 "source: modularization, cleanups, less globals, ... (quite huge internal "
 "changes, please help testing!)"
 msgstr ""
 
-#: ../../source/changes.rst:78 8b3fd2f8fa1f463abb384583d865dcc6
+#: ../../source/changes.rst:98 8b3fd2f8fa1f463abb384583d865dcc6
 msgid "building:"
 msgstr ""
 
-#: ../../source/changes.rst:80 cf26a815170b4759b68d1050f903964c
+#: ../../source/changes.rst:100 cf26a815170b4759b68d1050f903964c
 msgid "platformio-based build: suppress lmic_project_config.h usage"
 msgstr ""
 
-#: ../../source/changes.rst:81 32d42f220a874d268783f35ddfb40daa
+#: ../../source/changes.rst:101 32d42f220a874d268783f35ddfb40daa
 msgid "arduino-ide-based build: you still need to edit that file"
 msgstr ""
 
-#: ../../source/changes.rst:82 8c6421298cb24443a2f947114b20f4b1
+#: ../../source/changes.rst:102 8c6421298cb24443a2f947114b20f4b1
 msgid "use bump2version tool for project version bumps, #169"
 msgstr ""
 
-#: ../../source/changes.rst:85 bea8d07b7c80413ab9d0fa2f47fc6a9e
+#: ../../source/changes.rst:105 bea8d07b7c80413ab9d0fa2f47fc6a9e
 msgid "added upgrade hints for 1.13 in README on github"
 msgstr ""
 
-#: ../../source/changes.rst:86 5d5826cc20d6464691027077f0299585
+#: ../../source/changes.rst:106 5d5826cc20d6464691027077f0299585
 msgid ""
 "https://multigeiger.readthedocs.io/ == the beginning of new (sphinx / reST-"
 "markup based) online docs, #163"
 msgstr ""
 
-#: ../../source/changes.rst:88 2a97e3692f144103955dd87da371a5dc
+#: ../../source/changes.rst:108 2a97e3692f144103955dd87da371a5dc
 msgid "add a basic, short README in English (also for online docs)"
 msgstr ""
 
-#: ../../source/changes.rst:89 0319a7c164024a0292f1192210208d50
+#: ../../source/changes.rst:109 0319a7c164024a0292f1192210208d50
 msgid "include infos about project name, #121"
 msgstr ""
 
-#: ../../source/changes.rst:90 068ee3db21dd48e18111f175e3dc439a
+#: ../../source/changes.rst:110 068ee3db21dd48e18111f175e3dc439a
 msgid "moved changelog.md to docs/source/changes.rst"
 msgstr ""
 
-#: ../../source/changes.rst:91 b9b9035424924d539210dca82e9c7403
+#: ../../source/changes.rst:111 b9b9035424924d539210dca82e9c7403
 msgid "updated/fixed development docs, #46"
 msgstr ""
 
-#: ../../source/changes.rst:92 db9a95b6e9b7415ea1877729eae8cfaa
+#: ../../source/changes.rst:112 db9a95b6e9b7415ea1877729eae8cfaa
 msgid "update docs about new 5V power supply / cabling, #122"
 msgstr ""
 
-#: ../../source/changes.rst:93 29687439f2384ce189fa780e6834bc51
+#: ../../source/changes.rst:113 29687439f2384ce189fa780e6834bc51
 msgid "description of LoRa Payload updated"
 msgstr ""
 
-#: ../../source/changes.rst:94 3002e8ed8cef408f8b41839074244dbc
+#: ../../source/changes.rst:114 3002e8ed8cef408f8b41839074244dbc
 msgid "other docs improvements / fixes"
 msgstr ""
 
-#: ../../source/changes.rst:97 993d0a3abb85419aa758b5e77d14a12d
+#: ../../source/changes.rst:117 993d0a3abb85419aa758b5e77d14a12d
 msgid "V1.12.0 2020-01-18"
 msgstr ""
 
-#: ../../source/changes.rst:99 794f4ab9f57d4d4c82c18b91fc56e44e
+#: ../../source/changes.rst:119 794f4ab9f57d4d4c82c18b91fc56e44e
 msgid "simple OTA (Over-The-Air) updates via web browser based upload, #120"
 msgstr ""
 
-#: ../../source/changes.rst:100 47533c45b9c74b68ad461aed8ada1445
+#: ../../source/changes.rst:120 47533c45b9c74b68ad461aed8ada1445
 msgid ""
 "use less charge pulses in loop() for timing, more in setup() for initial "
 "charging, #134"
 msgstr ""
 
-#: ../../source/changes.rst:101 10f3985defeb4f37b11bd0b15394439c
+#: ../../source/changes.rst:121 10f3985defeb4f37b11bd0b15394439c
 msgid "output error msg on Serial if HV charging fails"
 msgstr ""
 
-#: ../../source/changes.rst:102 14f31254cd5e4c38a80e41675f178164
+#: ../../source/changes.rst:122 14f31254cd5e4c38a80e41675f178164
 msgid "tag log output with \"GEIGER: \", #85"
 msgstr ""
 
-#: ../../source/changes.rst:103 fdc5ecfd6cfd4208bc999ab2e39f4d5e
+#: ../../source/changes.rst:123 fdc5ecfd6cfd4208bc999ab2e39f4d5e
 msgid "add TUBE_UNKNOWN 0 to have a specific value for experimenting"
 msgstr ""
 
-#: ../../source/changes.rst:104 5a7f8301a7964b5fba01d3d10ebec383
+#: ../../source/changes.rst:124 5a7f8301a7964b5fba01d3d10ebec383
 msgid "adapted platformio.ini to pull all dependencies"
 msgstr ""
 
-#: ../../source/changes.rst:105 91a24253d3f64287a3d147cfa06b762c
+#: ../../source/changes.rst:125 91a24253d3f64287a3d147cfa06b762c
 msgid "send CR and LF on serial"
 msgstr ""
 
-#: ../../source/changes.rst:106 732c381eadf645e4b5c64c7a8114053c
+#: ../../source/changes.rst:126 732c381eadf645e4b5c64c7a8114053c
 msgid "changed default tube from sbm-20 to si22g"
 msgstr ""
 
-#: ../../source/changes.rst:107 92266413182645e0b04a0c2347deedc9
+#: ../../source/changes.rst:127 92266413182645e0b04a0c2347deedc9
 msgid "semantic versioning, version numbers now like x.y.z"
 msgstr ""
 
-#: ../../source/changes.rst:108 7c29a85e704b494d933388863903d34b
+#: ../../source/changes.rst:128 7c29a85e704b494d933388863903d34b
 msgid "changed building of revString and lora_version"
 msgstr ""
 
-#: ../../source/changes.rst:109 ab37a8c78dd74d0b87b3338f8d30860a
+#: ../../source/changes.rst:129 ab37a8c78dd74d0b87b3338f8d30860a
 msgid "docs updated / improved"
 msgstr ""
 
-#: ../../source/changes.rst:110 d81d3c8c3d864e208cdcbe99b2aa9a7d
+#: ../../source/changes.rst:130 d81d3c8c3d864e208cdcbe99b2aa9a7d
 msgid "explain SBM-19/SBM-20 conversion factor"
 msgstr ""
 
-#: ../../source/changes.rst:111 ffe08a19ee6d440fa99149bbf2f5a28a
+#: ../../source/changes.rst:131 ffe08a19ee6d440fa99149bbf2f5a28a
 msgid "removed IotWebconf bundled&patched code, used as a lib now."
 msgstr ""
 
-#: ../../source/changes.rst:114 a85a524d9b314705b75e4486ca823c67
+#: ../../source/changes.rst:134 a85a524d9b314705b75e4486ca823c67
 msgid "V1.11.1 2019-12-16 rxf"
 msgstr ""
 
-#: ../../source/changes.rst:116 36ab1810f6a5472a81d72aee50ce5cbe
+#: ../../source/changes.rst:136 36ab1810f6a5472a81d72aee50ce5cbe
 msgid "change luftdaten.info to sensor.community"
 msgstr ""
 
-#: ../../source/changes.rst:119 51f16e7ce9b8454ca2dc04eebb8e0507
+#: ../../source/changes.rst:139 51f16e7ce9b8454ca2dc04eebb8e0507
 msgid "V1.11.0 2019-12-16 rxf"
 msgstr ""
 
-#: ../../source/changes.rst:121 405bb3895c3348d286ec9d3d0a978868
+#: ../../source/changes.rst:141 405bb3895c3348d286ec9d3d0a978868
 msgid "defaults in userdefines-example.h changed"
 msgstr ""
 
-#: ../../source/changes.rst:122 ff80fe8e08b241a3a3740603bd5762bc
+#: ../../source/changes.rst:142 ff80fe8e08b241a3a3740603bd5762bc
 msgid "Software version for LoRa now 2 Bytes"
 msgstr ""
 
-#: ../../source/changes.rst:123 d3c2e34dc03041bc930715d8f2ae2e07
+#: ../../source/changes.rst:143 d3c2e34dc03041bc930715d8f2ae2e07
 msgid "Display start screen for Wireless stick fixed"
 msgstr ""
 
-#: ../../source/changes.rst:124 e84f03ebcbb64191947fc18fd63c65be
+#: ../../source/changes.rst:144 e84f03ebcbb64191947fc18fd63c65be
 msgid "changed to semantic versioning"
 msgstr ""
 
-#: ../../source/changes.rst:127 7c158cee48054855ac29faaa2600dd6a
+#: ../../source/changes.rst:147 7c158cee48054855ac29faaa2600dd6a
 msgid "V1.10 2019-12-13"
 msgstr ""
 
-#: ../../source/changes.rst:129 28e9fdac95654db1b2439e65aed297ed
+#: ../../source/changes.rst:149 28e9fdac95654db1b2439e65aed297ed
 msgid "conversion factor for Si22G tube fixed"
 msgstr ""
 
-#: ../../source/changes.rst:130 884f792870d14f08b2e04b47aab034ad
+#: ../../source/changes.rst:150 884f792870d14f08b2e04b47aab034ad
 msgid "char variables changed to int"
 msgstr ""
 
-#: ../../source/changes.rst:131 b98961289ab947199b8bd5d979624600
+#: ../../source/changes.rst:151 b98961289ab947199b8bd5d979624600
 msgid "isr routines shielded with portMUX"
 msgstr ""
 
-#: ../../source/changes.rst:132 e189a8fe05644009b946166f8a24908b
+#: ../../source/changes.rst:152 e189a8fe05644009b946166f8a24908b
 msgid "debug serial out formatting improved"
 msgstr ""
 
-#: ../../source/changes.rst:133 53bb550c68bd4e4683ded7f7843f8446
+#: ../../source/changes.rst:153 53bb550c68bd4e4683ded7f7843f8446
 msgid "sequence of counting and dispaying and hv charging improved"
 msgstr ""
 
-#: ../../source/changes.rst:134 cd31395d20594895905244ddbb12ff9e
+#: ../../source/changes.rst:154 cd31395d20594895905244ddbb12ff9e
 msgid "speaker and led tick fixed"
 msgstr ""
 
-#: ../../source/changes.rst:135 14d281e9124d40088fea0f24ede0de61
+#: ../../source/changes.rst:155 14d281e9124d40088fea0f24ede0de61
 msgid "many calls to millis() consolidated"
 msgstr ""
 
-#: ../../source/changes.rst:138 4dadd70451e541df9a709fe375b4bfd8
+#: ../../source/changes.rst:158 4dadd70451e541df9a709fe375b4bfd8
 msgid "V1.9 2019-11-12"
 msgstr ""
 
-#: ../../source/changes.rst:140 205a917c0b77422fa67c1bdc2698f328
+#: ../../source/changes.rst:160 205a917c0b77422fa67c1bdc2698f328
 msgid "structure for different counter tubes"
 msgstr ""
 
-#: ../../source/changes.rst:141 eb7d0c348a31496e8145ab1313bc94e4
+#: ../../source/changes.rst:161 eb7d0c348a31496e8145ab1313bc94e4
 msgid "LoRa payload changed again"
 msgstr ""
 
-#: ../../source/changes.rst:142 de4660b833e249d4adfe3c7c0ee2e052
+#: ../../source/changes.rst:162 de4660b833e249d4adfe3c7c0ee2e052
 msgid "hv pulse every second"
 msgstr ""
 
-#: ../../source/changes.rst:143 48b3fae575184967a0046ad5299d36e7
+#: ../../source/changes.rst:163 48b3fae575184967a0046ad5299d36e7
 msgid "calculate and display cpm value every 10 seconds"
 msgstr ""
 
-#: ../../source/changes.rst:144 f65d31e12440422a96a183abb163f8cc
+#: ../../source/changes.rst:164 f65d31e12440422a96a183abb163f8cc
 msgid "fixed div by 0 if there's no tube"
 msgstr ""
 
-#: ../../source/changes.rst:145 365ddf2b50524513a4a85bb73eec121b
+#: ../../source/changes.rst:165 365ddf2b50524513a4a85bb73eec121b
 msgid "Readme corrected"
 msgstr ""
 
-#: ../../source/changes.rst:148 6cfca5b9ce6b421ea76e74d1fdac108d
+#: ../../source/changes.rst:168 6cfca5b9ce6b421ea76e74d1fdac108d
 msgid "V1.8 2019-11-04"
 msgstr ""
 
-#: ../../source/changes.rst:150 6afd9f26493544558118f139d53b3cc0
+#: ../../source/changes.rst:170 6afd9f26493544558118f139d53b3cc0
 msgid "indentation/spacing, refactor OLED functions, fix conversion factor"
 msgstr ""
 
-#: ../../source/changes.rst:151 f46b6c9d4cc74826a2c453352bbc8d0f
+#: ../../source/changes.rst:171 f46b6c9d4cc74826a2c453352bbc8d0f
 msgid "MEASUREMENT_INTERVAL 150sec"
 msgstr ""
 
-#: ../../source/changes.rst:152 f0ca6d7c4d7943f6b146315cfbf49a86
+#: ../../source/changes.rst:172 f0ca6d7c4d7943f6b146315cfbf49a86
 msgid "changed LoRa payload"
 msgstr ""
 
-#: ../../source/changes.rst:155 8955b5a544f84acaaa0303e94fc2b4ee
+#: ../../source/changes.rst:175 8955b5a544f84acaaa0303e94fc2b4ee
 msgid "V1.7 2019-10-21"
 msgstr ""
 
-#: ../../source/changes.rst:157 81930102c96046ecb7d67762ee66c2e3
+#: ../../source/changes.rst:177 81930102c96046ecb7d67762ee66c2e3
 msgid "PINs rearranged, so we can use new Wifi-Kit-32 and WiFi Stick Light"
 msgstr ""
 
-#: ../../source/changes.rst:158 c2369f4a10f244ffb7472ceecc01b194
+#: ../../source/changes.rst:178 c2369f4a10f244ffb7472ceecc01b194
 msgid "Hardware-Layout V1.4 and up"
 msgstr ""
 
-#: ../../source/changes.rst:159 6c010d99859e481e813d970764d5c62e
+#: ../../source/changes.rst:179 6c010d99859e481e813d970764d5c62e
 msgid "use switch for speaker tick and display off"
 msgstr ""
 
-#: ../../source/changes.rst:162 5a653bc023d04831a692efad89bf6dcb
+#: ../../source/changes.rst:182 5a653bc023d04831a692efad89bf6dcb
 msgid "V1.61 2019-09-30"
 msgstr ""
 
-#: ../../source/changes.rst:164 fdcc6eac0e2a4d04b8ce46f3bf5b428b
+#: ../../source/changes.rst:184 fdcc6eac0e2a4d04b8ce46f3bf5b428b
 msgid "default measuring interval is now 2.5min"
 msgstr ""
 
-#: ../../source/changes.rst:167 521f443c004445e6912d452fa89702a5
+#: ../../source/changes.rst:187 521f443c004445e6912d452fa89702a5
 msgid "V1.6 2019-09-13"
 msgstr ""
 
-#: ../../source/changes.rst:169 56b0957d02b740ab993426c66fc94707
+#: ../../source/changes.rst:189 56b0957d02b740ab993426c66fc94707
 msgid "some rearrangement of files"
 msgstr ""
 
-#: ../../source/changes.rst:170 366f5164d5804b2e83b29f94628369bb
+#: ../../source/changes.rst:190 366f5164d5804b2e83b29f94628369bb
 msgid "userdefine.h for user changable #defines"
 msgstr ""
 
-#: ../../source/changes.rst:171 bf67a9f97c754eee9e07e1f3ac09a51d
+#: ../../source/changes.rst:191 bf67a9f97c754eee9e07e1f3ac09a51d
 msgid "test with dip-switch (needs pullup resistors!)"
 msgstr ""
 
-#: ../../source/changes.rst:172 124250466e2a44ff8b47087b69862d18
+#: ../../source/changes.rst:192 124250466e2a44ff8b47087b69862d18
 msgid "Hardware layout V1.3 and lower - OLD Wifi-Kit-32!"
 msgstr ""
 
-#: ../../source/changes.rst:175 407570210c3143ce8470f5f94735b070
+#: ../../source/changes.rst:195 407570210c3143ce8470f5f94735b070
 msgid "V1.5 2019-09-11"
 msgstr ""
 
-#: ../../source/changes.rst:177 36b1ffc384ee4707a3d5912b243a66b1
+#: ../../source/changes.rst:197 36b1ffc384ee4707a3d5912b243a66b1
 msgid "added BME280 (uses same I2C as display)"
 msgstr ""
 
-#: ../../source/changes.rst:178 31c02d2aa9d246f2ad8a34e3f9433052
+#: ../../source/changes.rst:198 31c02d2aa9d246f2ad8a34e3f9433052
 msgid "Support for display on Wireless Stick"
 msgstr ""
 
-#: ../../source/changes.rst:179 d69caa694021424f8dec3293947959db
+#: ../../source/changes.rst:199 d69caa694021424f8dec3293947959db
 msgid "For LoRa-Devices added LoRa functionality"
 msgstr ""
 
-#: ../../source/changes.rst:182 585faa837c9b4cce92689c2569f77a3b
+#: ../../source/changes.rst:202 585faa837c9b4cce92689c2569f77a3b
 msgid "V1.4 2019-09-03"
 msgstr ""
 
-#: ../../source/changes.rst:184 0e8e743041594efe8202b33b1e1a74b6
+#: ../../source/changes.rst:204 0e8e743041594efe8202b33b1e1a74b6
 msgid "default configuration with measurement interval of 10min"
 msgstr ""
 
-#: ../../source/changes.rst:187 f95361d8a5ff463a8c5be3f0e18a8465
+#: ../../source/changes.rst:207 f95361d8a5ff463a8c5be3f0e18a8465
 msgid "V1.3 2019-09-03"
 msgstr ""
 
-#: ../../source/changes.rst:189 aaacfb55af654cefa7f3e3a139ea84ac
+#: ../../source/changes.rst:209 aaacfb55af654cefa7f3e3a139ea84ac
 msgid ""
 "building of ESP-ID out of MAC address is now identical to 'Feinstaubsensor'"
 msgstr ""
 
-#: ../../source/changes.rst:192 91b9835940a849cab389ae15322a45b3
+#: ../../source/changes.rst:212 91b9835940a849cab389ae15322a45b3
 msgid "V1.2 2019-09-02"
 msgstr ""
 
-#: ../../source/changes.rst:194 a652d7928ca14761830490ea658c1cf5
+#: ../../source/changes.rst:214 a652d7928ca14761830490ea658c1cf5
 msgid "sending to madavi corrected"
 msgstr ""
 
-#: ../../source/changes.rst:197 f1e78b9dea1e4d908aa6582d0b2e2e7c
+#: ../../source/changes.rst:217 f1e78b9dea1e4d908aa6582d0b2e2e7c
 msgid "V1.1 2019-09-01"
 msgstr ""
 
-#: ../../source/changes.rst:199 06cc39f31cfb4f20914f7e0a4d1959ff
+#: ../../source/changes.rst:219 06cc39f31cfb4f20914f7e0a4d1959ff
 msgid "Library IoTWebConfig changed -> function 'setThingName' added"
 msgstr ""
 
-#: ../../source/changes.rst:200 db7b8811eb9349f8947eaab76d48c2af
+#: ../../source/changes.rst:220 db7b8811eb9349f8947eaab76d48c2af
 msgid "Move this (IoTWebConfig) library to source path"
 msgstr ""
 
-#: ../../source/changes.rst:201 6c5c251932da486c931e9a1879acc10e
+#: ../../source/changes.rst:221 6c5c251932da486c931e9a1879acc10e
 msgid ""
 "building the SSID from the MAC corrected: first 3 Bytes of MAC build SSID"
 msgstr ""
 
-#: ../../source/changes.rst:202 7404a81a8dfe401e9c70542419957055
+#: ../../source/changes.rst:222 7404a81a8dfe401e9c70542419957055
 msgid "LoRa autodetection removed"
 msgstr ""
 
-#: ../../source/changes.rst:205 591315ac2b2b481a8a904a8c8bc268ac
+#: ../../source/changes.rst:225 591315ac2b2b481a8a904a8c8bc268ac
 msgid "V1.0 2019-08-19 rxf"
 msgstr ""
 
-#: ../../source/changes.rst:207 2a725088f76145ae9c610d212aacd8a4
+#: ../../source/changes.rst:227 2a725088f76145ae9c610d212aacd8a4
 msgid "added detection of LoRa device"
 msgstr ""
 
-#: ../../source/changes.rst:208 c7360162553d409fadda21cf05df47ac
+#: ../../source/changes.rst:228 c7360162553d409fadda21cf05df47ac
 msgid "WiFiManager to enter WLAN data and other configs"
 msgstr ""
 
-#: ../../source/changes.rst:209 36191b75dcc04441a2fc9b71ee2f8bab
+#: ../../source/changes.rst:229 36191b75dcc04441a2fc9b71ee2f8bab
 msgid "send to luftdaten.info every 2.5 min"
 msgstr ""
 
-#: ../../source/changes.rst:212 e6933acfb9f948c88165214a1d16a04a
+#: ../../source/changes.rst:232 e6933acfb9f948c88165214a1d16a04a
 msgid "V0.3 2019-05-12 jb"
 msgstr ""
 
-#: ../../source/changes.rst:214 6ad90f50dfae49dab78f12b6760ecf92
+#: ../../source/changes.rst:234 6ad90f50dfae49dab78f12b6760ecf92
 msgid ""
 "added bug fix for the \"Double-Trigger-Problem\". This was caused by the "
 "rising edge falsly triggering an other pulse recording. The Problem is that "
 "there is no Schmitt-Trigger available in the controller."
 msgstr ""
 
-#: ../../source/changes.rst:217 519e463937084b47b37b1fd0c8b8709a
+#: ../../source/changes.rst:237 519e463937084b47b37b1fd0c8b8709a
 msgid "simplified serial printing modes"
 msgstr ""
 
-#: ../../source/changes.rst:218 01770f5dddfa48f89ea0186a308f61b8
+#: ../../source/changes.rst:238 01770f5dddfa48f89ea0186a308f61b8
 msgid ""
 "made seconds in Display as inverse to be able to separate it from minutes"
 msgstr ""
 
-#: ../../source/changes.rst:219 b23a4cac213445b48aee6140dced1778
+#: ../../source/changes.rst:239 b23a4cac213445b48aee6140dced1778
 msgid "cleaned up the code"
 msgstr ""
 
-#: ../../source/changes.rst:220 18b70eeb603d4953884c6448fd5823a1
+#: ../../source/changes.rst:240 18b70eeb603d4953884c6448fd5823a1
 msgid "Fixed overflow bug in Minute-Count+"
 msgstr ""
 
-#: ../../source/changes.rst:223 21d883f40f6a49e59ee5e430bccf4e46
+#: ../../source/changes.rst:243 21d883f40f6a49e59ee5e430bccf4e46
 msgid "V0.2 2019-04-26 jb"
 msgstr ""
 
-#: ../../source/changes.rst:225 53904dc329dc4415b6410d4c254cec49
+#: ../../source/changes.rst:245 53904dc329dc4415b6410d4c254cec49
 msgid "added 1 Minute RS232 (USB) logging mode"
 msgstr ""
 
-#: ../../source/changes.rst:228 f55b6fc37bd74d7aa6465249738add26
+#: ../../source/changes.rst:248 f55b6fc37bd74d7aa6465249738add26
 msgid "V0.1 2019-03-25 jb"
 msgstr ""
 
-#: ../../source/changes.rst:230 3cde0db0ee2e4364b9bde132a49ea3fa
+#: ../../source/changes.rst:250 3cde0db0ee2e4364b9bde132a49ea3fa
 msgid "first version for ESP32 board"
 msgstr ""
