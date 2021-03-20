@@ -1,5 +1,5 @@
-Ecocurious
-----------
+About
+-----
 
 The **MultiGeiger** is a project of Ecocurious, your community for environment, nature and technology, see https://ecocurious.de/projekte/multigeiger/.
 
