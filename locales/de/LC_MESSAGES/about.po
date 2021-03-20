@@ -1,0 +1,73 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020-2021, see AUTHORS
+# This file is distributed under the same license as the MultiGeiger package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: MultiGeiger\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-03-20 21:30+0100\n"
+"PO-Revision-Date: 2021-03-20 20:53+0000\n"
+"Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../../source/about.rst:2 326f7a4862954632943120aed19b28a3
+msgid "About"
+msgstr ""
+
+#: ../../source/about.rst:4 cdb17d489e9f400bba8b7dcbe2d4b34e
+msgid ""
+"The **MultiGeiger** is a project of Ecocurious, your community for "
+"environment, nature and technology, see "
+"https://ecocurious.de/projekte/multigeiger/."
+msgstr ""
+
+#: ../../source/about.rst:6 200f8580d35a471f9a2c0bd23d1d7087
+msgid ""
+"The goal is to establish a citizen measurement network for radioactivity in "
+"Germany."
+msgstr ""
+
+#: ../../source/about.rst:8 719f67ec613245a28fe569d5e7eaade6
+msgid ""
+"The **MultiGeiger** hardware and software was designed by Jürgen Böhringer "
+"(http://www.boehri.de)."
+msgstr ""
+
+#: ../../source/about.rst:10 bfa0acbcbade46b7a773969658a522d1
+msgid ""
+"Reinhard/rexfue has further developed the software, the board, and is taking"
+" care of the integration of the sensors into our map https://ecocurious.de"
+"/multigeiger-karte/."
+msgstr ""
+
+#: ../../source/about.rst:12 c6aa0a8883a64c6984b89aa7e4b23a94
+msgid ""
+"We have started the first workshops where you can assemble the components "
+"and the case with our support."
+msgstr ""
+
+#: ../../source/about.rst:16 ff6b02df19a7421eab7cc5bd95fb6c9f
+msgid "Workshop dates can be found here:"
+msgstr ""
+
+#: ../../source/about.rst:15 e982cfb526e548cab93b0e8091148f10
+msgid ""
+"https://www.meetup.com/de-DE/Ecocurious-deine-Umwelt-Natur-und-Technik-"
+"Community/"
+msgstr ""
+
+#: ../../source/about.rst:16 b5df37c9398440588b0985d4b6059de2
+msgid "https://ecocurious.de/events/"
+msgstr ""
+
+#: ../../source/about.rst:18 574949209d85404784df69fe661bc01d
+msgid ""
+"Does this sound interesting to you? Then join us, we cordially invite you!"
+msgstr ""

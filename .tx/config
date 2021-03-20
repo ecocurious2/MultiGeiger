@@ -7,6 +7,12 @@ source_file = docs/build/gettext/index.pot
 source_lang = en
 type = PO
 
+[multigeiger.docs_build_gettext_about]
+file_filter = locales/<lang>/LC_MESSAGES/about.po
+source_file = docs/build/gettext/about.pot
+source_lang = en
+type = PO
+
 [multigeiger.docs_build_gettext_resources]
 file_filter = locales/<lang>/LC_MESSAGES/resources.po
 source_file = docs/build/gettext/resources.pot
