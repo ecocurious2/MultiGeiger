@@ -15,14 +15,14 @@ MultiGeiger Documentation
    :maxdepth: 2
 
    ecocurious
-   changes
-   usage
    assemblyguide
-   deployment
    installation
    setup_lora
+   usage
+   deployment
    faq
    resources
+   changes
    development
    authors
 
