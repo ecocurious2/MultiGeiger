@@ -16,7 +16,7 @@ MultiGeiger Documentation
 
    about
    assembly
-   installation
+   setup
    setup_lora
    usage
    deployment

@@ -1,8 +1,8 @@
 .. include:: global.rst.inc
 .. _setup_lora:
 
-LoRa interface
---------------
+Setup (LoRA)
+------------
 
 The MultiGeiger can be connected with the followng steps to TTN (“The
 Things Network”):
