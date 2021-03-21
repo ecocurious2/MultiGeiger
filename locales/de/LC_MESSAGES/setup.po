@@ -3,6 +3,9 @@
 # This file is distributed under the same license as the MultiGeiger package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
+# Translators:
+# TW <tw@waldmann-edv.de>, 2021
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -10,6 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-20 21:30+0100\n"
 "PO-Revision-Date: 2021-03-20 20:31+0000\n"
+"Last-Translator: TW <tw@waldmann-edv.de>, 2021\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,7 +23,7 @@ msgstr ""
 
 #: ../../source/setup.rst:2 95fea818302d4183a90e53d510ab545c
 msgid "Setup"
-msgstr ""
+msgstr "Setup"
 
 #: ../../source/setup.rst:4 6e21721afadf46b496fa43aadffffbc2
 msgid ""
@@ -28,6 +32,11 @@ msgid ""
 " source code (tar.gz). In the new directory, open the directory "
 "*multigeiger* and load the file *multigeiger.ino* with the Arduino IDE."
 msgstr ""
+" Auf GitHub die neueste Release ( "
+"https://github.com/ecocurious/MultiGeiger/releases ) als Source Code (zip) "
+"oder Source Code (tar.gz) herunterladen und entpacken. Mit der Arduino-IDE "
+"in dem neuen Verzeichnis die Datei multigeiger.ino im Verzeichnis "
+"multigeiger öffnen."
 
 #: ../../source/setup.rst:9 f351b728ea8242569d9dc493da39b666
 msgid ""
@@ -36,12 +45,18 @@ msgid ""
 "(BME280 or BME680). The software can send data via network to different "
 "services."
 msgstr ""
+"Die Platine unterstützt zwei verschiedene Heltec-Bausteine, verschiedene "
+"Zählrohre und optional einen Temperatur/Luftdruck/Luftfeuchtigkeits-Sensor "
+"(BME280 oder BME680). Die Software kann via Netzwerk Daten zu verschiedenen "
+"Services senden."
 
 #: ../../source/setup.rst:14 2fcd10b242314ffdb467077ee5012c57
 msgid ""
 "**Heltec WiFi Kit 32** This MCU has WiFi, a large display and plugged into "
 "the longer female connectors on the board."
 msgstr ""
+"**Heltec WiFi Kit 32** Diese MCU hat ein großes Display und WiFi. Auf dem "
+"Board wird dieser Baustein in die längeren Buchsenleisten gesteckt."
 
 #: ../../source/setup.rst:17 31e91d10f9bd4e19816867a3c1021175
 msgid ""
@@ -49,12 +64,17 @@ msgid ""
 "LoRa beside WiFi. It must be plugged into the shorter female headers on the "
 "board."
 msgstr ""
+"**Heltec Wireless Stick** Diese MCU hat ein sehr kleines Display, dafür aber"
+" zusätzlich zu WiFi noch LoRa. Es wird in die kürzeren Buchsenleisten "
+"gesteckt."
 
 #: ../../source/setup.rst:21 a855879bf39d43ae805148d3d2671a1e
 msgid ""
 "To select the Heltec boards in the Arduino IDE, the following steps must be "
 "taken:"
 msgstr ""
+"Um die Heltec-Boards in der Arduino IDE auswählen zu können, müssen die "
+"folgenden Schritte unternommen werden:"
 
 #: ../../source/setup.rst:24 5c37a2b9525148c4902a6cb2cff3e84d
 msgid ""
@@ -62,6 +82,9 @@ msgid ""
 "pages/package_esp32_dev_index.json in Preferences->Additional Boards Manager"
 " URLs."
 msgstr ""
+"Die Datei: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-"
+"pages/package_esp32_dev_index.json muss in Preferences->Additional Boards "
+"Manager URLs hinzugefügt werden."
 
 #: ../../source/setup.rst:25 4a98b8a4e32243e8a7c7b58d60375ac3
 msgid ""
@@ -69,10 +92,15 @@ msgid ""
 "under Tools->Board->Boards Manager. Choose the correct Heltec board under "
 "Tools->Board."
 msgstr ""
+"Danach können unter Tools->Board->Boards Manager die ESP32 Boards (Name "
+"\"esp32 by Espressif Systems\") installiert und anschließend unter "
+"Tools->Board das richtige Heltec Board ausgewählt werden."
 
 #: ../../source/setup.rst:26 3d99c5f3a02349d398db0caa3e666ef7
 msgid "Select the **Heltec wireless Stick** for **both** boards."
 msgstr ""
+"Für **beide** Boards muss hier der **Heltec wireless Stick** ausgewählt "
+"werden."
 
 #: ../../source/setup.rst:27 285ad34dad674e0f9c274d2677362341
 msgid ""
@@ -80,36 +108,48 @@ msgid ""
 "“Minimal SPIFFS (Large APPS with OTA)”**. The software recognizes "
 "automatically which board is equipped."
 msgstr ""
+"Unter Tools muss noch **Flash size: \"4MB(32Mb)\"** und **Partition Scheme: "
+"\"Minimal SPIFFS (Large APPS with OTA)\"** eingestellt werden. Die Software "
+"erkennt selbstständig, welches Board bestückt ist."
 
 #: ../../source/setup.rst:29 1559a05947c143a29e0baf39c115d72f
 msgid ""
 "Various software settings can be made via the following files (see comments "
 "inside):"
 msgstr ""
+"Diverse Software-Einstellungen kann man über folgende Dateien machen (siehe "
+"Kommentare dort):"
 
 #: ../../source/setup.rst:32 1c70b5a5711a4caba6bcfc2e1198d6fe
 msgid ""
 "**./multigeiger/userdefines.h** (always necessary, an example is provided in"
 " userdefines-example.h)"
 msgstr ""
+"**./multigeiger/userdefines.h** (immer notwendig, ein Beispiel hierzu wird "
+"in userdefines-example.h mitgeliefert)"
 
 #: ../../source/setup.rst:34 b8f2c413a2954a87a5e38a3985cd96e5
 msgid ""
 "**./platformio.ini** (only for platformio, an example is provided in "
 "platformio-example.ini)"
 msgstr ""
+"**./platformio.ini** (nur bei platformio, ein Beispiel hierzu wird in "
+"platformio-example.ini mitgeliefert)"
 
 #: ../../source/setup.rst:37 cd63d37422794e6c9f11a46c11b5fe86
 msgid "All external libraries are required, which are listed in the file"
 msgstr ""
+"Es werden alle externen Libraries benötigt, die aufgelistet sind in der "
+"Datei"
 
 #: ../../source/setup.rst:43 2f9fe21893bf41b5a0562ca77814efc5
 msgid "under the section"
-msgstr ""
+msgstr "unter dem Abschnitt"
 
 #: ../../source/setup.rst:49 22924b0a0fc342229847d76a47ed0ce3
 msgid "Please install the latest version via platform.io / Libraries."
 msgstr ""
+"Bitte die aktuellste Version über platform.io / Libraries installieren."
 
 #: ../../source/setup.rst:51 1aae7d5d6e1b4f2c863ed96da6058dad
 msgid ""
@@ -117,6 +157,10 @@ msgid ""
 "project_config/lmic_project_config.h (in the top level in this library) the "
 "correct configurations are set. The file must look like this:"
 msgstr ""
+"**Achtung:** Wenn die Arduino-IDE verwendet wird, dann bitte prüfen, dass in"
+" der Datei project_config/lmic_project_config.h (in der obersten Ebene in "
+"dieser Library) die richtigen Einstellungen gesetzt sind. Die Datei muss so "
+"aussehen:"
 
 #: ../../source/setup.rst:65 c9b90f036248482fb18c3800b0d65a63
 msgid ""
@@ -126,10 +170,15 @@ msgid ""
 " them in the Arduino IDE via *Sketch -> Include Library -> Manage Libraries "
 "..*."
 msgstr ""
+"Die angegebenen Versionen der Libraries sind die Mindestanforderungen. Wir "
+"testen immer auch mit den neuesten Versionen, deshalb bitte immer die "
+"aktuellen Versionen installieren und verwenden.  Falls der Compiler andere "
+"Libraries anmahnt, diese bitte in der Arduino IDE per Sketch -> Include "
+"Library -> Manage Libraries .. installieren."
 
 #: ../../source/setup.rst:72 82e17bc3b8ac4fbba592b62ef81d1fc4
 msgid "Procedure after startup"
-msgstr ""
+msgstr " Ablauf nach dem Start"
 
 #: ../../source/setup.rst:74 82e66dfef7a647c586c95faf9b917367
 msgid ""
@@ -142,10 +191,18 @@ msgid ""
 "established, the own AP is created again and the process starts again and "
 "again."
 msgstr ""
+"Das Gerät baut einen eigenen WLAN-Accesspoint (AP) auf. Die SSID des AP "
+"lautet **ESP32-xxxxxxxx**, wobei die xxx die Chip-ID (bzw. die MAC-Adresse) "
+"des WLAN-Chips sind (Beispiel: **ESP32-51564452**). **Bitte diese Nummer "
+"notieren, sie wird später noch gebraucht.** Dieser Access-Point bleibt für "
+"30sec aktiv.  Danach versucht das Gerät, sich mit dem (früher) eingestellten"
+" WLAN zu verbinden. Dieser Verbindungsversuch dauert ebenfalls 30sec. Kommt "
+"keine Verbindung zu Stande, wird wieder der eigene AP erzeugt und der "
+"Vorgang fängt wieder und wieder von vorne an."
 
 #: ../../source/setup.rst:79 4cee53cbda3e4ee3bdf9c6c0a47a7573
 msgid "Configuring the device via WiFi"
-msgstr ""
+msgstr "Einstellung des WLAN"
 
 #: ../../source/setup.rst:81 27c53d74e80a4831a152f9c62c833b8c
 msgid ""
@@ -156,10 +213,17 @@ msgid ""
 "browser. The start page appears, where you can’t miss the link to the "
 "**configure page** , click on it and you enter the settings page."
 msgstr ""
+"Nachdem der WLAN-AP des Geräts auf Deinem Handy oder PC erscheint, verbinde "
+"Dich mit diesem. Die Verbindung fragt nach einem Passwort, es ist "
+"**ESP32Geiger**. Normalerweise öffnet sich automatisch die Startseite des "
+"Gerätes. Falls die Startseite nicht erscheint, so muss mit dem Browser die "
+"Adresse **192.168.4.1** aufgerufen werden. Die Startseite erscheint und dort"
+" findet man einen Link zur **configure page** - dort drauf klicken und man "
+"kommt zur Einstellungsseite."
 
 #: ../../source/setup.rst:85 43afa31c15a241f785195f12a9f10c8f
 msgid "The settings page has the following lines:"
-msgstr ""
+msgstr "Die Einstellungs-Seite hat die folgenden Zeilen:"
 
 #: ../../source/setup.rst:87 e8b940c403954179a492c64688f8254b
 msgid ""
@@ -167,6 +231,9 @@ msgid ""
 "changed. If the sensor was already registered with this number at "
 "sensor.community, a new registration is mandatory."
 msgstr ""
+"Geiger accesspoint SSID Dies ist die SSID des eingebauten APs und kann "
+"geändert werden. Wenn der Sensor bereits mit dieser Nummer bei "
+"sensor.community registriert war, muss eine neue Registrierung erfolgen."
 
 #: ../../source/setup.rst:89 6f0dbafd57084b5bb0ff1df42cc900d3
 msgid ""
@@ -175,22 +242,32 @@ msgid ""
 "**ESP32Geiger** can be used again. The field must not be left blank. Save "
 "the password to your favourite password manager."
 msgstr ""
+"Geiger accesspoint password Dies ist das Passwort für den eingebauten AP. "
+"Dieses **MUSS** beim ersten Mal geändert werden. Wenn gewünscht, kann "
+"natürlich auch das gleiche Passwort **ESP32Geiger** wieder verwendet werden."
+" Das Eingabefeld darf nicht leer gelassen werden. Sichere das Passwort in "
+"Deinem bevorzugten Passwort-Manager."
 
 #: ../../source/setup.rst:91 023d35417792455295c374e4230b3664
 msgid ""
 "WiFi client SSID Here you have to enter the SSID of the WLAN you want to "
 "connect for network/internet access."
 msgstr ""
+"WiFi client SSID Hier muss die SSID des WLANs für den Netzwerk/Internet-"
+"Zugang eingegeben werden."
 
 #: ../../source/setup.rst:93 5c0e686efbda460c87ebe47305f5a3fa
 msgid "WiFi client password And here the corresponding password."
-msgstr ""
+msgstr "WiFi client password Und hier das zugehörige Passwort."
 
 #: ../../source/setup.rst:95 acdf1ed242da467b94aa36ef8abd5872
 msgid ""
 "For more security, it is recommended to use a separate WiFi network (e.g. "
 "guest network) to ensure an isolated communication from the normal network."
 msgstr ""
+"Für bessere Sicherheit wird empfohlen, ein separates WLAN-Netzwerk zu "
+"verwenden (z.B. das Gast-Netzwerk), um die Kommunikation vom normalen "
+"Netzwerk zu abzutrennen."
 
 #: ../../source/setup.rst:97 bf09578f038040229c997c324b917c38
 msgid ""
@@ -200,31 +277,45 @@ msgid ""
 "If there is no **Cancel** Button, go back to the WiFi settings of the device"
 " and type in the normal home network parameters again."
 msgstr ""
+"Ist alles eingegeben, auf **Apply** klicken. Dann werden die eingestellten "
+"Daten übernommen und in das interne EEPROM gespeichert. Dann bitte diese "
+"Seite über **Cancel** verlassen, weil nur dann das Programm den Config-Mode "
+"schliesst und sich mit dem heimischen WLAN verbindet. Wenn es kein "
+"**Cancel**-Knopf gibt, dann gehe zurück zu den WLAN-Einstellungen des Geräts"
+" und tippe dort die normalen Heim-Netzwerk-Parameter wieder ein."
 
 #: ../../source/setup.rst:101 813b1a8128da4d6e9436fa67597f19cf
 msgid ""
 "**CAUTION**. **When updating to version 1.13, the WiFi settings must be re-"
 "entered**. In future versions this step shall become obsolete."
 msgstr ""
+"**ACHTUNG**, **Beim Update auf die Version 1.13 müssen die WLAN-Daten noch "
+"einmal neu eingegeben werden**. Bei zukünftigen Versionen wird das nicht "
+"mehr nötig sein."
 
 #: ../../source/setup.rst:104 b1a16b0caa7f494d92c14fa1178efd1b
 msgid ""
 "Furthermore, the following options can be defined on the settings page:"
 msgstr ""
+"Weiter können über die Einstell-Seite einige verschiedene Definitionen "
+"festgelegt werden:"
 
 #: ../../source/setup.rst:106 afef0e5dfd7f4ee9aadaaf718153e7f4
 msgid "Start melody, speaker tick, LED tick and display on/off."
 msgstr ""
+"Start-Melodie, Lautsprecher-Tick, LED-Tick und Anzeige jeweils an oder aus"
 
 #: ../../source/setup.rst:107 110e7fcf898b44bc9b81c922e599ff23
 msgid "Send data to sensor.community or/and to madavi.de"
-msgstr ""
+msgstr "Daten senden zu sensor.community oder/und zu madavi.de"
 
 #: ../../source/setup.rst:108 696b785665234a95b4b5a7d8b8c10e30
 msgid ""
 "If LoRa hardware is available: the LoRa parameters (DEVEUI, APPEUI and "
 "APPKEY) can be entered here."
 msgstr ""
+"bei LoRa-Hardware können hier auch die LoRa-Parameter (DEVEUI, APPEUI und "
+"APPKEY) eingegeben werden."
 
 #: ../../source/setup.rst:111 4bf3333eda0a4239961158cf15bf7c73
 msgid ""
@@ -235,12 +326,20 @@ msgid ""
 "Rebooting…**, the MultiGeiger will reboot and the new firmware will be "
 "active."
 msgstr ""
+"Am Ende der Einstellungsseite gibt es einen Link **Firmware update** - "
+"hiermit kann man die Firmware auf dem MultiGeiger aktualisieren. Die .bin-"
+"Datei runterladen, dann diese über **Browse..** auswählen und **Update** "
+"klicken. Es dauert ca. 30sec für das Hochladen und Flashen der Firmware. "
+"Wenn Du dann **Update Success! Rebooting...** siehst, startet der "
+"MultiGeiger neu und die neue Firmware ist dann aktiv."
 
 #: ../../source/setup.rst:113 7bc82b7297634871aab8f7edf4047d91
 msgid ""
 "If **Update error: …** appears, the update did not work. The previous "
 "firmware is still active."
 msgstr ""
+"Erscheint **Update error: ...**, dann hat das Update nicht geklappt - es ist"
+" dann die seitherige Firmware weiter aktiv."
 
 #: ../../source/setup.rst:115 1d975c775353439d98ddcb33b651dc01
 msgid ""
@@ -252,10 +351,12 @@ msgid ""
 "appears. Enter **admin** as username and the chosen password (see above). "
 "Now you will see the settings page as described."
 msgstr ""
+"AN\n"
+"Die Einstellseite kann zu jeder Zeit aus dem eigenen WLAN heraus aufgerufen werden. Dazu wird in der Adresszeile des Browsers http://esp32-xxxxxxx eingegeben (xxxxxxx ist die Chip-ID - siehe oben). Sollte es mit diesem Hostnamen nicht klappen, dann muss die IP-Adresse des Geigerzählers verwendet werden. Diese kann aus dem Router ausgelesen werden. Bei Erfolg erscheint zunächt eine Login-Seite. Hier ist als Username **admin** und als Passwort das ausgewählte Passwort (siehe oben) einzugeben. Dann erscheint die gleiche Einstellseite wie beschrieben."
 
 #: ../../source/setup.rst:121 b4b81e29b1784157a3b45ec5b8d30559
 msgid "Server for measured data"
-msgstr ""
+msgstr "Server für die Messdaten"
 
 #: ../../source/setup.rst:123 999f97f9635e47db95ea3855d593c02f
 msgid ""
@@ -263,6 +364,9 @@ msgid ""
 "“counts per minute” (cpm) are calculated. After each cycle the data is sent "
 "to the servers at *sensor.community* and at *madavi.de*."
 msgstr ""
+"Es werden jeweils einen Messzyklus lang die Impulse gezählt und dann die "
+"\"Counts per Minute\" (cpm) berechnet. Jeweils nach diesem Zyklus werden die"
+" Daten zu den Servern bei *sensor.community* und bei *madavi.de* gesendet."
 
 #: ../../source/setup.rst:125 d3cb5e4a36ad4b8f8ea8af0dfd959497
 msgid ""
@@ -274,6 +378,13 @@ msgid ""
 " the counting tube name **si22g** with the corresponding name (e.g.: sbm-20 "
 "or sbm-19)."
 msgstr ""
+"Bei *sensor.community* werden die Daten gespeichert und stehen am nächsten "
+"Tag zum Abruf als CSV-Datei bereit. Diese Datei findet man unter  "
+"http://archive.sensor.community/DATE/DATE_radiation_si22g_sensor_SID.csv) "
+"wobei DATE = Datum im Format YYYY-MM-DD ist (beides mal gleich) und SID die "
+"Sensornummer des Sensors (**nicht** die ChipID). Für andere Sensoren ist der"
+" Zählrohr-Name **si22g** durch den entsprechenden Namen zu ersetzen (z.B.: "
+"sbm-20 oder sbm-19)."
 
 #: ../../source/setup.rst:128 d911ad90cdfa4051b74393195f2d67ed
 msgid ""
@@ -282,16 +393,23 @@ msgid ""
 "https://www.madavi.de/sensor/graph.php?sensor=esp32-CHIPID-si22g. Here "
 "CHIPID is the ChipId (the digits of the SSID of the internal access point)."
 msgstr ""
+"Bei *madavi* werden die Daten in einer RRD-Datenbank abgelegt und können "
+"direkt als Grafik über diesen Link aufgerufen werden: "
+"https://www.madavi.de/sensor/graph.php?sensor=esp32-CHIPID-si22g Hier ist "
+"dann CHIPID die ChipId (also die Ziffern der SSID des internen "
+"Accesspoints)."
 
 #: ../../source/setup.rst:131 8fffce31404d474f9ddd526ee7113b90
 msgid ""
 "During the transmission of the data to the servers, the name of the server "
 "is briefly shown in the status line (bottom line) of the display."
 msgstr ""
+"Während der Übertragung der Daten zu den Servern wird in der Statuszeile "
+"(unterste Zeile) des Displays kurz der Name des Servers eingeblendet."
 
 #: ../../source/setup.rst:134 05cc811c4e7c4f3ab189f470f91096b3
 msgid "Login to sensor.community"
-msgstr ""
+msgstr "Anmelden bei sensor.community"
 
 #: ../../source/setup.rst:136 d4744d523a234615813420438cd59760
 msgid ""
@@ -301,16 +419,27 @@ msgid ""
 "via the *Register* button and log in. To register a new sensor click "
 "*Register new sensor*. Fill in the form:"
 msgstr ""
+"Um Mess-Daten an sensor.community zu senden, muss man dort ein gültiges "
+"Konto haben und der Sensor muss registriert sein. Beides kann man auf  "
+"https://devices.sensor.community erledigen. Wenn man noch kein Konto hat, "
+"über \"Register\" eins anlegen und sich einloggen. Um einen neuen Sensor zu "
+"registrieren, auf \"Register new sensor\" klicken und das Formular "
+"ausfüllen:"
 
 #: ../../source/setup.rst:138 193e5e6d6c7d42acaeffc10b7f58869e
 msgid ""
 "Sensor ID: Enter the number (only the numbers) of the SSID of the sensor "
 "(e.g. for the sensor ESP-51564452 enter 51564452)."
 msgstr ""
+"Erste Zeile, Sensor ID: Hier die Nummer (nur die Zahlen) der SSID des "
+"Sensors eingeben (z.B. bei dem Sensor ESP-51564452 dann nur 51564452 "
+"eingeben)."
 
 #: ../../source/setup.rst:140 a17dab461a3b4880bbb98ee784909616
 msgid "Sensor Board: Select *esp32* (by the small arrows on the right)"
 msgstr ""
+"Zweite Zeile, Sensor Board: *esp32* auswählen (über die kleinen Pfeile "
+"rechts)"
 
 #: ../../source/setup.rst:141 adf26340e4964ba28c1b14bc2603af4b
 msgid ""
@@ -318,12 +447,18 @@ msgid ""
 "the sensor can be assigned arbitrarily, but must be entered. Please check "
 "**Indoor sensor** as long as the sensor operates not outdoor."
 msgstr ""
+"Basisinformation: Hier die Adresse mit Land eingeben. Der interne Name des "
+"Sensors kann beliebig vergeben werden, muss aber eingegeben werden. Bitte "
+"den Haken bei **Indoor-Sensor** setzen, solange der Sensor nicht draussen "
+"aufgestellt ist."
 
 #: ../../source/setup.rst:143 77fe9eacbd6f459285dbaf5302206d3d
 msgid ""
 "Additional information: Can be left blank, but its nice to provide further "
 "information."
 msgstr ""
+"Zusätzliche Informationen: Kann leer gelassen werden, es ist aber nett, um  "
+"zusätzliche Informationen anzugeben."
 
 #: ../../source/setup.rst:145 c1da548861194ba684ab864f45a80e11
 msgid ""
@@ -331,6 +466,9 @@ msgid ""
 "accordingly). The value for the second sensor can remain DHT22, as it is "
 "irrelevant in this context."
 msgstr ""
+"Hardware-Konfiguration: Hier als Sensor-Typ den Eintrag **Radiation Si22G** "
+"(oder ggf. entsprechend) auswählen. Für den zweiten Sensor kann DHT22 stehen"
+" bleiben, das ist für uns irrelevant."
 
 #: ../../source/setup.rst:147 95e358771b4e4fee928087ffe4d75801
 msgid ""
@@ -338,6 +476,9 @@ msgid ""
 "the right button to calculate the coordinates. They are needed to show your "
 "sensor on the map."
 msgstr ""
+"Position: Hier bitte so genau wie möglich die Koordinaten eingeben. Man kann"
+" den rechten Knopf benutzen, um die Koordinaten berechnen lassen. Diese "
+"werden benötigt, um den Sensor auf der Karte anzuzeigen."
 
 #: ../../source/setup.rst:150 037f92a7c3a44534a0128d65693180c6
 msgid ""
@@ -346,3 +487,7 @@ msgid ""
 "Please remember: the ID mandatory for the queries at sensor.community or "
 "multigeiger.citysensor.de."
 msgstr ""
+"Nun mit \"Save settings\" die Einstellungen beenden. Auf der Übersichts-"
+"Seite für diesen Sensor auf *Data* klicken. Hier kann man u.a. die Sensor ID"
+" sehen. Immer dran denken: die ID wird für Abfragen auf sensor.community "
+"oder multigeiger.citysensor.de zwingend benötigt."

@@ -3,6 +3,9 @@
 # This file is distributed under the same license as the MultiGeiger package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
+# Translators:
+# TW <tw@waldmann-edv.de>, 2021
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -10,6 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-20 21:30+0100\n"
 "PO-Revision-Date: 2021-03-20 20:53+0000\n"
+"Last-Translator: TW <tw@waldmann-edv.de>, 2021\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,7 +23,7 @@ msgstr ""
 
 #: ../../source/about.rst:2 326f7a4862954632943120aed19b28a3
 msgid "About"
-msgstr ""
+msgstr "Über"
 
 #: ../../source/about.rst:4 cdb17d489e9f400bba8b7dcbe2d4b34e
 msgid ""
@@ -27,18 +31,24 @@ msgid ""
 "environment, nature and technology, see "
 "https://ecocurious.de/projekte/multigeiger/."
 msgstr ""
+"Der **MultiGeiger** ist ein Projekt von Ecocurious, Deiner Umwelt-, Natur- "
+"und Technik-Community, siehe https://ecocurious.de/projekte/multigeiger/."
 
 #: ../../source/about.rst:6 200f8580d35a471f9a2c0bd23d1d7087
 msgid ""
 "The goal is to establish a citizen measurement network for radioactivity in "
 "Germany."
 msgstr ""
+"Ziel ist es, ein Bürger-Messnetz für Radioaktivität in Deutschland "
+"aufzubauen."
 
 #: ../../source/about.rst:8 719f67ec613245a28fe569d5e7eaade6
 msgid ""
 "The **MultiGeiger** hardware and software was designed by Jürgen Böhringer "
 "(http://www.boehri.de)."
 msgstr ""
+"Die **MultiGeiger** Hard- und Software hat Jürgen Böhringer konzipiert "
+"(http://www.boehri.de)."
 
 #: ../../source/about.rst:10 bfa0acbcbade46b7a773969658a522d1
 msgid ""
@@ -46,28 +56,35 @@ msgid ""
 " care of the integration of the sensors into our map https://ecocurious.de"
 "/multigeiger-karte/."
 msgstr ""
+"Reinhard/rexfue hat die Software und Platine weitergedacht und kümmert sich "
+"um die Einbindung der Sensoren in unsere Map https://ecocurious.de"
+"/multigeiger-karte/."
 
 #: ../../source/about.rst:12 c6aa0a8883a64c6984b89aa7e4b23a94
 msgid ""
 "We have started the first workshops where you can assemble the components "
 "and the case with our support."
 msgstr ""
+"Wir haben die ersten Workshops gestartet, in denen Du die Bauteile und das "
+"Gehäuse mit unserer Unterstützung zusammenbauen kannst."
 
 #: ../../source/about.rst:16 ff6b02df19a7421eab7cc5bd95fb6c9f
 msgid "Workshop dates can be found here:"
-msgstr ""
+msgstr "Workshop-Termine findest Du hier:"
 
 #: ../../source/about.rst:15 e982cfb526e548cab93b0e8091148f10
 msgid ""
 "https://www.meetup.com/de-DE/Ecocurious-deine-Umwelt-Natur-und-Technik-"
 "Community/"
 msgstr ""
+"https://www.meetup.com/de-DE/Ecocurious-deine-Umwelt-Natur-und-Technik-"
+"Community/"
 
 #: ../../source/about.rst:16 b5df37c9398440588b0985d4b6059de2
 msgid "https://ecocurious.de/events/"
-msgstr ""
+msgstr "https://ecocurious.de/events/"
 
 #: ../../source/about.rst:18 574949209d85404784df69fe661bc01d
 msgid ""
 "Does this sound interesting to you? Then join us, we cordially invite you!"
-msgstr ""
+msgstr "Klingt das interessant für Dich? Dann mach mit, herzliche Einladung!"
