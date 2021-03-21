@@ -177,6 +177,7 @@ void setup_speaker(bool playSound, bool _led_tick, bool _speaker_tick) {
   // set duty cycles to 50% (and never modify them again!)
   pwm_config.cmpr_a = 50.0;
   pwm_config.cmpr_b = 50.0;
+  pwm_config.duty_mode = MCPWM_DUTY_MODE_0;  // active high duty
   pwm_config.counter_mode = MCPWM_UP_COUNTER;
   mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_0, &pwm_config);
 
