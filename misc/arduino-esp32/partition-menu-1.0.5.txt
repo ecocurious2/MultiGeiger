@@ -1,0 +1,30 @@
+This patch adds back the partition scheme menu to the Arduino IDE
+(tested with Arduino IDE 1.8.13).
+
+With arduino-esp32 1.0.5 release, this menu somehow was dropped.
+
+Problem: The default partitioning for the "Wireless Stick" HELTEC device
+it uses now is "default_8MB" and only fits for 8MB flash size.
+
+For MultiGeiger, this causes problems because we also need to flash
+HELTEC "WiFi Kit 32" devices with 4MB flash size with the same release
+binary and for that we need to be able to select the "Minimal SPIFFS"
+(min_spiffs) partitioning scheme.
+
+Applying the fix:
+
+Locate the boards.txt, for me it was in there:
+
+$ cd ~/.arduino15/packages/esp32/hardware/esp32/1.0.5
+
+$ patch -p0 < partition-menu-1.0.5.diff
+
+Restart the Arduino IDE.
+
+In the IDE, select:
+- Tools -> Board -> Heltec Wireless Stick
+- Tools -> Partition Scheme -> Minimal SPIFFS
+- Tools -> LoRaWan Region -> Region_EU868 (for Europe, 868MHz)
+
+Now, flashing 4MB devices should work again.
+
