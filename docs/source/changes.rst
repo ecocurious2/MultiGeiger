@@ -15,10 +15,12 @@ Fixes:
 * improve LoRaWAN stability (work around LMIC bug #677, add LMIC polling
   from loop()), #373
 * do async NTP/clock setup, #316
+* speaker: init "duty_mode" member in MCPWM config
 * avoid using IotWebConf 3.0.0 for now, #357, PR #370
 
 Other changes:
 
+* patch: restore partition scheme menu for arduino-esp32 1.0.5
 * move CI from travis CI to github workflow
 * start screen cleanups, #335
 * code / naming style fixes
@@ -31,6 +33,7 @@ Other changes:
   - added assembly and deployment guide
   - document esp32 board buttons, #129
   - document dip switch usage, #128
+  - move README-{de,en}.* contents into the .rst docs
   - BLE usage documentation update with some images, #338
   - added links to map, ecocurious, assembly room
   - markup, rendering, spelling fixes, cleanups
