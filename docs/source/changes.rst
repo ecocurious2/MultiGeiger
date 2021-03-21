@@ -3,7 +3,7 @@
 Changelog
 =========
 
-V1.15.0-dev (not released yet)
+V1.15.0 2021-03-21
 ------------------------------
 
 New features:
