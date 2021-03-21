@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# TW <tw@waldmann-edv.de>, 2021
+# Marianne Busch, 2021
 # 
 #, fuzzy
 msgid ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-14 22:24+0100\n"
 "PO-Revision-Date: 2021-03-14 21:27+0000\n"
-"Last-Translator: TW <tw@waldmann-edv.de>, 2021\n"
+"Last-Translator: Marianne Busch, 2021\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,13 +23,15 @@ msgstr ""
 
 #: ../../source/deployment.rst:6 de72d5e24aa044b4ad1d4508b530d124
 msgid "Deployment"
-msgstr "Aufstellen"
+msgstr "Aufstellung"
 
 #: ../../source/deployment.rst:8 ec5cf13528cf4bd2b725e27546f6271d
 msgid ""
 "When deploying the MultiGeiger measurement station, you need to consider "
 "some things."
 msgstr ""
+"Bei der Aufstellung der Multigeigermesstation sind einige Punkte zu "
+"beachten."
 
 #: ../../source/deployment.rst:10 2c79c0a8d79c4b60b3b1e310df12fe3e
 msgid ""
@@ -37,56 +39,68 @@ msgid ""
 "deployment place. But still, we can be aware of the parameters which may "
 "have a negative impact."
 msgstr ""
+"Natürlich wird es, bei uns Privatleuten, selten einen 100% perfekten "
+"Aufstellort geben. Dennoch sollten wir uns bewusst sein welche Parameter "
+"negative Einflüsse haben können."
 
 #: ../../source/deployment.rst:15 bb827d5d064f4c8b89e28d734a3baf94
 msgid "Requirements for the deployment place"
-msgstr ""
+msgstr "Anforderungen an den Aufstellort"
 
 #: ../../source/deployment.rst:18 dedff27ccb314edb8209620b28433829
 msgid "In any case we need this at the deployment place:"
-msgstr ""
+msgstr "Auf jeden Fall brauchen wir am Aufstellort:"
 
 #: ../../source/deployment.rst:20 2ef11566366d495296ecb0b8bea06227
 msgid "WiFi or LoRa reception for data transmission (A)"
-msgstr ""
+msgstr "WLAN oder LoRa Empfang für die Datenübertragung (A)"
 
 #: ../../source/deployment.rst:22 8b7b085cdce148b7a8a0695ed4c52fa5
 msgid "WiFi can come from inside the house, LoRa from some TTN LoRa gateway."
 msgstr ""
+"Für WLAN kann das Netz aus einem Gebäude verwendet werden, für LoRa das Netz"
+" eines TTN LoRa Gateways."
 
 #: ../../source/deployment.rst:24 38d9e36cd4084806ae8df215198a6f15
 msgid "Power: 5 V / ~ 100 mA (B)"
-msgstr ""
+msgstr "Stromversorgung: 5 V / ~ 100 mA (B)"
 
 #: ../../source/deployment.rst:26 dcbd7b78316f4c1cb1625406a46b0e7d
 msgid ""
 "Power can come from inside the house via a 5V cable or from other power "
 "supply."
 msgstr ""
+"Strom kann durch eine 5V Leitung aus dem Gebäude oder aus einer anderen "
+"Stromquelle bezogen werden."
 
 #: ../../source/deployment.rst:28 737db227386948cd9ef204a25d6abcab
 msgid "Irrigation area (C)"
-msgstr ""
+msgstr "Abregnenfläche (C)"
 
 #: ../../source/deployment.rst:30 66ffe6669ee546038f21bcd67e91b09a
 msgid ""
 "E.g. some lawn, meadow or similar that gets some rainfall, potentially "
 "including fallout."
 msgstr ""
+"Z. B. Rasen, Wiese o. ä. worauf Regen fällt, der potentiell radioaktiven "
+"Niederschlag „Fallout“ enthält."
 
 #: ../../source/deployment.rst:18 2065184e06c2485c8af44cf6f3f9f44a
 msgid "|mg-garden|"
-msgstr ""
+msgstr "|mg-garden|"
 
 #: ../../source/deployment.rst:39 412481f3104244cc93f285ef07001667
 msgid "Choosing a deployment place"
-msgstr ""
+msgstr "Wahl des Aufstellungsorts"
 
 #: ../../source/deployment.rst:41 fe49e86e44664b7cb38f0368021e691e
 msgid ""
 "We want to measure radioactive substances (dust), also known as \"fallout\"."
 " They come from e.g. nuclear explosions or reactor desasters."
 msgstr ""
+"Was wir mit unserem Gerät nachweisen wollen sind radioaktive Stoffe "
+"(Stäube), die man auch \"Fallout\" nennt. Sie entstehen z. B. bei "
+"Atombombenexplosionen und Reaktorkatastrophen."
 
 #: ../../source/deployment.rst:44 043c28e5802640a8bba29b43778b5d5a
 msgid ""
@@ -95,16 +109,23 @@ msgid ""
 "a small, but measurable peak on our devices, which degrades with a half life"
 " of 45 minutes."
 msgstr ""
+"In sehr schwacher Form entstehen sie natürlicherweise auch in der Atmosphäre"
+" auch durch den Zerfall des radioaktiven Edelgases Radon. Auch dieser "
+"\"Radon-Fallout\" erzeugt bei unseren Geräten einen kleinen, aber messbaren,"
+" Ausschlag, der sich in etwa mit einer Halbwertszeit von 45 Minuten wieder "
+"abbaut."
 
 #: ../../source/deployment.rst:47 5ba5ceb0488547d9aff7ccad03f12076
 msgid ""
 "With the help of these \"radon peaks\", we can see whether our device is "
 "deployed to a good place and is sensitive also for \"real\" fallout."
 msgstr ""
+"Anhand dieser „Radon-Peaks“ können wir sehen ob unser Gerät gut aufgestellt "
+"ist und auch für „echten“ Fallout empfindlich ist."
 
 #: ../../source/deployment.rst:50 2810ac598f7347ecb11ed7efb6efc12e
 msgid "Irrigation area"
-msgstr ""
+msgstr "Abregenfläche"
 
 #: ../../source/deployment.rst:52 77b3a43b966542d5abcb56a0b4031f4c
 msgid ""
@@ -112,40 +133,49 @@ msgid ""
 "station. This area should also have the capability to hold and store "
 "radioactive particles."
 msgstr ""
+"Wir brauchen in direkter Umgebung der Messtation eine größere Fläche auf die"
+" es regnen kann. Diese Fläche sollte auch die Möglichkeit haben radioaktive "
+"Partikel festzuhalten."
 
 #: ../../source/deployment.rst:55 24f7a96125324b2b987fc9e2ec49e0d2
 msgid "A lawn or a meadow is perfect for this."
-msgstr ""
+msgstr "Rasen oder Wiese ist hierfür perfekt."
 
 #: ../../source/deployment.rst:57 8bf2f8d96cf94b659e28403958003ce9
 msgid ""
 "On the other hand, some asphalt can not do that, because particles are "
 "washed away directly after raining down."
 msgstr ""
+"Eine Asphaltfläche dagegen kann dies nicht, da die Partikel direkt nach dem "
+"Abregnen sofort abgespült werden."
 
 #: ../../source/deployment.rst:60 58168e86b0074d049b04053b1b573d91
 msgid "Wind direction"
-msgstr ""
+msgstr "Windrichtung"
 
 #: ../../source/deployment.rst:62 330032654ff04efaa68a17e2adc95550
 msgid ""
 "The area should be unobstructed from the main wind direction by other "
 "buildings, bushes or trees."
 msgstr ""
+"Das Gelände sollte von der Hauptwindrichtung her unverbaut sein und auch "
+"Büsche oder Bäume sollten sich dort keine befinden."
 
 #: ../../source/deployment.rst:65 11d02a8b7c4445729e5294c2b418d40d
 msgid "Sun light"
-msgstr ""
+msgstr "Sonnenlicht"
 
 #: ../../source/deployment.rst:67 df043edc66b04fa0993e759b57ea4df9
 msgid ""
 "The power supply cable as well as the MultiGeiger device itself, should be "
 "in the shadows most of the time."
 msgstr ""
+"Sowohl das 5 V-Kabel, als auch das Gerät selbst, sollten sich möglichst die "
+"meiste Zeit des Tages im Schatten befinden."
 
 #: ../../source/deployment.rst:69 990acb66d13347de92af86e8615827d3
 msgid "Direct sunlight can have two negative influences:"
-msgstr ""
+msgstr "Direktes Sonnenlicht kann zweierlei negative Auswirkungen haben:"
 
 #: ../../source/deployment.rst:71 f270e17c703840bea2ebbf5c22397888
 msgid ""
@@ -154,99 +184,119 @@ msgid ""
 "temperature tests showing that the device works ok up to 70 deg celsius. But"
 " the GM tube is only specified to up to 50 deg celsius."
 msgstr ""
+"Hitze: Die Temperatur im Gerät kann in der Sonne auf bis zu 60 °C ansteigen "
+"(bei 45 °C im Schatten). Zwar haben unsere Temperaturtests gezeigt dass das "
+"Gerät bei 70 °C noch einwandfrei funktioniert. Jedoch ist das Zählrohr nur "
+"bis 50 °C spezifiziert."
 
 #: ../../source/deployment.rst:76 e5516619d5b74b5b8ae58feaf8b510ce
 msgid ""
 "UV damage: Over time, the cable and case can be damaged by UV radiation and "
 "get porous."
 msgstr ""
+"UV-Schäden: Direktes Sonnenlicht kann unser Gehäuse im Laufe der Jahre porös"
+" werden lassen und dadurch schädigen."
 
 #: ../../source/deployment.rst:81 e8675ececd324c779daa682ce0130953
 msgid "Examples"
-msgstr ""
+msgstr "Beispiele"
 
 #: ../../source/deployment.rst:83 fc21bf0ac75e4b4082edc437031f4e5d
 msgid "Examples of good and bad deployment places:"
 msgstr ""
+"Beispielhafter Vergleich eines guten und eines schlechten Aufstellungsorts:"
 
 #: ../../source/deployment.rst:85 316902f951fe40158f3ef444805f12c1
 msgid "|mg-placement|"
-msgstr ""
+msgstr "|mg-placement|"
 
 #: ../../source/deployment.rst:91 0dc9abf289ea47beb4c21d3c3fac6905
 msgid ""
 "Comparison of two deployment places. Yellow is the \"usable irrigation "
 "area\"."
-msgstr ""
+msgstr "Vergleich zweier Aufstellorte. Gelb ist die „Nutzbare Abregenfläche“."
 
 #: ../../source/deployment.rst:93 fbc199aeb1ba45919f3890af5ef9ae09
 msgid "Bad deployment place (red dot at the left)"
-msgstr ""
+msgstr "Schlechter Aufstellungsort (linker roter Punkt)"
 
 #: ../../source/deployment.rst:95 ../../source/deployment.rst:104
 #: c804b4b4d26e4544ba64b0792692f7fb 9def88da8aec4744a24dcec631357b9a
 msgid "Reasons:"
-msgstr ""
+msgstr "Gründe:"
 
 #: ../../source/deployment.rst:97 8c3cd62837e44392b2a62eb77c750da1
 msgid ""
 "Meadow: a bit part of the area around the GM device is made of concrete "
 "platter. Incapable of holding/storing fallout."
 msgstr ""
+"Wiese: Ein Großteil der Fläche um den Geigerzähler besteht aus "
+"Waschbetonplatten. Hier kann kein abgeregneter Fallout gespeichert werden."
 
 #: ../../source/deployment.rst:98 57514b1ba6e24ab5857774361fa312bb
 msgid ""
 "Wind: the main wind direction is from the west and the tree obstructs "
 "fallout raining down close to the device."
 msgstr ""
+"Wind: Der Wind kommt hauptsächlich aus Westen und der Baum erschwert das "
+"Abladen des Fallouts in der Nähe des Zählrohrs."
 
 #: ../../source/deployment.rst:99 46f351e796344d628d41ce8c7f4f98dc
 msgid ""
 "Sun: Sunlight comes primarily from the south and strongly shines on the "
 "devices."
 msgstr ""
+"Sonne: Die Sonne kommt hauptsächlich von Süden und bestrahlt den Multigeiger"
+" stark."
 
 #: ../../source/deployment.rst:102 13bb8180120f42988b4f6ca0f2cf651b
 msgid "Good deployment place (red dot at the right)"
-msgstr ""
+msgstr "Guter Aufstellungsort (rechter roter Punkt)"
 
 #: ../../source/deployment.rst:106 4b4a22e8083c455d8f264704a8c06cca
 msgid ""
 "Meadow: a big part of the area around the GM device is meadow, which can "
 "hold/store fallout."
 msgstr ""
+"Wiese: Ein Großteil der Fläche um den Geigerzähler besteht aus Wiese, die "
+"abgeregneten Fallout speichern kann."
 
 #: ../../source/deployment.rst:107 1b12c348443d4da6bf708f25f41901eb
 msgid "Wind: no obstruction"
-msgstr ""
+msgstr "Wind: Keine Hindernisse."
 
 #: ../../source/deployment.rst:108 11e34d688b334c4d9d83eca6bb247dc8
 msgid "Sun: the GM device is in the shadow due to the garden shack."
 msgstr ""
+"Sonne: Der Geigerzähler wird gut vom Gartengeräteschuppen verschattet."
 
 #: ../../source/deployment.rst:112 54c12f181314454587ed62f40b81a335
 msgid "More Information"
-msgstr ""
+msgstr "Weitere Informationen"
 
 #: ../../source/deployment.rst:114 584b8809020c4146aafee17e98bdcda0
 msgid "Description of the BFS-ODL measurement network (german):"
-msgstr ""
+msgstr "Beschreibung des BFS-ODL-Netzes:"
 
 #: ../../source/deployment.rst:116 595771e5d9c54da3bc5f2c51888aea4b
 msgid ""
 "`Messnetz "
 "<https://www.bfs.de/SharedDocs/Downloads/BfS/DE/broschueren/ion/radioaktivitaetsmessnetz.pdf?__blob=publicationFile&v=5>`_"
 msgstr ""
+"`Messnetz "
+"<https://www.bfs.de/SharedDocs/Downloads/BfS/DE/broschueren/ion/radioaktivitaetsmessnetz.pdf?__blob=publicationFile&v=5>`_"
 
 #: ../../source/deployment.rst:117 4a53fc2ca83e44edba9b8dd5cd0eae20
 msgid ""
 "`ODL-Sonde <https://odlinfo.bfs.de/DE/themen/wie-wird-gemessen/odl-"
 "sonde.html>`_"
 msgstr ""
+"`ODL-Sonde <https://odlinfo.bfs.de/DE/themen/wie-wird-gemessen/odl-"
+"sonde.html>`_"
 
 #: ../../source/deployment.rst:119 3973b9ec77624235b17b5cab410cc7e7
 msgid "Video interview about the BFS-ODL measurement network (german):"
-msgstr ""
+msgstr "Videointerview über das BFS-ODL-Netz:"
 
 #: ../../source/deployment.rst:121 1304cf9196ce45df83cc80304207de72
 msgid ""
@@ -254,3 +304,6 @@ msgid ""
 "<https://www.bfs.de/SharedDocs/Videos/BfS/DE/kt-interview-"
 "umweltueberwachung.html>`_"
 msgstr ""
+"`Interview über das BFS-ODL-Netzwerk "
+"<https://www.bfs.de/SharedDocs/Videos/BfS/DE/kt-interview-"
+"umweltueberwachung.html>`_"
