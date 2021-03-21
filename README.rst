@@ -34,15 +34,3 @@ Quicklinks
 
   https://play.wa.binary-kitchen.de/_/global/raw.githubusercontent.com/ecocurious2/rc3_2020/main/main.json
 
-Old Documentation
-~~~~~~~~~~~~~~~~~
-
-In case you search for something that cannot be found on https://multigeiger.readthedocs.org/ yet, you might want to have a look at the old documentation:
-
-* English Overview (old): 
-
-  https://github.com/ecocurious2/MultiGeiger/blob/master/README-en.rst
-
-* Deutsche Dokumentation (alt):
-
-  https://github.com/ecocurious2/MultiGeiger/blob/master/README-de.md
