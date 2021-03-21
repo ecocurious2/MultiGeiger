@@ -16,3 +16,11 @@ Pz1	1	Piezo-Lautsprecher	AL-60SP05	https://www.reichelt.de/ch/de/elektromagnetis
 X1, X2	2	Zählrohrhalter		
 	1	Zählrohr SBM-20, SBM-19 oder Si22G, (andere möglich, wobei Umrechnungsfaktor muss in Firmware angepasst werden muss)	 SBM-20, SBM-19 oder Si22G	diverse, z.B. ebay, häufig russische oder ukranische Verkäufer
 	2	Buchsenleiste, Fassung für Microcontroler-Modul
+
+Optional Parts
+TEIL	ANZAHL 	BESCHREIBUNG	Artikelbezeichnung	LINK
+S2	1	DIP-Schalter, 4-polig, Piano-Dip Ausführung	DP 04	https://www.reichelt.de/index.html?ACTION=446&LA=0&nbc=1&q=dp%2004
+
+R6, R7, R8, R9	4	10k=hm SMD Widerstand, 0805	RND 0805 1 10K	https://www.reichelt.de/smd-widerstand-0805-10-kohm-125-mw-1--rnd-0805-1-10k-p183251.html?&trstct=pos_12&nbc=1
+
+I2C	1	Stiftleiste Micro JST 1.5mm, ZH 4-Pin,		
