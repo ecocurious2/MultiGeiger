@@ -24,6 +24,8 @@ be taken:
 -  Add the file: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json in Preferences->Additional Boards Manager URLs. 
 -  Then, the ESP32 boards (name “esp32 by Espressif Systems”) can be installed under Tools->Board->Boards Manager. Choose the correct Heltec board under Tools->Board.  
 -  Select the **Heltec wireless Stick** for **both** boards. 
+-  If you use arduino-esp32 >= 1.0.5, you might need to apply a patch to get back the "partition scheme" menu
+   needed in the next step, see the ``misc/arduino-esp32/paritition-menu-*.*`` files in our git repo.
 -  Select under Tools **Flash size: “4MB(32Mb)”** and **Partition Scheme: “Minimal SPIFFS (Large APPS with OTA)”**. The software recognizes automatically which board is equipped.
 
 Various software settings can be made via the following files (see
