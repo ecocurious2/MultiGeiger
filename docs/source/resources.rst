@@ -8,6 +8,8 @@ This is a collection of additional resources that are somehow related to MultiGe
 
 Hardware / Parts
 ----------------
+MultiGeiger supported counter tubes:
+ -  Si22G, SBM-20, SBM-19
 
 MultiGeiger supported ESP32 boards:
 
