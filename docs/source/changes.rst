@@ -3,8 +3,23 @@
 Changelog
 =========
 
-V1.15.0 2021-03-21
+V1.16.0-dev (not released yet)
 ------------------------------
+
+New features:
+
+* ...
+
+Fixes:
+
+* ...
+
+Other changes:
+
+* ...
+
+V1.15.0 2021-03-21
+------------------
 
 New features:
 

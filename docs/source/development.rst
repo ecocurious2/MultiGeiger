@@ -171,3 +171,8 @@ Checklist:
   - create a binary (see above) and attach to the github release
   - add a link to the relevant ``changes.rst`` section to the github release
 
+- ``bump2version --no-tag --current-version 1.23.0 minor`` - this will:
+
+  - update versions everywhere (now to: 1.24.0-dev)
+  - not quite correctly update changes.rst, will need manual fixing afterwards
+  - after fixing: git commit --amend
