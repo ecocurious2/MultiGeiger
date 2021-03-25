@@ -167,7 +167,6 @@ void play(int *sequence) {
 
 void setup_speaker(bool playSound, bool _led_tick, bool _speaker_tick) {
   pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, LOW);  // LED off
 
   mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, PIN_SPEAKER_OUTPUT_P);
   mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0B, PIN_SPEAKER_OUTPUT_N);
@@ -183,27 +182,33 @@ void setup_speaker(bool playSound, bool _led_tick, bool _speaker_tick) {
 
   setup_audio_timer(isr_audio, PERIOD_DURATION_US);
 
-  if (playSound) {
-    static int sequence[][4] = {
-      TONE(1174659, 1, -1, 2),  // D
-      TONE(0, 0, 0, 2),         // ---
-      TONE(1318510, 1, -1, 2),  // E
-      TONE(0, 0, 0, 2),         // ---
-      TONE(1479978, 1, -1, 2),  // Fis
-      TONE(0, 0, 0, 2),         // ---
-      TONE(1567982, 1, -1, 4),  // G
-      TONE(1174659, 1, -1, 2),  // D
-      TONE(1318510, 1, -1, 2),  // E
-      TONE(1174659, 1, -1, 4),  // D
-      TONE(987767, 1, -1, 2),   // H
-      TONE(1046502, 1, -1, 2),  // C
-      TONE(987767, 1, -1, 4),   // H
-      TONE(987767, 0, -1, 4),   // H
-      TONE(0, 0, 0, 2),         // ---
-      TONE(0, 0, -1, 0),        // speaker off, end
-    };
-    play((int *)sequence);
-  }
+  tick_enable(false);  // no ticking while we play melody / init sound
+
+  static int init[][4] = {
+    TONE(0, 0, 0, 0),        // speaker off, led off, end
+  };
+  play((int *)init);
+
+  static int melody[][4] = {
+    TONE(1174659, 1, -1, 2),  // D
+    TONE(0, 0, -1, 2),        // ---
+    TONE(1318510, 1, -1, 2),  // E
+    TONE(0, 0, -1, 2),        // ---
+    TONE(1479978, 1, -1, 2),  // Fis
+    TONE(0, 0, -1, 2),        // ---
+    TONE(1567982, 1, -1, 4),  // G
+    TONE(1174659, 1, -1, 2),  // D
+    TONE(1318510, 1, -1, 2),  // E
+    TONE(1174659, 1, -1, 4),  // D
+    TONE(987767, 1, -1, 2),   // H
+    TONE(1046502, 1, -1, 2),  // C
+    TONE(987767, 1, -1, 4),   // H
+    TONE(987767, 0, -1, 4),   // H
+    TONE(0, 0, -1, 2),        // ---
+    TONE(0, 0, -1, 0),        // speaker off, end
+  };
+  if (playSound)
+    play((int *)melody);
 
   led_tick_wanted = _led_tick;
   speaker_tick_wanted = _speaker_tick;
