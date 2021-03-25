@@ -189,11 +189,11 @@ void setup_speaker(bool playSound, bool _led_tick, bool _speaker_tick) {
 
   static int melody[][4] = {
     TONE(1174659, 1, -1, 2),  // D
-    TONE(0, 0, 0, 2),         // ---
+    TONE(0, 0, -1, 2),        // ---
     TONE(1318510, 1, -1, 2),  // E
-    TONE(0, 0, 0, 2),         // ---
+    TONE(0, 0, -1, 2),        // ---
     TONE(1479978, 1, -1, 2),  // Fis
-    TONE(0, 0, 0, 2),         // ---
+    TONE(0, 0, -1, 2),        // ---
     TONE(1567982, 1, -1, 4),  // G
     TONE(1174659, 1, -1, 2),  // D
     TONE(1318510, 1, -1, 2),  // E
@@ -202,7 +202,7 @@ void setup_speaker(bool playSound, bool _led_tick, bool _speaker_tick) {
     TONE(1046502, 1, -1, 2),  // C
     TONE(987767, 1, -1, 4),   // H
     TONE(987767, 0, -1, 4),   // H
-    TONE(0, 0, 0, 2),         // ---
+    TONE(0, 0, -1, 2),        // ---
     TONE(0, 0, -1, 0),        // speaker off, end
   };
   if (playSound)
