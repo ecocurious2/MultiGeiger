@@ -182,6 +182,8 @@ void setup_speaker(bool playSound, bool _led_tick, bool _speaker_tick) {
 
   setup_audio_timer(isr_audio, PERIOD_DURATION_US);
 
+  tick_enable(false);  // no ticking while we play melody / init sound
+
   static int init[][4] = {
     TONE(0, 0, 0, 0),        // speaker off, led off, end
   };
