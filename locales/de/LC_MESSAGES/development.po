@@ -393,17 +393,19 @@ msgstr ""
 
 #: ../../source/development.rst:174 65a6ed1b92984a7fb906c9fd1d9b12ac
 msgid "``bump2version --no-tag --current-version 1.23.0 minor`` - this will:"
-msgstr ""
+msgstr "``bump2version --no-tag --current-version 1.23.0 minor`` - dies wird:"
 
 #: ../../source/development.rst:176 68d8339afd5d404aa8a90b33f445014a
 msgid "update versions everywhere (now to: 1.24.0-dev)"
-msgstr ""
+msgstr "die Versionen überall aktualisieren (jetzt auf: 1.24.0-dev)"
 
 #: ../../source/development.rst:177 0e067669890c457da1d2d2f6fa64db6d
 msgid ""
 "not quite correctly update changes.rst, will need manual fixing afterwards"
 msgstr ""
+"leider nicht ganz korrekt die changes.rst aktualisieren, so dass manuelle "
+"Korrekturen danach notwendig sind"
 
 #: ../../source/development.rst:178 e4cc936fd73c4c6bb2ad1fb83b7740a8
 msgid "after fixing: git commit --amend"
-msgstr ""
+msgstr "nach der Korrektur: git commit --amend"

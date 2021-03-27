@@ -5,7 +5,7 @@
 # 
 # Translators:
 # Martin Weis <transifex.20.mlbox@spamgourmet.com>, 2020
-# TW <tw@waldmann-edv.de>, 2020
+# TW <tw@waldmann-edv.de>, 2021
 # 
 #, fuzzy
 msgid ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-26 20:49+0100\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
-"Last-Translator: TW <tw@waldmann-edv.de>, 2020\n"
+"Last-Translator: TW <tw@waldmann-edv.de>, 2021\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,11 +38,11 @@ msgstr "Hardware / Einzelteile"
 
 #: ../../source/resources.rst:12 d238bbc3e5c14c1ab696cb7c506440e3
 msgid "MultiGeiger supported counter tubes:"
-msgstr ""
+msgstr "Von Multigeiger unterstützte Zählrohre:"
 
 #: ../../source/resources.rst:12 de399ccf39e9461d879234a8b7ef687a
 msgid "Si22G, SBM-20, SBM-19"
-msgstr ""
+msgstr "Si22G, SBM-20, SBM-19"
 
 #: ../../source/resources.rst:14 d238bbc3e5c14c1ab696cb7c506440e3
 msgid "MultiGeiger supported ESP32 boards:"
