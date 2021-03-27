@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiGeiger\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-14 22:24+0100\n"
+"POT-Creation-Date: 2021-03-26 20:49+0100\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
 "Last-Translator: TW <tw@waldmann-edv.de>, 2020\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
@@ -37,10 +37,18 @@ msgid "Hardware / Parts"
 msgstr "Hardware / Einzelteile"
 
 #: ../../source/resources.rst:12 d238bbc3e5c14c1ab696cb7c506440e3
+msgid "MultiGeiger supported counter tubes:"
+msgstr ""
+
+#: ../../source/resources.rst:12 de399ccf39e9461d879234a8b7ef687a
+msgid "Si22G, SBM-20, SBM-19"
+msgstr ""
+
+#: ../../source/resources.rst:14 d238bbc3e5c14c1ab696cb7c506440e3
 msgid "MultiGeiger supported ESP32 boards:"
 msgstr "MultiGeiger-unterstützte ESP32-Boards:"
 
-#: ../../source/resources.rst:14 faeaf261831b4d03996e46f689dd9418
+#: ../../source/resources.rst:16 faeaf261831b4d03996e46f689dd9418
 msgid ""
 "Heltec WiFi Kit 32 (WiFi-only, infos from board manufacturer) "
 "https://heltec.org/project/wifi-kit-32/"
@@ -48,7 +56,7 @@ msgstr ""
 "Heltec WiFi Kit 32 (WiFi-only, Infos vom Boardhersteller) "
 "https://heltec.org/project/wifi-kit-32/"
 
-#: ../../source/resources.rst:17 d854ee859bcb4ceab0b1d703d9b9ed65
+#: ../../source/resources.rst:19 d854ee859bcb4ceab0b1d703d9b9ed65
 msgid ""
 "Heltec Wireless Stick (WiFi+LoRa, infos from board manufacturer) "
 "https://heltec.org/project/wireless-stick/"
@@ -56,11 +64,11 @@ msgstr ""
 "Heltec Wireless Stick (WiFi+LoRa, Infos vom Board-Hersteller) "
 "https://heltec.org/project/wireless-stick/"
 
-#: ../../source/resources.rst:22 92e83913d293405d84bfa4081f66ed49
+#: ../../source/resources.rst:24 92e83913d293405d84bfa4081f66ed49
 msgid "Software"
 msgstr "Software"
 
-#: ../../source/resources.rst:24 f550a51187bc47398f8b895e58d9101d
+#: ../../source/resources.rst:26 f550a51187bc47398f8b895e58d9101d
 msgid ""
 "Windows driver for the USB -> UART chip CP2102: http://esp32.net/usb-"
 "uart/#SiLabs"
