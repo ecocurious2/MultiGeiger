@@ -5,8 +5,11 @@
 #include "speaker.h"
 
 #include "IotWebConf.h"
-#include <HTTPClient.h>
+#include <IotWebConfESP32HTTPUpdateServer.h>
 #include "userdefines.h"
+
+// Checkboxes have 'selected' if checked, so we need 9 byte for this string
+#define CHECKBOX_LEN 9
 
 bool speakerTick = SPEAKER_TICK;
 bool playSound = PLAY_SOUND;
@@ -17,60 +20,43 @@ bool sendToMadavi = SEND2MADAVI;
 bool sendToLora = SEND2LORA;
 bool sendToBle = SEND2BLE;
 
-char speakerTick_c[2];
-char playSound_c[2];
-char ledTick_c[2];
-char showDisplay_c[2];
-char sendToCommunity_c[2];
-char sendToMadavi_c[2];
-char sendToLora_c[2];
-char sendToBle_c[2];
+char speakerTick_c[CHECKBOX_LEN];
+char playSound_c[CHECKBOX_LEN];
+char ledTick_c[CHECKBOX_LEN];
+char showDisplay_c[CHECKBOX_LEN];
+char sendToCommunity_c[CHECKBOX_LEN];
+char sendToMadavi_c[CHECKBOX_LEN];
+char sendToLora_c[CHECKBOX_LEN];
+char sendToBle_c[CHECKBOX_LEN];
 
 char appeui[17] = "";
 char deveui[17] = "";
 char appkey[IOTWEBCONF_WORD_LEN] = "";
 static bool isLoraBoard;
 
-#define BOOL_PARAM(label, id, var) IotWebConfParameter(label " (1 == true, 0 == false)", id, var, 2, "number", "0/1", NULL, "min='0' max='1' step='1'")
+iotwebconf::ParameterGroup grpMisc = iotwebconf::ParameterGroup("misc", "Misc. Settings");
+iotwebconf::CheckboxParameter startSoundParam = iotwebconf::CheckboxParameter("Start sound", "startSound", playSound_c, CHECKBOX_LEN, playSound);
+iotwebconf::CheckboxParameter speakerTickParam = iotwebconf::CheckboxParameter("Speaker tick", "speakerTick", speakerTick_c, CHECKBOX_LEN, speakerTick);
+iotwebconf::CheckboxParameter ledTickParam = iotwebconf::CheckboxParameter("LED tick", "ledTick", ledTick_c, CHECKBOX_LEN, ledTick);
+iotwebconf::CheckboxParameter showDisplayParam = iotwebconf::CheckboxParameter("Show display", "showDisplay", showDisplay_c, CHECKBOX_LEN, showDisplay);
 
-IotWebConfSeparator sep0 = IotWebConfSeparator("Misc. settings");
-IotWebConfParameter startSoundParam = BOOL_PARAM("Start sound", "startSound", playSound_c);
-IotWebConfParameter speakerTickParam = BOOL_PARAM("Speaker tick", "speakerTick", speakerTick_c);
-IotWebConfParameter ledTickParam = BOOL_PARAM("LED tick", "ledTick", ledTick_c);
-IotWebConfParameter showDisplayParam = BOOL_PARAM("Show display", "showDisplay", showDisplay_c);
+iotwebconf::ParameterGroup grpTransmission = iotwebconf::ParameterGroup("transmission", "Transmission Settings");
+iotwebconf::CheckboxParameter sendToCommunityParam = iotwebconf::CheckboxParameter("Send to sensors.community", "send2Community", sendToCommunity_c, CHECKBOX_LEN, sendToCommunity);
+iotwebconf::CheckboxParameter sendToMadaviParam = iotwebconf::CheckboxParameter("Send to madavi.de", "send2Madavi", sendToMadavi_c, CHECKBOX_LEN, sendToMadavi);
+iotwebconf::CheckboxParameter sendToBleParam = iotwebconf::CheckboxParameter("Send to BLE (Reboot required!)", "send2ble", sendToBle_c, CHECKBOX_LEN, sendToBle);
 
-IotWebConfSeparator sep1 = IotWebConfSeparator("Transmission settings");
-IotWebConfParameter sendToCommunityParam = BOOL_PARAM("Send to sensors.community", "send2Community", sendToCommunity_c);
-IotWebConfParameter sendToMadaviParam = BOOL_PARAM("Send to madavi.de", "send2Madavi", sendToMadavi_c);
-IotWebConfParameter sendToBleParam = BOOL_PARAM("Send to BLE (Reboot required!)", "send2ble", sendToBle_c);
+iotwebconf::ParameterGroup grpLoRa = iotwebconf::ParameterGroup("lora", "LoRa Settings");
+iotwebconf::CheckboxParameter sendToLoraParam = iotwebconf::CheckboxParameter("Send to LoRa (=>TTN)", "send2lora", sendToLora_c, CHECKBOX_LEN, sendToLora);
+iotwebconf::TextParameter deveuiParam = iotwebconf::TextParameter("DEVEUI", "deveui", deveui, 17);
+iotwebconf::TextParameter appeuiParam = iotwebconf::TextParameter("APPEUI", "appeui", appeui, 17);
+iotwebconf::TextParameter appkeyParam = iotwebconf::TextParameter("APPKEY", "appkey", appkey, 33);
 
-IotWebConfSeparator sep2 = IotWebConfSeparator("LoRa settings");
-IotWebConfParameter sendToLoraParam = BOOL_PARAM("Send to LoRa (=>TTN)", "send2lora", sendToLora_c);
-IotWebConfParameter deveuiParam = IotWebConfParameter("DEVEUI", "deveui", deveui, 17);
-IotWebConfParameter appeuiParam = IotWebConfParameter("APPEUI", "appeui", appeui, 17);
-IotWebConfParameter appkeyParam = IotWebConfParameter("APPKEY", "appkey", appkey, 33);
-
-bool parse_bool(char *text, bool *value) {
-  if (!strcmp(text, "0")) {
-    *value = false;
-    return true;
-  }
-  if (!strcmp(text, "1")) {
-    *value = true;
-    return true;
-  }
-  return false;  // invalid
-}
-
-void format_bool(bool *value, char *text) {
-  strcpy(text, *value ? "1" : "0");
-}
 
 // This only needs to be changed if the layout of the configuration is changed.
 // Appending new variables does not require a new version number here.
 // If this value is changed, ALL configuration variables must be re-entered,
 // including the WiFi credentials.
-#define CONFIG_VERSION "013"
+#define CONFIG_VERSION "015"
 
 DNSServer dnsServer;
 WebServer server(80);
@@ -123,7 +109,7 @@ void handleRoot(void) {  // Handle web requests to "/" path.
     "<body>"
     "<h1>Configuration</h1>"
     "<p>"
-    "Go to the <a href='config'>configure page</a> to change settings or update firmware."
+    "Go to the <a href='config'>config page</a> to change settings or update firmware."
     "</p>"
     "</body>"
     "</html>\n";
@@ -146,14 +132,14 @@ void loadConfigVariables(void) {
   }
   strcpy(lastWiFiSSID, iotWebConf.getWifiSsidParameter()->valueBuffer);
 
-  parse_bool(speakerTick_c, &speakerTick);
-  parse_bool(playSound_c, &playSound);
-  parse_bool(ledTick_c, &ledTick);
-  parse_bool(showDisplay_c, &showDisplay);
-  parse_bool(sendToCommunity_c, &sendToCommunity);
-  parse_bool(sendToMadavi_c, &sendToMadavi);
-  parse_bool(sendToBle_c, &sendToBle);
-  parse_bool(sendToLora_c, &sendToLora);
+  speakerTick = speakerTickParam.isChecked();
+  playSound = startSoundParam.isChecked();
+  ledTick = ledTickParam.isChecked();
+  showDisplay = showDisplayParam.isChecked();
+  sendToCommunity = sendToCommunityParam.isChecked();
+  sendToMadavi = sendToMadaviParam.isChecked();
+  sendToLora = sendToLoraParam.isChecked();
+  sendToBle = sendToBleParam.isChecked();
 }
 
 void configSaved(void) {
@@ -162,47 +148,36 @@ void configSaved(void) {
   tick_enable(true);
 }
 
-void initConfigVariables(void) {
-  format_bool(&speakerTick, speakerTick_c);
-  format_bool(&playSound, playSound_c);
-  format_bool(&ledTick, ledTick_c);
-  format_bool(&showDisplay, showDisplay_c);
-  format_bool(&sendToCommunity, sendToCommunity_c);
-  format_bool(&sendToMadavi, sendToMadavi_c);
-  format_bool(&sendToBle, sendToBle_c);
-  format_bool(&sendToLora, sendToLora_c);
-}
-
 void setup_webconf(bool loraHardware) {
   isLoraBoard = loraHardware;
   iotWebConf.setConfigSavedCallback(&configSaved);
-  iotWebConf.setupUpdateServer(&httpUpdater);
-
+  // *INDENT-OFF*   <- for 'astyle' to not format the following 3 lines
+  iotWebConf.setupUpdateServer(
+    [](const char *updatePath) { httpUpdater.setup(&server, updatePath); },
+    [](const char *userName, char *password) { httpUpdater.updateCredentials(userName, password); });
+  // *INDENT-ON* 
   // override the confusing default labels of IotWebConf:
   iotWebConf.getThingNameParameter()->label = "Geiger accesspoint SSID";
   iotWebConf.getApPasswordParameter()->label = "Geiger accesspoint password";
   iotWebConf.getWifiSsidParameter()->label = "WiFi client SSID";
   iotWebConf.getWifiPasswordParameter()->label = "WiFi client password";
 
-  // fill parameters with userdefines.h values
-  initConfigVariables();
-
   // add the setting parameter
-  iotWebConf.addParameter(&sep0);
-  iotWebConf.addParameter(&startSoundParam);
-  iotWebConf.addParameter(&speakerTickParam);
-  iotWebConf.addParameter(&ledTickParam);
-  iotWebConf.addParameter(&showDisplayParam);
-  iotWebConf.addParameter(&sep1);
-  iotWebConf.addParameter(&sendToCommunityParam);
-  iotWebConf.addParameter(&sendToMadaviParam);
-  iotWebConf.addParameter(&sendToBleParam);
+  grpMisc.addItem(&startSoundParam);
+  grpMisc.addItem(&speakerTickParam);
+  grpMisc.addItem(&ledTickParam);
+  grpMisc.addItem(&showDisplayParam);
+  iotWebConf.addParameterGroup(&grpMisc);
+  grpTransmission.addItem(&sendToCommunityParam);
+  grpTransmission.addItem(&sendToMadaviParam);
+  grpTransmission.addItem(&sendToBleParam);
+  iotWebConf.addParameterGroup(&grpTransmission);
   if (isLoraBoard) {
-    iotWebConf.addParameter(&sep2);
-    iotWebConf.addParameter(&sendToLoraParam);
-    iotWebConf.addParameter(&deveuiParam);
-    iotWebConf.addParameter(&appeuiParam);
-    iotWebConf.addParameter(&appkeyParam);
+    grpLoRa.addItem(&sendToLoraParam);
+    grpLoRa.addItem(&deveuiParam);
+    grpLoRa.addItem(&appeuiParam);
+    grpLoRa.addItem(&appkeyParam);
+    iotWebConf.addParameterGroup(&grpLoRa);
   }
 
   // if we don't have LoRa hardware, do not send to LoRa
