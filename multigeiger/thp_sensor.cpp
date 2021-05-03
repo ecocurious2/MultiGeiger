@@ -23,9 +23,9 @@ bool setup_thp_sensor(void) {
 
   // BME680
   if (type_thp == 0) {
-    if (bme680.begin(BME680_I2C_ADDR_PRIMARY))
+    if (bme680.begin(BME68X_I2C_ADDR_LOW))
       type_thp = 680;
-    else if (bme680.begin(BME680_I2C_ADDR_SECONDARY))
+    else if (bme680.begin(BME68X_I2C_ADDR_HIGH))
       type_thp = 680;
   }
 
