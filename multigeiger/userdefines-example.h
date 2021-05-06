@@ -41,6 +41,12 @@
 // Play a start sound at boot/reboot time?
 #define PLAY_SOUND true
 
+// Play an alarm sound when radiation level too high?
+#define LOCAL_ALARM false
+
+// Dose rate threshold to play local alarm?
+#define LOCAL_ALARM_THRESHOLD 0.500  // µSv/h
+
 // Send to servers:
 // Send data to Madavi server?
 // Madavi should be used to see values in real time.
@@ -63,3 +69,20 @@
 // 0x2A38: Heart Rate Sensor Position --> sends TUBE_TYPE
 // 0x2A39: Heart Rate Control Point --> allows to reset "energy expenditure", as required by service definition
 #define SEND2BLE false
+
+// Play an alarm sound when radiation level is too high?
+// Activates when either accumulated dose rate reaches the set threshold (s. below)
+// or when the current dose rate is higher than the accumulated dose rate by the set factor (s. below)
+// ! Requires a valid tube type to be set in order to calculate dose rate
+#define LOCAL_ALARM false
+
+// Accumulated dose rate threshold to play the local alarm
+// The accumulated dose rate is the overall average since the last start of MultiGeiger
+// Default value: 0.500 µSv/h
+#define LOCAL_ALARM_THRESHOLD 0.500  // µSv/h
+
+// Factor of current dose rate vs. accumulated dose rate to play the local alarm
+// Default value: 3
+// Example: accumulated dose rate from days of operation is at 0.1 µSv/h
+// If current dose rate rises to (default) 3 times the accumulated dose rate, i.e. 0.3 µSv/h, sound the alarm
+#define LOCAL_ALARM_FACTOR 3  // current / accumulated dose rate

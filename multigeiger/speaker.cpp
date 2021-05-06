@@ -22,6 +22,7 @@ volatile int *isr_tick_sequence = NULL;
 volatile int *isr_sequence = NULL;  // currently played sequence
 
 static int tick_sequence[8];
+static int alarm_sequence[12];
 
 // hw timer period and microseconds -> periods conversion
 #define PERIOD_DURATION_US 1000
@@ -70,7 +71,6 @@ void IRAM_ATTR isr_audio() {
 
   if (!p)
     return;  // nothing to do
-  // do not access *p below here, p might point to uninitialized memory after the sequence array!
 
   // note: by all means, **AVOID** mcpwm_set_duty() in ISR, causes floating point coprocessor troubles!
   //       when just calling mcpwm_set_duty_**type**(), it will reuse a previously set duty cycle.
@@ -123,7 +123,8 @@ void IRAM_ATTR tick(bool high) {
   // high true: "tick" -> high frequency tick and LED blink
   // high false: "tock" -> lower frequency tock, no LED
   // called from ISR!
-  portENTER_CRITICAL_ISR(&mux_audio);
+  if (isr_sequence)
+    return;
 
   int *sequence;
 
@@ -142,8 +143,9 @@ void IRAM_ATTR tick(bool high) {
     sequence[6] = led_tick ? (high ? 0 : -1) : -1;
     sequence[7] = 0;  // END
   } else
-    sequence = NULL;
+    return;
 
+  portENTER_CRITICAL_ISR(&mux_audio);
   isr_tick_sequence = sequence;
   portEXIT_CRITICAL_ISR(&mux_audio);
 }
@@ -158,6 +160,33 @@ void tick_enable(bool enable) {
     led_tick = false;
     speaker_tick = false;
   }
+}
+
+void alarm() {
+
+  int *sequence;
+
+  sequence = alarm_sequence;
+  // "high_pitch"
+  sequence[0] = 3000000;  // frequency_mHz
+  sequence[1] = 1;  // volume
+  sequence[2] = -1;  // LED, -1 = don't touch
+  sequence[3] = 400;  // duration_ms
+  // "low_Pitch"
+  sequence[4] = 1000000;
+  sequence[5] = 1;
+  sequence[6] = -1;
+  sequence[7] = 400;
+  // "off"
+  sequence[8] = 0;
+  sequence[9] = 0;
+  sequence[10] = -1;
+  sequence[11] = 0;  // END
+
+  // called from ISR!
+  portENTER_CRITICAL_ISR(&mux_audio);
+  isr_audio_sequence = sequence;
+  portEXIT_CRITICAL_ISR(&mux_audio);
 }
 
 void play(int *sequence) {

@@ -5,6 +5,7 @@
 #include "speaker.h"
 
 #include "IotWebConf.h"
+#include "IotWebConfTParameter.h"
 #include <IotWebConfESP32HTTPUpdateServer.h>
 #include "userdefines.h"
 
@@ -19,6 +20,7 @@ bool sendToCommunity = SEND2SENSORCOMMUNITY;
 bool sendToMadavi = SEND2MADAVI;
 bool sendToLora = SEND2LORA;
 bool sendToBle = SEND2BLE;
+bool soundLocalAlarm = LOCAL_ALARM;
 
 char speakerTick_c[CHECKBOX_LEN];
 char playSound_c[CHECKBOX_LEN];
@@ -28,11 +30,15 @@ char sendToCommunity_c[CHECKBOX_LEN];
 char sendToMadavi_c[CHECKBOX_LEN];
 char sendToLora_c[CHECKBOX_LEN];
 char sendToBle_c[CHECKBOX_LEN];
+char soundLocalAlarm_c[CHECKBOX_LEN];
 
 char appeui[17] = "";
 char deveui[17] = "";
 char appkey[IOTWEBCONF_WORD_LEN] = "";
 static bool isLoraBoard;
+
+float localAlarmThreshold = LOCAL_ALARM_THRESHOLD;
+int localAlarmFactor = (int)LOCAL_ALARM_FACTOR;
 
 iotwebconf::ParameterGroup grpMisc = iotwebconf::ParameterGroup("misc", "Misc. Settings");
 iotwebconf::CheckboxParameter startSoundParam = iotwebconf::CheckboxParameter("Start sound", "startSound", playSound_c, CHECKBOX_LEN, playSound);
@@ -51,6 +57,19 @@ iotwebconf::TextParameter deveuiParam = iotwebconf::TextParameter("DEVEUI", "dev
 iotwebconf::TextParameter appeuiParam = iotwebconf::TextParameter("APPEUI", "appeui", appeui, 17);
 iotwebconf::TextParameter appkeyParam = iotwebconf::TextParameter("APPKEY", "appkey", appkey, 33);
 
+iotwebconf::ParameterGroup grpAlarm = iotwebconf::ParameterGroup("alarm", "Local Alarm Setting");
+iotwebconf::CheckboxParameter soundLocalAlarmParam = iotwebconf::CheckboxParameter("Enable local alarm", "soundLocalAlarm", soundLocalAlarm_c, CHECKBOX_LEN, soundLocalAlarm);
+iotwebconf::FloatTParameter localAlarmThresholdParam =
+  iotwebconf::Builder<iotwebconf::FloatTParameter>("localAlarmThreshold").
+  label("Local alarm threshold (µSv/h)").
+  defaultValue(localAlarmThreshold).
+  step(0.1).placeholder("e.g. 0.5").build();
+iotwebconf::IntTParameter<int16_t> localAlarmFactorParam =
+  iotwebconf::Builder<iotwebconf::IntTParameter<int16_t>>("localAlarmFactor").
+  label("Factor of current dose rate vs. accumulated").
+  defaultValue(localAlarmFactor).
+  min(2).max(100).
+  step(1).placeholder("2..100").build();
 
 // This only needs to be changed if the layout of the configuration is changed.
 // Appending new variables does not require a new version number here.
@@ -140,6 +159,9 @@ void loadConfigVariables(void) {
   sendToMadavi = sendToMadaviParam.isChecked();
   sendToLora = sendToLoraParam.isChecked();
   sendToBle = sendToBleParam.isChecked();
+  soundLocalAlarm = soundLocalAlarmParam.isChecked();
+  localAlarmThreshold = localAlarmThresholdParam.value();
+  localAlarmFactor = localAlarmFactorParam.value();
 }
 
 void configSaved(void) {
@@ -155,7 +177,7 @@ void setup_webconf(bool loraHardware) {
   iotWebConf.setupUpdateServer(
     [](const char *updatePath) { httpUpdater.setup(&server, updatePath); },
     [](const char *userName, char *password) { httpUpdater.updateCredentials(userName, password); });
-  // *INDENT-ON* 
+  // *INDENT-ON*
   // override the confusing default labels of IotWebConf:
   iotWebConf.getThingNameParameter()->label = "Geiger accesspoint SSID";
   iotWebConf.getApPasswordParameter()->label = "Geiger accesspoint password";
@@ -179,6 +201,10 @@ void setup_webconf(bool loraHardware) {
     grpLoRa.addItem(&appkeyParam);
     iotWebConf.addParameterGroup(&grpLoRa);
   }
+  grpAlarm.addItem(&soundLocalAlarmParam);
+  grpAlarm.addItem(&localAlarmThresholdParam);
+  grpAlarm.addItem(&localAlarmFactorParam);
+  iotWebConf.addParameterGroup(&grpAlarm);
 
   // if we don't have LoRa hardware, do not send to LoRa
   if (!isLoraBoard)

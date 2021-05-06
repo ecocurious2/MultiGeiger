@@ -148,6 +148,17 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
     display_GMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
                 (showDisplay && switches.display_on));
 
+    // Sound local alarm?
+    if (soundLocalAlarm && GMC_factor_uSvph > 0) {
+      if (accumulated_Dose_Rate > localAlarmThreshold) {
+        log(INFO, "Local alarm: Accumulated dose of %.3f µSv/h above threshold at %.3f µSv/h", accumulated_Dose_Rate, localAlarmThreshold);
+        alarm();
+      } else if (Dose_Rate > (accumulated_Dose_Rate * localAlarmFactor)) {
+        log(INFO, "Local alarm: Current dose of %.3f > %d x accumulated dose of %.3f µSv/h", Dose_Rate, localAlarmFactor, accumulated_Dose_Rate);
+        alarm();
+      }
+    }
+
     if (Serial_Print_Mode == Serial_Logging) {
       log_data(counts, dt, Count_Rate, Dose_Rate, hv_pulses,
                accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate,

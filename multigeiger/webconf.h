@@ -14,10 +14,14 @@ extern bool sendToCommunity;
 extern bool sendToMadavi;
 extern bool sendToLora;
 extern bool sendToBle;
+extern bool soundLocalAlarm;
 
 extern char appeui[];
 extern char deveui[];
 extern char appkey[];
+
+extern float localAlarmThreshold;
+extern int localAlarmFactor;
 
 extern char ssid[];
 extern IotWebConf iotWebConf;
