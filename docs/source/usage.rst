@@ -39,7 +39,7 @@ Positions:
   - ``w``: WiFi client trying to connect
   - ``W``: WiFi client connected
   - ``0``: some error happened
-- 1: sensors.community transmission
+- 1: sensor.community transmission
 
   - ``.``: off (not configured, not enabled)
   - ``?``: init (enabled, before 1st transmission)

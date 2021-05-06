@@ -100,8 +100,8 @@ msgid "``0``: some error happened"
 msgstr "``0``: ein Fehler ist aufgetreten"
 
 #: ../../source/usage.rst:42 c1d7bb7d22f54bbb82bd0fff3198d98b
-msgid "1: sensors.community transmission"
-msgstr "1: sensors.community-Übertragung"
+msgid "1: sensor.community transmission"
+msgstr "1: sensor.community-Übertragung"
 
 #: ../../source/usage.rst:44 ../../source/usage.rst:51
 #: b703c1376a7d4265a0227bd86a66da07 b703c1376a7d4265a0227bd86a66da07
