@@ -71,7 +71,7 @@ New features:
   - use persistent per-server HTTPClient instances
   - use connection: keep-alive for web requests
   - add https capability (can be used for sending data)
-  - note: transmission to sensors.community and madavi is still using http!
+  - note: transmission to sensor.community and madavi is still using http!
 
 Fixes:
 

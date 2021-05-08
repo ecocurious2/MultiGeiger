@@ -40,7 +40,7 @@ IotWebConfParameter ledTickParam = BOOL_PARAM("LED tick", "ledTick", ledTick_c);
 IotWebConfParameter showDisplayParam = BOOL_PARAM("Show display", "showDisplay", showDisplay_c);
 
 IotWebConfSeparator sep1 = IotWebConfSeparator("Transmission settings");
-IotWebConfParameter sendToCommunityParam = BOOL_PARAM("Send to sensors.community", "send2Community", sendToCommunity_c);
+IotWebConfParameter sendToCommunityParam = BOOL_PARAM("Send to sensor.community", "send2Community", sendToCommunity_c);
 IotWebConfParameter sendToMadaviParam = BOOL_PARAM("Send to madavi.de", "send2Madavi", sendToMadavi_c);
 IotWebConfParameter sendToBleParam = BOOL_PARAM("Send to BLE (Reboot required!)", "send2ble", sendToBle_c);
 

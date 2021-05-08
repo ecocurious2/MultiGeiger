@@ -171,7 +171,7 @@ msgstr ""
 
 #: ../../source/changes.rst:56 dcf82fad98b24c8fa41cad0e23146d0a
 msgid ""
-"note: transmission to sensors.community and madavi is still using http!"
+"note: transmission to sensor.community and madavi is still using http!"
 msgstr ""
 
 #: ../../source/changes.rst:60 93d035320ce24113bbb79aa68dee4a52
