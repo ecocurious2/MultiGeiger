@@ -123,10 +123,14 @@ Testing BLE
 -----------
 
 Any decent Bluetooth® scanning app should be able to connect to the device and show the notification values.
-Known to work well is the nordic® nRF Connect app, which should be available for iOS and Android.
-More infos about the Android app can be found `here on github <https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF-Connect-for-mobile>`_.
 
-Any heart monitor app / device should be able to connect to the MultiGeiger, too, but that was not tested yet. Any input is appreciated.
+The `MultiGeiger companion app <https://github.com/t-pi/multigeiger_companion>`_ was specifically made for the MultiGeiger.
+
+There are also some generic apps:
+- `nordic® nRF Connect app <https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF-Connect-for-mobile>`_
+- `HRM heart rate monitor app <https://f-droid.org/de/packages/st.wow.git.hrm/>`_
+
+Any other heart monitor app / device should be able to connect to the MultiGeiger, too.
 
 - Figure 1: Connect to the MultiGeiger with the name 'ESP32-<id>', where <id> should be the same ID (7 to 8 digits) as with the access point to set the device up initially.
 
