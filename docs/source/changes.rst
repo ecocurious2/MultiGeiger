@@ -8,15 +8,26 @@ V1.16.0-dev (not released yet)
 
 New features:
 
-* ...
+* None
 
 Fixes:
 
-* ...
+* initialize sound and LED to "off", #398
 
 Other changes:
 
-* ...
+* explicitly turn ticking off before melody/init
+* cosmetic: don't touch LED in pauses between melody notes
+* upgrade to Adafruit BME680 Library >=2.0.0
+* add root cert "Amazon CA 1"
+* docs:
+
+  - fix typo in sensor.community domain
+  - fixed switch numbering, #349
+  - add supported counter tubes
+  - create multigeiger-bill-of-material.txt
+  - developer docs: bump master branch version to -dev after release
+  - update translations
 
 V1.15.0 2021-03-21
 ------------------
