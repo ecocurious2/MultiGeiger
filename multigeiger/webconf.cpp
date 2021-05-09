@@ -8,7 +8,7 @@
 #include <IotWebConfESP32HTTPUpdateServer.h>
 #include "userdefines.h"
 
-// Checkboxes have 'selected' if checked, so we need 9 byte for this string
+// Checkboxes have 'selected' if checked, so we need 9 byte for this string.
 #define CHECKBOX_LEN 9
 
 bool speakerTick = SPEAKER_TICK;
