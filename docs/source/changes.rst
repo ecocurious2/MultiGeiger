@@ -22,11 +22,13 @@ Other changes:
 * add root cert "Amazon CA 1"
 * docs:
 
+  - bluetooth: fix app links, fix reST formatting
   - fix typo in sensor.community domain
   - fixed switch numbering, #349
   - add supported counter tubes
   - create multigeiger-bill-of-material.txt
   - developer docs: bump master branch version to -dev after release
+  - developer docs: update pulling translations from transifex
   - update translations
 
 V1.15.0 2021-03-21
