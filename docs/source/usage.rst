@@ -127,6 +127,7 @@ Any decent Bluetooth® scanning app should be able to connect to the device and 
 The `MultiGeiger companion app <https://github.com/t-pi/multigeiger_companion>`_ was specifically made for the MultiGeiger.
 
 There are also some generic apps:
+
 - `nordic® nRF Connect app <https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF-Connect-for-mobile>`_
 - `HRM heart rate monitor app <https://f-droid.org/de/packages/st.wow.git.hrm/>`_
 

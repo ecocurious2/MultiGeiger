@@ -110,7 +110,7 @@ from transifex:
 
 ::
 
-  tx pull --all
+  tx pull --all --force
 
 Now we have changes in our git workdir and we need to commit them:
 
