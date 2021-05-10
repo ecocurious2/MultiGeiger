@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiGeiger\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-14 22:24+0100\n"
+"POT-Creation-Date: 2021-05-10 23:54+0200\n"
 "PO-Revision-Date: 2020-05-21 22:36+0000\n"
 "Last-Translator: TW <tw@waldmann-edv.de>, 2021\n"
 "Language-Team: German (https://www.transifex.com/thomaswaldmann/teams/110212/de/)\n"
@@ -348,31 +348,53 @@ msgstr ""
 msgid "Testing BLE"
 msgstr "Test BLE"
 
-#: ../../source/usage.rst:125 333f5255103a47618a6f935db63ec006
+#: ../../source/usage.rst:125 220a395339ae4dea87d2d3c5f517ea11
 msgid ""
 "Any decent Bluetooth® scanning app should be able to connect to the device "
-"and show the notification values. Known to work well is the nordic® nRF "
-"Connect app, which should be available for iOS and Android. More infos about"
-" the Android app can be found `here on github <https://www.nordicsemi.com"
-"/Software-and-Tools/Development-Tools/nRF-Connect-for-mobile>`_."
+"and show the notification values."
 msgstr ""
-"Jede anständige Bluetooth® -Scan-App sollte in der Lage sein, sich mit dem "
-"Gerät zu verbinden und die Benachrichtigungswerte anzuzeigen. Bekannt dafür,"
-" dass sie gut funktioniert, ist die nordic® nRF Connect App, die für iOS und"
-" Android verfügbar sein sollte. Mehr Infos über die Android-App finden Sie "
-"`hier auf github <https://www.nordicsemi.com/Software-and-Tools/Development-"
-"Tools/nRF-Connect-for-mobile>`_."
+"Jede brauchbare Bluetooth®-Scanning-App sollte zu dem Gerät verbinden und "
+"die Werte aus den Benachrichtigungen anzeigen können."
 
-#: ../../source/usage.rst:129 220a395339ae4dea87d2d3c5f517ea11
+#: ../../source/usage.rst:127 fbf3539925c64c4a93838524b2788367
 msgid ""
-"Any heart monitor app / device should be able to connect to the MultiGeiger,"
-" too, but that was not tested yet. Any input is appreciated."
+"The `MultiGeiger companion app "
+"<https://github.com/t-pi/multigeiger_companion>`_ was specifically made for "
+"the MultiGeiger."
 msgstr ""
-"Jede Herz-Überwachungs-App / jedes Herz-Überwachungs-Gerät sollte sich auch "
-"mit dem MultiGeiger verbinden können, aber das wurde noch nicht getestet. "
-"Jede Rückmeldung ist willkommen."
+"Die `MultiGeiger companion app "
+"<https://github.com/t-pi/multigeiger_companion>`_ wurde speziell für den "
+"MultiGeiger gemacht."
 
-#: ../../source/usage.rst:131 291d34ba300f426f860319b91ece71c3
+#: ../../source/usage.rst:129 55fc598809d64c83ba69c56cac9e16b0
+msgid "There are also some generic apps:"
+msgstr "Es gibt auch einige generische Apps:"
+
+#: ../../source/usage.rst:131 9433e73ceba64054baac03a545e704e6
+msgid ""
+"`nordic® nRF Connect app <https://www.nordicsemi.com/Software-and-Tools"
+"/Development-Tools/nRF-Connect-for-mobile>`_"
+msgstr ""
+"`nordic® nRF Connect app <https://www.nordicsemi.com/Software-and-Tools"
+"/Development-Tools/nRF-Connect-for-mobile>`_"
+
+#: ../../source/usage.rst:132 e1789c013ce046508e051ddf6b771dd6
+msgid ""
+"`HRM heart rate monitor app "
+"<https://f-droid.org/de/packages/st.wow.git.hrm/>`_"
+msgstr ""
+"`HRM heart rate monitor app "
+"<https://f-droid.org/de/packages/st.wow.git.hrm/>`_"
+
+#: ../../source/usage.rst:134 220a395339ae4dea87d2d3c5f517ea11
+msgid ""
+"Any other heart monitor app / device should be able to connect to the "
+"MultiGeiger, too."
+msgstr ""
+"Jede andere Herz-Überwachungs-App / jedes Herz-Überwachungs-Gerät sollte "
+"sich auch mit dem MultiGeiger verbinden können."
+
+#: ../../source/usage.rst:136 291d34ba300f426f860319b91ece71c3
 msgid ""
 "Figure 1: Connect to the MultiGeiger with the name 'ESP32-<id>', where <id> "
 "should be the same ID (7 to 8 digits) as with the access point to set the "
@@ -382,7 +404,7 @@ msgstr ""
 "'ESP32-<id>', wobei <id> die gleiche ID (7 bis 8 Ziffern) sein sollte, wie "
 "beim Access Point, um das Gerät initial einzurichten."
 
-#: ../../source/usage.rst:133 6c6041dd5a524f859539991990890fd6
+#: ../../source/usage.rst:138 6c6041dd5a524f859539991990890fd6
 msgid ""
 "Figure 2: Find the correct service (UUID 0x180D) and, if needed, load / open"
 " characteristics."
@@ -390,7 +412,7 @@ msgstr ""
 "Abbildung 2: Finden Sie den richtigen Dienst (UUID 0x180D) und, falls "
 "erforderlich, laden / öffnen Sie die Einstellungen."
 
-#: ../../source/usage.rst:135 dcbb588af8bc44efb394ee495200ceb8
+#: ../../source/usage.rst:140 dcbb588af8bc44efb394ee495200ceb8
 msgid ""
 "Figure 3: Find the Heart Rate Measurement Characteristic (UUID 0x2A37) and "
 "click on the icon to start notifications."
@@ -399,7 +421,7 @@ msgstr ""
 "0x2A37) und klicken Sie auf das Symbol, um die Benachrichtigungen zu "
 "starten."
 
-#: ../../source/usage.rst:137 0ad4fe9e1c15467996d317c5a9795a79
+#: ../../source/usage.rst:142 0ad4fe9e1c15467996d317c5a9795a79
 msgid ""
 "While testing, please keep in mind that an update packet is sent only every "
 "~10s (along with a display refresh, if enabled). If a WiFi transmission is "
@@ -412,26 +434,26 @@ msgstr ""
 "noch länger sein. Es kann also eine Weile dauern, bis eine Reaktion mit "
 "aktuellen Daten in der App zu sehen ist."
 
-#: ../../source/usage.rst:151 1654995df2a6449fb85a51cad04c1035
+#: ../../source/usage.rst:156 1654995df2a6449fb85a51cad04c1035
 msgid "*Fig. 1*"
 msgstr "*Abb. 1*"
 
-#: ../../source/usage.rst:153 86bd5193d3334944a585b5385cf7a3bc
+#: ../../source/usage.rst:158 86bd5193d3334944a585b5385cf7a3bc
 msgid "|ble1|"
 msgstr "|ble1|"
 
-#: ../../source/usage.rst:151 90532af32c324539bb1f2b9cfbddf800
+#: ../../source/usage.rst:156 90532af32c324539bb1f2b9cfbddf800
 msgid "*Fig. 2*"
 msgstr "*Abb. 2*"
 
-#: ../../source/usage.rst:153 6d3114b6bd15452b8535b8d579778ef8
+#: ../../source/usage.rst:158 6d3114b6bd15452b8535b8d579778ef8
 msgid "|ble2|"
 msgstr "|ble2|"
 
-#: ../../source/usage.rst:151 79e6c189389b4c0a800da591da371a0a
+#: ../../source/usage.rst:156 79e6c189389b4c0a800da591da371a0a
 msgid "*Fig. 3*"
 msgstr "*Abb. 3*"
 
-#: ../../source/usage.rst:153 28385e92a08c4d79855a95ab5f8ae540
+#: ../../source/usage.rst:158 28385e92a08c4d79855a95ab5f8ae540
 msgid "|ble3|"
 msgstr "|ble3|"
