@@ -2,8 +2,6 @@
 
 #include "userdefines.h"
 
-#if STATUS_LED==1 // we have a WS2812 RGB LED!
-
 #include <NeoPixelBus.h>
 
 #include "status_led.h"
@@ -96,12 +94,3 @@ void indicate(float radiation, unsigned int indication) {
   if (++index == CSL)
     index = 0;
 }
-
-#else // no STATUS_LED
-
-void indicate(float radiation, unsigned int indication) {
-  // do nothing
-}
-
-#endif // STATUS_LED
-
