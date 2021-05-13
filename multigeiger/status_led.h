@@ -13,3 +13,5 @@
 // indicate radiation and special indications via a color time sequence.
 // you should call this in regular time intervals [e.g. 1s].
 void indicate(float radiation, unsigned int indication);
+
+void setup_status_LED(void);

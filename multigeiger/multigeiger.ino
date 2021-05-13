@@ -43,6 +43,7 @@ static Switches switches;
 void setup() {
   bool isLoraBoard = init_hwtest();
   setup_log(DEFAULT_LOG_LEVEL);
+  setup_status_LED();
   setup_display(isLoraBoard);
   setup_switches(isLoraBoard);
   switches = read_switches();  // only read DIP switches once at boot time

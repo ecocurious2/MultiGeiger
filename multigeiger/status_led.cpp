@@ -4,6 +4,7 @@
 
 #include <NeoPixelBus.h>
 
+#include "log.h"
 #include "status_led.h"
 
 #define PIXEL_COUNT 1
@@ -18,7 +19,7 @@ RgbColor black(0, 0, 0);
 
 static NeoPixelBus<NeoRgbFeature, Neo800KbpsMethod> LEDs(PIXEL_COUNT, PIXEL_PIN);
 
-static RgbColor last_col = black;
+static RgbColor last_col;
 
 static void set_LED(RgbColor col) {
   if (col == last_col)
@@ -29,7 +30,7 @@ static void set_LED(RgbColor col) {
   last_col = col;
 }
 
-static void init_LED(void) {
+void setup_status_LED(void) {
   LEDs.Begin();  // all LEDs off
   LEDs.Show();
   last_col = black;  // consistency sw state == hw state
@@ -65,9 +66,10 @@ void indicate(float radiation, unsigned int indication) {
   RgbColor col;
   static int index = 0;  // index counting modulo COLOR_SEQUENCE_LENGTH
 
+  log(INFO, "LED index: %d, radiation: %f", index, radiation);
+
   switch (index) {
   case 0:  // show a fixed dark separator after LED init
-    init_LED();  // (re-)init the LED
     col = black;
     break;
   case 1:
