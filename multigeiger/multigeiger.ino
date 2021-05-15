@@ -221,7 +221,6 @@ void transmit(unsigned long current_ms, unsigned long current_counts, unsigned l
     int hv_pulses = current_hv_pulses - last_hv_pulses;
     last_hv_pulses = current_hv_pulses;
 
-    log(DEBUG, "current time: %s", utctime());
     log(DEBUG, "Measured GM: cpm= %d HV=%d", current_cpm, hv_pulses);
 
     transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hv_pulses, counts, current_cpm,
