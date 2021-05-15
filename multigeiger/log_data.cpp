@@ -7,7 +7,7 @@
 int Serial_Print_Mode;
 
 static const char *Serial_Logging_Name = "Simple Multi-Geiger";
-static const char *dashes = "-------------------------------------------------------------------------------------------------";
+static const char *dashes = "-----------------------------------------------------------------------------------------------------";
 
 static const char *Serial_Logging_Header = "     %10s %15s %10s %9s %9s %8s %9s %9s %9s";
 static const char *Serial_Logging_Body = "RAD: %10d %15d %10f %9f %9d %8d %9d %9f %9f";
