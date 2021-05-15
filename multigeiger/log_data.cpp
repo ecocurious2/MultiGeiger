@@ -13,6 +13,7 @@ static const char *Serial_Logging_Header = "     %10s %15s %10s %9s %9s %8s %9s 
 static const char *Serial_Logging_Body = "RAD: %10d %15d %10f %9f %9d %8d %9d %9f %9f";
 static const char *Serial_One_Minute_Log_Header = "     %4s %10s %29s";
 static const char *Serial_One_Minute_Log_Body = "RAD: %4d %10d %29d";
+static const char *THP_Log_Body = "THP: %.2f %.f %.f";
 
 void setup_log_data(int mode) {
   Serial_Print_Mode = mode;
@@ -58,4 +59,8 @@ void log_data_one_minute(int time_s, int cpm, int counts) {
 
 void log_data_statistics(int count_time_between) {
   log(INFO, "%d", count_time_between);
+}
+
+void log_thp(float t, float h, float p) {
+  log(INFO, THP_Log_Body, t, h, p);
 }

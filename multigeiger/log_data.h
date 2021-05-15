@@ -17,5 +17,6 @@ void log_data(int GMC_counts, int time_difference, float Count_Rate, float Dose_
               int accumulated_GMC_counts, int accumulated_time, float accumulated_Count_Rate, float accumulated_Dose_Rate);
 void log_data_one_minute(int time_s, int cpm, int counts);
 void log_data_statistics(int count_time_between);
+void log_thp(float t, float h, float p);
 
 #endif // _LOG_DATA_H_
