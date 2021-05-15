@@ -183,7 +183,6 @@ void alarm() {
   sequence[10] = -1;
   sequence[11] = 0;  // END
 
-  // called from ISR!
   portENTER_CRITICAL_ISR(&mux_audio);
   isr_audio_sequence = sequence;
   portEXIT_CRITICAL_ISR(&mux_audio);
