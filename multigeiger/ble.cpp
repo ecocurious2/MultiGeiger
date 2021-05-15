@@ -100,20 +100,17 @@ void setup_ble(char *device_name, bool ble_on) {
 
   NimBLEService *bleService = bleServer->createService(BLE_SERVICE_HEART_RATE);
 
-// NimBLECharacteristic bleCharHRM(BLE_CHAR_HR_MEASUREMENT, NIMBLE_PROPERTY::NOTIFY);
   NimBLECharacteristic *bleCharHRM = bleService->createCharacteristic(BLE_CHAR_HR_MEASUREMENT, NIMBLE_PROPERTY::NOTIFY);
-// NimBLEDescriptor bleDescriptorHRM(BLE_DESCR_UUID);
-  NimBLEDescriptor *bleDescriptorHRM = bleCharHRM->createDescriptor("Radiation rate CPM", NIMBLE_PROPERTY::READ);
-//  bleCharHRM.addDescriptor(new BLE2902());  // required for notification management of the service
+  NimBLEDescriptor *bleDescriptorHRM = bleCharHRM->createDescriptor(BLE_DESCR_UUID, NIMBLE_PROPERTY::READ, 20);
+  bleDescriptorHRM->setValue("Radiation rate CPM");
+//  bleCharHRM.addDescriptor(new BLE2902());  // required for notification management of the service; automatically added by NimBLE lib
 
-// NimBLECharacteristic bleCharHRCP(BLE_CHAR_HR_CONTROLPOINT, NIMBLE_PROPERTY::WRITE);
   NimBLECharacteristic *bleCharHRCP = bleService->createCharacteristic(BLE_CHAR_HR_CONTROLPOINT, NIMBLE_PROPERTY::WRITE);
-// NimBLEDescriptor bleDescriptorHRCP(BLE_DESCR_UUID);
-  NimBLEDescriptor *bleDescriptorHRCP = bleCharHRM->createDescriptor("0x01 for Energy Exp. (packet counter) reset", NIMBLE_PROPERTY::READ);
-// NimBLECharacteristic bleCharHRPOS(BLE_CHAR_HR_POSITION, NIMBLE_PROPERTY::READ);
+  NimBLEDescriptor *bleDescriptorHRCP = bleCharHRCP->createDescriptor(BLE_DESCR_UUID, NIMBLE_PROPERTY::READ, 50);
+  bleDescriptorHRCP->setValue("0x01 for Energy Exp. (packet counter) reset");
   NimBLECharacteristic *bleCharHRPOS = bleService->createCharacteristic(BLE_CHAR_HR_POSITION, NIMBLE_PROPERTY::READ);
-// NimBLEDescriptor bleDescriptorHRPOS(BLE_DESCR_UUID);
-  NimBLEDescriptor *bleDescriptorHRPOS = bleCharHRM->createDescriptor("Geiger Mueller Tube Type", NIMBLE_PROPERTY::READ);
+  NimBLEDescriptor *bleDescriptorHRPOS = bleCharHRPOS->createDescriptor(BLE_DESCR_UUID, NIMBLE_PROPERTY::READ, 30);
+  bleDescriptorHRPOS->setValue("Geiger Mueller Tube Type");
   bleCharHRCP->setCallbacks(new MyCharacteristicCallbacks());
 
   bleCharHRPOS->setValue(txBuffer_HRPOS, 1);
