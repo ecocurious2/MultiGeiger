@@ -9,10 +9,10 @@ int Serial_Print_Mode;
 static const char *Serial_Logging_Name = "Simple Multi-Geiger";
 static const char *dashes = "-------------------------------------------------------------------------------------------------";
 
-static const char *Serial_Logging_Header = "%10s %15s %10s %9s %9s %8s %9s %9s %9s";
-static const char *Serial_Logging_Body = "%10d %15d %10f %9f %9d %8d %9d %9f %9f";
-static const char *Serial_One_Minute_Log_Header = "%4s %10s %29s";
-static const char *Serial_One_Minute_Log_Body = "%4d %10d %29d";
+static const char *Serial_Logging_Header = "     %10s %15s %10s %9s %9s %8s %9s %9s %9s";
+static const char *Serial_Logging_Body = "RAD: %10d %15d %10f %9f %9d %8d %9d %9f %9f";
+static const char *Serial_One_Minute_Log_Header = "     %4s %10s %29s";
+static const char *Serial_One_Minute_Log_Body = "RAD: %4d %10d %29d";
 
 void setup_log_data(int mode) {
   Serial_Print_Mode = mode;
