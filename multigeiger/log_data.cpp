@@ -7,13 +7,12 @@
 int Serial_Print_Mode;
 
 static const char *Serial_Logging_Name = "Simple Multi-Geiger";
-static const char *dashes = "-----------------------------------------------------------------------------------------------------";
+static const char *dashes = "------------------------------------------------------------------------------------------------------------------------";
 
-static const char *Serial_Logging_Header = "     %10s %15s %10s %9s %9s %8s %9s %9s %9s";
-static const char *Serial_Logging_Body = "RAD: %10d %15d %10f %9f %9d %8d %9d %9f %9f";
+static const char *Serial_Logging_Header = "     %10s %15s %10s %9s %9s %8s %9s %9s %9s %5s %5s %6s";
+static const char *Serial_Logging_Body = "DATA %10d %15d %10f %9f %9d %8d %9d %9f %9f %5.1f %5.1f %6.0f";
 static const char *Serial_One_Minute_Log_Header = "     %4s %10s %29s";
-static const char *Serial_One_Minute_Log_Body = "RAD: %4d %10d %29d";
-static const char *THP_Log_Body = "THP: %.2f %.f %.f";
+static const char *Serial_One_Minute_Log_Body = "DATA %4d %10d %29d";
 
 void setup_log_data(int mode) {
   Serial_Print_Mode = mode;
@@ -27,9 +26,9 @@ void setup_log_data(int mode) {
   }
   if (Serial_Print_Mode == Serial_Logging) {
     log(INFO, Serial_Logging_Header,
-        "GMC_counts", "Time_difference", "Count_Rate", "Dose_Rate", "HV Pulses", "Accu_GMC", "Accu_Time", "Accu_Rate", "Accu_Dose");
+        "GMC_counts", "Time_difference", "Count_Rate", "Dose_Rate", "HV Pulses", "Accu_GMC", "Accu_Time", "Accu_Rate", "Accu_Dose", "Temp", "Humi", "Press");
     log(INFO, Serial_Logging_Header,
-        "[Counts]",   "[ms]",            "[cps]",      "[uSv/h]",   "[-]",       "[Counts]", "[ms]",      "[cps]",     "[uSv/h]");
+        "[Counts]",   "[ms]",            "[cps]",      "[uSv/h]",   "[-]",       "[Counts]", "[ms]",      "[cps]",     "[uSv/h]",   "[°C]", "[%]",  "[hPa]");
   }
   if (Serial_Print_Mode == Serial_One_Minute_Log) {
     log(INFO, Serial_One_Minute_Log_Header,
@@ -46,10 +45,12 @@ void setup_log_data(int mode) {
 }
 
 void log_data(int GMC_counts, int time_difference, float Count_Rate, float Dose_Rate, int HV_pulse_count,
-              int accumulated_GMC_counts, int accumulated_time, float accumulated_Count_Rate, float accumulated_Dose_Rate) {
+              int accumulated_GMC_counts, int accumulated_time, float accumulated_Count_Rate, float accumulated_Dose_Rate,
+              float t, float h, float p) {
   log(INFO, Serial_Logging_Body,
       GMC_counts, time_difference, Count_Rate, Dose_Rate, HV_pulse_count,
-      accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate);
+      accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate,
+      t, h, p);
 }
 
 void log_data_one_minute(int time_s, int cpm, int counts) {
@@ -59,8 +60,4 @@ void log_data_one_minute(int time_s, int cpm, int counts) {
 
 void log_data_statistics(int count_time_between) {
   log(INFO, "%d", count_time_between);
-}
-
-void log_thp(float t, float h, float p) {
-  log(INFO, THP_Log_Body, t, h, p);
 }
