@@ -16,7 +16,15 @@ Fixes:
 
 Other changes:
 
-* ...
+* logging related improvements / code cleanups:
+
+  - emit log header now and then for better readability
+  - add UTC timestamp to log output
+  - unify radiation and t/h/p log output into single line,
+    use "DATA" to mark these lines.
+* BLE support now implemented via NimBLE-Arduino lib
+* upgrade libs to current versions
+* use arduino-esp32 1.0.6
 
 V1.15.1 2021-05-13
 ------------------
