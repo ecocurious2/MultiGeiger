@@ -80,35 +80,31 @@ static uint8_t *__rxPort;
 static uint8_t *__rxBuffer;
 static uint8_t *__rxSz;
 
-void event_log(const char *event) {
-  log(DEBUG, "%09d: %s", os_getTime(), event);
-}
-
 void onEvent(ev_t ev) {
   switch (ev) {
   case EV_SCAN_TIMEOUT:
     txStatus = TX_STATUS_ENDING_ERROR;
-    event_log("EV_SCAN_TIMEOUT");
+    log(DEBUG, "EV_SCAN_TIMEOUT");
     break;
   case EV_BEACON_FOUND:
     txStatus = TX_STATUS_UNKNOWN;
-    event_log("EV_BEACON_FOUND");
+    log(DEBUG, "EV_BEACON_FOUND");
     break;
   case EV_BEACON_MISSED:
     txStatus = TX_STATUS_UNKNOWN;
-    event_log("EV_BEACON_MISSED");
+    log(DEBUG, "EV_BEACON_MISSED");
     break;
   case EV_BEACON_TRACKED:
     txStatus = TX_STATUS_UNKNOWN;
-    event_log("EV_BEACON_TRACKED");
+    log(DEBUG, "EV_BEACON_TRACKED");
     break;
   case EV_JOINING:
     txStatus = TX_STATUS_JOINING;
-    event_log("EV_JOINING");
+    log(DEBUG, "EV_JOINING");
     break;
   case EV_JOINED:
     txStatus = TX_STATUS_JOINED;
-    event_log("EV_JOINED");
+    log(DEBUG, "EV_JOINED");
     {
       u4_t netid = 0;
       devaddr_t devaddr = 0;
@@ -132,22 +128,22 @@ void onEvent(ev_t ev) {
   // This event is defined but not used in the code.
   // No point in wasting codespace on it.
   // case EV_RFU1:
-  //   event_log("EV_RFU1");
+  //   log(DEBUG, "EV_RFU1");
   //   break;
   case EV_JOIN_FAILED:
     txStatus = TX_STATUS_ENDING_ERROR;
-    event_log("EV_JOIN_FAILED");
+    log(DEBUG, "EV_JOIN_FAILED");
     break;
   case EV_REJOIN_FAILED:
     txStatus = TX_STATUS_ENDING_ERROR;
-    event_log("EV_REJOIN_FAILED");
+    log(DEBUG, "EV_REJOIN_FAILED");
     break;
   case EV_TXCOMPLETE:
-    event_log("EV_TXCOMPLETE (includes waiting for RX windows)");
+    log(DEBUG, "EV_TXCOMPLETE (includes waiting for RX windows)");
     txStatus =   TX_STATUS_UPLINK_SUCCESS;
     if (LMIC.txrxFlags & TXRX_ACK) {
       txStatus = TX_STATUS_UPLINK_ACKED;
-      event_log("Received ack");
+      log(DEBUG, "Received ack");
     }
     if (LMIC.dataLen) {
       log(DEBUG, "Received %d bytes of payload", LMIC.dataLen);
@@ -159,33 +155,33 @@ void onEvent(ev_t ev) {
     break;
   case EV_LOST_TSYNC:
     txStatus = TX_STATUS_ENDING_ERROR;
-    event_log("EV_LOST_TSYNC");
+    log(DEBUG, "EV_LOST_TSYNC");
     break;
   case EV_RESET:
     txStatus = TX_STATUS_ENDING_ERROR;
-    event_log("EV_RESET");
+    log(DEBUG, "EV_RESET");
     break;
   case EV_RXCOMPLETE:
     // data received in ping slot
     txStatus = TX_STATUS_UNKNOWN;
-    event_log("EV_RXCOMPLETE");
+    log(DEBUG, "EV_RXCOMPLETE");
     break;
   case EV_LINK_DEAD:
     txStatus = TX_STATUS_ENDING_ERROR;
-    event_log("EV_LINK_DEAD");
+    log(DEBUG, "EV_LINK_DEAD");
     break;
   case EV_LINK_ALIVE:
     txStatus = TX_STATUS_UNKNOWN;
-    event_log("EV_LINK_ALIVE");
+    log(DEBUG, "EV_LINK_ALIVE");
     break;
   // This event is defined but not used in the code.
   // No point in wasting codespace on it.
   // case EV_SCAN_FOUND:
-  //   event_log("EV_SCAN_FOUND");
+  //   log(DEBUG, "EV_SCAN_FOUND");
   //   break;
   case EV_TXSTART:
     txStatus = TX_STATUS_UNKNOWN;
-    event_log("EV_TXSTART");
+    log(DEBUG, "EV_TXSTART");
     break;
   default:
     txStatus = TX_STATUS_UNKNOWN;
