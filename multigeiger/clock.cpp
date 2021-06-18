@@ -17,26 +17,6 @@ void config_time(time_t timestamp) {
 }
 
 
-bool time_valid(void) {
-  // does the current time look valid (not 1970)?
-  time_t now;
-  now = time(nullptr);
-  return (now >= TIME_MIN_VALID);
-}
-
-
-bool wait_ntp(void) {
-  // wait for ntp time sync (until the time looks valid)
-  int retry = 0;
-  while (!time_valid()) {
-    if (retry++ >= NTP_MAX_RETRY)
-      break;
-    delay(NTP_SLEEP);
-  }
-  return (retry < NTP_MAX_RETRY);  // success: true, failure: false
-}
-
-
 char *utctime(void) {
   // return a pointer to a timestamp string like 2019-12-31T23:59:59
   time_t t;
