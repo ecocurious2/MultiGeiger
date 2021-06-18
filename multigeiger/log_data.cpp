@@ -34,7 +34,7 @@ void log_data(int GMC_counts, int time_difference, float Count_Rate, float Dose_
     log(INFO, Serial_Logging_Header,
         "GMC_counts", "Time_difference", "Count_Rate", "Dose_Rate", "HV Pulses", "Accu_GMC", "Accu_Time", "Accu_Rate", "Accu_Dose", "Temp", "Humi", "Press");
     log(INFO, Serial_Logging_Header,
-        "[Counts]",   "[ms]",            "[cps]",      "[uSv/h]",   "[-]",       "[Counts]", "[ms]",      "[cps]",     "[uSv/h]",   "[°C]", "[%]",  "[hPa]");
+        "[Counts]",   "[ms]",            "[cps]",      "[uSv/h]",   "[-]",       "[Counts]", "[ms]",      "[cps]",     "[uSv/h]",   "[C]",  "[%]",  "[hPa]");
     log(INFO, dashes);
   }
   log(INFO, Serial_Logging_Body,
