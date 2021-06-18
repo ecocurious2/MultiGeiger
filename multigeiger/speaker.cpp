@@ -109,8 +109,7 @@ void IRAM_ATTR isr_audio() {
     if (playing_tick) {
       isr_tick_sequence = NULL;
       playing_tick = false;
-    }
-    else if (playing_audio) {
+    } else if (playing_audio) {
       isr_audio_sequence = NULL;
       playing_audio = false;
     }
