@@ -45,7 +45,7 @@ void IRAM_ATTR isr_audio() {
 
   // tone and tick generation, also led blinking
   int frequency_mHz = 0, volume = 0, led = 0, duration_ms = 0;  // init avoids compiler warning
-  bool playing_audio = false, playing_tick = false;
+  static bool playing_audio = false, playing_tick = false;
 
   // fetch next tone / next led state
   portENTER_CRITICAL_ISR(&mux_audio);
@@ -64,9 +64,12 @@ void IRAM_ATTR isr_audio() {
     volume = *p++;
     led = *p++;
     duration_ms = *p++;
-    isr_sequence = duration_ms == 0 ? NULL : p;
+    isr_sequence = p;
   }
   portEXIT_CRITICAL_ISR(&mux_audio);
+
+  if (!playing_audio && !playing_tick)
+    return;
 
   // note: by all means, **AVOID** mcpwm_set_duty() in ISR, causes floating point coprocessor troubles!
   //       when just calling mcpwm_set_duty_**type**(), it will reuse a previously set duty cycle.
@@ -103,10 +106,14 @@ void IRAM_ATTR isr_audio() {
     // duration == 0 marks the end of the sequence to play
     portENTER_CRITICAL_ISR(&mux_audio);
     isr_sequence = NULL;
-    if (playing_tick)
+    if (playing_tick) {
       isr_tick_sequence = NULL;
-    else if (playing_audio)
+      playing_tick = false;
+    }
+    else if (playing_audio) {
       isr_audio_sequence = NULL;
+      playing_audio = false;
+    }
     portEXIT_CRITICAL_ISR(&mux_audio);
     next = PERIODS(1000);
   }
