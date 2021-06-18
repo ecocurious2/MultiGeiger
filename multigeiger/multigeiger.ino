@@ -79,13 +79,13 @@ void setup_ntp(int wifi_status) {
 int update_wifi_status(void) {
   int st;
   switch (iotWebConf.getState()) {
-  case IOTWEBCONF_STATE_CONNECTING:
+  case iotwebconf::Connecting:
     st = ST_WIFI_CONNECTING;
     break;
-  case IOTWEBCONF_STATE_ONLINE:
+  case iotwebconf::OnLine:
     st = ST_WIFI_CONNECTED;
     break;
-  case IOTWEBCONF_STATE_AP_MODE:
+  case iotwebconf::ApMode:
     st = ST_WIFI_AP;
     break;
   default:
