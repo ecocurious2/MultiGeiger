@@ -65,11 +65,11 @@ void IRAM_ATTR isr_audio() {
     led = *p++;
     duration_ms = *p++;
     isr_sequence = p;
-  }
-  portEXIT_CRITICAL_ISR(&mux_audio);
-
-  if (!playing_audio && !playing_tick)
+    portEXIT_CRITICAL_ISR(&mux_audio);
+  } else {
+    portEXIT_CRITICAL_ISR(&mux_audio);
     return;
+  }
 
   // note: by all means, **AVOID** mcpwm_set_duty() in ISR, causes floating point coprocessor troubles!
   //       when just calling mcpwm_set_duty_**type**(), it will reuse a previously set duty cycle.
@@ -124,7 +124,6 @@ void IRAM_ATTR tick(bool high) {
   // called from ISR!
 
   int *sequence;
-  sequence = NULL;
 
   // we expect speaker_tick or led_tick to change at any time,
   // thus check it here and generate different sequences:
@@ -140,7 +139,8 @@ void IRAM_ATTR tick(bool high) {
     sequence[5] = 0;
     sequence[6] = led_tick ? (high ? 0 : -1) : -1;
     sequence[7] = 0;  // END
-  }
+  } else
+    sequence = NULL;
 
   portENTER_CRITICAL_ISR(&mux_audio);
   isr_tick_sequence = sequence;
