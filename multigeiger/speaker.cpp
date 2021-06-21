@@ -58,8 +58,8 @@ void IRAM_ATTR isr_audio() {
       playing_tick = true;
     }
   }
-  if (isr_sequence) {
-    volatile int *p = isr_sequence;
+  volatile int *p = isr_sequence;
+  if (p) {
     frequency_mHz = *p++;
     volume = *p++;
     led = *p++;
@@ -68,8 +68,9 @@ void IRAM_ATTR isr_audio() {
   }
   portEXIT_CRITICAL_ISR(&mux_audio);
 
-  if (!isr_sequence)
+  if (!p)
     return;  // nothing to do
+  // do not access *p below here, p might point to uninitialized memory after the sequence array!
 
   // note: by all means, **AVOID** mcpwm_set_duty() in ISR, causes floating point coprocessor troubles!
   //       when just calling mcpwm_set_duty_**type**(), it will reuse a previously set duty cycle.
