@@ -106,10 +106,13 @@ void IRAM_ATTR isr_audio() {
     // duration == 0 marks the end of the sequence to play
     portENTER_CRITICAL_ISR(&mux_audio);
     isr_sequence = NULL;
-    if (playing_tick)
+    if (playing_tick) {
       isr_tick_sequence = NULL;
-    else if (playing_audio)
+      playing_tick = false;
+    } else if (playing_audio) {
       isr_audio_sequence = NULL;
+      playing_audio = false;
+    }
     portEXIT_CRITICAL_ISR(&mux_audio);
     next = PERIODS(1000);
   }
