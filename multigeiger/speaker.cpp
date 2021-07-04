@@ -79,6 +79,7 @@ void IRAM_ATTR isr_audio() {
 
   if (!p)
     return;  // nothing to do
+  // do not access *p below here, p might point to uninitialized memory after the sequence array!
 
   // note: by all means, **AVOID** mcpwm_set_duty() in ISR, causes floating point coprocessor troubles!
   //       when just calling mcpwm_set_duty_**type**(), it will reuse a previously set duty cycle.

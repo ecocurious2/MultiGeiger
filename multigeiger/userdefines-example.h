@@ -41,12 +41,6 @@
 // Play a start sound at boot/reboot time?
 #define PLAY_SOUND true
 
-// Play an alarm sound when radiation level too high?
-#define LOCAL_ALARM false
-
-// Dose rate threshold to play local alarm?
-#define LOCAL_ALARM_THRESHOLD 0.500  // µSv/h
-
 // Send to servers:
 // Send data to Madavi server?
 // Madavi should be used to see values in real time.
