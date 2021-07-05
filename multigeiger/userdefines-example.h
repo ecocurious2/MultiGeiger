@@ -57,9 +57,28 @@
 #define SEND2LORA false
 
 // Send data via BLE?
-// Device provides "Heart Rate Service" (0x180D) and these characteristics
+// Device provides "Heart Rate Service" (0x180D) and these characteristics.
 // 0x2A37: Heart Rate Measurement
-// --> sends current CPM as shown on display + rolling packet counter as energy expenditure (roll-over @0xFF)
+// --> sends current CPM as shown on display + rolling packet counter as energy expenditure (roll-over @0xFF).
 // 0x2A38: Heart Rate Sensor Position --> sends TUBE_TYPE
 // 0x2A39: Heart Rate Control Point --> allows to reset "energy expenditure", as required by service definition
 #define SEND2BLE false
+
+// Play an alarm sound when radiation level is too high?
+// Activates when either accumulated dose rate reaches the set threshold (see below)
+// or when the current dose rate is higher than the accumulated dose rate by the set factor (see below).
+// ! Requires a valid tube type to be set in order to calculate dose rate.
+#define LOCAL_ALARM_SOUND false
+
+// Accumulated dose rate threshold to trigger the local alarm
+// The accumulated dose rate is the overall average since the last start of MultiGeiger.
+// Default value: 0.500 µSv/h
+// ! Requires a valid tube type to be set in order to calculate dose rate.
+#define LOCAL_ALARM_THRESHOLD 0.500  // µSv/h
+
+// Factor of current dose rate vs. accumulated dose rate to trigger the local alarm
+// Default value: 3
+// Example: accumulated dose rate from days of operation is at 0.1 µSv/h.
+// If current dose rate rises to (default) 3 times the accumulated dose rate, i.e. 0.3 µSv/h, trigger the local alarm.
+// ! Requires a valid tube type to be set in order to calculate dose rate.
+#define LOCAL_ALARM_FACTOR 3  // current / accumulated dose rate

@@ -5,7 +5,8 @@
 #define _SPEAKER_H_
 
 void setup_speaker(bool playSound, bool led_tick, bool speaker_tick);
-void tick(bool high);
 void tick_enable(bool enable);
+void tick(bool high);
+void alarm();
 
 #endif // _SPEAKER_H_

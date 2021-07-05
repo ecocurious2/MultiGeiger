@@ -22,6 +22,15 @@ volatile int *isr_tick_sequence = NULL;
 volatile int *isr_sequence = NULL;  // currently played sequence
 
 static int tick_sequence[8];
+static int alarm_sequence[12] = {
+  // "high_Pitch"
+  3000000, 1, -1, 400,  // frequency_mHz, volume, LED (-1 = don't touch), duration_ms
+  // "low_Pitch"
+  1000000, 1, -1, 400,
+  // "off"
+  0, 0, -1, 0 // duration_ms = 0 --> END
+};
+
 
 // hw timer period and microseconds -> periods conversion
 #define PERIOD_DURATION_US 1000
@@ -158,6 +167,13 @@ void tick_enable(bool enable) {
     led_tick = false;
     speaker_tick = false;
   }
+}
+
+void alarm() {
+  // play alarm sound, called from normal code (not ISR)
+  portENTER_CRITICAL(&mux_audio);
+  isr_audio_sequence = alarm_sequence;
+  portEXIT_CRITICAL(&mux_audio);
 }
 
 void play(int *sequence) {
