@@ -20,7 +20,7 @@ bool sendToCommunity = SEND2SENSORCOMMUNITY;
 bool sendToMadavi = SEND2MADAVI;
 bool sendToLora = SEND2LORA;
 bool sendToBle = SEND2BLE;
-bool soundLocalAlarm = LOCAL_ALARM;
+bool soundLocalAlarm = LOCAL_ALARM_SOUND;
 
 char speakerTick_c[CHECKBOX_LEN];
 char playSound_c[CHECKBOX_LEN];
@@ -58,7 +58,7 @@ iotwebconf::TextParameter appeuiParam = iotwebconf::TextParameter("APPEUI", "app
 iotwebconf::TextParameter appkeyParam = iotwebconf::TextParameter("APPKEY", "appkey", appkey, 33);
 
 iotwebconf::ParameterGroup grpAlarm = iotwebconf::ParameterGroup("alarm", "Local Alarm Setting");
-iotwebconf::CheckboxParameter soundLocalAlarmParam = iotwebconf::CheckboxParameter("Enable local alarm", "soundLocalAlarm", soundLocalAlarm_c, CHECKBOX_LEN, soundLocalAlarm);
+iotwebconf::CheckboxParameter soundLocalAlarmParam = iotwebconf::CheckboxParameter("Enable local alarm sound", "soundLocalAlarm", soundLocalAlarm_c, CHECKBOX_LEN, soundLocalAlarm);
 iotwebconf::FloatTParameter localAlarmThresholdParam =
   iotwebconf::Builder<iotwebconf::FloatTParameter>("localAlarmThreshold").
   label("Local alarm threshold (µSv/h)").

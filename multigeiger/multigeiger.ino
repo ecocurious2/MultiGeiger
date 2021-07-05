@@ -151,10 +151,10 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
     // Sound local alarm?
     if (soundLocalAlarm && GMC_factor_uSvph > 0) {
       if (accumulated_Dose_Rate > localAlarmThreshold) {
-        log(INFO, "Local alarm: Accumulated dose of %.3f µSv/h above threshold at %.3f µSv/h", accumulated_Dose_Rate, localAlarmThreshold);
+        log(WARNING, "Local alarm: Accumulated dose of %.3f µSv/h above threshold at %.3f µSv/h", accumulated_Dose_Rate, localAlarmThreshold);
         alarm();
       } else if (Dose_Rate > (accumulated_Dose_Rate * localAlarmFactor)) {
-        log(INFO, "Local alarm: Current dose of %.3f > %d x accumulated dose of %.3f µSv/h", Dose_Rate, localAlarmFactor, accumulated_Dose_Rate);
+        log(WARNING, "Local alarm: Current dose of %.3f > %d x accumulated dose of %.3f µSv/h", Dose_Rate, localAlarmFactor, accumulated_Dose_Rate);
         alarm();
       }
     }
