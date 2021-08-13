@@ -8,11 +8,12 @@ V1.16.0-dev (not released yet)
 
 New features:
 
-* ...
+* local radiation alarm sound, #427
 
 Fixes:
 
-* ...
+* audio isr fixes, #436
+* fix occasional reboots (hopefully), #314
 
 Other changes:
 
