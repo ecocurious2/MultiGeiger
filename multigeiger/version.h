@@ -7,7 +7,7 @@
 // major = 0..15, minor = 0..255, patch = 0..15.
 //
 // vvv--- do not edit here, this is managed by bump2version! ---vvv
-#define VERSION_STR "V1.16.0"
+#define VERSION_STR "V1.17.0-dev"
 // ^^^--- do not edit here, this is managed by bump2version! ---^^^
 
 #endif // _VERSION_H_
