@@ -131,8 +131,8 @@ void display_status(void) {
 
 char *format_time(unsigned int secs) {
   static char result[4];
-  int mins = secs / 60;
-  int hours = secs / (60 * 60);
+  unsigned int mins = secs / 60;
+  unsigned int hours = secs / (60 * 60);
   unsigned int days = secs / (24 * 60 * 60);
   if (secs < 60) {
     snprintf(result, 4, "%2ds", secs);
