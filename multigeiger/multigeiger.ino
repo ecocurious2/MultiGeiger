@@ -145,7 +145,7 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
 
     // ... and update the data on display, notify via BLE
     update_bledata((unsigned int)(Count_Rate * 60));
-    display_GMC(((int)accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
+    display_GMC((unsigned int)(accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
                 (showDisplay && switches.display_on));
 
     // Sound local alarm?
