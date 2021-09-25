@@ -40,6 +40,11 @@ static bool isLoraBoard;
 float localAlarmThreshold = LOCAL_ALARM_THRESHOLD;
 int localAlarmFactor = (int)LOCAL_ALARM_FACTOR;
 
+int sendToTelegramEvery = (int)TELEGRAM_TICKER_EVERY;
+char telegramBotToken[50] = TELEGRAM_BOT_TOKEN;  // "XXXXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+char telegramChatId[12] = TELEGRAM_CHAT_ID;  // "1234567890"
+bool telegramSendLocalAlarm = TELEGRAM_ALERT;
+
 iotwebconf::ParameterGroup grpMisc = iotwebconf::ParameterGroup("misc", "Misc. Settings");
 iotwebconf::CheckboxParameter startSoundParam = iotwebconf::CheckboxParameter("Start sound", "startSound", playSound_c, CHECKBOX_LEN, playSound);
 iotwebconf::CheckboxParameter speakerTickParam = iotwebconf::CheckboxParameter("Speaker tick", "speakerTick", speakerTick_c, CHECKBOX_LEN, speakerTick);

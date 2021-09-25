@@ -82,3 +82,27 @@
 // If current dose rate rises to (default) 3 times the accumulated dose rate, i.e. 0.3 µSv/h, trigger the local alarm.
 // ! Requires a valid tube type to be set in order to calculate dose rate.
 #define LOCAL_ALARM_FACTOR 3  // current / accumulated dose rate
+
+// Send MultiGeiger info and alerts to Telegram Messenger chat
+// REQUIRES WIFI CONNECTION!
+// Update via Telegram Messenger every N sensor.community messages (default 150 s / 2.5 min)
+// Set to 0 to disable normal data transfer
+// 24 = 1/hour, 576 = 1/day, 4032 = 1/week
+#define TELEGRAM_TICKER_EVERY 0
+
+// To communicate with the Telegram Messenger on your phone you need to create a bot
+// Starting point: https://core.telegram.org/bots
+// You will get a Bot token, please insert this here within ""
+// Form: "XXXXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+// Default: Empty string ""
+#define TELEGRAM_BOT_TOKEN ""  // "XXXXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+
+// Important: Start your bot channel with the command "/start" and receive the Chat ID
+// In order to get MultiGeiger messages to your specific chat, please provide this Chat ID here, again within ""
+// Form: "1234567890"
+// Default: Empty string ""
+#define TELEGRAM_CHAT_ID ""  // "1234567890"
+
+// Send local alerts via Telegram Messenger
+// See above for more info on local alerts
+#define TELEGRAM_ALERT true

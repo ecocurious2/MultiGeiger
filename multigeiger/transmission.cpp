@@ -5,6 +5,7 @@
 #include <Arduino.h>
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
+#include <UniversalTelegramBot.h>
 
 #include "log.h"
 #include "display.h"
@@ -41,7 +42,8 @@ typedef struct https_client {
   HTTPClient *hc;
 } HttpsClient;
 
-static HttpsClient c_madavi, c_sensorc, c_customsrv;
+static HttpsClient c_madavi, c_sensorc, c_customsrv, c_telegram;
+UniversalTelegramBot *telegram_bot;
 
 void setup_transmission(const char *version, char *ssid, bool loraHardware) {
   chipID = String(ssid);
@@ -69,9 +71,22 @@ void setup_transmission(const char *version, char *ssid, bool loraHardware) {
   c_customsrv.wc->setCACert(ca_certs);
   c_customsrv.hc = new HTTPClient;
 
+  if ((sizeof(telegramBotToken)<40) && (sizeof(telegramChatId)<7))
+    sendToTelegramEvery = -1;
+
+  c_telegram.wc = new WiFiClientSecure;
+  c_telegram.wc->setCACert(TELEGRAM_CERTIFICATE_ROOT);
+  c_telegram.hc = new HTTPClient;
+
+  if (sendToTelegramEvery>=0) {
+    log(DEBUG, "Starting Telegram Bot...");
+    telegram_bot = new UniversalTelegramBot(telegramBotToken, *(c_telegram.wc));
+  }
+
   set_status(STATUS_SCOMM, sendToCommunity ? ST_SCOMM_INIT : ST_SCOMM_OFF);
   set_status(STATUS_MADAVI, sendToMadavi ? ST_MADAVI_INIT : ST_MADAVI_OFF);
   set_status(STATUS_TTN, sendToLora ? ST_TTN_INIT : ST_TTN_OFF);
+  set_status(STATUS_TELEGRAM, (sendToTelegramEvery >= 0) ? ST_TELEGRAM_INIT : ST_TELEGRAM_OFF);
 }
 
 void poll_transmission() {
@@ -142,7 +157,7 @@ int send_http_geiger(HttpsClient *client, const char *host, unsigned int timedif
 int send_http_thp(HttpsClient *client, const char *host, float temperature, float humidity, float pressure, int xpin) {
   char body[1000];
   prepare_http(client, host);
-  if(xpin != XPIN_NO_XPIN) {
+  if (xpin != XPIN_NO_XPIN) {
     client->hc->addHeader("X-PIN", String(xpin));
   }
   const char *json_format = R"=====(
@@ -257,7 +272,7 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
   log(INFO, "Sent to CUSTOMSRV, status: %s, http: %d %d", customsrv_ok ? "ok" : "error", rc1, rc2);
   #endif
 
-  if(sendToMadavi && (wifi_status == ST_WIFI_CONNECTED)) {
+  if (sendToMadavi && (wifi_status == ST_WIFI_CONNECTED)) {
     bool madavi_ok;
     log(INFO, "Sending to Madavi ...");
     set_status(STATUS_MADAVI, ST_MADAVI_SENDING);
@@ -271,7 +286,7 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
     display_status();
   }
 
-  if(sendToCommunity  && (wifi_status == ST_WIFI_CONNECTED)) {
+  if (sendToCommunity  && (wifi_status == ST_WIFI_CONNECTED)) {
     bool scomm_ok;
     log(INFO, "Sending to sensor.community ...");
     set_status(STATUS_SCOMM, ST_SCOMM_SENDING);
@@ -285,7 +300,7 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
     display_status();
   }
 
-  if(isLoraBoard && sendToLora && (strcmp(appeui, "") != 0)) {    // send only, if we have LoRa credentials
+  if (isLoraBoard && sendToLora && (strcmp(appeui, "") != 0)) {    // send only, if we have LoRa credentials
     bool ttn_ok;
     log(INFO, "Sending to TTN ...");
     set_status(STATUS_TTN, ST_TTN_SENDING);
@@ -296,5 +311,45 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
     set_status(STATUS_TTN, ttn_ok ? ST_TTN_IDLE : ST_TTN_ERROR);
     display_status();
   }
+
+}
+
+void transmit_userinfo(String tube_type, int tube_nbr, float tube_factor, unsigned int cpm, unsigned int accu_cpm, float accu_rate,
+                   int have_thp, float temperature, float humidity, float pressure, int wifi_status, bool alarm_status) {
+
+  if (wifi_status != ST_WIFI_CONNECTED)
+    return;
+
+  static unsigned int transmitCounter = 0;
+  transmitCounter++;
+  if (transmitCounter == 27720) transmitCounter = 0;  // 27720 % 1..12 == 0
+
+  char localEspId[16];
+  chipID.toCharArray(localEspId, sizeof(localEspId));
+
+  if (((sendToTelegramEvery > 0) && (transmitCounter % sendToTelegramEvery == 0))
+      || ((sendToTelegramEvery >= 0) && alarm_status)) {
+    bool telegram_ok;
+    char message[120];
+    log(INFO, "Sending to Telegram messenger ...");
+    set_status(STATUS_TELEGRAM, ST_TELEGRAM_SENDING);
+    display_status();
+    if (alarm_status) {
+      if (tube_nbr > 0)
+        sprintf(message, "<b>--- MULTIGEIGER ALERT ! ---</b>\n<code>%s</code> rate too high:\n%.2f nSv/h (accumulated: %.2f nSv/h)", localEspId, cpm*tube_factor*1000/60, accu_rate*1000);
+      else
+        sprintf(message, "<b>--- MULTIGEIGER ALERT ! ---</b>\n<code>%s</code> rate too high:\n%d (accumulated: %d)", localEspId, cpm, accu_cpm);
+    } else {
+      if (tube_nbr > 0)
+        sprintf(message, "MultiGeiger <code>%s</code> rates:\n%.2f nSv/h (accumulated: %.2f nSv/h)", localEspId, cpm*tube_factor*1000/60, accu_rate*1000);
+      else
+        sprintf(message, "MultiGeiger <code>%s</code> CPM:\n%d (accumulated: %d)", localEspId, cpm, accu_cpm);
+    }
+    telegram_ok = telegram_bot->sendMessage(telegramChatId, message, "HTML");
+    log(INFO, "Sent to Telegram messenger, status: %s", telegram_ok ? "ok" : "error");
+    set_status(STATUS_TELEGRAM, telegram_ok ? ST_TELEGRAM_IDLE : ST_TELEGRAM_ERROR);
+    display_status();
+  }
+
 }
 
