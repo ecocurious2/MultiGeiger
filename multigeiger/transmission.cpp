@@ -71,14 +71,14 @@ void setup_transmission(const char *version, char *ssid, bool loraHardware) {
   c_customsrv.wc->setCACert(ca_certs);
   c_customsrv.hc = new HTTPClient;
 
-  if ((sizeof(telegramBotToken)<40) && (sizeof(telegramChatId)<7))
+  if ((sizeof(telegramBotToken) < 40) && (sizeof(telegramChatId) < 7))
     sendToTelegramEvery = -1;
 
   c_telegram.wc = new WiFiClientSecure;
   c_telegram.wc->setCACert(TELEGRAM_CERTIFICATE_ROOT);
   c_telegram.hc = new HTTPClient;
 
-  if (sendToTelegramEvery>=0) {
+  if (sendToTelegramEvery >= 0) {
     log(DEBUG, "Starting Telegram Bot...");
     telegram_bot = new UniversalTelegramBot(telegramBotToken, *(c_telegram.wc));
   }
