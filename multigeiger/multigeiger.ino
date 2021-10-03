@@ -148,13 +148,13 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
                 (showDisplay && switches.display_on));
 
     // Sound local alarm?
-    if ((soundLocalAlarm || telegramSendLocalAlarm) && GMC_factor_uSvph > 0) {
+    if ((soundLocalAlarm || sendLocalAlarmToMessenger) && GMC_factor_uSvph > 0) {
       if (accumulated_Dose_Rate > localAlarmThreshold) {
         log(WARNING, "Local alarm: Accumulated dose of %.3f µSv/h above threshold at %.3f µSv/h", accumulated_Dose_Rate, localAlarmThreshold);
         if (soundLocalAlarm) {
           alarm();
         }
-        if (telegramSendLocalAlarm) {
+        if (sendLocalAlarmToMessenger) {
           transmit_userinfo(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, tubes[TUBE_TYPE].cps_to_uSvph,
                             (unsigned int)(Count_Rate * 60), (unsigned int)(accumulated_Count_Rate * 60), accumulated_Dose_Rate,
                             have_thp, temperature, humidity, pressure, wifi_status, true);
@@ -164,7 +164,7 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
         if (soundLocalAlarm) {
           alarm();
         }
-        if (telegramSendLocalAlarm) {
+        if (sendLocalAlarmToMessenger) {
           transmit_userinfo(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, tubes[TUBE_TYPE].cps_to_uSvph,
                             (unsigned int)(Count_Rate * 60), (unsigned int)(accumulated_Count_Rate * 60), accumulated_Dose_Rate,
                             have_thp, temperature, humidity, pressure, wifi_status, true);
