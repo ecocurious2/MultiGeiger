@@ -71,7 +71,7 @@ void setup_transmission(const char *version, char *ssid, bool loraHardware) {
   c_customsrv.wc->setCACert(ca_certs);
   c_customsrv.hc = new HTTPClient;
 
-  if ((sizeof(telegramBotToken) < 40) || (sizeof(telegramChatId) < 7))
+  if ((strlen(telegramBotToken) < 40) || (strlen(telegramChatId) < 7))
     sendDataToMessengerEvery = -1;
 
   c_telegram.wc = new WiFiClientSecure;
@@ -321,8 +321,13 @@ void transmit_userinfo(String tube_type, int tube_nbr, float tube_factor, unsign
     return;
 
   // if we don't have a valid Messenger config, do not send to Messenger
-  if ((sizeof(telegramBotToken) < 40) || (sizeof(telegramChatId) < 7))
+  if (sendDataToMessengerEvery < 0)
+    return;
+  // in case the config has been changed in the meantime
+  if ((strlen(telegramBotToken) < 40) || (strlen(telegramChatId) < 7)) {
     sendDataToMessengerEvery = -1;
+    return;
+  }
 
   static unsigned int transmitCounter = 0;
   transmitCounter++;

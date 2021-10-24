@@ -149,18 +149,12 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
 
     // Sound local alarm?
     if ((soundLocalAlarm || sendLocalAlarmToMessenger) && GMC_factor_uSvph > 0) {
-      if (accumulated_Dose_Rate > localAlarmThreshold) {
-        log(WARNING, "Local alarm: Accumulated dose of %.3f µSv/h above threshold at %.3f µSv/h", accumulated_Dose_Rate, localAlarmThreshold);
-        if (soundLocalAlarm) {
-          alarm();
+      if ((accumulated_Dose_Rate > localAlarmThreshold) || (Dose_Rate > (accumulated_Dose_Rate * localAlarmFactor))) {
+        if (accumulated_Dose_Rate > localAlarmThreshold) {
+          log(WARNING, "Local alarm: Accumulated dose of %.3f µSv/h above threshold at %.3f µSv/h", accumulated_Dose_Rate, localAlarmThreshold);
+        } else {
+          log(WARNING, "Local alarm: Current dose of %.3f > %d x accumulated dose of %.3f µSv/h", Dose_Rate, localAlarmFactor, accumulated_Dose_Rate);
         }
-        if (sendLocalAlarmToMessenger) {
-          transmit_userinfo(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, tubes[TUBE_TYPE].cps_to_uSvph,
-                            (unsigned int)(Count_Rate * 60), (unsigned int)(accumulated_Count_Rate * 60), accumulated_Dose_Rate,
-                            have_thp, temperature, humidity, pressure, wifi_status, true);
-        }
-      } else if (Dose_Rate > (accumulated_Dose_Rate * localAlarmFactor)) {
-        log(WARNING, "Local alarm: Current dose of %.3f > %d x accumulated dose of %.3f µSv/h", Dose_Rate, localAlarmFactor, accumulated_Dose_Rate);
         if (soundLocalAlarm) {
           alarm();
         }

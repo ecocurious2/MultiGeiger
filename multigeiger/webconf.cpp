@@ -86,8 +86,7 @@ iotwebconf::IntTParameter<int16_t> sendDataToMessengerEveryParam =
   defaultValue(sendDataToMessengerEvery).
   min(0).max(27719).
   step(1).placeholder("0..27719").build();
-// iotwebconf::TextParameter telegramBotTokenParam = iotwebconf::TextParameter("Telegram Bot Token", "telegramBotToken", telegramBotToken, 50);
-iotwebconf::PasswordParameter telegramBotTokenParam = iotwebconf::PasswordParameter("Telegram Bot Token", "telegramBotToken", telegramBotToken, 50);
+iotwebconf::PasswordParameter telegramBotTokenParam = iotwebconf::PasswordParameter("Telegram Bot Token (Reboot required!)", "telegramBotToken", telegramBotToken, 50);
 iotwebconf::PasswordParameter telegramChatIdParam = iotwebconf::PasswordParameter("Telegram Chat ID", "telegramChatId", telegramChatId, 12);
 
 
@@ -236,10 +235,6 @@ void setup_webconf(bool loraHardware) {
   // if we don't have LoRa hardware, do not send to LoRa
   if (!isLoraBoard)
     sendToLora = false;
-
-  // if we don't have a valid Messenger config, do not send to Messenger
-  if ((sizeof(telegramBotToken) < 40) || (sizeof(telegramChatId) < 7))
-    sendDataToMessengerEvery = -1;
 
   iotWebConf.init();
 
