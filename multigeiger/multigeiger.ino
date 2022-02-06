@@ -121,7 +121,7 @@ void local_alarmsequence(void) {
 }
 
 void process_GMC(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses,
-              bool have_thp, float temperature, float humidity, float pressure, int wifi_status) {
+                 bool have_thp, float temperature, float humidity, float pressure, int wifi_status) {
   struct GM_State {
     unsigned long timestamp;
     unsigned long counts;
@@ -144,7 +144,7 @@ void process_GMC(unsigned long current_ms, unsigned long current_counts, unsigne
   };
 
   // millis(), counts or hv_pulses overflow?
-  for (int i = 0; i<savedstates_count; i++) {
+  for (int i = 0; i < savedstates_count; i++) {
     if (current_ms < saved_state[i].timestamp) saved_state[i].timestamp = current_ms;
     if (current_counts < saved_state[i].counts) saved_state[i].counts = current_counts;
     if (gm_count_timestamp < saved_state[i].last_count_timestamp) saved_state[i].last_count_timestamp = gm_count_timestamp;
@@ -157,7 +157,7 @@ void process_GMC(unsigned long current_ms, unsigned long current_counts, unsigne
 
   // Startup
   if ((gm_count_timestamp == 0) && (saved_state[HEARTBEAT].last_count_timestamp == 0)) {
-      // If there were no pulses after AFTERSTART msecs after boot, clear display anyway and show 0 counts.
+    // If there were no pulses after AFTERSTART msecs after boot, clear display anyway and show 0 counts.
     static unsigned long boot_timestamp = millis();
     static unsigned long afterStartTime = AFTERSTART * 1000;
     if (afterStartTime && ((current_ms - boot_timestamp) >= afterStartTime)) {
@@ -226,17 +226,17 @@ void process_GMC(unsigned long current_ms, unsigned long current_counts, unsigne
       dose_rate = count_rate * GMC_factor_uSvph;
 
       switch (st) {
-        case MEASUREMENT:
-          log(DEBUG, "Measured GM: cpm= %d HV=%d", current_cpm, hv_pulses);
-          transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hv_pulses, counts, current_cpm,
-                        have_thp, temperature, humidity, pressure, wifi_status);
-          break;
-        case ONE_MINUTE:
-          if (Serial_Print_Mode == Serial_One_Minute_Log)
-            log_data_one_minute((current_ms / 1000), current_cpm, counts);
-          break;
-        default:
-          break;
+      case MEASUREMENT:
+        log(DEBUG, "Measured GM: cpm= %d HV=%d", current_cpm, hv_pulses);
+        transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hv_pulses, counts, current_cpm,
+                      have_thp, temperature, humidity, pressure, wifi_status);
+        break;
+      case ONE_MINUTE:
+        if (Serial_Print_Mode == Serial_One_Minute_Log)
+          log_data_one_minute((current_ms / 1000), current_cpm, counts);
+        break;
+      default:
+        break;
       }
       saved_state[st].timestamp = current_ms;
       saved_state[st].counts = current_counts;
