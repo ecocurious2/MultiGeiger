@@ -15,7 +15,7 @@ extern int Serial_Print_Mode;
 void setup_log_data(int mode);
 void log_data(int GMC_counts, int time_difference, float Count_Rate, float Dose_Rate, int HV_pulse_count,
               int accumulated_GMC_counts, int accumulated_time, float accumulated_Count_Rate, float accumulated_Dose_Rate,
-              float t, float h, float p);
+              float t, float h, float p, int iaq);
 void log_data_one_minute(int time_s, int cpm, int counts);
 void log_data_statistics(int count_time_between);
 

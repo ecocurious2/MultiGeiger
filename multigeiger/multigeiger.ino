@@ -107,7 +107,7 @@ int update_ble_status(void) {  // currently no error detection
 }
 
 void publish(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses,
-             float temperature, float humidity, float pressure) {
+             float temperature, float humidity, float pressure, int iaq) {
   static unsigned long last_timestamp = millis();
   static unsigned long last_counts = 0;
   static unsigned long last_hv_pulses = 0;
@@ -162,7 +162,7 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
     if (Serial_Print_Mode == Serial_Logging) {
       log_data(counts, dt, Count_Rate, Dose_Rate, hv_pulses,
                accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate,
-               temperature, humidity, pressure);
+               temperature, humidity, pressure, iaq);
     }
   } else {
     // If there were no pulses after AFTERSTART msecs after boot, clear display anyway and show 0 counts.
@@ -200,14 +200,13 @@ void statistics_log(unsigned long current_counts, unsigned int time_between) {
   }
 }
 
-void read_THP(unsigned long current_ms,
-              bool *have_thp, float *temperature, float *humidity, float *pressure) {
+void read_THP(unsigned long current_ms, bool *have_thp, float *temperature, float *humidity, float *pressure, int *iaq) {
   static unsigned long last_timestamp = 0;
   // first call: immediately query thp sensor
-  // subsequent calls: only query every MEASUREMENT_INTERVAL
-  if (!last_timestamp || (current_ms - last_timestamp) >= (MEASUREMENT_INTERVAL * 1000)) {
+  // subsequent calls: only query every BME680_BSEC_LP_READOUT_INTERVAL
+  if (!last_timestamp || (current_ms - last_timestamp) >= BME680_BSEC_LP_READOUT_INTERVAL) {
     last_timestamp = current_ms;
-    *have_thp = read_thp_sensor(temperature, humidity, pressure);
+    *have_thp = read_thp_sensor(temperature, humidity, pressure, iaq);
   }
 }
 
@@ -246,6 +245,7 @@ void loop() {
 
   static bool have_thp = false;
   static float temperature = 0.0, humidity = 0.0, pressure = 0.0;
+  static int iaq = 0;
 
   unsigned long current_ms = millis();  // to save multiple calls to millis()
 
@@ -270,7 +270,7 @@ void loop() {
 
   read_GMC(&gm_counts, &gm_count_timestamp, &gm_count_time_between);
 
-  read_THP(current_ms, &have_thp, &temperature, &humidity, &pressure);
+  read_THP(current_ms, &have_thp, &temperature, &humidity, &pressure, &iaq);
 
   read_hv(&hv_error, &hv_pulses);
   set_status(STATUS_HV, hv_error ? ST_HV_ERROR : ST_HV_OK);
@@ -283,7 +283,7 @@ void loop() {
   // do any other periodic updates for uplinks
   poll_transmission();
 
-  publish(current_ms, gm_counts, gm_count_timestamp, hv_pulses, temperature, humidity, pressure);
+  publish(current_ms, gm_counts, gm_count_timestamp, hv_pulses, temperature, humidity, pressure, iaq);
 
   if (Serial_Print_Mode == Serial_One_Minute_Log)
     one_minute_log(current_ms, gm_counts);
