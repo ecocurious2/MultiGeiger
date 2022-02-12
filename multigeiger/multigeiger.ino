@@ -144,7 +144,7 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
     accumulated_Dose_Rate = accumulated_Count_Rate * GMC_factor_uSvph;
 
     // ... and update the data on display, notify via BLE
-    update_bledata((unsigned int)(Count_Rate * 60));
+    update_bledata((unsigned int)(Count_Rate * 60), temperature, humidity, pressure, iaq);
     display_GMC((unsigned int)(accumulated_time / 1000), (int)(accumulated_Dose_Rate * 1000), (int)(Count_Rate * 60),
                 (showDisplay && switches.display_on));
 
@@ -170,7 +170,7 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
     static unsigned long afterStartTime = AFTERSTART;
     if (afterStartTime && ((current_ms - boot_timestamp) >= afterStartTime)) {
       afterStartTime = 0;
-      update_bledata(0);
+      update_bledata(0, 0, 0, 0, 0);
       display_GMC(0, 0, 0, (showDisplay && switches.display_on));
     }
   }

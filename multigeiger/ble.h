@@ -5,7 +5,7 @@
 #define _BLE_H_
 
 void setup_ble(char *device_name, bool ble_enabled);
-void update_bledata(unsigned int cpm);
+void update_bledata(unsigned int cpm, float temperature, float humidity, float pressure, int iaq);
 bool is_ble_connected(void);
 void disable_ble(void);
 
