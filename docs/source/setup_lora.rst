@@ -73,7 +73,7 @@ Enter the LoRa parameters into the MultiGeiger
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -  After the registration was completed, the LoRa parameters need to be transferred to the MultiGeiger program.
--  These can be entered viat he configuration page of the MultiGeiger (see above).
+-  These can be entered via the configuration page of the MultiGeiger (see above).
 -  Now go through the configuration on the configuration page until the settings of the LoRa  parameters are displayed
    and enter them here. Type in the 3 parameters from the TTN console (**APPEUI, DEVEUI, APPKEY**). 
    
@@ -91,7 +91,8 @@ Then the following must be entered:
 
    00D0C000C3197CE8
 
-This is also applies to **APPEUI** and **APPKEY** .
+This is also applies to **APPEUI** and **APPKEY**.
+After entering these parameters, please restart the Multigeiger.
 
 Logging data to sensor.community
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -110,7 +111,7 @@ explained:
 Webhook integration
 ~~~~~~~~~~~~~~~~~~~~
 
-To get the data via TTN to *sensor.community* , the Webhook integration at TTN has to be activated.
+To get the data via TTN to *sensor.community*, the Webhook integration at TTN has to be activated.
 
 At the Application tab select **Integrations** from the left menue. Select **Webhooks**, then **+ Add webhook**. 
 Scroll down and select **Custom webhook**.
@@ -126,15 +127,9 @@ Fill in the following fields:
 **Downlink API key**
   This remains empty
 
-Then click at **+Add header entry** to add a special Header. Enter **X-SID** in the left field and your 
+Then click at **+ Add header entry** to add a special Header. Enter **X-SID** in the left field and your 
 sensor id (the number, you received from sensor.community, **not** the chip ID) in the right field.
-Enable **Uplink message**, all other selections remain disabled. Now click **save changes**.
-
-See this example of what the form should look like:
-
-.. image:: images/webhook_filled.png
-  :scale: 75
-  :alt: Webhook filled
+Enable **Uplink message**, all other selections remain disabled. Now click **Add webhook** (or **save changes**).
 
 TTN payload (example)
 ~~~~~~~~~~~~~~~~~~~~~
@@ -151,7 +146,7 @@ At **Formatter type** select **Javascript** and in **Formatter paramater** paste
   function decodeUplink(input) {
     var data = {};
     if(input.fPort === 1) {
-      var minor = (input.bytes[7] & 0xF) + (input.bytes[8] >> 4) ;
+      var minor = ((input.bytes[7] & 0xF) << 4) + (input.bytes[8] >> 4) ;
       data.counts = ((input.bytes[0] * 256 + input.bytes[1]) * 256 + input.bytes[2]) * 256 + input.bytes[3];
       data.sample_time = (input.bytes[4] * 256 + input.bytes[5]) * 256 + input.bytes[6];
       data.tube = input.bytes[9];
