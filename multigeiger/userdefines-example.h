@@ -64,6 +64,10 @@
 // 0x2A39: Heart Rate Control Point --> allows to reset "energy expenditure", as required by service definition
 #define SEND2BLE false
 
+// Send data to an influx-db ?
+#define SEND2INFLUX false
+#define INFLUX_PORT 8086
+
 // Play an alarm sound when radiation level is too high?
 // Activates when either accumulated dose rate reaches the set threshold (see below)
 // or when the current dose rate is higher than the accumulated dose rate by the set factor (see below).

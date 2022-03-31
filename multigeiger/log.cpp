@@ -1,18 +1,19 @@
 // low level log() call - outputs to serial/usb
 
 #include <Arduino.h>
-
+#include "string.h"
 #include "log.h"
 #include "clock.h"
+#include "utils.h"
 
 // the GEIGER: prefix is is to easily differentiate our output from other esp32 output (e.g. wifi messages)
 #define LOG_PREFIX_FORMAT "GEIGER: %s "
 #define LOG_PREFIX_LEN (7+1+19+1)  // chars, without the terminating \0
 
-static int log_level = NOLOG;  // messages at level >= log_level will be output
+int log_level = NOLOG;  // messages at level >= log_level will be output
 
 void log(int level, const char *format, ...) {
-  if (level < log_level)
+  if (level > log_level)
     return;
 
   va_list args;
@@ -21,12 +22,19 @@ void log(int level, const char *format, ...) {
   sprintf(buf, LOG_PREFIX_FORMAT, utctime());
   vsprintf(buf + LOG_PREFIX_LEN, format, args);
   va_end(args);
-  Serial.println(buf);
+  Debug.println(buf);
 }
 
 void setup_log(int level) {
-  Serial.begin(115200);
-  while (!Serial) {};
+//  Serial.begin(115200); //started in multigeiger.ino as Debug.begin()....
+
+  while (!Debug) {};
   log(NOLOG, "Logging initialized at level %d.", level);  // this will always be output
   log_level = level;
+}
+int getloglevel(void){
+  return log_level;
+}
+void setloglevel(int level){
+  log_level=level;
 }

@@ -1,7 +1,7 @@
 // Misc. utilities
 
 #include <Arduino.h>
-
+#include <WString.h>
 #include "log.h"
 #include "utils.h"
 
@@ -44,3 +44,77 @@ void reverseByteArray(unsigned char *data, int len) {
   }
 }
 
+/*****************************************************************
+ * Debug output                                                  *
+ *****************************************************************/
+
+LoggingSerial Debug;
+
+LoggingSerial::LoggingSerial()
+    : HardwareSerial(0)
+{
+	m_buffer = xQueueCreate(XLARGE_STR, sizeof(uint8_t));
+}
+
+size_t LoggingSerial::write(uint8_t c)
+{
+	xQueueSendToBack(m_buffer, ( void * ) &c, ( TickType_t ) 1);
+	return HardwareSerial::write(c);
+}
+
+size_t LoggingSerial::write(const uint8_t *buffer, size_t size)
+{
+	for(int i = 0; i < size; i++) {
+		xQueueSendToBack(m_buffer, ( void * ) &buffer[i], ( TickType_t ) 1);
+	}
+	return HardwareSerial::write(buffer, size);
+}
+
+String LoggingSerial::popLines()
+{
+	String r;
+	uint8_t c;
+	while (xQueueReceive(m_buffer, &(c ), (TickType_t) 1 )) {
+		r += (char) c;
+
+		if (c == '\n' && r.length() > 10)
+			break;
+	}
+	return r;
+}
+
+//taken from Luftdaten.info
+String delayToString(unsigned time_ms) {
+
+	char buf[64];
+	String s;
+
+	if (time_ms > 2 * 1000 * 60 * 60 * 24) {
+		sprintf_P(buf, PSTR("%d days, "), time_ms / (1000 * 60 * 60 * 24));
+		s += buf;
+		time_ms %= 1000 * 60 * 60 * 24;
+	}
+
+	if (time_ms > 2 * 1000 * 60 * 60) {
+		sprintf_P(buf, PSTR("%d hours, "), time_ms / (1000 * 60 * 60));
+		s += buf;
+		time_ms %= 1000 * 60 * 60;
+	}
+
+	if (time_ms > 2 * 1000 * 60) {
+		sprintf_P(buf, PSTR("%d min, "), time_ms / (1000 * 60));
+		s += buf;
+		time_ms %= 1000 * 60;
+	}
+
+	if (time_ms > 2 * 1000) {
+		sprintf_P(buf, PSTR("%ds, "), time_ms / 1000);
+		s += buf;
+	}
+
+	if (s.length() > 2) {
+		s = s.substring(0, s.length() - 2);
+	}
+
+	return s;
+}

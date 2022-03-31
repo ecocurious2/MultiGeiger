@@ -1,6 +1,6 @@
 // Web Configuration related code
 // also: OTA updates
-
+#include "version.h"
 #include "log.h"
 #include "speaker.h"
 
@@ -8,6 +8,9 @@
 #include "IotWebConfTParameter.h"
 #include <IotWebConfESP32HTTPUpdateServer.h>
 #include "userdefines.h"
+#include "utils.h"
+#include "tube.h"
+#include "webconf.h"
 
 // Checkboxes have 'selected' if checked, so we need 9 byte for this string.
 #define CHECKBOX_LEN 9
@@ -20,6 +23,7 @@ bool sendToCommunity = SEND2SENSORCOMMUNITY;
 bool sendToMadavi = SEND2MADAVI;
 bool sendToLora = SEND2LORA;
 bool sendToBle = SEND2BLE;
+bool sendToInflux = SEND2INFLUX;
 bool soundLocalAlarm = LOCAL_ALARM_SOUND;
 
 char speakerTick_c[CHECKBOX_LEN];
@@ -29,6 +33,7 @@ char showDisplay_c[CHECKBOX_LEN];
 char sendToCommunity_c[CHECKBOX_LEN];
 char sendToMadavi_c[CHECKBOX_LEN];
 char sendToLora_c[CHECKBOX_LEN];
+char sendToInflux_c[CHECKBOX_LEN];
 char sendToBle_c[CHECKBOX_LEN];
 char soundLocalAlarm_c[CHECKBOX_LEN];
 
@@ -40,6 +45,23 @@ static bool isLoraBoard;
 float localAlarmThreshold = LOCAL_ALARM_THRESHOLD;
 int localAlarmFactor = (int)LOCAL_ALARM_FACTOR;
 
+uint16_t influxPort = INFLUX_PORT;
+
+char influxServer[100] = "";
+char influxPath[100] = "";
+char influxUser[65] = "";
+char influxPassword[IOTWEBCONF_PASSWORD_LEN+1] = "";
+char influxMeasurement[100] = "";
+
+extern float Count_Rate;
+extern float Dose_Rate;
+extern unsigned long starttime;
+extern int log_level;
+extern float temperature;
+extern float humidity;
+extern float pressure;
+
+
 iotwebconf::ParameterGroup grpMisc = iotwebconf::ParameterGroup("misc", "Misc. Settings");
 iotwebconf::CheckboxParameter startSoundParam = iotwebconf::CheckboxParameter("Start sound", "startSound", playSound_c, CHECKBOX_LEN, playSound);
 iotwebconf::CheckboxParameter speakerTickParam = iotwebconf::CheckboxParameter("Speaker tick", "speakerTick", speakerTick_c, CHECKBOX_LEN, speakerTick);
@@ -50,12 +72,26 @@ iotwebconf::ParameterGroup grpTransmission = iotwebconf::ParameterGroup("transmi
 iotwebconf::CheckboxParameter sendToCommunityParam = iotwebconf::CheckboxParameter("Send to sensor.community", "send2Community", sendToCommunity_c, CHECKBOX_LEN, sendToCommunity);
 iotwebconf::CheckboxParameter sendToMadaviParam = iotwebconf::CheckboxParameter("Send to madavi.de", "send2Madavi", sendToMadavi_c, CHECKBOX_LEN, sendToMadavi);
 iotwebconf::CheckboxParameter sendToBleParam = iotwebconf::CheckboxParameter("Send to BLE (Reboot required!)", "send2ble", sendToBle_c, CHECKBOX_LEN, sendToBle);
+iotwebconf::CheckboxParameter sendToInfluxParam = iotwebconf::CheckboxParameter("Send to influx-db", "send2Influx", sendToInflux_c, CHECKBOX_LEN, sendToInflux);
+// influx-db parameters
+iotwebconf::ParameterGroup grpInfluxDB = iotwebconf::ParameterGroup("influxdb", "Influx-DB Settings");
+iotwebconf::TextParameter influxServerParam = iotwebconf::TextParameter("Server", "influxserver", influxServer, 99,'\0',"influx-Server name");
+iotwebconf::TextParameter influxPathParam = iotwebconf::TextParameter("Path", "influxpath", influxPath, 99,'\0',"e.g. /write?db=myInfluxDB&precision=s");
+iotwebconf::IntTParameter<uint16_t> influxPortParam =
+  iotwebconf::Builder<iotwebconf::IntTParameter<uint16_t>>("influxPort").
+  label("Port").
+  defaultValue(influxPort).
+  min(1).max(65535).
+  step(1).placeholder("1..65535").build();
+iotwebconf::TextParameter influxUserParam = iotwebconf::TextParameter("User", "influxuser", influxUser, 64,'\0',"Username");
+iotwebconf::PasswordParameter influxPasswordParam = iotwebconf::PasswordParameter("Password", "influxpassword", influxPassword, IOTWEBCONF_PASSWORD_LEN,'\0',"Password");
+iotwebconf::TextParameter influxMeasurementParam = iotwebconf::TextParameter("Measurement", "influxmeasurement", influxMeasurement, 99,'\0',"Measurement");
 
 iotwebconf::ParameterGroup grpLoRa = iotwebconf::ParameterGroup("lora", "LoRa Settings");
 iotwebconf::CheckboxParameter sendToLoraParam = iotwebconf::CheckboxParameter("Send to LoRa (=>TTN)", "send2lora", sendToLora_c, CHECKBOX_LEN, sendToLora);
-iotwebconf::TextParameter deveuiParam = iotwebconf::TextParameter("DEVEUI", "deveui", deveui, 17);
-iotwebconf::TextParameter appeuiParam = iotwebconf::TextParameter("APPEUI", "appeui", appeui, 17);
-iotwebconf::TextParameter appkeyParam = iotwebconf::TextParameter("APPKEY", "appkey", appkey, 33);
+iotwebconf::TextParameter deveuiParam = iotwebconf::TextParameter("DEVEUI", "deveui", deveui, 17,'\0',"Device EUI");
+iotwebconf::TextParameter appeuiParam = iotwebconf::TextParameter("APPEUI", "appeui", appeui, 17,'\0',"Application EUI");
+iotwebconf::TextParameter appkeyParam = iotwebconf::TextParameter("APPKEY", "appkey", appkey, 33,'\0',"App Key");
 
 iotwebconf::ParameterGroup grpAlarm = iotwebconf::ParameterGroup("alarm", "Local Alarm Setting");
 iotwebconf::CheckboxParameter soundLocalAlarmParam = iotwebconf::CheckboxParameter("Enable local alarm sound", "soundLocalAlarm", soundLocalAlarm_c, CHECKBOX_LEN, soundLocalAlarm);
@@ -100,8 +136,9 @@ unsigned long getESPchipID() {
   pid[0] = (uint8_t)pespid[5];
   pid[1] = (uint8_t)pespid[4];
   pid[2] = (uint8_t)pespid[3];
-  log(INFO, "ID: %08X", id);
-  log(INFO, "MAC: %04X%08X", (uint16_t)(espid >> 32), (uint32_t)espid);
+  /* removed, is shown now in the web header, MAC is wrong/reverted here, by the way  */
+  //log(INFO, "ID: %08X", id);
+  //log(INFO, "MAC: %04X%08X", (uint16_t)(espid >> 32), (uint32_t)espid);
   return id;
 }
 
@@ -111,34 +148,106 @@ char *buildSSID() {
   sprintf(ssid, "ESP32-%d", id);
   return ssid;
 }
+int32_t calcWiFiSignalQuality(int32_t rssi) {
+	// Treat 0 or positive values as 0%
+	if (rssi >= 0 || rssi < -100) {
+		rssi = -100;
+	}
+	if (rssi > -50) {
+		rssi = -50;
+	}
+	return (rssi + 100) * 2;
+}
+//******************************************************************************
+// output of one line with on the startpage with "|sensor|datatype|value unit|"
+//******************************************************************************
+void add_value_to_table(String& content, const __FlashStringHelper* sensor, const __FlashStringHelper* param, const String& value, const char* unit) {
+	RESERVE_STRING(s, MED_STR);
+	s = FPSTR(WEB_PAGE_DATA_LINE);
+	s.replace("{s}", sensor);
+  s.replace("{d}", param);
+	s.replace("{val}", value);
+	s.replace("{u}", String(unit));
+	content += s;
+}
 
+//******************************************************************************
+// Start page
+//******************************************************************************
 void handleRoot(void) {  // Handle web requests to "/" path.
   // -- Let IotWebConf test and handle captive portal requests.
   if (iotWebConf.handleCaptivePortal()) {
     // -- Captive portal requests were already served.
     return;
   }
-  const char *index =
-    "<!DOCTYPE html>"
-    "<html lang='en'>"
-    "<head>"
-    "<meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />"
-    "<title>MultiGeiger Configuration</title>"
-    "</head>"
-    "<body>"
-    "<h1>Configuration</h1>"
-    "<p>"
-    "Go to the <a href='config'>config page</a> to change settings or update firmware."
-    "</p>"
-    "</body>"
-    "</html>\n";
-  server.send(200, "text/html;charset=UTF-8", index);
+  server.sendHeader(F("Cache-Control"), F("no-cache, no-store, must-revalidate"));
+	server.sendHeader(F("Pragma"), F("no-cache"));
+	server.sendHeader(F("Expires"), F("0"));
+
+  // Enable Pagination (Chunked Transfer)
+	server.setContentLength(CONTENT_LENGTH_UNKNOWN);
+  server.send(200, FPSTR(CONTENT_TYPE_TXT_HTML), "");
+  RESERVE_STRING (index,XLARGE_STR);
+  char tmp[50];
+  const int last_signal_strength = WiFi.RSSI();
+  index = FPSTR(WEB_PAGE_HEAD);
+	index.replace("{t}", FPSTR(CURRENT_DATA));
+
+// Paginate page after ~ 1500 Bytes
+	server.sendContent(index);
+	index = emptyString;
+  index = FPSTR(WEB_PAGE_HEADLINE);
+	index.replace("{id}", theName);
+  index.replace("{mac}", WiFi.macAddress());
+  index.replace("{fw}", VERSION_STR);
+  server.sendContent(index);
+  index = emptyString;
+
+index +=F("<div class='content'><h4>Aktuelle Werte</h4>"
+"<meta http-equiv=\"refresh\" content=\"10\">"
+"<table class='v' cellspacing='0' border='1' cellpadding='5'>"
+"<tr>"
+"<th style=\"background-color: lightgray;\">Sensor</th>"
+"<th style=\"background-color: lightgray;\">Parameter</th>"
+"<th style=\"background-color: lightgray;\">Wert</th></tr>");
+
+sprintf(tmp,"%.3f",Count_Rate);
+add_value_to_table(index,F(tubes[TUBE_TYPE].type),F("cps"),tmp,"c/s");
+
+sprintf(tmp,"%.3f",Dose_Rate);
+
+add_value_to_table(index,F(tubes[TUBE_TYPE].type),F("Dosisleistung"),tmp,"µSv/h");
+
+index +=F("<tr><td colspan='3'>&nbsp;</td></tr>");
+// Paginate page after ~ 1500 Bytes
+	server.sendContent(index);
+	index = emptyString;
+if(have_thp){
+  sprintf(tmp,"%.1f",temperature);
+  add_value_to_table(index,F("BMEx80"),F("Temperatur"),tmp,"°C");
+  sprintf(tmp,"%.1f",pressure);
+  add_value_to_table(index,F("BMEx80"),F("Luftdruck"),tmp,"hPa");
+  sprintf(tmp,"%.1f",humidity);
+  add_value_to_table(index,F("BMEx80"),F("rel. Luftfeuchte"),tmp,"%");
+  index +=F("<tr><td colspan='3'>&nbsp;</td></tr>");
+}
+add_value_to_table(index,F("WiFi"),F("Signal"),String(last_signal_strength),"dBm");
+add_value_to_table(index,F("WiFi"),F("Qualität"),String(calcWiFiSignalQuality(last_signal_strength)),"%");
+add_value_to_table(index,F("ESP32"),F("Freier Speicher"),String(ESP.getFreeHeap()),"Byte");
+add_value_to_table(index,F("ESP32"),F("Uptime"),delayToString(millis() - starttime),"");
+
+index += F("</table><br>");
+index += FPSTR(WEB_PAGE_START_BUTTONS);
+index +=F("</div></body></html>\n");
+
+ server.sendContent(index);
+  //server.send(200, FPSTR(CONTENT_TYPE_TXT_HTML), index);
   // looks like user wants to do some configuration or maybe flash firmware.
   // while accessing the flash, we need to turn ticking off to avoid exceptions.
   // user needs to save the config (or flash firmware + reboot) to turn it on again.
   // note: it didn't look like there is an easy way to put this call at the right place
   // (start of fw flash / start of config save) - this is why it is here.
-  tick_enable(false);
+  //tick_enable(false);TR : move to setup_webconf(). Then it's only off while in configution mode, and not during 'browsing' ...
 }
 
 static char lastWiFiSSID[IOTWEBCONF_WORD_LEN] = "";
@@ -159,6 +268,13 @@ void loadConfigVariables(void) {
   sendToMadavi = sendToMadaviParam.isChecked();
   sendToLora = sendToLoraParam.isChecked();
   sendToBle = sendToBleParam.isChecked();
+  sendToInflux = sendToInfluxParam.isChecked();
+  influxPort = influxPortParam.value();
+  strcpy(influxServer,influxServerParam.valueBuffer);
+  strcpy(influxPath,influxPathParam.valueBuffer);
+  strcpy(influxUser,influxUserParam.valueBuffer);
+  strcpy(influxPassword,influxPasswordParam.valueBuffer);
+  strcpy(influxMeasurement,influxMeasurementParam.valueBuffer);
   soundLocalAlarm = soundLocalAlarmParam.isChecked();
   localAlarmThreshold = localAlarmThresholdParam.value();
   localAlarmFactor = localAlarmFactorParam.value();
@@ -170,8 +286,106 @@ void configSaved(void) {
   tick_enable(true);
 }
 
+//******************************************************************************
+// Aufruf original iotWebConf.handleConfig, aber vorher tick abschalten ...
+//******************************************************************************
+void handleConfig(void){
+  tick_enable(false);
+  iotWebConf.handleConfig();
+}
+
+//******************************************************************************
+// Ausgabe der seriellen Daten auf der Debugseite
+//******************************************************************************
+void handleSerial(void){
+ String s(Debug.popLines());
+	server.send(s.length() ? 200 : 204, "text/plain", s);
+}
+
+//******************************************************************************
+// Debug-Seite
+//******************************************************************************
+void handleDebug(void){
+	server.sendHeader(F("Cache-Control"), F("no-cache, no-store, must-revalidate"));
+	server.sendHeader(F("Pragma"), F("no-cache"));
+	server.sendHeader(F("Expires"), F("0"));
+  // Enable Pagination (Chunked Transfer)
+	server.setContentLength(CONTENT_LENGTH_UNKNOWN);
+  server.send(200, FPSTR(CONTENT_TYPE_TXT_HTML), "");
+  char s[10];
+  RESERVE_STRING(page_content, XLARGE_STR);
+
+  page_content = FPSTR(WEB_PAGE_HEAD);
+	page_content.replace("{t}", FPSTR(DEBUG_DATA));
+  //page_content.replace("{lng}", F("DE"));
+
+  server.sendContent(page_content);
+
+	page_content = emptyString;
+  page_content = FPSTR(WEB_PAGE_HEADLINE);
+	page_content.replace("{id}", theName);
+  page_content.replace("{mac}", WiFi.macAddress());
+  page_content.replace("{fw}", VERSION_STR);
+
+	server.sendContent(page_content);
+	page_content = emptyString;
+
+  page_content += FPSTR(LOGLEVEL_IS);
+  int lvl=NOLOG;
+  if (server.hasArg("lvl")) {
+    lvl = server.arg("lvl").toInt();
+    setloglevel(lvl);
+  }else { lvl=log_level;}
+  if (lvl == 5) strcpy(s,"DEBUG");
+  else if (lvl == 4) strcpy(s,"INFO");
+  else if (lvl == 3) strcpy(s,"WARNING");
+  else if (lvl == 2) strcpy(s,"ERROR");
+  else if (lvl == 1) strcpy(s,"CRITICAL");
+  else strcpy(s,"NOLOG");
+
+  page_content.replace("{lvl}", String(s));
+//  page_content += F(".</h4><br/><pre id='slog' class='panels'>");
+  page_content += F("<div class='debuglist'><br/><pre id='slog' class='panels'>");
+	page_content += Debug.popLines();
+	/*page_content += F("</pre><script>function slog_update(){\
+	fetch('/serial').then(r=>r.text()).then((r)=>{\
+  document.getElementById('slog').innerText+=r;}).catch(err=>console.log(err));};\
+	setInterval(slog_update,3000);</script>");*/
+  page_content += FPSTR(WEB_PAGE_DBG_SCRIPT);
+  page_content += F("</div><div>");
+  server.sendContent(page_content);
+	page_content = emptyString;
+
+	page_content += FPSTR(SET_LOGLEVEL_TO);
+  page_content.replace("{lvl}", F("..."));
+  page_content += FPSTR(WEB_PAGE_DBG_BUTTONS);
+  page_content += F("<a class='button' href='/'>Zurück zur Startseite</a></div></body></html>");
+  server.sendContent(page_content);
+}
+/*****************************************************************
+ * Webserver Images                                              *
+ *****************************************************************/
+static void webserver_static() {
+	server.sendHeader(F("Cache-Control"), F("max-age=2592000, public"));
+
+	if (server.arg(String('r')) == F("logo")) {
+		server.send_P(200, CONTENT_TYPE_IMAGE_PNG,
+			LOGO_PNG, LOGO_PNG_SIZE);
+	}
+	else if (server.arg(String('r')) == F("css")) {
+		server.send_P(200, CONTENT_TYPE_TEXT_CSS,
+			WEB_PAGE_STATIC_CSS, sizeof(WEB_PAGE_STATIC_CSS)-1);
+	} else {
+		iotWebConf.handleNotFound();
+	}
+}
+
+//******************************************************************************
+// Config settings
+//******************************************************************************
 void setup_webconf(bool loraHardware) {
   isLoraBoard = loraHardware;
+
   iotWebConf.setConfigSavedCallback(&configSaved);
   // *INDENT-OFF*   <- for 'astyle' to not format the following 3 lines
   iotWebConf.setupUpdateServer(
@@ -194,6 +408,14 @@ void setup_webconf(bool loraHardware) {
   grpTransmission.addItem(&sendToMadaviParam);
   grpTransmission.addItem(&sendToBleParam);
   iotWebConf.addParameterGroup(&grpTransmission);
+  grpInfluxDB.addItem(&sendToInfluxParam);
+  grpInfluxDB.addItem(&influxServerParam);
+  grpInfluxDB.addItem(&influxPathParam);
+  grpInfluxDB.addItem(&influxPortParam);
+  grpInfluxDB.addItem(&influxUserParam);
+  grpInfluxDB.addItem(&influxPasswordParam);
+  grpInfluxDB.addItem(&influxMeasurementParam);
+  iotWebConf.addParameterGroup(&grpInfluxDB);
   if (isLoraBoard) {
     grpLoRa.addItem(&sendToLoraParam);
     grpLoRa.addItem(&deveuiParam);
@@ -216,7 +438,13 @@ void setup_webconf(bool loraHardware) {
 
   // -- Set up required URL handlers on the web server.
   server.on("/", handleRoot);
-  server.on("/config", [] { iotWebConf.handleConfig(); });
+  // using our own /config which simply turns of ticks first, then calls iotWebConf.handleConfig()
+  // server.on("/config", [] { iotWebConf.handleConfig(); }); //TR : original code
+  //server.on("/config", [] { handleConfig(); });  //works, but slow ???
+  server.on("/config", handleConfig);
+  server.on("/debug", handleDebug);              //debug page
+	server.on("/serial", handleSerial );           //needed for the serial ring buffer on the debug page
+  server.on(F(STATIC_PREFIX), webserver_static); // need to copy static data (logo,css) for speed reasons
   server.onNotFound([]() {
     iotWebConf.handleNotFound();
   });

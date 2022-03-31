@@ -15,7 +15,7 @@
 #include "transmission.h"
 
 #include "ca_certs.h"
-
+#include "utils.h"
 // Hosts for data delivery
 
 // use http for now, could we use https?
@@ -30,7 +30,7 @@
 #define CUSTOMSRV "https://ptsv2.com/t/xxxxx-yyyyyyyyyy/post"
 // Get your own toilet URL and put it here before setting this to true.
 #define SEND2CUSTOMSRV false
-
+extern uint16_t influxPort;
 static String http_software_version;
 static unsigned int lora_software_version;
 static String chipID;
@@ -41,7 +41,7 @@ typedef struct https_client {
   HTTPClient *hc;
 } HttpsClient;
 
-static HttpsClient c_madavi, c_sensorc, c_customsrv;
+static HttpsClient c_madavi, c_sensorc, c_customsrv, c_influxsrv;
 
 void setup_transmission(const char *version, char *ssid, bool loraHardware) {
   chipID = String(ssid);
@@ -69,9 +69,14 @@ void setup_transmission(const char *version, char *ssid, bool loraHardware) {
   c_customsrv.wc->setCACert(ca_certs);
   c_customsrv.hc = new HTTPClient;
 
+  c_influxsrv.wc = new WiFiClientSecure;
+  c_influxsrv.wc->setCACert(ca_certs);
+  c_influxsrv.hc = new HTTPClient;
+
   set_status(STATUS_SCOMM, sendToCommunity ? ST_SCOMM_INIT : ST_SCOMM_OFF);
   set_status(STATUS_MADAVI, sendToMadavi ? ST_MADAVI_INIT : ST_MADAVI_OFF);
   set_status(STATUS_TTN, sendToLora ? ST_TTN_INIT : ST_TTN_OFF);
+  set_status(STATUS_INFLUX, sendToInflux ? ST_INFLUX_INIT : ST_INFLUX_OFF);
 }
 
 void poll_transmission() {
@@ -97,12 +102,11 @@ void prepare_http(HttpsClient *client, const char *host) {
 int send_http(HttpsClient *client, String body) {
   if (DEBUG_SERVER_SEND)
     log(DEBUG, "http request body: %s", body.c_str());
-
   int httpResponseCode = client->hc->POST(body);
   if (httpResponseCode > 0) {
-    String response = client->hc->getString();
     if (DEBUG_SERVER_SEND) {
       log(DEBUG, "http code: %d", httpResponseCode);
+      String response = client->hc->getString();
       log(DEBUG, "http response: %s", response.c_str());
     }
   } else {
@@ -243,8 +247,44 @@ int send_ttn_thp(float temperature, float humidity, float pressure) {
   ttnData[4] = ((int)(pressure / 10)) & 0xFF;
   return lorawan_send(2, ttnData, 5, false, NULL, NULL, NULL);
 }
+//************influx-DB********************
+int send_http_influx(HttpsClient *client, String body) {
+  if (DEBUG_SERVER_SEND)
+    log(DEBUG, "http request body: %s", body.c_str());
+  if(strlen(influxUser) >0 || strlen(influxPassword)>0)
+      client->hc->setAuthorization(influxUser,influxPassword);
+  int httpResponseCode = client->hc->POST(body);
+  if (httpResponseCode >= HTTP_CODE_OK && httpResponseCode <= HTTP_CODE_ALREADY_REPORTED) {
+			log(DEBUG,"Sent to influx-db, status: ok, http: %d", httpResponseCode);
+	} else if (httpResponseCode >= HTTP_CODE_BAD_REQUEST) {
+			log(DEBUG,"Sent to influx-db, status: error, http: %d", httpResponseCode);
+			log(DEBUG,"Details: %s", client->hc->getString().c_str());
+	}
+  client->hc->end();
+  return httpResponseCode;
+}
 
-void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int hv_pulses, unsigned int gm_counts, unsigned int cpm,
+int send_http_geiger_2_influx(HttpsClient *client, const char *host, unsigned int timediff, unsigned int hv_pulses,
+                     unsigned int gm_counts, unsigned int cpm, float Dose_Rate) {
+  char body[1000];
+  if (host[4] == 's')  // https
+    client->hc->begin(*client->wc, host);
+  else  // http
+    client->hc->begin(influxServer,influxPort,influxPath);
+  client->hc->addHeader("Content-Type", "application/x-www-form-urlencoded");
+  client->hc->addHeader("X-Sensor", chipID);
+
+  client->hc->addHeader("", String(influxMeasurement));
+
+  snprintf(body, 1000, "%s cpm=%d,hv_pulses=%d,gm_count=%d,timediff=%d,dose_rate=%f\n", influxMeasurement,
+           cpm,
+           hv_pulses,
+           gm_counts,
+           timediff,Dose_Rate);
+   return send_http_influx(client, body);
+
+}
+void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int hv_pulses, unsigned int gm_counts, unsigned int cpm,float Dose_Rate,
                    int have_thp, float temperature, float humidity, float pressure, int wifi_status) {
   int rc1, rc2;
 
@@ -296,5 +336,17 @@ void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int
     set_status(STATUS_TTN, ttn_ok ? ST_TTN_IDLE : ST_TTN_ERROR);
     display_status();
   }
+//InfuxDB
+	if (sendToInflux  && (wifi_status == ST_WIFI_CONNECTED)) {
+    bool influx_ok;
+    log(INFO, "Sending to Influx-DB ...");
+    log(DEBUG,"Measured data: cpm=%d, HV=%d, DoseRate=%f,gm_count=%d,timediff=%d", cpm, hv_pulses,Dose_Rate,gm_counts,dt);
+    rc1 = send_http_geiger_2_influx(&c_influxsrv, influxServer, dt, hv_pulses, gm_counts, cpm, Dose_Rate);
+
+    influx_ok = (rc1 >= HTTP_CODE_OK && rc1 <= HTTP_CODE_ALREADY_REPORTED);
+    log(INFO, "Sent to influx server %s, status: %s, http: %d", influxServer, influx_ok ? "ok" : "error", rc1);
+    set_status(STATUS_INFLUX, influx_ok ? ST_INFLUX_IDLE : ST_INFLUX_ERROR);
+    display_status();
+	}
 }
 

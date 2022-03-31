@@ -18,6 +18,7 @@
 #include "ble.h"
 #include "chkhardware.h"
 #include "clock.h"
+#include "utils.h"
 
 // Measurement interval (default 2.5min) [sec]
 #define MEASUREMENT_INTERVAL 150
@@ -37,10 +38,17 @@
 
 // DIP switches
 static Switches switches;
-
+float Count_Rate;
+float Dose_Rate;
+unsigned long starttime;
+bool have_thp = false;
+float temperature = 0.0, humidity = 0.0, pressure = 0.0;
 
 void setup() {
   bool isLoraBoard = init_hwtest();
+	starttime = millis();									// store the start time
+  Debug.begin(115200);		// Output to Serial at 115200 baud
+  while (!Debug) {};
   setup_log(DEFAULT_LOG_LEVEL);
   setup_display(isLoraBoard);
   setup_switches(isLoraBoard);
@@ -136,8 +144,8 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
     float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
     // calculate the current count rate and dose rate
-    float Count_Rate = (dt != 0) ? (float)counts * 1000.0 / (float)dt : 0.0;
-    float Dose_Rate = Count_Rate * GMC_factor_uSvph;
+     Count_Rate = (dt != 0) ? (float)counts * 1000.0 / (float)dt : 0.0;
+     Dose_Rate = Count_Rate * GMC_factor_uSvph;
 
     // calculate the count rate and dose rate over the complete time from start
     accumulated_Count_Rate = (accumulated_time != 0) ? (float)accumulated_GMC_counts * 1000.0 / (float)accumulated_time : 0.0;
@@ -212,6 +220,7 @@ void read_THP(unsigned long current_ms,
 }
 
 void transmit(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses,
+
               bool have_thp, float temperature, float humidity, float pressure, int wifi_status) {
   static unsigned long last_counts = 0;
   static unsigned long last_hv_pulses = 0;
@@ -233,10 +242,14 @@ void transmit(unsigned long current_ms, unsigned long current_counts, unsigned l
 
     int hv_pulses = current_hv_pulses - last_hv_pulses;
     last_hv_pulses = current_hv_pulses;
+    // calculate the current count rate and dose rate
+    float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
+    float Count_Rate = (dt != 0) ? (float)counts * 1000.0 / (float)dt : 0.0;
+    float dose_rate = Count_Rate * GMC_factor_uSvph;
 
     log(DEBUG, "Measured GM: cpm= %d HV=%d", current_cpm, hv_pulses);
 
-    transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hv_pulses, counts, current_cpm,
+    transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hv_pulses, counts, current_cpm, dose_rate,
                   have_thp, temperature, humidity, pressure, wifi_status);
   }
 }
@@ -244,8 +257,9 @@ void transmit(unsigned long current_ms, unsigned long current_counts, unsigned l
 void loop() {
   static bool hv_error = false;  // true means a HV capacitor charging issue
 
-  static bool have_thp = false;
-  static float temperature = 0.0, humidity = 0.0, pressure = 0.0;
+  //static bool have_thp = false;
+  have_thp = false;
+  temperature = 0.0; humidity = 0.0; pressure = 0.0;
 
   unsigned long current_ms = millis();  // to save multiple calls to millis()
 
