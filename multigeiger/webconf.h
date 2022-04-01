@@ -5,6 +5,7 @@
 #define _WEBCONF_H_
 
 #include "IotWebConf.h"
+#include "transl.h"
 
 extern bool speakerTick;
 extern bool playSound;
@@ -35,12 +36,12 @@ extern IotWebConf iotWebConf;
 
 void setup_webconf(bool loraHardware);
 
-#define LANGUAGE "DE"
+//#define LANGUAGE "DE"
 
-const char CURRENT_DATA[] PROGMEM = "Aktuelle Werte";
-const char DEBUG_DATA[] PROGMEM = "Debug Info";
-const char SET_LOGLEVEL_TO[] PROGMEM = "<h4>Setze Loglevel auf {lvl}</h4>";
-const char LOGLEVEL_IS[] PROGMEM = "<h4>Loglevel ist: {lvl}</h4>";
+//const char CURRENT_DATA[] PROGMEM = "Aktuelle Werte";
+//const char DEBUG_DATA[] PROGMEM = "Debug Info";
+//const char SET_LOGLEVEL_TO[] PROGMEM = "<h4>Setze Loglevel auf {lvl}</h4>";
+//const char LOGLEVEL_IS[] PROGMEM = "<h4>Loglevel ist: {lvl}</h4>";
 const char CONTENT_TYPE_TXT_HTML[] PROGMEM = "text/html;charset=UTF-8";
 const char CONTENT_TYPE_IMAGE_PNG[] PROGMEM = "image/png";
 const char CONTENT_TYPE_TEXT_CSS[] PROGMEM = "text/css";
@@ -79,16 +80,16 @@ const char WEB_PAGE_HEADLINE[] PROGMEM = "<body><div class='canvas'>\
 </tr></table><small>ID: {id}<br>MAC: {mac}<br>Firmware: {fw}<br></small></div>";
 */
  const char WEB_PAGE_DBG_BUTTONS[] PROGMEM = "<table style='width:80%;'><tr>\
-<td style='width:13%;'><a class='button'title='min.Info'href='/debug?lvl=0'>NOLOG</a></td>\
-<td style='width:13%;'><a class='button'title='NOLOG+KRITISCH'href='/debug?lvl=1'>KRITISCH</a></td>\
-<td style='width:13%;'><a class='button'title='NOLOG+KRITISCH+FEHLER'href='/debug?lvl=2'>FEHLER</a></td>\
-<td style='width:13%;'><a class='button'title='NOLOG+KRITISCH+FEHLER+WARNUNG'href='/debug?lvl=3'>WARNUNG</a></td>\
-<td style='width:13%;'><a class='button'title='NOLOG+KRITISCH+FEHLER+WARNUNG+INFO'href='/debug?lvl=4'>INFO</a></td>\
-<td style='width:13%;'><a class='button'title='max.Info'href='/debug?lvl=5'>DEBUG</a></td>\
+<td style='width:13%;'><a class='button'title='" TRA_NOLOG_INFO "'href='/debug?lvl=0'>" TRA_BUTTON_NOLOG "</a></td>\
+<td style='width:13%;'><a class='button'href='/debug?lvl=1'>" TRA_BUTTON_CRITICAL "</a></td>\
+<td style='width:13%;'><a class='button'href='/debug?lvl=2'>" TRA_BUTTON_ERROR "</a></td>\
+<td style='width:13%;'><a class='button'href='/debug?lvl=3'>" TRA_BUTTON_WARNING "</a></td>\
+<td style='width:13%;'><a class='button'href='/debug?lvl=4'>" TRA_BUTTON_INFO "</a></td>\
+<td style='width:13%;'><a class='button'title='" TRA_DEBUG_INFO "'href='/debug?lvl=5'>" TRA_BUTTON_DEBUG "</a></td>\
 </tr></table>";
 
-const char WEB_PAGE_START_BUTTONS[] PROGMEM = "<table><tr><td><a class='button'title='Konfig. öffnen'href='config'>Konfiguration</a></td>\
-<td><a class='button'title='Loginfo Seite öffnen'href='debug'>LogInfo Seite öffnen</a></td><td><a class='button'title='man.Aktualisieren'href='/'>Aktualisieren</a></td></tr></table>";
+const char WEB_PAGE_START_BUTTONS[] PROGMEM = "<table><tr><td><a class='button'title='" TRA_CONFIG_INFO "'href='config'>" TRA_BUTTON_CONFIG "</a></td>\
+<td><a class='button'title='" TRA_LOG_PAGE_INFO "'href='debug'>" TRA_BUTTON_LOG_PAGE "</a></td><td><a class='button'title='" TRA_REFRESH_INFO "'href='/'>" TRA_BUTTON_REFRESH "</a></td></tr></table>";
 
 const char WEB_PAGE_DBG_SCRIPT[] PROGMEM = "</pre><script>function slog_update(){fetch('/serial').then(r=>r.text()).then((r)=>{\
 document.getElementById('slog').innerText+=r;}).catch(err=>console.log(err));};setInterval(slog_update,3000);</script>";
@@ -96,14 +97,8 @@ document.getElementById('slog').innerText+=r;}).catch(err=>console.log(err));};s
 const char WEB_PAGE_DATA_LINE[] PROGMEM = "<tr><td>{s}</td><td>{d}</td><td class='r'>{val}&nbsp;{u}</td></tr>";
 
 
-/*const char WEB_PAGE_HEADLINE[] PROGMEM = "<body><div class='canvas'><a class='b'href='/'style='background:none;display:inline'>\
-<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAAAkCAMAAABIZG8KAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TtSIVBwuKKGSoThZERR21CkWoEGqFVh1MLv2CJg1Jiouj4Fpw8GOx6uDirKuDqyAIfoA4OjkpukiJ/0sLLWI8OO7Hu3uPu3eAUC0yzWobAzTdNhOxqJhKr4qBV/gxhA5Mo09mljEnSXF4jq97+Ph6F+FZ3uf+HN1qxmKATySeZYZpE28QT23aBud94hDLyyrxOfGoSRckfuS6Uuc3zjmXBZ4ZMpOJeeIQsZhrYaWFWd7UiCeJw6qmU76QqrPKeYuzViyzxj35C4MZfWWZ6zQHEcMiliBBhIIyCijCRoRWnRQLCdqPevgHXL9ELoVcBTByLKAEDbLrB/+D391a2YnxelIwCrS/OM7HMBDYBWoVx/k+dpzaCeB/Bq70pr9UBWY+Sa80tfAR0LMNXFw3NWUPuNwB+p8M2ZRdyU9TyGaB9zP6pjTQewt0rdV7a+zj9AFIUlfxG+DgEBjJUfa6x7s7W3v790yjvx+RHXKz/uI4TwAAADNQTFRF0F0X+Pz4CrTsib8sod3NYc70TzWNYG+XfKJEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlr7IfwAAAAF0Uk5TAEDm2GYAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfmAx0HEynPCGjWAAACNUlEQVRIx61Wi27EIAxD4FD+/4tXIIE8uGljQ1vVczmbJE56KZ0WSl9AQNSeEpDfrbKWkdBIAO41mAIB0QDuNaA4i+c0wE0sWKcDMwgVIDeihlsVlYHJAEXUxkMFXCbM1zuZesPEug5yky2T8UADDVyLtPE3/lkELtZWjop/iwQxEhBlojuRFL50TNeTeT3tSqSpqvqEjLv3UusSqe0ykmJui+2ct12qFqmt3Hb8br3EHoC0HtoQIYByfm9ruWx5MzPcWOmB1DxT2iOp7T8GZLKjC12E+ERd5PnTHEaIbsyWLiJP7kXGMIRH5CX2eJH6U04i/R78drM5fPss0jk3E4kfxyO5YXxcaV7ns0O68v5SHts3KTa8EbIiTD9QTBHqIjAixMxbZB184jkbFWz5HQlvVyLiux2JEYE9uRAw1zldvJtFOrH0a7/POvwpIqpaEosTnyLpRRRgioz19OaPkSzR3B1FpjgC+JowAlHVIk8OkWBKLWspX0znniPxwLNEBhQiUeErx1k/h5okG0mv3fyNqW1+LDydRM6RfFAVKPaJstcnkVCTGEmKDWuaMYlfLcU7B6QZoeqlCLBNjuTNpLxBi3BTMIhtYVqfY7qgk8MI2T6gPrdI5WV1unQM24INckjXeiKJFwQA6a7dNoIZK+TGzCFd8FvgZ5Pkj0B+XK4kHESytTfcuRxJnF3JeXp/pnOfwB4E9nVB5C0sFpl0ewxwHXv15CqvISJjHKhX1KRY21fl0heCOxVdgGgA7QAAAABJRU5ErkJggg=='\
-alt='Zurück zur Startseite' style='float:left;margin:10px' width='100' height='36'></a><h3 style='margin:0 0px;'>Multi-Geiger</h3><br>\
-<small>ID: {id}<br>MAC: {mac}<br>Firmware: {fw}<br></small></div>";
-*/
-
 const char WEB_PAGE_HEADLINE[] PROGMEM = "<body><div class='canvas'><a class='b'href='/'style='background:none;display:inline'>\
-<img src='" STATIC_PREFIX "?r=logo' alt='Zurück zur Startseite' style='float:left;margin:10px' width='100' height='36'></a><h3 style='margin:0 0px;'>Multi-Geiger</h3><br>\
+<img src='" STATIC_PREFIX "?r=logo' alt='" TRA_BUTTON_BACK "' style='float:left;margin:10px' width='100' height='36'></a><h3 style='margin:0 0px;'>Multi-Geiger</h3><br>\
 <small>ID: {id}<br>MAC: {mac}<br>Firmware: {fw}&nbsp;(" __DATE__ " " __TIME__ ")<br></small></div>";
 constexpr const unsigned int LOGO_PNG_SIZE = 692;
 

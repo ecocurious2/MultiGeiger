@@ -3,6 +3,7 @@
 #include "version.h"
 #include "log.h"
 #include "speaker.h"
+#include "transl.h"
 
 #include "IotWebConf.h"
 #include "IotWebConfTParameter.h"
@@ -191,7 +192,7 @@ void handleRoot(void) {  // Handle web requests to "/" path.
   char tmp[50];
   const int last_signal_strength = WiFi.RSSI();
   index = FPSTR(WEB_PAGE_HEAD);
-	index.replace("{t}", FPSTR(CURRENT_DATA));
+	index.replace("{t}", FPSTR(TRA_CURRENT_DATA));
 
 // Paginate page after ~ 1500 Bytes
 	server.sendContent(index);
@@ -203,20 +204,20 @@ void handleRoot(void) {  // Handle web requests to "/" path.
   server.sendContent(index);
   index = emptyString;
 
-index +=F("<div class='content'><h4>Aktuelle Werte</h4>"
+index =F("<div class='content'><h4>" TRA_ACT_VAL_HEADLINE "</h4>"
 "<meta http-equiv=\"refresh\" content=\"10\">"
 "<table class='v' cellspacing='0' border='1' cellpadding='5'>"
 "<tr>"
-"<th style=\"background-color: lightgray;\">Sensor</th>"
-"<th style=\"background-color: lightgray;\">Parameter</th>"
-"<th style=\"background-color: lightgray;\">Wert</th></tr>");
+"<th style=\"background-color: lightgray;\">" TRA_SENSOR "</th>"
+"<th style=\"background-color: lightgray;\">" TRA_PARAMETER "</th>"
+"<th style=\"background-color: lightgray;\">" TRA_VALUE "</th></tr>");
 
 sprintf(tmp,"%.3f",Count_Rate);
-add_value_to_table(index,F(tubes[TUBE_TYPE].type),F("cps"),tmp,"c/s");
+add_value_to_table(index,F(tubes[TUBE_TYPE].type),FPSTR(TRA_CPS),tmp,"c/s");
 
 sprintf(tmp,"%.3f",Dose_Rate);
 
-add_value_to_table(index,F(tubes[TUBE_TYPE].type),F("Dosisleistung"),tmp,"µSv/h");
+add_value_to_table(index,F(tubes[TUBE_TYPE].type),FPSTR(TRA_DOSERATE),tmp,"µSv/h");
 
 index +=F("<tr><td colspan='3'>&nbsp;</td></tr>");
 // Paginate page after ~ 1500 Bytes
@@ -224,17 +225,17 @@ index +=F("<tr><td colspan='3'>&nbsp;</td></tr>");
 	index = emptyString;
 if(have_thp){
   sprintf(tmp,"%.1f",temperature);
-  add_value_to_table(index,F("BMEx80"),F("Temperatur"),tmp,"°C");
+  add_value_to_table(index,F("BMEx80"),FPSTR(TRA_TEMP),tmp,"°C");
   sprintf(tmp,"%.1f",pressure);
-  add_value_to_table(index,F("BMEx80"),F("Luftdruck"),tmp,"hPa");
+  add_value_to_table(index,F("BMEx80"),FPSTR(TRA_PRESSURE),tmp,"hPa");
   sprintf(tmp,"%.1f",humidity);
-  add_value_to_table(index,F("BMEx80"),F("rel. Luftfeuchte"),tmp,"%");
+  add_value_to_table(index,F("BMEx80"),FPSTR(TRA_HUMIDITY),tmp,"%");
   index +=F("<tr><td colspan='3'>&nbsp;</td></tr>");
 }
-add_value_to_table(index,F("WiFi"),F("Signal"),String(last_signal_strength),"dBm");
-add_value_to_table(index,F("WiFi"),F("Qualität"),String(calcWiFiSignalQuality(last_signal_strength)),"%");
-add_value_to_table(index,F("ESP32"),F("Freier Speicher"),String(ESP.getFreeHeap()),"Byte");
-add_value_to_table(index,F("ESP32"),F("Uptime"),delayToString(millis() - starttime),"");
+add_value_to_table(index,F("WiFi"),FPSTR(TRA_WIFISIGNAL),String(last_signal_strength),"dBm");
+add_value_to_table(index,F("WiFi"),FPSTR(TRA_WIFIQUALITY),String(calcWiFiSignalQuality(last_signal_strength)),"%");
+add_value_to_table(index,F("ESP32"),FPSTR(TRA_ESP_FREE_MEM),String(ESP.getFreeHeap()),"Byte");
+add_value_to_table(index,F("ESP32"),FPSTR(TRA_ESP_UPTIME),delayToString(millis() - starttime),"");
 
 index += F("</table><br>");
 index += FPSTR(WEB_PAGE_START_BUTTONS);
@@ -255,7 +256,7 @@ static char lastWiFiSSID[IOTWEBCONF_WORD_LEN] = "";
 void loadConfigVariables(void) {
   // check if WiFi SSID has changed. If so, restart cpu. Otherwise, the program will not use the new SSID
   if ((strcmp(lastWiFiSSID, "") != 0) && (strcmp(lastWiFiSSID, iotWebConf.getWifiSsidParameter()->valueBuffer) != 0)) {
-    log(INFO, "Doing restart...");
+    log(INFO, TRA_MES_RESTART);
     ESP.restart();
   }
   strcpy(lastWiFiSSID, iotWebConf.getWifiSsidParameter()->valueBuffer);
@@ -281,7 +282,7 @@ void loadConfigVariables(void) {
 }
 
 void configSaved(void) {
-  log(INFO, "Config saved. ");
+  log(INFO, TRA_MES_CONF_SAVED);
   loadConfigVariables();
   tick_enable(true);
 }
@@ -316,7 +317,7 @@ void handleDebug(void){
   RESERVE_STRING(page_content, XLARGE_STR);
 
   page_content = FPSTR(WEB_PAGE_HEAD);
-	page_content.replace("{t}", FPSTR(DEBUG_DATA));
+	page_content.replace("{t}", FPSTR(TRA_DEBUG_DATA));
   //page_content.replace("{lng}", F("DE"));
 
   server.sendContent(page_content);
@@ -330,7 +331,7 @@ void handleDebug(void){
 	server.sendContent(page_content);
 	page_content = emptyString;
 
-  page_content += FPSTR(LOGLEVEL_IS);
+  page_content += FPSTR(TRA_LOGLEVEL_IS);
   int lvl=NOLOG;
   if (server.hasArg("lvl")) {
     lvl = server.arg("lvl").toInt();
@@ -356,10 +357,10 @@ void handleDebug(void){
   server.sendContent(page_content);
 	page_content = emptyString;
 
-	page_content += FPSTR(SET_LOGLEVEL_TO);
+	page_content += FPSTR(TRA_SET_LOGLEVEL_TO);
   page_content.replace("{lvl}", F("..."));
   page_content += FPSTR(WEB_PAGE_DBG_BUTTONS);
-  page_content += F("<a class='button' href='/'>Zurück zur Startseite</a></div></body></html>");
+  page_content += F("<a class='button' href='/'>" TRA_BUTTON_BACK "</a></div></body></html>");
   server.sendContent(page_content);
 }
 /*****************************************************************
