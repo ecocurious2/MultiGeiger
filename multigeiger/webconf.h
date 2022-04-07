@@ -92,7 +92,7 @@ const char WEB_PAGE_START_BUTTONS[] PROGMEM = "<table><tr><td><a class='button't
 <td><a class='button'title='" TRA_LOG_PAGE_INFO "'href='debug'>" TRA_BUTTON_LOG_PAGE "</a></td><td><a class='button'title='" TRA_REFRESH_INFO "'href='/'>" TRA_BUTTON_REFRESH "</a></td></tr></table>";
 
 const char WEB_PAGE_DBG_SCRIPT[] PROGMEM = "</pre><script>function slog_update(){fetch('/serial').then(r=>r.text()).then((r)=>{\
-document.getElementById('slog').innerText+=r;}).catch(err=>console.log(err));};setInterval(slog_update,3000);</script>";
+document.getElementById('slog').innerText+=r;}).catch(err=>console.log(err));};setInterval(slog_update,2000);</script>";
 
 const char WEB_PAGE_DATA_LINE[] PROGMEM = "<tr><td>{s}</td><td>{d}</td><td class='r'>{val}&nbsp;{u}</td></tr>";
 

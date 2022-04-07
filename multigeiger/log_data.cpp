@@ -8,7 +8,6 @@ int Serial_Print_Mode;
 
 static const char *Serial_Logging_Name = "Simple Multi-Geiger";
 static const char *dashes = "------------------------------------------------------------------------------------------------------------------------";
-
 static const char *Serial_Logging_Header = "     %10s %15s %10s %9s %9s %8s %9s %9s %9s %5s %5s %6s";
 static const char *Serial_Logging_Body = "DATA %10d %15d %10f %9f %9d %8d %9d %9f %9f %5.1f %5.1f %6.0f";
 static const char *Serial_One_Minute_Log_Header = "     %4s %10s %29s";
@@ -31,11 +30,7 @@ void log_data(int GMC_counts, int time_difference, float Count_Rate, float Dose_
               float t, float h, float p) {
   static int counter = 0;
   if (counter++ % 20 == 0) {  // output the header now and then, so table is better readable
-    log(INFO, Serial_Logging_Header,
-        "GMC_counts", "Time_difference", "Count_Rate", "Dose_Rate", "HV Pulses", "Accu_GMC", "Accu_Time", "Accu_Rate", "Accu_Dose", "Temp", "Humi", "Press");
-    log(INFO, Serial_Logging_Header,
-        "[Counts]",   "[ms]",            "[cps]",      "[uSv/h]",   "[-]",       "[Counts]", "[ms]",      "[cps]",     "[uSv/h]",   "[C]",  "[%]",  "[hPa]");
-    log(INFO, dashes);
+    write_log_header();
   }
   log(INFO, Serial_Logging_Body,
       GMC_counts, time_difference, Count_Rate, Dose_Rate, HV_pulse_count,
@@ -64,4 +59,12 @@ void log_data_statistics(int count_time_between) {
     log(INFO, dashes);
   }
   log(INFO, "%d", count_time_between);
+}
+
+void write_log_header(){
+    log(INFO, Serial_Logging_Header,
+        "GMC_counts", "Time_difference", "Count_Rate", "Dose_Rate", "HV Pulses", "Accu_GMC", "Accu_Time", "Accu_Rate", "Accu_Dose", "Temp", "Humi", "Press");
+    log(INFO, Serial_Logging_Header,
+        "[Counts]",   "[ms]",            "[cps]",      "[uSv/h]",   "[-]",       "[Counts]", "[ms]",      "[cps]",     "[uSv/h]",   "[C]",  "[%]",  "[hPa]");
+    log(INFO, dashes);
 }

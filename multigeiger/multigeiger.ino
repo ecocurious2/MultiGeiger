@@ -40,6 +40,7 @@
 static Switches switches;
 float Count_Rate;
 float Dose_Rate;
+int hv_pulses;
 unsigned long starttime;
 bool have_thp = false;
 float temperature = 0.0, humidity = 0.0, pressure = 0.0;
@@ -47,8 +48,8 @@ float temperature = 0.0, humidity = 0.0, pressure = 0.0;
 void setup() {
   bool isLoraBoard = init_hwtest();
 	starttime = millis();									// store the start time
-  Debug.begin(115200);		// Output to Serial at 115200 baud
-  while (!Debug) {};
+  //Debug.begin(115200);		// Output to Serial at 115200 baud
+  //while (!Debug) {};
   setup_log(DEFAULT_LOG_LEVEL);
   setup_display(isLoraBoard);
   setup_switches(isLoraBoard);
@@ -131,7 +132,7 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
       return;
     }
     last_timestamp = current_ms;
-    int hv_pulses = current_hv_pulses - last_hv_pulses;
+    hv_pulses = current_hv_pulses - last_hv_pulses;
     last_hv_pulses = current_hv_pulses;
     int counts = current_counts - last_counts;
     last_counts = current_counts;

@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <WString.h>
 #include "log.h"
+#include "log_data.h"
 #include "utils.h"
 
 // ** convert hexstring to len bytes of data
@@ -51,36 +52,36 @@ void reverseByteArray(unsigned char *data, int len) {
 LoggingSerial Debug;
 
 LoggingSerial::LoggingSerial()
-    : HardwareSerial(0)
-{
+    : HardwareSerial(0) {
 	m_buffer = xQueueCreate(XLARGE_STR, sizeof(uint8_t));
 }
 
-size_t LoggingSerial::write(uint8_t c)
-{
-	xQueueSendToBack(m_buffer, ( void * ) &c, ( TickType_t ) 1);
+size_t LoggingSerial::write(uint8_t c){
+	xQueueSendToBack(m_buffer, ( void * ) &c, ( TickType_t ) 0);
 	return HardwareSerial::write(c);
 }
 
-size_t LoggingSerial::write(const uint8_t *buffer, size_t size)
-{
+size_t LoggingSerial::write(const uint8_t *buffer, size_t size){
 	for(int i = 0; i < size; i++) {
-		xQueueSendToBack(m_buffer, ( void * ) &buffer[i], ( TickType_t ) 1);
+		xQueueSendToBack(m_buffer, ( void * ) &buffer[i], ( TickType_t ) 0);
 	}
 	return HardwareSerial::write(buffer, size);
 }
 
-String LoggingSerial::popLines()
-{
+String LoggingSerial::popLines(){
 	String r;
 	uint8_t c;
-	while (xQueueReceive(m_buffer, &(c ), (TickType_t) 1 )) {
+	while (xQueueReceive(m_buffer, &(c ), (TickType_t) 0 )) {
 		r += (char) c;
 
 		if (c == '\n' && r.length() > 10)
 			break;
 	}
 	return r;
+}
+void LoggingSerial::Reset(){
+	xQueueReset(m_buffer);
+	write_log_header();
 }
 
 //taken from Luftdaten.info

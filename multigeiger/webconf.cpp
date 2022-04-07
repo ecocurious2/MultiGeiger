@@ -58,6 +58,7 @@ extern float Count_Rate;
 extern float Dose_Rate;
 extern unsigned long starttime;
 extern int log_level;
+extern int hv_pulses;
 extern float temperature;
 extern float humidity;
 extern float pressure;
@@ -216,8 +217,10 @@ sprintf(tmp,"%.3f",Count_Rate);
 add_value_to_table(index,F(tubes[TUBE_TYPE].type),FPSTR(TRA_CPS),tmp,"c/s");
 
 sprintf(tmp,"%.3f",Dose_Rate);
-
 add_value_to_table(index,F(tubes[TUBE_TYPE].type),FPSTR(TRA_DOSERATE),tmp,"µSv/h");
+
+sprintf(tmp,"%d",hv_pulses);
+add_value_to_table(index,F(tubes[TUBE_TYPE].type),FPSTR(TRA_HV_PULSES),tmp,"");
 
 index +=F("<tr><td colspan='3'>&nbsp;</td></tr>");
 // Paginate page after ~ 1500 Bytes
@@ -314,7 +317,8 @@ void handleDebug(void){
 	server.setContentLength(CONTENT_LENGTH_UNKNOWN);
   server.send(200, FPSTR(CONTENT_TYPE_TXT_HTML), "");
   char s[10];
-  RESERVE_STRING(page_content, XLARGE_STR);
+  RESERVE_STRING(page_content, LARGE_STR);
+  Debug.Reset();
 
   page_content = FPSTR(WEB_PAGE_HEAD);
 	page_content.replace("{t}", FPSTR(TRA_DEBUG_DATA));
@@ -345,13 +349,10 @@ void handleDebug(void){
   else strcpy(s,"NOLOG");
 
   page_content.replace("{lvl}", String(s));
-//  page_content += F(".</h4><br/><pre id='slog' class='panels'>");
-  page_content += F("<div class='debuglist'><br/><pre id='slog' class='panels'>");
+
+  page_content += F("<div class='debuglist'><pre id='slog' class='panels'>");
 	page_content += Debug.popLines();
-	/*page_content += F("</pre><script>function slog_update(){\
-	fetch('/serial').then(r=>r.text()).then((r)=>{\
-  document.getElementById('slog').innerText+=r;}).catch(err=>console.log(err));};\
-	setInterval(slog_update,3000);</script>");*/
+
   page_content += FPSTR(WEB_PAGE_DBG_SCRIPT);
   page_content += F("</div><div>");
   server.sendContent(page_content);

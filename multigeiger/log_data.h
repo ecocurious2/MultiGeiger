@@ -18,5 +18,5 @@ void log_data(int GMC_counts, int time_difference, float Count_Rate, float Dose_
               float t, float h, float p);
 void log_data_one_minute(int time_s, int cpm, int counts);
 void log_data_statistics(int count_time_between);
-
+void write_log_header(void);
 #endif // _LOG_DATA_H_

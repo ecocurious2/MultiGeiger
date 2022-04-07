@@ -27,6 +27,7 @@ public:
     size_t write(uint8_t c) override;
     size_t write(const uint8_t *buffer, size_t size) override;
 	String popLines();
+    void Reset();
 
 private:
     QueueHandle_t m_buffer;

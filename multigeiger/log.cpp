@@ -26,8 +26,7 @@ void log(int level, const char *format, ...) {
 }
 
 void setup_log(int level) {
-//  Serial.begin(115200); //started in multigeiger.ino as Debug.begin()....
-
+  Debug.begin(115200);		// Output to Serial at 115200 baud
   while (!Debug) {};
   log(NOLOG, "Logging initialized at level %d.", level);  // this will always be output
   log_level = level;
