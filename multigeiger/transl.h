@@ -14,6 +14,8 @@
 #include "translations_de.h"
 #elif defined(TRANSL_EN)
 #include "translations_en.h"
+#elif defined(TRANSL_IT)
+#include "translations_it.h"
 #else
 #warning No language defined
 #include "translations_en.h"
