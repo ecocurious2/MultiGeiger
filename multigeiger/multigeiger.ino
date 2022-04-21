@@ -48,8 +48,6 @@ float temperature = 0.0, humidity = 0.0, pressure = 0.0;
 void setup() {
   bool isLoraBoard = init_hwtest();
 	starttime = millis();									// store the start time
-  //Debug.begin(115200);		// Output to Serial at 115200 baud
-  //while (!Debug) {};
   setup_log(DEFAULT_LOG_LEVEL);
   setup_display(isLoraBoard);
   setup_switches(isLoraBoard);
@@ -59,7 +57,8 @@ void setup() {
   setup_speaker(playSound, ledTick && switches.led_on, speakerTick && switches.speaker_on);
   setup_transmission(VERSION_STR, ssid, isLoraBoard);
   setup_ble(ssid, sendToBle && switches.ble_on);
-  setup_log_data(SERIAL_DEBUG);
+  //setup_log_data(SERIAL_DEBUG);
+  setup_log_data(DEFAULT_LOG_LEVEL);
   setup_tube();
 }
 
@@ -160,15 +159,19 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
     // Sound local alarm?
     if (soundLocalAlarm && GMC_factor_uSvph > 0) {
       if (accumulated_Dose_Rate > localAlarmThreshold) {
-        log(WARNING, "Local alarm: Accumulated dose of %.3f µSv/h above threshold at %.3f µSv/h", accumulated_Dose_Rate, localAlarmThreshold);
+// the following is not a WARNING in the sense of a possible system failure ! This is a safety alarm and should really be displayed anytime !!!!
+//        log(WARNING, "Local alarm: Accumulated dose of %.3f µSv/h above threshold at %.3f µSv/h", accumulated_Dose_Rate, localAlarmThreshold);
+        log(NOLOG, "Local alarm: Accumulated dose of %.3f µSv/h above threshold at %.3f µSv/h", accumulated_Dose_Rate, localAlarmThreshold);
         alarm();
       } else if (Dose_Rate > (accumulated_Dose_Rate * localAlarmFactor)) {
-        log(WARNING, "Local alarm: Current dose of %.3f > %d x accumulated dose of %.3f µSv/h", Dose_Rate, localAlarmFactor, accumulated_Dose_Rate);
+// same as above
+//        log(WARNING, "Local alarm: Current dose of %.3f > %d x accumulated dose of %.3f µSv/h", Dose_Rate, localAlarmFactor, accumulated_Dose_Rate);
+        log(NOLOG, "Local alarm: Current dose of %.3f > %d x accumulated dose of %.3f µSv/h", Dose_Rate, localAlarmFactor, accumulated_Dose_Rate);
         alarm();
       }
     }
 
-    if (Serial_Print_Mode == Serial_Logging) {
+    if (Serial_Print_Mode >= Serial_Logging) {
       log_data(counts, dt, Count_Rate, Dose_Rate, hv_pulses,
                accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate,
                temperature, humidity, pressure);
@@ -297,7 +300,7 @@ void loop() {
 
   // do any other periodic updates for uplinks
   poll_transmission();
-
+  Serial_Print_Mode = getloglevel();
   publish(current_ms, gm_counts, gm_count_timestamp, hv_pulses, temperature, humidity, pressure);
 
   if (Serial_Print_Mode == Serial_One_Minute_Log)

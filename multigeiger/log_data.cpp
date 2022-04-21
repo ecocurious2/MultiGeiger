@@ -19,12 +19,12 @@ void setup_log_data(int mode) {
   // Write Header of Table, depending on the logging mode:
   bool data_log_enabled = (Serial_Print_Mode == Serial_Logging) || (Serial_Print_Mode == Serial_One_Minute_Log) || (Serial_Print_Mode == Serial_Statistics_Log);
   if (data_log_enabled) {
-    log(INFO, dashes);
-    log(INFO, "%s, Version %s", Serial_Logging_Name, VERSION_STR);
-    log(INFO, dashes);
+    log(Serial_Print_Mode, dashes);
+    log(Serial_Print_Mode, "%s, Version %s", Serial_Logging_Name, VERSION_STR);
+    log(Serial_Print_Mode, dashes);
   }
 }
-
+//Serial_Logging
 void log_data(int GMC_counts, int time_difference, float Count_Rate, float Dose_Rate, int HV_pulse_count,
               int accumulated_GMC_counts, int accumulated_time, float accumulated_Count_Rate, float accumulated_Dose_Rate,
               float t, float h, float p) {
@@ -37,30 +37,30 @@ void log_data(int GMC_counts, int time_difference, float Count_Rate, float Dose_
       accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate,
       t, h, p);
 }
-
+//Serial_One_Minute_Log
 void log_data_one_minute(int time_s, int cpm, int counts) {
   static int counter = 0;
   if (counter++ % 20 == 0) {  // output the header now and then, so table is better readable
-    log(INFO, Serial_One_Minute_Log_Header,
+    log(MED_INFO, Serial_One_Minute_Log_Header,
         "Time", "Count_Rate", "Counts");
-    log(INFO, Serial_One_Minute_Log_Header,
+    log(MED_INFO, Serial_One_Minute_Log_Header,
         "[s]",  "[cpm]",      "[Counts per last measurement]");
-    log(INFO, dashes);
+    log(MED_INFO, dashes);
   }
-  log(INFO, Serial_One_Minute_Log_Body,
+  log(MED_INFO, Serial_One_Minute_Log_Body,
       time_s, cpm, counts);
 }
-
+// Serial_Statistics_Log
 void log_data_statistics(int count_time_between) {
   static int counter = 0;
   if (counter++ % 20 == 0) {  // output the header now and then, so table is better readable
-    log(INFO, "Time between two impacts");
-    log(INFO, "[usec]");
-    log(INFO, dashes);
+    log(MIN_INFO, "Time between two impacts");
+    log(MIN_INFO, "[usec]");
+    log(MIN_INFO, dashes);
   }
-  log(INFO, "%d", count_time_between);
+  log(MIN_INFO, "%d", count_time_between);
 }
-
+//Header for Serial_Logging
 void write_log_header(){
     log(INFO, Serial_Logging_Header,
         "GMC_counts", "Time_difference", "Count_Rate", "Dose_Rate", "HV Pulses", "Accu_GMC", "Accu_Time", "Accu_Rate", "Accu_Dose", "Temp", "Humi", "Press");

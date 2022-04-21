@@ -81,10 +81,10 @@ const char WEB_PAGE_HEADLINE[] PROGMEM = "<body><div class='canvas'>\
 */
  const char WEB_PAGE_DBG_BUTTONS[] PROGMEM = "<table style='width:80%;'><tr>\
 <td style='width:13%;'><a class='button'title='" TRA_NOLOG_INFO "'href='/debug?lvl=0'>" TRA_BUTTON_NOLOG "</a></td>\
-<td style='width:13%;'><a class='button'href='/debug?lvl=1'>" TRA_BUTTON_CRITICAL "</a></td>\
-<td style='width:13%;'><a class='button'href='/debug?lvl=2'>" TRA_BUTTON_ERROR "</a></td>\
-<td style='width:13%;'><a class='button'href='/debug?lvl=3'>" TRA_BUTTON_WARNING "</a></td>\
-<td style='width:13%;'><a class='button'href='/debug?lvl=4'>" TRA_BUTTON_INFO "</a></td>\
+<td style='width:13%;'><a class='button'href='/debug?lvl=1'>" TRA_BUTTON_ERROR "</a></td>\
+<td style='width:13%;'><a class='button'title='1/s'href='/debug?lvl=2'>" TRA_BUTTON_MININFO "</a></td>\
+<td style='width:13%;'><a class='button'title='1/min'href='/debug?lvl=3'>" TRA_BUTTON_MEDINFO "</a></td>\
+<td style='width:13%;'><a class='button'title='1/10s'href='/debug?lvl=4'>" TRA_BUTTON_MAXINFO "</a></td>\
 <td style='width:13%;'><a class='button'title='" TRA_DEBUG_INFO "'href='/debug?lvl=5'>" TRA_BUTTON_DEBUG "</a></td>\
 </tr></table>";
 

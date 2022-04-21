@@ -45,9 +45,9 @@ void reverseByteArray(unsigned char *data, int len) {
   }
 }
 
-/*****************************************************************
- * Debug output                                                  *
- *****************************************************************/
+/***********************************************************************
+ * Log output via Hardwareserial to the serial port AND on log webpage *
+ ***********************************************************************/
 
 LoggingSerial Debug;
 
@@ -81,7 +81,7 @@ String LoggingSerial::popLines(){
 }
 void LoggingSerial::Reset(){
 	xQueueReset(m_buffer);
-	write_log_header();
+	//write_log_header();
 }
 
 //taken from Luftdaten.info
@@ -97,7 +97,7 @@ String delayToString(unsigned time_ms) {
 	}
 
 	if (time_ms > 2 * 1000 * 60 * 60) {
-		sprintf_P(buf, PSTR("%d hours, "), time_ms / (1000 * 60 * 60));
+		sprintf_P(buf, PSTR("%d h, "), time_ms / (1000 * 60 * 60));
 		s += buf;
 		time_ms %= 1000 * 60 * 60;
 	}
@@ -109,7 +109,7 @@ String delayToString(unsigned time_ms) {
 	}
 
 	if (time_ms > 2 * 1000) {
-		sprintf_P(buf, PSTR("%ds, "), time_ms / 1000);
+		sprintf_P(buf, PSTR("%d s, "), time_ms / 1000);
 		s += buf;
 	}
 

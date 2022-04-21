@@ -16,12 +16,15 @@ const char TRA_DEBUG_DATA[] PROGMEM = "Debug Info";
 const char TRA_SET_LOGLEVEL_TO[] PROGMEM = "<h4>Seting Loglevel to {lvl}</h4>";
 const char TRA_LOGLEVEL_IS[] PROGMEM = "<h4>Loglevel is: {lvl}</h4>";
 #define TRA_ACT_VAL_HEADLINE "Actual Values"
-#define  TRA_BUTTON_NOLOG "NOLOG"
-#define  TRA_BUTTON_CRITICAL "CRITICAL"
-#define  TRA_BUTTON_ERROR "ERROR"
-#define  TRA_BUTTON_WARNING "WARNING"
-#define  TRA_BUTTON_INFO "INFO"
-#define  TRA_BUTTON_DEBUG "DEBUG"
+#define  TRA_BUTTON_NOLOG "NoLog"
+//#define  TRA_BUTTON_CRITICAL "CRITICAL"
+#define  TRA_BUTTON_ERROR "Error"
+//#define  TRA_BUTTON_WARNING "WARNING"
+//#define  TRA_BUTTON_INFO "INFO"
+#define  TRA_BUTTON_MININFO "min.Info"
+#define  TRA_BUTTON_MEDINFO "med.Info"
+#define  TRA_BUTTON_MAXINFO "max.Info"
+#define  TRA_BUTTON_DEBUG "Debug"
 #define  TRA_BUTTON_CONFIG "Configuration"
 #define  TRA_BUTTON_BACK "Back to Homepage"
 #define  TRA_BUTTON_LOG_PAGE "LogInfo page"
@@ -29,8 +32,8 @@ const char TRA_LOGLEVEL_IS[] PROGMEM = "<h4>Loglevel is: {lvl}</h4>";
 #define  TRA_REFRESH_INFO "manual Refresh"
 #define  TRA_LOG_PAGE_INFO "open LogInfo page"
 #define  TRA_CONFIG_INFO "open Configuration"
-#define  TRA_NOLOG_INFO "min. Info"
-#define  TRA_DEBUG_INFO "max. Info"
+#define  TRA_NOLOG_INFO "alarms only"
+#define  TRA_DEBUG_INFO "all, incl. Debug info"
 const char TRA_SEND_TO_INFO [] PROGMEM = "Sending to {ext} ...";
 const char TRA_SENT_TO_INFO [] PROGMEM = "Sent to {ext}, status: {s}, http: ";
 

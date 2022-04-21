@@ -341,12 +341,12 @@ void handleDebug(void){
     lvl = server.arg("lvl").toInt();
     setloglevel(lvl);
   }else { lvl=log_level;}
-  if (lvl == 5) strcpy(s,"DEBUG");
-  else if (lvl == 4) strcpy(s,"INFO");
-  else if (lvl == 3) strcpy(s,"WARNING");
-  else if (lvl == 2) strcpy(s,"ERROR");
-  else if (lvl == 1) strcpy(s,"CRITICAL");
-  else strcpy(s,"NOLOG");
+  if (lvl == 5) strcpy(s,"Debug");
+  else if (lvl == 4) strcpy(s,"max.Info");
+  else if (lvl == 3) strcpy(s,"med.Info");
+  else if (lvl == 2) strcpy(s,"min.Info");
+  else if (lvl == 1) strcpy(s,"Error");
+  else strcpy(s,"NoLog");
 
   page_content.replace("{lvl}", String(s));
 
