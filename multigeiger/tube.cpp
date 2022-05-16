@@ -27,12 +27,13 @@ TUBETYPE tubes[] = {
   // The conversion factors for SBM-20 and SBM-19 are taken from the datasheets (according to Jürgen)
   {"Radiation SBM-20", 20, 1 / 2.47},
   {"Radiation SBM-19", 19, 1 / 9.81888},
-  // The Si22G conversion factor was determined by Juergen Boehringer like this:
-  // Set up a Si22G based MultiGeiger close to the official odlinfo.bfs.de measurement unit in Sindelfingen.
-  // Determine how many counts the Si22G gives within the same time the odlinfo unit needs for 1uSv.
-  // Result: 44205 counts on the Si22G for 1 uSv.
+  // The Si22G and the J306 conversion factors were determined by Juergen Boehringer like this:
+  // Set up a Si22G/J306 based MultiGeiger close to the official odlinfo.bfs.de measurement unit in Sindelfingen.
+  // Determine how many counts the Si22G/J306 gives within the same time the odlinfo unit needs for 1uSv.
+  // Result: 44205/55080 counts on the Si22G/J306 for 1 uSv.
   // So, to convert from cps to uSv/h, the calculation is: uSvh = cps * 3600 / 44205 = cps / 12.2792
-  {"Radiation Si22G", 22, 1 / 12.2792}
+  {"Radiation Si22G", 22, 1 / 12.2792},
+  {"Radiation J306", 30, 1 / 15.3}
 };
 
 volatile bool isr_GMC_cap_full;
