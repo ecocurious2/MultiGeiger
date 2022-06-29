@@ -18,6 +18,7 @@
 #include "ble.h"
 #include "chkhardware.h"
 #include "clock.h"
+#include "utils.h"
 
 // Measurement interval (default 2.5min) [sec]
 #define MEASUREMENT_INTERVAL 150
@@ -37,10 +38,16 @@
 
 // DIP switches
 static Switches switches;
-
+float Count_Rate;
+float Dose_Rate;
+int hv_pulses;
+unsigned long starttime;
+bool have_thp = false;
+float temperature = 0.0, humidity = 0.0, pressure = 0.0;
 
 void setup() {
   bool isLoraBoard = init_hwtest();
+	starttime = millis();									// store the start time
   setup_log(DEFAULT_LOG_LEVEL);
   setup_display(isLoraBoard);
   setup_switches(isLoraBoard);
@@ -50,7 +57,8 @@ void setup() {
   setup_speaker(playSound, ledTick && switches.led_on, speakerTick && switches.speaker_on);
   setup_transmission(VERSION_STR, ssid, isLoraBoard);
   setup_ble(ssid, sendToBle && switches.ble_on);
-  setup_log_data(SERIAL_DEBUG);
+  //setup_log_data(SERIAL_DEBUG);
+  setup_log_data(DEFAULT_LOG_LEVEL);
   setup_tube();
 }
 
@@ -123,7 +131,7 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
       return;
     }
     last_timestamp = current_ms;
-    int hv_pulses = current_hv_pulses - last_hv_pulses;
+    hv_pulses = current_hv_pulses - last_hv_pulses;
     last_hv_pulses = current_hv_pulses;
     int counts = current_counts - last_counts;
     last_counts = current_counts;
@@ -136,8 +144,8 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
     float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
 
     // calculate the current count rate and dose rate
-    float Count_Rate = (dt != 0) ? (float)counts * 1000.0 / (float)dt : 0.0;
-    float Dose_Rate = Count_Rate * GMC_factor_uSvph;
+     Count_Rate = (dt != 0) ? (float)counts * 1000.0 / (float)dt : 0.0;
+     Dose_Rate = Count_Rate * GMC_factor_uSvph;
 
     // calculate the count rate and dose rate over the complete time from start
     accumulated_Count_Rate = (accumulated_time != 0) ? (float)accumulated_GMC_counts * 1000.0 / (float)accumulated_time : 0.0;
@@ -151,15 +159,19 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
     // Sound local alarm?
     if (soundLocalAlarm && GMC_factor_uSvph > 0) {
       if (accumulated_Dose_Rate > localAlarmThreshold) {
-        log(WARNING, "Local alarm: Accumulated dose of %.3f µSv/h above threshold at %.3f µSv/h", accumulated_Dose_Rate, localAlarmThreshold);
+// the following is not a WARNING in the sense of a possible system failure ! This is a safety alarm and should really be displayed anytime !!!!
+//        log(WARNING, "Local alarm: Accumulated dose of %.3f µSv/h above threshold at %.3f µSv/h", accumulated_Dose_Rate, localAlarmThreshold);
+        log(NOLOG, "Local alarm: Accumulated dose of %.3f µSv/h above threshold at %.3f µSv/h", accumulated_Dose_Rate, localAlarmThreshold);
         alarm();
       } else if (Dose_Rate > (accumulated_Dose_Rate * localAlarmFactor)) {
-        log(WARNING, "Local alarm: Current dose of %.3f > %d x accumulated dose of %.3f µSv/h", Dose_Rate, localAlarmFactor, accumulated_Dose_Rate);
+// same as above
+//        log(WARNING, "Local alarm: Current dose of %.3f > %d x accumulated dose of %.3f µSv/h", Dose_Rate, localAlarmFactor, accumulated_Dose_Rate);
+        log(NOLOG, "Local alarm: Current dose of %.3f > %d x accumulated dose of %.3f µSv/h", Dose_Rate, localAlarmFactor, accumulated_Dose_Rate);
         alarm();
       }
     }
 
-    if (Serial_Print_Mode == Serial_Logging) {
+    if (Serial_Print_Mode >= Serial_Logging) {
       log_data(counts, dt, Count_Rate, Dose_Rate, hv_pulses,
                accumulated_GMC_counts, accumulated_time, accumulated_Count_Rate, accumulated_Dose_Rate,
                temperature, humidity, pressure);
@@ -212,6 +224,7 @@ void read_THP(unsigned long current_ms,
 }
 
 void transmit(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses,
+
               bool have_thp, float temperature, float humidity, float pressure, int wifi_status) {
   static unsigned long last_counts = 0;
   static unsigned long last_hv_pulses = 0;
@@ -233,10 +246,14 @@ void transmit(unsigned long current_ms, unsigned long current_counts, unsigned l
 
     int hv_pulses = current_hv_pulses - last_hv_pulses;
     last_hv_pulses = current_hv_pulses;
+    // calculate the current count rate and dose rate
+    float GMC_factor_uSvph = tubes[TUBE_TYPE].cps_to_uSvph;
+    float Count_Rate = (dt != 0) ? (float)counts * 1000.0 / (float)dt : 0.0;
+    float dose_rate = Count_Rate * GMC_factor_uSvph;
 
     log(DEBUG, "Measured GM: cpm= %d HV=%d", current_cpm, hv_pulses);
 
-    transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hv_pulses, counts, current_cpm,
+    transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hv_pulses, counts, current_cpm, dose_rate,
                   have_thp, temperature, humidity, pressure, wifi_status);
   }
 }
@@ -244,8 +261,9 @@ void transmit(unsigned long current_ms, unsigned long current_counts, unsigned l
 void loop() {
   static bool hv_error = false;  // true means a HV capacitor charging issue
 
-  static bool have_thp = false;
-  static float temperature = 0.0, humidity = 0.0, pressure = 0.0;
+  //static bool have_thp = false;
+  have_thp = false;
+  temperature = 0.0; humidity = 0.0; pressure = 0.0;
 
   unsigned long current_ms = millis();  // to save multiple calls to millis()
 
@@ -282,7 +300,7 @@ void loop() {
 
   // do any other periodic updates for uplinks
   poll_transmission();
-
+  Serial_Print_Mode = getloglevel();
   publish(current_ms, gm_counts, gm_count_timestamp, hv_pulses, temperature, humidity, pressure);
 
   if (Serial_Print_Mode == Serial_One_Minute_Log)

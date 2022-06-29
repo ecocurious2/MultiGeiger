@@ -15,7 +15,7 @@
 #define XPIN_BME280 11
 
 void setup_transmission(const char *version, char *ssid, bool lora);
-void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int hv_pulses, unsigned int gm_counts, unsigned int cpm,
+void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int hv_pulses, unsigned int gm_counts, unsigned int cpm,float Dose_Rate,
                    int have_thp, float temperature, float humidity, float pressure, int wifi_status);
 
 // The Arduino LMIC wants to be polled from loop(). This takes care of that on LoRa boards.

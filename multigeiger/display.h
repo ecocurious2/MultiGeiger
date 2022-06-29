@@ -52,6 +52,12 @@ void display_statusline(String txt);
 #define ST_BLE_INIT 4
 
 // status index 5 is still free
+#define STATUS_INFLUX 5
+#define ST_INFLUX_OFF 0
+#define ST_INFLUX_IDLE 1
+#define ST_INFLUX_ERROR 2
+#define ST_INFLUX_SENDING 3
+#define ST_INFLUX_INIT 4
 
 // status index 6 is still free
 
