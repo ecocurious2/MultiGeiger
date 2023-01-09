@@ -9,7 +9,7 @@
 
 #include "display.h"
 
-#define PIN_DISPLAY_ON 25
+#define PIN_DISPLAY_ON 21
 
 #define PIN_OLED_RST 16
 #define PIN_OLED_SCL 15
@@ -50,8 +50,10 @@ void setup_display(bool loraHardware) {
   isLoraBoard = loraHardware;
   if (isLoraBoard) {
     pu8x8 = &u8x8_lora;
-    pinMode(PIN_DISPLAY_ON, OUTPUT);
-    digitalWrite(PIN_DISPLAY_ON, HIGH);
+//    pinMode(PIN_DISPLAY_ON, INPUT);
+//    digitalWrite(PIN_DISPLAY_ON, LOW);
+    pinMode(Vext, OUTPUT);
+    digitalWrite(Vext, LOW);
   } else {
     pu8x8 = &u8x8;
   }

@@ -52,6 +52,7 @@ void setup() {
   setup_ble(ssid, sendToBle && switches.ble_on);
   setup_log_data(SERIAL_DEBUG);
   setup_tube();
+  log(DEBUG,"All Setup done");
 }
 
 void setup_ntp(int wifi_status) {
