@@ -22,7 +22,7 @@ Create TTN account
 ^^^^^^^^^^^^^^^^^^
 
 At https://account.thethingsnetwork.org/register you must enter a
-**USERNAME**, the **EMAIL ADDRESS** and a **PASSWORD**. Then create the account by clicking on
+**USERNAME**, the **EMAIL ADDRESS** and a **PASSWORD**. Then click on
 **Create account**.  After that you can log in to
 the console with the new data at
 https://account.thethingsnetwork.org/users/login.
@@ -72,8 +72,8 @@ Now press **Register end device**.
 Enter the LoRa parameters into the MultiGeiger
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
--  After the registration was completed, the LoRa parameters need to be transferred to the MultiGeiger program.
--  These can be entered via the configuration page of the MultiGeiger (see above).
+-  After the registration was completed, the LoRa parameters need to be entered into the form on the MultiGeiger configuration
+   page (see above).
 -  Now go through the configuration on the configuration page until the settings of the LoRa  parameters are displayed
    and enter them here. Type in the 3 parameters from the TTN console (**APPEUI, DEVEUI, APPKEY**). 
    
