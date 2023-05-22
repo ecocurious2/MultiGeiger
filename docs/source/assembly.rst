@@ -14,7 +14,7 @@ Ergebnis
 ########
 Das Multigeigerprojekt ist eine Idee der `Ecocurious-Initiative <https://ecocurious.de/projekte/multigeiger-2/>`_.
 Das dazugehörige Open-Source Multigeigermessgerät zum Messen radioaktiver Gammastrahlung wird von der Community entwickelt.
-Die Echtzeitdaten der stationären Geräte werden per LoRaWAN oder WiFi/WLAN an einen Server gefunkt und auf einer `Karte <https://ecocurious.de/multigeiger-karte/>`_ visualisiert. 
+Die Echtzeitdaten der stationären Geräte werden per LoRaWAN oder WiFi/WLAN an einen Server gefunkt und auf einer `Karte <https://ecocurious.de/multigeiger-karte/>`_ visualisiert.
 So entsteht ein Radioaktivitätsmessnetz in Bürgerhand, das wir hiermit aufbauen wollen.
 Herzliche Einladung zum Mitmachen!
 
@@ -124,8 +124,8 @@ Feldeffekt-Transistor T1
 ------------------------
 
 Als erstes Bauteil wird das einzige Bauteil im SMD-Bauform montiert.
-Mit Klebeband (Kreppband hat sich bewährt) wird er so auf die Platine geklebt, so dass die drei Pins sichtbar sind. 
-Dann werden die vorderen Anschlüsse verlötet, das Klebeband vorsichtig entfernt und der hintere Anschluss verlötet. 
+Mit Klebeband (Kreppband hat sich bewährt) wird er so auf die Platine geklebt, so dass die drei Pins sichtbar sind.
+Dann werden die vorderen Anschlüsse verlötet, das Klebeband vorsichtig entfernt und der hintere Anschluss verlötet.
 
 .. image:: images/build_03_solderingTransistor.jpg
    :width: 50%
@@ -148,7 +148,7 @@ Bei den Dioden unbedingt auf die Polarität achten! Die Kathode (Minus-Pol) ist 
    :width: 100%
 
 Vor dem Löten der Unterseite werden die Bauteile auf der Oberseite mit Klebeband fixiert, oder die Beinchen der Bauteile durch leichtes Auseinanderbiegen verklemmt.
-Dann Bauteile anlöten, Klebeband entfernen und überschüssigen Draht abschneiden. 
+Dann Bauteile anlöten, Klebeband entfernen und überschüssigen Draht abschneiden.
 
 .. note:: Verletzungsgefahr: Beim Abschneiden darauf achten, dass der davonfliegende Draht niemanden verletzten kann.
    Möglichst festhalten beim Abschneiden!
@@ -160,10 +160,10 @@ Dann Bauteile anlöten, Klebeband entfernen und überschüssigen Draht abschneid
 Kondensatoren und restliche Bauteile
 ------------------------------------
 
-Der Elektrolytkondensator (Elko) wird vorher mit einer Flachzange angewinkelt. Beim Elko unbedingt auf die Polung achten: 
+Der Elektrolytkondensator (Elko) wird vorher mit einer Flachzange angewinkelt. Beim Elko unbedingt auf die Polung achten:
 Auf dem Elko ist der „–“-Pol markiert, auf der Platine der „+“-Pol. Die Beschriftungen müssen sich gegenüber liegen.
 Der Zählrohrhalter muss so herum eingesetzt werden, dass das Zählrohr nach außen steht kann – am besten testen!
-Dann die Bauteile mit Klebeband fixieren, anlöten und den überschüssigen Draht abschneiden. 
+Dann die Bauteile mit Klebeband fixieren, anlöten und den überschüssigen Draht abschneiden.
 
 Kondensatoren, Zählrohrhalter, Spule, Piezo-Lautsprecher sind bestückt:
 
@@ -174,7 +174,7 @@ Kondensatoren, Zählrohrhalter, Spule, Piezo-Lautsprecher sind bestückt:
 Buchsenleisten und Mikrocontroller-Modul
 ----------------------------------------
 
-Die Buchsenleiste muss vorher evtl. noch gekürzt werden. 
+Die Buchsenleiste muss vorher evtl. noch gekürzt werden.
 
 .. note:: Dabei muss der Seitenschneider genau auf dem **letzten nicht mehr benötigten Kontakt** angesetzt werden – **nicht dort wo man ihn eigentlich kürzen will** – ansonsten kann sie splittern.
    Beim Abschneiden wegfliegende Teile möglichst festhalten!
@@ -227,17 +227,48 @@ Fertige Geigerzähler- und Mikrocontrollerplatine:
 .. note:: Das dünne Glas des OLED-Grafikdisplays ist empfindlich.
           Bitte keine Kraft auf das Display ausüben, sondern nur auf die Mikrocontrollerplatine!
 
-.. warning:: Verletzungsgefahr: Auf der Geigerzählerplatine wird eine **Spannung von 400 Volt** erzeugt. 
+.. warning:: Verletzungsgefahr: Auf der Geigerzählerplatine wird eine **Spannung von 400 Volt** erzeugt.
    Diese hält sich auch noch längere Zeit **nach dem Ausschalten des Geräts**.
    Bei Berührung kann es zu kleineren Stromschlägen kommen, die normalerweise harmlos sind.
-   Dennoch sollten sie vermieden werden! 
+   Dennoch sollten sie vermieden werden!
 
    .. image:: images/build_12_highVoltageWarningSign.png
       :width: 70%
+      :align: center
 
-   **Man sollte vor dem Arbeiten an der Schaltung den Kondensator entladen.** 
-   Am einfachsten macht man dies mit einer zweiten, ca. 30 cm langen Leitung, mit der man Anode und Kathode des Zählrohrs für etwa eine Sekunde kurzschließt. 
+
+   **Man sollte vor dem Arbeiten an der Schaltung den Kondensator entladen.**
+   Am einfachsten macht man dies mit einer zweiten, ca. 30 cm langen Leitung, mit der man Anode und Kathode des Zählrohrs für etwa eine Sekunde kurzschließt.
    Dies schützt nicht nur vor unangenehmen Stromschlägen, sondern schützt auch die empfindliche elektronische Schaltung.
+
+
+Optional: I2C Schnittstelle
+---------------------------
+
+.. image:: images/build_11.1_I2C_interface.jpg
+   :width: 70%
+   :align: center
+   :alt: Platinenausschnitt mit Beschriftung der I2C-Schnittstelle
+
+Optional kann der MultiGeiger über die I2C-Schnittstelle mit zusätzlichen Sensoren ausgestattet werden.
+
+.. table:: Belegung
+   :widths: auto
+   :align: center
+
+   === ======== ===================
+    #   Kürzel   Beschreibung
+   === ======== ===================
+    1   3V3      Spannung 3.3 Volt
+    2   GND      Masse
+    3   SCL      I2C clock
+    4   SDA      I2C data
+   === ======== ===================
+
+Aktuell unterstützt werden
+
+* `Bosch BME280 <https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/>`_: Temperatur (°C), relative Luftfeuchtigkeit (%), Luftdruck (Pa)
+* `Bosch BME680 <https://www.bosch-sensortec.com/products/environmental-sensors/gas-sensors/bme680/>`_: Temperatur (°C), relative Luftfeuchtigkeit (%), Luftdruck (Pa), Indoor Air Quality (IAQ) Index (25 gut .. 500 schlecht)
 
 Gehäuse
 #######
@@ -258,11 +289,11 @@ Rohre
 * Rohr für das Elektronikgehäuse: Zunächst wird das Rohr mit einer Säge auf entsprechende Länge abgesägt.
   Die Muffe (Aufweitung) zeigt nach unten.
 * Rohr für den Erdspieß: Der noch umgesägte Teil des Restes ist das obere Ende des Erdspießes.
-  Unten wird der Erdspieß auf entsprechende Länge abgesägt im 45-Grad-Winkel. 
-  Mit diesem schrägen Anschnitt lässt sich der Erdspieß später mit leichten Drehbewegungen gut in die Erde bohren. 
+  Unten wird der Erdspieß auf entsprechende Länge abgesägt im 45-Grad-Winkel.
+  Mit diesem schrägen Anschnitt lässt sich der Erdspieß später mit leichten Drehbewegungen gut in die Erde bohren.
   Alternativ kann man diesen Teil des Rohrs kurzhalten (ca. 15 cm) und in einem verzinkten Sonnenschirmhalter mit Erdspieß (Ø40mm) festklemmen.
-* Lüftungs-/Kabelloch bohren: Mit einem Reißnagel o. ä. wird das Loch seitlich im Erdspieß vorgestochen. 
-  Anschließend wird es aufgebohrt. Zuletzt wird es mit einem großen Bohrer / Schälbohrer auf etwa 17 mm Durchmesser aufgebohrt. 
+* Lüftungs-/Kabelloch bohren: Mit einem Reißnagel o. ä. wird das Loch seitlich im Erdspieß vorgestochen.
+  Anschließend wird es aufgebohrt. Zuletzt wird es mit einem großen Bohrer / Schälbohrer auf etwa 17 mm Durchmesser aufgebohrt.
 
 .. note:: Verletzungsgefahr: Mit der Klinge/dem Bohrer immer nach außen, d. h. vom Körper weg, schneiden oder bohren!
 
@@ -298,12 +329,12 @@ Der Stecker des Kabels muss durch das Loch passen.
      :align: left
      :alt: Deckel zum Einkleben
 
-  Das obere Viertel der Dachkruke wird seitlich mit Silikonklebstoff benetzt und in das obere Teil des Elektronikgehäuses geschoben. 
-  Die Fuge wird weiterhin mit Silikonklebstoff abgedichtet. 
+  Das obere Viertel der Dachkruke wird seitlich mit Silikonklebstoff benetzt und in das obere Teil des Elektronikgehäuses geschoben.
+  Die Fuge wird weiterhin mit Silikonklebstoff abgedichtet.
 
   Auch der obere Rand der Dachkruke wird mit Klebstoff benetzt (s. Skizze).
-  Um ein Hereinrutschen zu verhindern, kann man sie von unten mit einem langen Gegenstand fixieren. 
-  Die Silikonfuge kann man glätten, indem man einen Finger mit Spülmittel benetzt und damit das „Dach“ glättet. 
+  Um ein Hereinrutschen zu verhindern, kann man sie von unten mit einem langen Gegenstand fixieren.
+  Die Silikonfuge kann man glätten, indem man einen Finger mit Spülmittel benetzt und damit das „Dach“ glättet.
 
 .. Ab hier nicht mehr auskommentiert die Anleitung zur Auflage:
 
@@ -324,15 +355,15 @@ Aufbau der Zwischenbodenauflage (in zwei Arbeitsschritten):
 Installationsplatte
 -------------------
 
-* Die Installationsplatte kann aus dem Ober- oder Unterteil eines Kabelkanals gefertigt werden. 
+* Die Installationsplatte kann aus dem Ober- oder Unterteil eines Kabelkanals gefertigt werden.
   Dazu werden die Seitenteile vorsichtig mit einem Messer abgeschnitten.
   Danach wird der dadurch entstandene, biegsame Kunststoffstreifen auf die richtige Länge gebracht.
   Hierzu kann eine starke Schere verwendet werden.
-* Löcher durch Installationsplatte bohren: Elektronik und Zählrohr werden so mit Kabelbindern auf Installationsplatte fixiert, dass das Zählrohr sich auf 1 m Höhe befindet, wenn der Erdspieß 25 cm in der Erde steckt. 
+* Löcher durch Installationsplatte bohren: Elektronik und Zählrohr werden so mit Kabelbindern auf Installationsplatte fixiert, dass das Zählrohr sich auf 1 m Höhe befindet, wenn der Erdspieß 25 cm in der Erde steckt.
   Das Zählrohr zeigt nach unten.
   Die Löcher werden mit dem Reißnagel vorgestochen und dann auf 3 mm aufgebohrt, s. Bild „Bohrplan Installationsplatte“.
 * Die Platine wird lediglich mit einem Kabelbinder auf der Platte montiert, der durch beide Löcher gezogen wird.
-  Er verläuft unterhalb des USB-Steckers. 
+  Er verläuft unterhalb des USB-Steckers.
 
 Bohrplan Installationsplatte:
 
@@ -352,7 +383,7 @@ Einbau des Geräts (die roten Pfeile markieren Kabelbinder):
 
 * Platine und Zählrohr werden mit Kabelbinder auf die Installationsplatte montiert.
 * In die Micro-USB-Buchse wird der passende Adapter gesteckt.
-* Das „10 m Verlängerungskabel“ wird richtig herum zunächst durch den Erdspieß und dann durch den Zwischenboden gefädelt. 
+* Das „10 m Verlängerungskabel“ wird richtig herum zunächst durch den Erdspieß und dann durch den Zwischenboden gefädelt.
   Anschließend wird er mit dem Adapter verbunden.
 * Danach wird die Zwischenbodenauflage oberhalb des Zwischenbodens vorsichtig auf das Kabel geschoben.
 * Oberhalb der Zwischenbodenauflage wird ein Kabelbinder auf das Kabel gezurrt, so dass eine Zugentlastung entsteht.
@@ -364,9 +395,9 @@ Einbau des Geräts (die roten Pfeile markieren Kabelbinder):
 Inbetriebnahme
 ##############
 WLAN-Variante: Das Gerät baut einen eigenen WLAN-Accesspoint (AP) auf.
-Die SSID des AP lautet ESP32-xxxxxxxx, wobei die xxx die Chip-ID des WLAN-Chips sind (Beispiel: ESP32-51564452). 
+Die SSID des AP lautet ESP32-xxxxxxxx, wobei die xxx die Chip-ID des WLAN-Chips sind (Beispiel: ESP32-51564452).
 Bitte diese Nummer notieren, sie wird später für die Anmeldung benötigt, z. B. bei https://devices.sensor.community/.
-Der Access-Point bleibt für 30 s aktiv. Danach versucht das Gerät, sich mit dem (früher) eingestellten WLAN zu verbinden. 
+Der Access-Point bleibt für 30 s aktiv. Danach versucht das Gerät, sich mit dem (früher) eingestellten WLAN zu verbinden.
 Dieser Verbindungsversuch dauert ebenfalls 30 s. Kommt keine Verbindung zustande, wird wieder der eigene AP für erzeugt.
 Das standardmäßig vergebene WLAN-Kennwort ist „*ESP32Geiger*“ und sollte zeitnah geändert werden.
 
