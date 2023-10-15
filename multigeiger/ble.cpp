@@ -22,6 +22,14 @@ static NimBLEServer *bleServer;
 #define BLE_CHAR_HR_MEASUREMENT   BLEUUID((uint16_t)0x2A37)  // 16 bit UUID of Heart Rate Measurement Characteristic
 #define BLE_CHAR_HR_POSITION      BLEUUID((uint16_t)0x2A38)  // 16 bit UUID of Heart Rate Sensor Position Characteristic
 #define BLE_CHAR_HR_CONTROLPOINT  BLEUUID((uint16_t)0x2A39)  // 16 bit UUID of Heart Rate Control Point Characteristic
+
+#define BLE_SERVICE_ENVIRONMENTAL BLEUUID((uint16_t)0x181A)  // 16 bit UUID of EnvironmentaL Service
+#define BLE_CHAR_ENV_TEMPERATURE  BLEUUID((uint16_t)0x2A6E)  // 16 bit UUID of EnvironmentaL Temperature Characteristic (yields 16 bit little endian, 0.01 degC)
+#define BLE_CHAR_ENV_HUMIDITY     BLEUUID((uint16_t)0x2A6F)  // 16 bit UUID of EnvironmentaL Humidity Characteristic (yields 16 bit little endian, 0.01 %)
+#define BLE_CHAR_ENV_PRESSURE     BLEUUID((uint16_t)0x2A6D)  // 16 bit UUID of EnvironmentaL Air Pressure Characteristic (yields 32 bit little endian, 0.1 Pa)
+#define BLE_CHAR_ENV_IAQ          BLEUUID(0x422302f1, 0x2342, 0x2342, 0x2342234223422342)  // 128 bit UUID of Environmental Indoor Air Quality (yields 16 bit little endian IAQ)
+// Characteristic for IAQ from 2019 Chaos Communication Camp card10 https://firmware.card10.badge.events.ccc.de/bluetooth/ess.html
+
 #define BLE_DESCR_UUID            BLEUUID((uint16_t)0x2901)  // 16 bit UUID of BLE Descriptor
 
 static bool ble_enabled = false;
@@ -57,7 +65,7 @@ class MyCharacteristicCallbacks: public NimBLECharacteristicCallbacks {
   }
 };
 
-void update_bledata(unsigned int cpm) {
+void update_bledata(unsigned int cpm, float temperature, float humidity, float pressure, int iaq) {
   if (!ble_enabled)
     return;
   cpm_update_counter++;
@@ -81,7 +89,34 @@ void update_bledata(unsigned int cpm) {
         bleChr->notify();
       }
     }
+    NimBLEService *bleEnvSvc = bleServer->getServiceByUUID(BLE_SERVICE_ENVIRONMENTAL);
+    if (bleEnvSvc) {
+      uint8_t txBufferEnv[4];
+      NimBLECharacteristic *bleEnvTChr = bleEnvSvc->getCharacteristic(BLE_CHAR_ENV_TEMPERATURE);
+      if (bleEnvTChr) {
+        bleEnvTChr->setValue<int>(int(temperature * 100));
+        bleEnvTChr->notify();
+      }
+      NimBLECharacteristic *bleEnvHChr = bleEnvSvc->getCharacteristic(BLE_CHAR_ENV_HUMIDITY);
+      if (bleEnvHChr) {
+        bleEnvHChr->setValue<int>(int(humidity * 100));
+        bleEnvHChr->notify();
+      }
+      NimBLECharacteristic *bleEnvPChr = bleEnvSvc->getCharacteristic(BLE_CHAR_ENV_PRESSURE);
+      if (bleEnvPChr) {
+        bleEnvPChr->setValue<int>(int(pressure * 10));
+        bleEnvPChr->notify();
+      }
+      NimBLECharacteristic *bleEnvIAQChr = bleEnvSvc->getCharacteristic(BLE_CHAR_ENV_IAQ);
+      if (bleEnvIAQChr) {
+        txBufferEnv[0] = iaq & 0xFF;
+        txBufferEnv[1] = (iaq >> 8) & 0xFF;
+        bleEnvIAQChr->setValue(txBufferEnv, 2);
+        bleEnvIAQChr->notify();
+      }
+    }
   }
+
 }
 
 void setup_ble(char *device_name, bool ble_on) {
@@ -98,29 +133,48 @@ void setup_ble(char *device_name, bool ble_on) {
   bleServer = NimBLEDevice::createServer();
   bleServer->setCallbacks(new MyServerCallbacks());
 
-  NimBLEService *bleService = bleServer->createService(BLE_SERVICE_HEART_RATE);
+  // Heart Rate Service for CPM
+  NimBLEService *bleHRService = bleServer->createService(BLE_SERVICE_HEART_RATE);
 
-  NimBLECharacteristic *bleCharHRM = bleService->createCharacteristic(BLE_CHAR_HR_MEASUREMENT, NIMBLE_PROPERTY::NOTIFY);
+  NimBLECharacteristic *bleCharHRM = bleHRService->createCharacteristic(BLE_CHAR_HR_MEASUREMENT, NIMBLE_PROPERTY::NOTIFY);
   NimBLEDescriptor *bleDescriptorHRM = bleCharHRM->createDescriptor(BLE_DESCR_UUID, NIMBLE_PROPERTY::READ, 20);
   bleDescriptorHRM->setValue("Radiation rate CPM");
-//  bleCharHRM.addDescriptor(new BLE2902());  // required for notification management of the service; automatically added by NimBLE lib
 
-  NimBLECharacteristic *bleCharHRCP = bleService->createCharacteristic(BLE_CHAR_HR_CONTROLPOINT, NIMBLE_PROPERTY::WRITE);
+  NimBLECharacteristic *bleCharHRCP = bleHRService->createCharacteristic(BLE_CHAR_HR_CONTROLPOINT, NIMBLE_PROPERTY::WRITE);
   NimBLEDescriptor *bleDescriptorHRCP = bleCharHRCP->createDescriptor(BLE_DESCR_UUID, NIMBLE_PROPERTY::READ, 50);
   bleDescriptorHRCP->setValue("0x01 for Energy Exp. (packet counter) reset");
-  NimBLECharacteristic *bleCharHRPOS = bleService->createCharacteristic(BLE_CHAR_HR_POSITION, NIMBLE_PROPERTY::READ);
+  NimBLECharacteristic *bleCharHRPOS = bleHRService->createCharacteristic(BLE_CHAR_HR_POSITION, NIMBLE_PROPERTY::READ);
   NimBLEDescriptor *bleDescriptorHRPOS = bleCharHRPOS->createDescriptor(BLE_DESCR_UUID, NIMBLE_PROPERTY::READ, 30);
   bleDescriptorHRPOS->setValue("Geiger Mueller Tube Type");
   bleCharHRCP->setCallbacks(new MyCharacteristicCallbacks());
 
   bleCharHRPOS->setValue(txBuffer_HRPOS, 1);
 
+  // Environmental Service for temperature, humidity, air pressure, IAQ indoor air quality
+  NimBLEService *bleEnvService = bleServer->createService(BLE_SERVICE_ENVIRONMENTAL);
+
+  NimBLECharacteristic *bleCharEnvT = bleEnvService->createCharacteristic(BLE_CHAR_ENV_TEMPERATURE, NIMBLE_PROPERTY::NOTIFY);
+  NimBLEDescriptor *bleDescriptorEnvT = bleCharEnvT->createDescriptor(BLE_DESCR_UUID, NIMBLE_PROPERTY::READ, 30);
+  bleDescriptorEnvT->setValue("Temperature (.01 Celsius)");
+  NimBLECharacteristic *bleCharEnvH = bleEnvService->createCharacteristic(BLE_CHAR_ENV_HUMIDITY, NIMBLE_PROPERTY::NOTIFY);
+  NimBLEDescriptor *bleDescriptorEnvH = bleCharEnvH->createDescriptor(BLE_DESCR_UUID, NIMBLE_PROPERTY::READ, 30);
+  bleDescriptorEnvH->setValue("Rel. humidity (.01 %)");
+  NimBLECharacteristic *bleCharEnvP = bleEnvService->createCharacteristic(BLE_CHAR_ENV_PRESSURE, NIMBLE_PROPERTY::NOTIFY);
+  NimBLEDescriptor *bleDescriptorEnvP = bleCharEnvP->createDescriptor(BLE_DESCR_UUID, NIMBLE_PROPERTY::READ, 30);
+  bleDescriptorEnvP->setValue("Air pressure (.1 Pa)");
+  NimBLECharacteristic *bleCharEnvIAQ = bleEnvService->createCharacteristic(BLE_CHAR_ENV_IAQ, NIMBLE_PROPERTY::NOTIFY);
+  NimBLEDescriptor *bleDescriptorEnvIAQ = bleCharEnvIAQ->createDescriptor(BLE_DESCR_UUID, NIMBLE_PROPERTY::READ, 50);
+  bleDescriptorEnvIAQ->setValue("Indoor air quality (25 good .. 500 bad)");
+
+
   bleServer->getAdvertising()->addServiceUUID(BLE_SERVICE_HEART_RATE);
+  bleServer->getAdvertising()->addServiceUUID(BLE_SERVICE_ENVIRONMENTAL);
   bleServer->getAdvertising()->setScanResponse(true);
   bleServer->getAdvertising()->setMinPreferred(0x06);
   bleServer->getAdvertising()->setMinPreferred(0x12);
 
-  bleService->start();
+  bleHRService->start();
+  bleEnvService->start();
   bleServer->getAdvertising()->start();
 
   set_status(STATUS_BLE, ST_BLE_CONNECTABLE);
