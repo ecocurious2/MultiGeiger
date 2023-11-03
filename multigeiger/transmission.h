@@ -17,6 +17,8 @@
 void setup_transmission(const char *version, char *ssid, bool lora);
 void transmit_data(String tube_type, int tube_nbr, unsigned int dt, unsigned int hv_pulses, unsigned int gm_counts, unsigned int cpm,
                    int have_thp, float temperature, float humidity, float pressure, int wifi_status);
+void transmit_userinfo(String tube_type, int tube_nbr, float tube_factor, unsigned int cpm, unsigned int accu_cpm, float accu_rate,
+                       int have_thp, float temperature, float humidity, float pressure, int wifi_status, bool alarm_status);
 
 // The Arduino LMIC wants to be polled from loop(). This takes care of that on LoRa boards.
 void poll_transmission(void);

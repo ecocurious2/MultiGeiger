@@ -37,7 +37,7 @@
 
 // DIP switches
 static Switches switches;
-
+float accumulated_Count_Rate = 0.0, accumulated_Dose_Rate = 0.0;
 
 void setup() {
   bool isLoraBoard = init_hwtest();
@@ -108,14 +108,13 @@ int update_ble_status(void) {  // currently no error detection
 }
 
 void publish(unsigned long current_ms, unsigned long current_counts, unsigned long gm_count_timestamp, unsigned long current_hv_pulses,
-             float temperature, float humidity, float pressure) {
+             bool have_thp, float temperature, float humidity, float pressure, int wifi_status) {
   static unsigned long last_timestamp = millis();
   static unsigned long last_counts = 0;
   static unsigned long last_hv_pulses = 0;
   static unsigned long last_count_timestamp = 0;
   static unsigned int accumulated_GMC_counts = 0;
   static unsigned long accumulated_time = 0;
-  static float accumulated_Count_Rate = 0.0, accumulated_Dose_Rate = 0.0;
 
   if (((current_counts - last_counts) >= MINCOUNTS) || ((current_ms - last_timestamp) >= DISPLAYREFRESH)) {
     if ((gm_count_timestamp == 0) && (last_count_timestamp == 0)) {
@@ -150,13 +149,21 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
                 (showDisplay && switches.display_on));
 
     // Sound local alarm?
-    if (soundLocalAlarm && GMC_factor_uSvph > 0) {
-      if (accumulated_Dose_Rate > localAlarmThreshold) {
-        log(WARNING, "Local alarm: Accumulated dose of %.3f µSv/h above threshold at %.3f µSv/h", accumulated_Dose_Rate, localAlarmThreshold);
-        alarm();
-      } else if (Dose_Rate > (accumulated_Dose_Rate * localAlarmFactor)) {
-        log(WARNING, "Local alarm: Current dose of %.3f > %d x accumulated dose of %.3f µSv/h", Dose_Rate, localAlarmFactor, accumulated_Dose_Rate);
-        alarm();
+    if ((soundLocalAlarm || sendLocalAlarmToMessenger) && GMC_factor_uSvph > 0) {
+      if ((accumulated_Dose_Rate > localAlarmThreshold) || (Dose_Rate > (accumulated_Dose_Rate * localAlarmFactor))) {
+        if (accumulated_Dose_Rate > localAlarmThreshold) {
+          log(WARNING, "Local alarm: Accumulated dose of %.3f µSv/h above threshold at %.3f µSv/h", accumulated_Dose_Rate, localAlarmThreshold);
+        } else {
+          log(WARNING, "Local alarm: Current dose of %.3f > %d x accumulated dose of %.3f µSv/h", Dose_Rate, localAlarmFactor, accumulated_Dose_Rate);
+        }
+        if (soundLocalAlarm) {
+          alarm();
+        }
+        if (sendLocalAlarmToMessenger) {
+          transmit_userinfo(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, tubes[TUBE_TYPE].cps_to_uSvph,
+                            (unsigned int)(Count_Rate * 60), (unsigned int)(accumulated_Count_Rate * 60), accumulated_Dose_Rate,
+                            have_thp, temperature, humidity, pressure, wifi_status, true);
+        }
       }
     }
 
@@ -237,8 +244,12 @@ void transmit(unsigned long current_ms, unsigned long current_counts, unsigned l
 
     log(DEBUG, "Measured GM: cpm= %d HV=%d", current_cpm, hv_pulses);
 
-    transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, dt, hv_pulses, counts, current_cpm,
+    transmit_data(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr,
+                  dt, hv_pulses, counts, current_cpm,
                   have_thp, temperature, humidity, pressure, wifi_status);
+    transmit_userinfo(tubes[TUBE_TYPE].type, tubes[TUBE_TYPE].nbr, tubes[TUBE_TYPE].cps_to_uSvph,
+                      current_cpm, accumulated_Count_Rate, accumulated_Dose_Rate,
+                      have_thp, temperature, humidity, pressure, wifi_status, false);
   }
 }
 
@@ -284,7 +295,7 @@ void loop() {
   // do any other periodic updates for uplinks
   poll_transmission();
 
-  publish(current_ms, gm_counts, gm_count_timestamp, hv_pulses, temperature, humidity, pressure);
+  publish(current_ms, gm_counts, gm_count_timestamp, hv_pulses, have_thp, temperature, humidity, pressure, wifi_status);
 
   if (Serial_Print_Mode == Serial_One_Minute_Log)
     one_minute_log(current_ms, gm_counts);

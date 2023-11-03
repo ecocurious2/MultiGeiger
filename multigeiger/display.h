@@ -51,7 +51,12 @@ void display_statusline(String txt);
 #define ST_BLE_CONNECTABLE 3
 #define ST_BLE_INIT 4
 
-// status index 5 is still free
+#define STATUS_TELEGRAM 5
+#define ST_TELEGRAM_OFF 0
+#define ST_TELEGRAM_IDLE 1
+#define ST_TELEGRAM_ERROR 2
+#define ST_TELEGRAM_SENDING 3
+#define ST_TELEGRAM_INIT 4
 
 // status index 6 is still free
 
