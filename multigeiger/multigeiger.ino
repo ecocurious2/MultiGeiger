@@ -18,6 +18,7 @@
 #include "ble.h"
 #include "chkhardware.h"
 #include "clock.h"
+#include "status_led.h"
 
 // Measurement interval (default 2.5min) [sec]
 #define MEASUREMENT_INTERVAL 150
@@ -42,6 +43,7 @@ static Switches switches;
 void setup() {
   bool isLoraBoard = init_hwtest();
   setup_log(DEFAULT_LOG_LEVEL);
+  setup_status_LED();
   setup_display(isLoraBoard);
   setup_switches(isLoraBoard);
   switches = read_switches();  // only read DIP switches once at boot time
@@ -139,6 +141,9 @@ void publish(unsigned long current_ms, unsigned long current_counts, unsigned lo
     // calculate the current count rate and dose rate
     float Count_Rate = (dt != 0) ? (float)counts * 1000.0 / (float)dt : 0.0;
     float Dose_Rate = Count_Rate * GMC_factor_uSvph;
+
+    // indicate status on RGB LED (if any)
+    indicate(Dose_Rate, I_TEST);
 
     // calculate the count rate and dose rate over the complete time from start
     accumulated_Count_Rate = (accumulated_time != 0) ? (float)accumulated_GMC_counts * 1000.0 / (float)accumulated_time : 0.0;
